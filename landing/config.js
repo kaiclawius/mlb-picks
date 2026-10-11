@@ -1,7 +1,7 @@
-// Hier trägst du beim Deploy die echten Werte ein. Leere Werte blenden den jeweiligen Bereich sauber aus.
+// Set the real values here at deploy time. Empty values cleanly hide the respective section.
 window.SITE = {
-  appUrl: '#',   // Adresse des Launchpads, z. B. 'https://launch.example.com'
-  token: null,   // Contract-Adresse des Plattform-Tokens nach dem Launch
-  x: null,       // z. B. 'https://x.com/...'
-  telegram: null // z. B. 'https://t.me/...'
+  appUrl: '#',   // URL of the launchpad, e.g. 'https://launch.example.com'
+  token: null,   // contract address of the platform token after launch
+  x: null,       // e.g. 'https://x.com/...'
+  telegram: null // e.g. 'https://t.me/...'
 };

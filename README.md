@@ -10,14 +10,14 @@ Inhaltsprüfung (reale Personen, fremde Marken, Gewinnversprechen, Anstößiges)
 
 ## Landingpage
 
-Die öffentliche Webseite liegt in [`landing/`](landing/) und ist reines HTML, CSS und JavaScript ohne Build-Schritt. Schriften sind selbst gehostet (OFL-Lizenzen
+Die öffentliche Webseite liegt in [`landing/`](landing/), ist **auf Englisch** und besteht aus reinem HTML, CSS und JavaScript ohne Build-Schritt. Schriften sind selbst gehostet (OFL-Lizenzen
 liegen in `landing/fonts/`), die Seite lädt nichts von Drittanbietern.
 
 - **Vorschau lokal:** `landing/index.html` im Browser öffnen oder `npx serve landing`.
 - **Einstellungen:** Alles Veränderliche steht in `landing/config.js` (Adresse des Launchpads, Contract-Adresse des Plattform-Tokens, X- und Telegram-Link).
   Leere Werte blenden den jeweiligen Bereich aus. Die Seite ist bis zum Token-Launch bewusst als „Noch nicht gestartet" beschriftet.
 - **Einzeldatei:** `node landing/build-single.mjs seite.html` bettet Schriften, CSS und Skripte in eine Datei ein, praktisch für einfaches Hosting.
-- **Vor der Veröffentlichung:** `impressum.html` und `datenschutz.html` sind Platzhalter und müssen echt befüllt werden. In `index.html` und `og.html` steckt der Arbeitsname
+- **Vor der Veröffentlichung:** `legal.html` (Impressum) und `privacy.html` (Datenschutz) sind Platzhalter und müssen echt befüllt werden. In `index.html` und `og.html` steckt der Arbeitsname
   „Slop Mop". Beim Umbenennen `og.html` anpassen und `og.png` neu erzeugen (Screenshot mit 1200 x 630). Für Social-Media-Vorschauen muss die `og:image`-URL absolut sein.
 - **Beispieldaten:** Das Prüfprotokoll und die Stufen auf der Seite sind ausdrücklich als Beispiel gekennzeichnet. Es gibt keine erfundenen Zahlen, Partner oder Zitate.
 - **Barrierefreiheit:** Der Wisch-Effekt im Titel wird bei „reduzierte Bewegung" und ohne JavaScript ausgelassen, dann steht der Titel sauber da.

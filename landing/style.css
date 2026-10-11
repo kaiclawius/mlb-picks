@@ -1,5 +1,5 @@
-/* Konzept: Prüfprotokoll an der Hausmeistertür. Fliesenraster, DIN-artige Beschilderung, eine Signalfarbe.
-   Mut an genau einer Stelle: der Hero-Titel liegt unter einem Schmutzfilm, den man wegwischt. */
+/* Concept: the inspection log on a caretaker's door. Tile grid, DIN-style signage, one signal color.
+   Boldness in exactly one place: the hero title sits under a film of slop that you wipe away. */
 :root{
   --tile:#E8EEF0; --paper:#F7FAFB; --grout:#C5D2D7; --grid:rgba(13,34,48,.07);
   --ink:#0D2230; --soft:#3F5663; --signal:#F2C200; --on-signal:#0D2230;
@@ -32,7 +32,7 @@ h3{font-size:1.5rem;line-height:1}
 p{margin:0}
 .lede{max-width:62ch;color:var(--soft);font-size:1.125rem;margin-top:20px}
 
-/* Kopfleiste */
+/* Header bar */
 .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--tile);border-bottom:1px solid var(--grout)}
 .bar__in{display:flex;align-items:center;gap:20px;min-height:64px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--font-display);font-weight:800;font-size:1.55rem;text-transform:uppercase;letter-spacing:.02em;margin-right:auto}
@@ -59,7 +59,7 @@ p{margin:0}
 .hero__hint{color:var(--soft);margin-top:18px;min-height:1.4em;transition:opacity .4s}
 .hero__hint[hidden]{display:none}
 
-/* Versprechen */
+/* Promises */
 .promises{border-bottom:1px solid var(--grout)}
 .promises ul{display:grid;margin:0;padding:0}
 .promises li{list-style:none;padding:26px 0}
@@ -74,7 +74,7 @@ p{margin:0}
 
 section.block{padding-block:clamp(56px,9vw,112px);border-bottom:1px solid var(--grout)}
 
-/* Wer macht was */
+/* Who does what */
 .matrix{margin-top:44px;border:1px solid var(--grout);background:var(--paper);overflow-x:auto}
 .matrix table{width:100%;border-collapse:collapse;min-width:520px}
 .matrix th,.matrix td{padding:14px 16px;border-bottom:1px solid var(--grout);text-align:left;vertical-align:middle}
@@ -88,7 +88,7 @@ section.block{padding-block:clamp(56px,9vw,112px);border-bottom:1px solid var(--
 .never{font:500 .72rem var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--bad)}
 tr.key td{background:color-mix(in srgb,var(--signal) 18%,var(--paper))}
 
-/* Prüfprotokoll */
+/* Inspection log */
 .sheet{margin-top:44px;max-width:860px;background:var(--paper);border:1px solid var(--grout);box-shadow:0 1px 0 var(--grout),0 18px 40px -24px rgba(13,34,48,.35)}
 .sheet__head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;padding:16px 20px;border-bottom:2px solid var(--ink)}
 .sheet__head h3{font-size:1.9rem}
@@ -110,17 +110,17 @@ tr.key td{background:color-mix(in srgb,var(--signal) 18%,var(--paper))}
 .sheet__foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:14px 20px;border-top:2px solid var(--ink);color:var(--soft)}
 .note{margin-top:20px;color:var(--soft);font-size:.95rem;max-width:62ch}
 
-/* Abgelehnt */
+/* Rejected */
 .rej{display:grid;gap:12px;margin-top:44px;padding:0;list-style:none}
 @media (min-width:760px){.rej{grid-template-columns:1fr 1fr;column-gap:20px}}
 .rej li{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--paper);border:1px solid var(--grout);padding:18px 18px 18px 20px;overflow:hidden;min-height:84px}
-.rej q{quotes:"„" "“";font-weight:700;max-width:24ch}
+.rej q{quotes:"\201C" "\201D";font-weight:700;max-width:24ch}
 .rej small{display:block;color:var(--soft);font:400 .74rem var(--font-mono);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
 .stamp{flex:none;font:800 1.35rem/1 var(--font-display);letter-spacing:.08em;text-transform:uppercase;color:var(--bad);border:3px solid currentColor;border-radius:3px;padding:6px 10px 4px;transform:rotate(-7deg);opacity:.92;mix-blend-mode:normal}
 .stamp.in{animation:thump .55s cubic-bezier(.2,.9,.3,1.25) both}
 @keyframes thump{from{transform:rotate(-7deg) scale(1.5);opacity:.35}to{transform:rotate(-7deg) scale(1);opacity:.92}}
 
-/* Zugang */
+/* Access */
 .tiers{display:grid;gap:14px;margin-top:44px}
 @media (min-width:760px){.tiers{grid-template-columns:repeat(3,1fr)}}
 .tier{background:var(--paper);border:1px solid var(--grout);padding:22px}

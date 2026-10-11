@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <title>Slop Mop</title>
-<meta name="description" content="Das Launchpad für Memecoins, bei dem jede Seite ihre eigenen Zahlen offenlegt. Idee aufschreiben, Bilder hochladen, deployen.">
-<meta property="og:title" content="Slop Mop: Wir machen den Dreck weg">
-<meta property="og:description" content="Memecoin-Launchpad mit Live-Check aus der Blockchain. Deine Schlüssel bleiben bei dir.">
+<meta name="description" content="The memecoin launchpad where every page shows its own numbers. Write your idea, upload images, deploy.">
+<meta property="og:title" content="Slop Mop: We mop up the slop">
+<meta property="og:description" content="Memecoin launchpad with a live check from the blockchain. Your keys stay with you.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="og.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -19,14 +19,14 @@
 
 <header class="bar">
   <div class="wrap bar__in">
-    <a class="brand" href="#top" aria-label="Slop Mop, zum Seitenanfang">
+    <a class="brand" href="#top" aria-label="Slop Mop, back to top">
       <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M21 4 14.5 17" stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M6.5 18.5h17l-1.8 10H8.3z" fill="#F2C200"/><path d="M11 22.5v6M15 22.5v6M19 22.5v6" stroke="#0D2230" stroke-width="1.4"/></svg>
       Slop Mop
     </a>
-    <nav class="nav" aria-label="Hauptnavigation">
-      <a href="#ablauf">Ablauf</a><a href="#protokoll">Live-Check</a><a href="#regeln">Regeln</a><a href="#zugang">Zugang</a><a href="#faq">FAQ</a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#process">Process</a><a href="#check">Live check</a><a href="#rules">Rules</a><a href="#access">Access</a><a href="#faq">FAQ</a>
     </nav>
-    <a class="btn btn--signal btn--small" data-app href="#zugang">Launchpad öffnen</a>
+    <a class="btn btn--signal btn--small" data-app href="#access">Open launchpad</a>
   </div>
 </header>
 
@@ -34,145 +34,145 @@
 
 <section class="hero">
   <div class="wrap">
-    <p class="hero__meta mono"><span>Prüfprotokoll</span><span>Coin-Launchpad für Solana</span><span id="today"></span></p>
+    <p class="hero__meta mono"><span>Inspection log</span><span>Coin launchpad for Solana</span><span id="today"></span></p>
     <div class="hero__stage" id="stage">
-      <h1 class="hero__title">Wir machen<br>den Dreck<br><span class="hl">weg.</span></h1>
+      <h1 class="hero__title">We mop<br>up the<br><span class="hl">slop.</span></h1>
       <canvas id="dirt" aria-hidden="true"></canvas>
     </div>
-    <p class="hero__lead">Das Launchpad für Memecoins, bei dem jede Seite ihre eigenen Zahlen offenlegt. Idee aufschreiben, Bilder hochladen, deployen. Webseite und Coin entstehen in einem Zug.</p>
+    <p class="hero__lead">The memecoin launchpad where every page shows its own numbers. Write your idea, upload images, deploy. Website and coin come out in one go.</p>
     <div class="hero__cta">
-      <a class="btn btn--signal" data-app href="#zugang">Launchpad öffnen</a>
-      <a class="btn" href="#ablauf">So funktioniert es</a>
+      <a class="btn btn--signal" data-app href="#access">Open launchpad</a>
+      <a class="btn" href="#process">How it works</a>
     </div>
-    <p class="hero__hint mono" id="hint" hidden>Da liegt noch Dreck. Wisch drüber.</p>
+    <p class="hero__hint mono" id="hint" hidden>There is still slop left. Wipe it away.</p>
   </div>
 </section>
 
-<section class="promises" aria-label="Drei Dinge, die wir nie tun">
+<section class="promises" aria-label="Three things we never do">
   <div class="wrap">
     <ul>
-      <li><h3>Wir halten deine Schlüssel nicht</h3><p>Jede Transaktion signierst du selbst in deiner Wallet. Unser Server kann kein Geld bewegen.</p></li>
-      <li><h3>Wir versprechen keine Gewinne</h3><p>Auch deine Seite darf es nicht. Wer 100x verspricht, wird abgelehnt.</p></li>
-      <li><h3>Wir prüfen vor dem Start</h3><p>Text und Bilder laufen durch eine Inhaltsprüfung. Fällt sie aus, geht nichts online.</p></li>
+      <li><h3>We never hold your keys</h3><p>You sign every transaction yourself in your wallet. Our server cannot move any money.</p></li>
+      <li><h3>We don't promise profits</h3><p>Neither may your page. Anyone promising 100x gets rejected.</p></li>
+      <li><h3>We check before launch</h3><p>Text and images go through a content review. If the review is down, nothing goes live.</p></li>
     </ul>
   </div>
 </section>
 
-<section class="block" id="ablauf">
+<section class="block" id="process">
   <div class="wrap">
-    <p class="label">Ablauf</p>
-    <h2>Wer macht was</h2>
-    <p class="lede">Jeder Schritt hat einen klaren Zuständigen. Der private Schlüssel liegt die ganze Zeit bei dir.</p>
+    <p class="label">Process</p>
+    <h2>Who does what</h2>
+    <p class="lede">Every step has one owner. Your private key stays with you the whole time.</p>
 
-    <div class="matrix" role="region" aria-label="Zuständigkeiten pro Schritt" tabindex="0">
+    <div class="matrix" role="region" aria-label="Who is responsible for each step" tabindex="0">
       <table>
-        <thead><tr><th scope="col">Schritt</th><th class="who" scope="col">Du</th><th class="who" scope="col">Wir</th><th class="who" scope="col">Chain</th></tr></thead>
+        <thead><tr><th scope="col">Step</th><th class="who" scope="col">You</th><th class="who" scope="col">Us</th><th class="who" scope="col">Chain</th></tr></thead>
         <tbody>
-          <tr class="key"><td class="what"><b>Privater Schlüssel</b><span>Bleibt in deiner Wallet.</span></td><td class="who"><span class="dot dot--sig" title="Du"></span><span class="sr" hidden>Du</span></td><td class="who"><span class="never">nie</span></td><td class="who"></td></tr>
-          <tr><td class="what"><b>Anmelden</b><span>Eine Nachricht signieren. Es wird kein Geld bewegt.</span></td><td class="who"><span class="dot"></span></td><td class="who"></td><td class="who"></td></tr>
-          <tr><td class="what"><b>Zugang prüfen</b><span>Token-Bestand lesen, Tageskontingent setzen.</span></td><td class="who"></td><td class="who"><span class="dot"></span></td><td class="who"></td></tr>
-          <tr><td class="what"><b>Idee und Bilder liefern</b><span>Bis zu vier Bilder, je 2 MB.</span></td><td class="who"><span class="dot"></span></td><td class="who"></td><td class="who"></td></tr>
-          <tr><td class="what"><b>Seite schreiben und prüfen</b><span>KI-Text, danach Inhaltsprüfung von Text und Bildern.</span></td><td class="who"></td><td class="who"><span class="dot"></span></td><td class="who"></td></tr>
-          <tr><td class="what"><b>Transaktion vorbereiten</b><span>Mit dem offiziellen pump.fun-SDK.</span></td><td class="who"></td><td class="who"><span class="dot"></span></td><td class="who"></td></tr>
-          <tr><td class="what"><b>Prüfen, signieren, bezahlen</b><span>Du siehst alle Beträge, bevor du bestätigst.</span></td><td class="who"><span class="dot"></span></td><td class="who"></td><td class="who"></td></tr>
-          <tr><td class="what"><b>Coin entsteht</b><span>Auf pump.fun, endgültig.</span></td><td class="who"></td><td class="who"></td><td class="who"><span class="dot"></span></td></tr>
-          <tr><td class="what"><b>Nachprüfen und veröffentlichen</b><span>Wir lesen die Transaktion selbst von der Chain.</span></td><td class="who"></td><td class="who"><span class="dot"></span></td><td class="who"></td></tr>
+          <tr class="key"><td class="what"><b>Private key</b><span>Stays in your wallet.</span></td><td class="who"><span class="dot dot--sig" title="You"></span></td><td class="who"><span class="never">never</span></td><td class="who"></td></tr>
+          <tr><td class="what"><b>Sign in</b><span>Sign one message. No money moves.</span></td><td class="who"><span class="dot"></span></td><td class="who"></td><td class="who"></td></tr>
+          <tr><td class="what"><b>Check access</b><span>Read your token balance, set the daily quota.</span></td><td class="who"></td><td class="who"><span class="dot"></span></td><td class="who"></td></tr>
+          <tr><td class="what"><b>Provide idea and images</b><span>Up to four images, 2 MB each.</span></td><td class="who"><span class="dot"></span></td><td class="who"></td><td class="who"></td></tr>
+          <tr><td class="what"><b>Write and review the page</b><span>AI text, then a content review of text and images.</span></td><td class="who"></td><td class="who"><span class="dot"></span></td><td class="who"></td></tr>
+          <tr><td class="what"><b>Prepare the transaction</b><span>With the official pump.fun SDK.</span></td><td class="who"></td><td class="who"><span class="dot"></span></td><td class="who"></td></tr>
+          <tr><td class="what"><b>Review, sign, pay</b><span>You see every amount before you confirm.</span></td><td class="who"><span class="dot"></span></td><td class="who"></td><td class="who"></td></tr>
+          <tr><td class="what"><b>Coin is created</b><span>On pump.fun, final.</span></td><td class="who"></td><td class="who"></td><td class="who"><span class="dot"></span></td></tr>
+          <tr><td class="what"><b>Verify and publish</b><span>We read the transaction from the chain ourselves.</span></td><td class="who"></td><td class="who"><span class="dot"></span></td><td class="who"></td></tr>
         </tbody>
       </table>
     </div>
   </div>
 </section>
 
-<section class="block" id="protokoll">
+<section class="block" id="check">
   <div class="wrap">
-    <p class="label">Live-Check</p>
-    <h2>Jede Seite führt ihr<br>Prüfprotokoll</h2>
-    <p class="lede">Beim Aufruf liest die Seite frisch aus der Blockchain: Wer kann neue Tokens erzeugen, wer Wallets einfrieren, steckt etwas im Token, und wie ist er verteilt? Das Ergebnis steht öffentlich auf der Seite, auch wenn es unbequem ist.</p>
+    <p class="label">Live check</p>
+    <h2>Every page keeps its<br>inspection log</h2>
+    <p class="lede">When opened, the page reads fresh from the blockchain: who can mint new tokens, who can freeze wallets, is anything hidden in the token, and how is it distributed? The result is public on the page, even when it is uncomfortable.</p>
 
     <div class="sheet" id="sheet">
       <div class="sheet__head">
-        <h3>Prüfprotokoll</h3>
-        <span class="mono" style="color:var(--bad)">Beispiel, keine echten Daten</span>
+        <h3>Inspection log</h3>
+        <span class="mono" style="color:var(--bad)">Example, not real data</span>
       </div>
-      <div class="sheet__meta mono"><span>Objekt: $BEISPIEL</span><span>Kontrolle: automatisch</span><span>Intervall: bei jedem Aufruf</span></div>
+      <div class="sheet__meta mono"><span>Object: $EXAMPLE</span><span>Check: automatic</span><span>Interval: on every page view</span></div>
       <ol>
         <li class="chk pass" data-anim>
           <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg></span>
-          <span class="st"><b>Mint-Authority abgegeben</b><span class="tag">in Ordnung</span></span>
-          <p>Es können keine neuen Tokens erzeugt werden.</p>
+          <span class="st"><b>Mint authority revoked</b><span class="tag">OK</span></span>
+          <p>No new tokens can be created.</p>
         </li>
         <li class="chk pass" data-anim>
           <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg></span>
-          <span class="st"><b>Freeze-Authority abgegeben</b><span class="tag">in Ordnung</span></span>
-          <p>Wallets können nicht eingefroren werden.</p>
+          <span class="st"><b>Freeze authority revoked</b><span class="tag">OK</span></span>
+          <p>Wallets cannot be frozen.</p>
         </li>
         <li class="chk pass" data-anim>
           <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg></span>
-          <span class="st"><b>Keine gefährlichen Erweiterungen</b><span class="tag">in Ordnung</span></span>
-          <p>Weder Permanent Delegate, Transfer Hook noch Pausierung.</p>
+          <span class="st"><b>No dangerous extensions</b><span class="tag">OK</span></span>
+          <p>No permanent delegate, transfer hook or pausing.</p>
         </li>
         <li class="chk warn" data-anim>
           <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v9M12 19v.5"/></svg></span>
-          <span class="st"><b>Stark konzentrierte Verteilung</b><span class="tag">auffällig</span></span>
-          <p>Ohne Bonding Curve hält das größte Konto 41,3 % der umlaufenden Tokens, die Top 10 halten 78,0 %.</p>
+          <span class="st"><b>Heavily concentrated distribution</b><span class="tag">Warning</span></span>
+          <p>Excluding the bonding curve, the largest account holds 41.3% of circulating tokens and the top 10 hold 78.0%.</p>
         </li>
       </ol>
-      <div class="sheet__foot mono"><span>Kürzel: automatisch</span><span>Stand: <span id="stamp-date"></span></span></div>
+      <div class="sheet__foot mono"><span>Initials: automatic</span><span>As of: <span id="stamp-date"></span></span></div>
     </div>
-    <p class="note">Die Bonding Curve rechnen wir bei der Verteilung heraus. Sonst sähe jeder neue Coin konzentriert aus, weil sie anfangs fast alles hält.</p>
+    <p class="note">We exclude the bonding curve from the distribution. Otherwise every new coin would look concentrated, because the bonding curve holds almost everything at first.</p>
   </div>
 </section>
 
-<section class="block" id="regeln">
+<section class="block" id="rules">
   <div class="wrap">
-    <p class="label">Regeln</p>
-    <h2>Was nicht<br>durchkommt</h2>
-    <p class="lede">Eine KI prüft Text und Bilder, bevor etwas online geht. Bei klaren Verstößen wird abgelehnt, nichts davon wird gespeichert, und du erfährst den Grund. Ist die Prüfung nicht erreichbar, geht gar nichts online.</p>
+    <p class="label">Rules</p>
+    <h2>What doesn't<br>get through</h2>
+    <p class="lede">An AI reviews text and images before anything goes live. Clear violations are rejected, nothing is stored, and you are told the reason. If the review is unavailable, nothing goes live.</p>
 
     <ul class="rej">
-      <li><div><small>Eingereicht</small><q>Das Gesicht eines bekannten Sängers</q></div><span class="stamp" data-anim>Abgelehnt</span></li>
-      <li><div><small>Eingereicht</small><q>100x garantiert, kein Risiko</q></div><span class="stamp" data-anim>Abgelehnt</span></li>
-      <li><div><small>Eingereicht</small><q>Das Logo einer bekannten Marke</q></div><span class="stamp" data-anim>Abgelehnt</span></li>
-      <li><div><small>Eingereicht</small><q>Von einer Agentur auditiert</q></div><span class="stamp" data-anim>Abgelehnt</span></li>
-      <li><div><small>Eingereicht</small><q>Sexuelle Inhalte</q></div><span class="stamp" data-anim>Abgelehnt</span></li>
-      <li><div><small>Eingereicht</small><q>Aufruf zu Gewalt</q></div><span class="stamp" data-anim>Abgelehnt</span></li>
+      <li><div><small>Submitted</small><q>The face of a famous singer</q></div><span class="stamp" data-anim>Rejected</span></li>
+      <li><div><small>Submitted</small><q>100x guaranteed, no risk</q></div><span class="stamp" data-anim>Rejected</span></li>
+      <li><div><small>Submitted</small><q>A well-known brand's logo</q></div><span class="stamp" data-anim>Rejected</span></li>
+      <li><div><small>Submitted</small><q>Audited by an agency</q></div><span class="stamp" data-anim>Rejected</span></li>
+      <li><div><small>Submitted</small><q>Sexual content</q></div><span class="stamp" data-anim>Rejected</span></li>
+      <li><div><small>Submitted</small><q>Calls for violence</q></div><span class="stamp" data-anim>Rejected</span></li>
     </ul>
-    <p class="note">Erlaubt sind Humor, Tierfiguren und frei erfundene Maskottchen. Ein Beamter, der jeden Antrag ablehnt, geht durch.</p>
+    <p class="note">Humor, animal characters and invented mascots are fine. A clerk who rejects every application goes through.</p>
   </div>
 </section>
 
-<section class="block" id="zugang">
+<section class="block" id="access">
   <div class="wrap">
-    <p class="label">Zugang</p>
-    <h2>Für Halter des<br>Plattform-Tokens</h2>
-    <p class="lede">Wer den Token hält, kann sich anmelden. Je größer der Bestand, desto mehr Launches pro Tag. Der Bestand wird bei jedem Launch frisch geprüft, ein kurz geliehener Betrag genügt nicht.</p>
+    <p class="label">Access</p>
+    <h2>For holders of the<br>platform token</h2>
+    <p class="lede">Holders of the token can sign in. The larger the balance, the more launches per day. The balance is checked fresh at every launch, so a briefly borrowed amount is not enough.</p>
 
-    <div class="tiers" aria-label="Beispielstufen">
-      <div class="tier"><div class="n">1<small>Launch pro Tag</small></div><p>Einstieg. Mindestbestand wird zum Start festgelegt.</p></div>
-      <div class="tier"><div class="n">3<small>Launches pro Tag</small></div><p>Mittlere Stufe. Mindestbestand wird zum Start festgelegt.</p></div>
-      <div class="tier"><div class="n">10<small>Launches pro Tag</small></div><p>Höchste Stufe. Mindestbestand wird zum Start festgelegt.</p></div>
+    <div class="tiers" aria-label="Example tiers">
+      <div class="tier"><div class="n">1<small>launch per day</small></div><p>Entry level. The minimum balance is set at launch.</p></div>
+      <div class="tier"><div class="n">3<small>launches per day</small></div><p>Middle tier. The minimum balance is set at launch.</p></div>
+      <div class="tier"><div class="n">10<small>launches per day</small></div><p>Top tier. The minimum balance is set at launch.</p></div>
     </div>
-    <p class="note">Die Stufen sind Beispielwerte. Verbindlich sind erst die Angaben im Launchpad.</p>
+    <p class="note">The tiers are example values. Only the figures shown in the launchpad are binding.</p>
 
     <div class="ca" id="ca">
       <span class="mono">Contract</span>
-      <code id="ca-addr">Noch nicht gestartet</code>
-      <button class="btn" id="ca-copy" hidden type="button">Kopieren</button>
+      <code id="ca-addr">Not launched yet</code>
+      <button class="btn" id="ca-copy" hidden type="button">Copy</button>
     </div>
   </div>
 </section>
 
 <section class="block" id="faq">
   <div class="wrap">
-    <p class="label">Fragen</p>
-    <h2>Kurz beantwortet</h2>
+    <p class="label">Questions</p>
+    <h2>Short answers</h2>
     <div class="faq">
-      <details><summary>Was kostet ein Launch?</summary><p>Die Netzwerkgebühren von Solana und pump.fun, dazu möglicherweise eine Plattformgebühr. Alle Beträge siehst du in deiner Wallet, bevor du bestätigst.</p></details>
-      <details><summary>Verwahrt ihr mein Geld?</summary><p>Nein. Wir bauen eine Transaktion, und du signierst sie in deiner Wallet. Unser Server hat keinen Zugriff auf deinen privaten Schlüssel und kann nichts für dich bezahlen.</p></details>
-      <details><summary>Garantiert ihr Gewinne?</summary><p>Nein, und niemand sonst kann das. Memecoins sind Spekulation ohne inneren Wert. Du kannst alles verlieren, was du einsetzt.</p></details>
-      <details><summary>Kann ich einen Coin zurücknehmen?</summary><p>Nein. Was auf der Blockchain steht, bleibt dort. Deshalb zeigen wir dir vorher eine Vorschau und verlangen zwei Bestätigungen.</p></details>
-      <details><summary>Warum wurde mein Entwurf abgelehnt?</summary><p>Du bekommst den Grund direkt angezeigt, meist ein echter Name, eine fremde Marke oder ein Gewinnversprechen. Formuliere die Idee um und versuche es erneut. Pro Tag sind zehn Entwürfe möglich, abgelehnte zählen mit.</p></details>
-      <details><summary>Gehört Slop Mop zu pump.fun?</summary><p>Nein. Wir sind ein unabhängiges Projekt und nutzen das öffentliche SDK von pump.fun. Dein Coin liegt auf pump.fun und folgt deren Regeln.</p></details>
+      <details><summary>What does a launch cost?</summary><p>Solana and pump.fun network fees, plus possibly a platform fee. You see every amount in your wallet before you confirm.</p></details>
+      <details><summary>Do you hold my funds?</summary><p>No. We build a transaction and you sign it in your wallet. Our server has no access to your private key and cannot pay for anything on your behalf.</p></details>
+      <details><summary>Do you guarantee profits?</summary><p>No, and nobody else can. Memecoins are speculation with no intrinsic value. You can lose everything you put in.</p></details>
+      <details><summary>Can I take a coin back?</summary><p>No. What is on the blockchain stays there. That is why you get a preview first and have to confirm twice.</p></details>
+      <details><summary>Why was my draft rejected?</summary><p>You see the reason right away, usually a real name, a third-party brand or a profit promise. Rephrase the idea and try again. Ten drafts per day are possible, and rejected ones count.</p></details>
+      <details><summary>Is Slop Mop part of pump.fun?</summary><p>No. We are an independent project and use the public pump.fun SDK. Your coin lives on pump.fun and follows its rules.</p></details>
     </div>
   </div>
 </section>
@@ -183,9 +183,9 @@
   <div class="wrap foot">
     <div>
       <a class="brand" href="#top" style="margin:0 0 14px"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M21 4 14.5 17" stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M6.5 18.5h17l-1.8 10H8.3z" fill="#F2C200"/><path d="M11 22.5v6M15 22.5v6M19 22.5v6" stroke="#0D2230" stroke-width="1.4"/></svg>Slop Mop</a>
-      <p class="legal">Memecoins sind reine Spekulation ohne inneren Wert. Das ist keine Finanzberatung. Setze nur Geld ein, dessen Verlust du verkraftest. Slop Mop steht in keiner Verbindung zu pump.fun.</p>
+      <p class="legal">Memecoins are pure speculation with no intrinsic value. This is not financial advice. Only risk money you can afford to lose. Slop Mop is not affiliated with pump.fun.</p>
     </div>
-    <nav aria-label="Weitere Links"><a data-app href="#zugang">Launchpad</a><a id="lnk-x" href="#" hidden>X</a><a id="lnk-tg" href="#" hidden>Telegram</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></nav>
+    <nav aria-label="More links"><a data-app href="#access">Launchpad</a><a id="lnk-x" href="#" hidden>X</a><a id="lnk-tg" href="#" hidden>Telegram</a><a href="legal.html">Legal notice</a><a href="privacy.html">Privacy</a></nav>
   </div>
 </footer>
 

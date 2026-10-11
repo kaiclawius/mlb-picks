@@ -4,16 +4,16 @@
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // --- Konfiguration aus config.js ---
+  // --- Settings from config.js ---
   $$('[data-app]').forEach((a) => { if (S.appUrl && S.appUrl !== '#') a.href = S.appUrl; });
   for (const [id, url] of [['lnk-x', S.x], ['lnk-tg', S.telegram]]) {
     const a = document.getElementById(id);
     if (a && url) { a.href = url; a.hidden = false; a.rel = 'noopener noreferrer'; a.target = '_blank'; }
   }
-  const today = new Date().toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const today = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
   for (const id of ['today', 'stamp-date']) { const el = document.getElementById(id); if (el) el.textContent = today; }
 
-  // --- Contract-Adresse kopieren ---
+  // --- Copy contract address ---
   if (S.token) {
     $('#ca-addr').textContent = S.token;
     const btn = $('#ca-copy');
@@ -26,12 +26,12 @@
         range.selectNodeContents($('#ca-addr'));
         const sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
       }
-      btn.textContent = 'Kopiert';
-      setTimeout(() => (btn.textContent = 'Kopieren'), 1600);
+      btn.textContent = 'Copied';
+      setTimeout(() => (btn.textContent = 'Copy'), 1600);
     });
   }
 
-  // --- Einblend-Effekte: Elemente sind immer sichtbar, die Animation läuft nur zusätzlich ---
+  // --- Reveal effects: elements are always visible, the animation only adds to it ---
   if ('IntersectionObserver' in window && !reduceMotion) {
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
@@ -39,15 +39,15 @@
     $$('[data-anim]').forEach((el) => io.observe(el));
   }
 
-  // --- Hero: Der Titel liegt unter einem Film aus Hype-Floskeln. Man wischt ihn weg. ---
+  // --- Hero: the title sits under a film of hype phrases. You wipe it away. ---
   const stage = $('#stage');
   const cv = $('#dirt');
   const hint = $('#hint');
   if (!stage || !cv || reduceMotion || !cv.getContext) return;
 
   const SLOP = [
-    '100x garantiert', 'Revolutionäre Web3-KI-Synergie', 'Kein Risiko, nur Mond', 'Exklusiver Presale, nur heute',
-    'Dieser Coin ist anders', 'Alpha-Call', 'Früh dabei sein', 'FOMO ist real', 'Nächster 1000x', 'Die Zukunft ist jetzt',
+    '100x guaranteed', 'Revolutionary Web3 AI synergy', 'No risk, only moon', 'Exclusive presale, today only',
+    'This coin is different', 'Alpha call', 'Get in early', 'FOMO is real', 'Next 1000x', 'The future is now',
   ];
   const ctx = cv.getContext('2d');
   let w = 0, h = 0, radius = 60, wiped = false, sweepFrame = 0;
@@ -67,7 +67,7 @@
     ctx.globalCompositeOperation = 'source-over';
     ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = ink;
-    ctx.globalAlpha = 0.3; // Film, durch den der Titel noch zu erahnen ist
+    ctx.globalAlpha = 0.3; // film that still lets the title show through
     ctx.fillRect(0, 0, w, h);
     ctx.globalAlpha = 0.5;
     const fs = Math.max(22, Math.min(44, w / 15));
@@ -99,7 +99,7 @@
     for (let i = 1; i <= n; i++) erase(a.x + ((b.x - a.x) * i) / n, a.y + ((b.y - a.y) * i) / n);
   }
 
-  // Einmal automatisch wischen, damit der Titel ohne Zutun lesbar wird. Am Rand bleibt Dreck zum Spielen.
+  // Wipe once automatically so the title becomes readable on its own. Some slop stays at the edges to play with.
   function sweep(duration = 1700) {
     cancelAnimationFrame(sweepFrame);
     const rows = h < 300 ? [0.3, 0.7] : [0.2, 0.5, 0.8];
@@ -143,12 +143,12 @@
   new ResizeObserver(() => {
     const nw = Math.round(stage.getBoundingClientRect().width);
     if (!lastW) { lastW = nw; return; }
-    if (Math.abs(nw - lastW) < 3) return; // Höhenänderungen (Adressleiste am Handy) ignorieren
+    if (Math.abs(nw - lastW) < 3) return; // ignore height changes (phone address bar)
     lastW = nw; size(); paintDirt(); sweep(700);
   }).observe(stage);
   matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => { paintDirt(); sweep(700); });
 
-  // Erst zeichnen, wenn die Schrift da ist, sonst stimmen die Textbreiten nicht
+  // Paint only once the font is loaded, otherwise the text widths are wrong
   const fontReady = document.fonts && document.fonts.load ? document.fonts.load('800 32px "Barlow Condensed"') : Promise.resolve();
   Promise.race([fontReady, new Promise((r) => setTimeout(r, 1500))]).then(start);
 })();
