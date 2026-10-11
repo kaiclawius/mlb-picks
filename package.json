@@ -1,0 +1,22 @@
+{
+  "name": "memecoin",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "create": "tsx scripts/create-token.ts",
+    "revoke": "tsx scripts/revoke-authorities.ts",
+    "sync-site": "tsx scripts/sync-site.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@metaplex-foundation/mpl-token-metadata": "^3.4.0",
+    "@metaplex-foundation/mpl-toolbox": "^0.11.5",
+    "@metaplex-foundation/umi": "^1.6.0",
+    "@metaplex-foundation/umi-bundle-defaults": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  }
+}

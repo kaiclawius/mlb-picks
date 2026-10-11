@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Memecoin</title>
+  <link rel="icon" href="logo.svg">
+  <style>
+    :root { --bg: #fff8e1; --fg: #2b1a00; --accent: #f59f00; --card: #ffffff; --muted: #7a5c2e; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #1a1305; --fg: #fff3d6; --card: #2a1f0a; --muted: #c9a96b; } }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font: 17px/1.5 system-ui, sans-serif; }
+    main { max-width: 760px; margin: 0 auto; padding: 48px 16px; text-align: center; }
+    .logo { width: 180px; height: 180px; animation: bob 3s ease-in-out infinite; }
+    @keyframes bob { 50% { transform: translateY(-12px) rotate(-4deg); } }
+    h1 { font-size: clamp(2.2rem, 8vw, 4rem); margin: 16px 0 0; line-height: 1.1; }
+    .ticker { color: var(--accent); font-weight: 800; font-size: 1.4rem; }
+    .lead { color: var(--muted); font-size: 1.15rem; }
+    .ca { display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap;
+          background: var(--card); border-radius: 14px; padding: 14px; margin: 28px 0; }
+    .ca code { word-break: break-all; font-size: .95rem; }
+    button, .btn { background: var(--accent); color: #2b1a00; border: 0; border-radius: 999px; padding: 10px 20px;
+          font: inherit; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; }
+    .btn.ghost { background: transparent; color: var(--fg); border: 2px solid var(--accent); }
+    .links { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; margin: 40px 0; }
+    .stat { background: var(--card); border-radius: 14px; padding: 18px; }
+    .stat b { display: block; font-size: 1.4rem; }
+    .stat span { color: var(--muted); font-size: .9rem; }
+    footer { color: var(--muted); font-size: .8rem; margin-top: 48px; }
+  </style>
+</head>
+<body>
+  <main>
+    <img class="logo" src="logo.svg" alt="">
+    <h1 id="name"></h1>
+    <div class="ticker" id="symbol"></div>
+    <p class="lead" id="description"></p>
+
+    <div class="ca">
+      <span>CA:</span> <code id="mint">Noch nicht gelauncht</code>
+      <button id="copy" hidden>Kopieren</button>
+    </div>
+
+    <div class="links" id="links"></div>
+
+    <div class="stats">
+      <div class="stat"><b id="supply"></b><span>Total Supply</span></div>
+      <div class="stat"><b>0%</b><span>Tax</span></div>
+      <div class="stat"><b>Solana</b><span>Chain</span></div>
+    </div>
+
+    <footer>Memecoins sind reine Spekulation ohne inneren Wert. Keine Finanzberatung. Investiere nur, was du bereit bist zu verlieren.</footer>
+  </main>
+  <script src="token.js"></script>
+  <script>
+    const t = window.TOKEN;
+    document.title = `${t.name} ($${t.symbol})`;
+    document.getElementById('name').textContent = t.name;
+    document.getElementById('symbol').textContent = '$' + t.symbol;
+    document.getElementById('description').textContent = t.description;
+    document.getElementById('supply').textContent = Number(t.supply).toLocaleString('de-DE', { notation: 'compact', compactDisplay: 'short' });
+
+    if (t.mint) {
+      document.getElementById('mint').textContent = t.mint;
+      const copy = document.getElementById('copy');
+      copy.hidden = false;
+      copy.onclick = async () => {
+        await navigator.clipboard.writeText(t.mint);
+        copy.textContent = 'Kopiert!';
+        setTimeout(() => (copy.textContent = 'Kopieren'), 1500);
+      };
+    }
+
+    const labels = { buy: 'Kaufen', x: 'X / Twitter', telegram: 'Telegram' };
+    const links = document.getElementById('links');
+    for (const [key, url] of Object.entries(t.links)) {
+      if (!url) continue;
+      const a = Object.assign(document.createElement('a'), { href: url, target: '_blank', rel: 'noopener',
+        textContent: labels[key] ?? key, className: key === 'buy' ? 'btn' : 'btn ghost' });
+      links.append(a);
+    }
+    if (t.mint) {
+      const explorer = `https://explorer.solana.com/address/${t.mint}${t.cluster === 'devnet' ? '?cluster=devnet' : ''}`;
+      links.append(Object.assign(document.createElement('a'), { href: explorer, target: '_blank', rel: 'noopener',
+        textContent: 'Explorer', className: 'btn ghost' }));
+    }
+  </script>
+</body>
+</html>
