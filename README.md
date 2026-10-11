@@ -10,17 +10,26 @@ Inhaltsprüfung (reale Personen, fremde Marken, Gewinnversprechen, Anstößiges)
 
 ## Landingpage
 
-Die öffentliche Webseite liegt in [`landing/`](landing/), ist **auf Englisch** und besteht aus reinem HTML, CSS und JavaScript ohne Build-Schritt. Schriften sind selbst gehostet (OFL-Lizenzen
-liegen in `landing/fonts/`), die Seite lädt nichts von Drittanbietern.
+Die öffentliche Webseite liegt in [`landing/`](landing/), ist **auf Englisch** und besteht aus statischem HTML, CSS und JavaScript ohne Build-Schritt.
+Sie ist als scrollgesteuerte Erzählung gebaut (Konzept: Slop gegen Belege) und bewusst an den Mustern ausgezeichneter Webseiten orientiert:
+Preloader, Wisch-Hero, Lauftext, Wort-für-Wort-Manifest, ein Sequenzdiagramm, das sich beim Scrollen Schritt für Schritt aufbaut, eine Live-Check-Demo
+zum Ausprobieren, eigener Cursor, magnetische Buttons und ein Footer-Schriftzug, der sich beim Hover füllt.
+Ein Preis ist damit nicht versprochen. Bewertet wird dort nach Design, Nutzbarkeit, Kreativität und Inhalt, und das entscheidet am Ende eine Jury.
 
-- **Vorschau lokal:** `landing/index.html` im Browser öffnen oder `npx serve landing`.
+- **Technik:** [GSAP](https://gsap.com) mit ScrollTrigger und [Lenis](https://github.com/darkroomengineering/lenis) (sanftes Scrollen), selbst gehostet in `landing/vendor/`.
+  Die GSAP-Lizenz ("Standard no charge license") liegt dort ebenfalls; sie erlaubt kommerzielle Nutzung, aber keine Konkurrenzprodukte zu Webflows Visual-Tools. Lenis ist MIT.
+  Schriften (OFL) liegen in `landing/fonts/`. Es werden keine Drittanbieter geladen.
+- **Ausweichverhalten:** Mit reduzierter Bewegung, ohne JavaScript oder wenn die Bibliotheken fehlen, ist die Seite komplett lesbar (kein Preloader, keine versteckten Elemente,
+  das Sequenzdiagramm wird zur Schrittliste). Ein Notfall-Timer zeigt alles an, falls der Intro-Ablauf hängt.
+- **Gemessen** (Headless-Chromium, 4-fach gedrosselte CPU): größter Inhalt nach ca. 250 ms, Layout-Verschiebung ca. 0,00, flüssiges Scrollen, insgesamt ca. 300 KB.
+  Das ist keine Lighthouse-Prüfung und ersetzt keinen Test auf echten Geräten.
+- **Vorschau lokal:** `cd landing && python3 -m http.server 8000` (über `http://`, nicht `file://`, sonst blockiert der Browser das Schrift-Preload).
 - **Einstellungen:** Alles Veränderliche steht in `landing/config.js` (Adresse des Launchpads, Contract-Adresse des Plattform-Tokens, X- und Telegram-Link).
-  Leere Werte blenden den jeweiligen Bereich aus. Die Seite ist bis zum Token-Launch bewusst als „Noch nicht gestartet" beschriftet.
-- **Einzeldatei:** `node landing/build-single.mjs seite.html` bettet Schriften, CSS und Skripte in eine Datei ein, praktisch für einfaches Hosting.
+  Leere Werte blenden den jeweiligen Bereich aus. Bis zum Token-Launch steht dort "Not launched yet".
+- **Einzeldatei:** `node landing/build-single.mjs seite.html` bettet Schriften, CSS und alle Skripte in eine Datei ein, praktisch für einfaches Hosting.
 - **Vor der Veröffentlichung:** `legal.html` (Impressum) und `privacy.html` (Datenschutz) sind Platzhalter und müssen echt befüllt werden. In `index.html` und `og.html` steckt der Arbeitsname
-  „Slop Mop". Beim Umbenennen `og.html` anpassen und `og.png` neu erzeugen (Screenshot mit 1200 x 630). Für Social-Media-Vorschauen muss die `og:image`-URL absolut sein.
-- **Beispieldaten:** Das Prüfprotokoll und die Stufen auf der Seite sind ausdrücklich als Beispiel gekennzeichnet. Es gibt keine erfundenen Zahlen, Partner oder Zitate.
-- **Barrierefreiheit:** Der Wisch-Effekt im Titel wird bei „reduzierte Bewegung" und ohne JavaScript ausgelassen, dann steht der Titel sauber da.
+  "Slop Mop". Beim Umbenennen `og.html` anpassen und `og.png` neu erzeugen (Screenshot mit 1200 x 630). Für Social-Media-Vorschauen muss die `og:image`-URL absolut sein.
+- **Beispieldaten:** Die Live-Check-Demo und die Stufen sind ausdrücklich als Beispiel gekennzeichnet. Es gibt keine erfundenen Zahlen, Partner oder Zitate.
 
 ## Wie es funktioniert
 
