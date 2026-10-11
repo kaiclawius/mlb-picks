@@ -3,58 +3,89 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Coin-Seiten-Generator</title>
+<title>Coin-Launchpad</title>
+<link rel="icon" href="data:,">
 <style>
-:root{--bg:#fffdf7;--fg:#1c1a14;--card:#fff;--muted:#6b6556;--accent:#f59f00}
-@media (prefers-color-scheme:dark){:root{--bg:#14120d;--fg:#f4efe2;--card:#1f1c14;--muted:#a8a08a}}
+:root{--bg:#fffdf7;--fg:#1c1a14;--card:#fff;--muted:#6b6556;--line:#e4dfd0;--accent:#f59f00;--ok:#2f9e44;--bad:#e03131}
+@media (prefers-color-scheme:dark){:root{--bg:#14120d;--fg:#f4efe2;--card:#1f1c14;--muted:#a8a08a;--line:#383222}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,sans-serif}
-main{max-width:640px;margin:0 auto;padding:32px 16px}
-h1{margin:0 0 4px}p.lead{color:var(--muted);margin:0 0 24px}
-form{display:grid;gap:14px;background:var(--card);padding:20px;border-radius:16px}
+main{max-width:680px;margin:0 auto;padding:28px 16px 64px}
+h1{margin:0 0 4px;font-size:1.8rem}h2{margin:0 0 12px;font-size:1.1rem}
+.lead{color:var(--muted);margin:0 0 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px}
+.muted{color:var(--muted);font-size:.9rem}
+form{display:grid;gap:14px}
 label{display:grid;gap:6px;font-weight:600}
-input,textarea{font:inherit;padding:10px;border-radius:10px;border:1px solid var(--muted);background:var(--bg);color:var(--fg)}
+input[type=text],textarea{font:inherit;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--fg);width:100%}
 .row{display:grid;grid-template-columns:2fr 1fr;gap:12px}
-.check{display:flex;gap:10px;align-items:flex-start;font-weight:400}
-button{font:inherit;font-weight:700;background:var(--accent);color:#111;border:0;border-radius:999px;padding:12px 20px;cursor:pointer}
-button:disabled{opacity:.5;cursor:wait}
-#msg{min-height:1.4em}#msg.err{color:#e03131}
-iframe{width:100%;height:720px;border:1px solid var(--muted);border-radius:12px;margin-top:20px;background:#fff}
+.check{display:flex;gap:10px;align-items:flex-start;font-weight:400;font-size:.92rem}
+.check input{margin-top:4px}
+button,.btn{font:inherit;font-weight:700;background:var(--accent);color:#111;border:0;border-radius:999px;padding:11px 20px;cursor:pointer;text-decoration:none;display:inline-block}
+button.ghost{background:transparent;color:var(--fg);border:2px solid var(--line)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.wallets{display:flex;flex-wrap:wrap;gap:8px}
+.badge{display:inline-block;border-radius:999px;padding:2px 10px;font-size:.82rem;font-weight:700;background:var(--line)}
+.badge.ok{background:var(--ok);color:#fff}.badge.bad{background:var(--bad);color:#fff}
+#msg{min-height:1.4em;margin:8px 0}#msg.err{color:var(--bad)}#msg.ok{color:var(--ok)}
+iframe{width:100%;height:640px;border:1px solid var(--line);border-radius:12px;background:#fff;margin:12px 0}
+ol.steps{list-style:none;padding:0;margin:12px 0;display:grid;gap:6px}
+ol.steps li{color:var(--muted)}ol.steps li.active{color:var(--fg);font-weight:700}ol.steps li.done{color:var(--ok)}
+ol.steps li::before{content:"○ "}ol.steps li.active::before{content:"◔ "}ol.steps li.done::before{content:"✓ "}
+code{word-break:break-all}
+.sites{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.hidden{display:none !important}
 </style>
 </head>
 <body>
 <main>
-<h1>Coin-Seiten-Generator</h1>
-<p class="lead">Beschreibe deine Idee, lade Bilder hoch und erhalte eine Vorschau der Seite. Es wird noch kein Token erstellt.</p>
-<form id="f">
-  <label>Idee<textarea name="idea" rows="4" maxlength="1000" required placeholder="Ein Beamter, der jeden Antrag ablehnt, und das Formular 7b..."></textarea></label>
-  <div class="row">
-    <label>Name (optional)<input name="name" maxlength="32"></label>
-    <label>Symbol (optional)<input name="symbol" maxlength="10"></label>
-  </div>
-  <label>Bilder (bis zu 4, je max. 2 MB)<input type="file" name="images" accept="image/png,image/jpeg,image/webp,image/gif" multiple></label>
-  <label class="check"><input type="checkbox" name="rights" value="true" required> Ich besitze die Rechte an den Bildern und nutze keine Namen, Marken oder Gesichter echter Personen.</label>
-  <button id="go">Seite erzeugen</button>
-  <div id="msg" role="status"></div>
-</form>
-<iframe id="preview" title="Vorschau" hidden sandbox="allow-scripts"></iframe>
+<h1>Coin-Launchpad</h1>
+<p class="lead">Idee aufschreiben, Bilder hochladen, deployen. Daraus entstehen eine Webseite mit Live-Check und der Coin auf pump.fun.</p>
+<div id="msg" role="status" aria-live="polite"></div>
+
+<section class="card" id="walletCard">
+  <h2>1. Wallet</h2>
+  <div id="walletList" class="wallets"></div>
+  <p id="walletInfo" class="muted"></p>
+  <div id="access"></div>
+  <button id="logout" class="ghost hidden">Abmelden</button>
+</section>
+
+<section class="card hidden" id="formCard">
+  <h2>2. Deine Idee</h2>
+  <form id="form">
+    <label>Idee<textarea name="idea" rows="4" maxlength="1000" required placeholder="Ein Beamter, der jeden Antrag ablehnt..."></textarea></label>
+    <div class="row">
+      <label>Name (optional)<input type="text" name="name" maxlength="32"></label>
+      <label>Symbol (optional)<input type="text" name="symbol" maxlength="10"></label>
+    </div>
+    <label>Bilder (bis zu 4, je max. 2 MB)<input type="file" name="images" accept="image/png,image/jpeg,image/webp,image/gif" multiple></label>
+    <label class="check"><input type="checkbox" name="rights" value="true" required> Ich besitze die Rechte an den Bildern und nutze keine Namen, Marken oder Gesichter echter Personen.</label>
+    <button id="draftBtn">Seite erzeugen</button>
+  </form>
+</section>
+
+<section class="card hidden" id="launchCard">
+  <h2>3. Vorschau und Deploy</h2>
+  <iframe id="preview" title="Vorschau" sandbox></iframe>
+  <p id="summary"></p>
+  <label class="check"><input type="checkbox" id="ack1"> Mir ist klar, dass ein Coin auf der Blockchain endgültig ist und sich nicht zurücknehmen lässt.</label>
+  <label class="check"><input type="checkbox" id="ack2"> Ich weiß, dass Memecoins Spekulation ohne inneren Wert sind, und mache keine Gewinnversprechen.</label>
+  <p><button id="deployBtn" disabled>Deploy</button></p>
+  <ol class="steps hidden" id="steps">
+    <li data-s="1">Transaktion vorbereiten</li>
+    <li data-s="2">In deiner Wallet bestätigen</li>
+    <li data-s="3">Auf der Blockchain prüfen</li>
+    <li data-s="4">Seite veröffentlichen</li>
+  </ol>
+  <div id="result" class="hidden"></div>
+</section>
+
+<section class="card hidden" id="sitesCard">
+  <h2>Deine Coins</h2>
+  <ul class="sites" id="sites"></ul>
+</section>
 </main>
-<script>
-const f = document.getElementById('f'), msg = document.getElementById('msg'), go = document.getElementById('go'), prev = document.getElementById('preview');
-f.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  go.disabled = true; msg.className = ''; msg.textContent = 'Wird erzeugt...';
-  try {
-    const res = await fetch('/api/generate', { method: 'POST', body: new FormData(f) });
-    const j = await res.json();
-    if (!res.ok) throw new Error(j.error || 'Fehler');
-    prev.hidden = false; prev.src = j.url;
-    msg.innerHTML = '';
-    const a = Object.assign(document.createElement('a'), { href: j.url, target: '_blank', textContent: 'Seite in neuem Tab öffnen' });
-    msg.append(a);
-  } catch (err) { msg.className = 'err'; msg.textContent = err.message; }
-  go.disabled = false;
-});
-</script>
+<script src="/app.js"></script>
 </body>
 </html>

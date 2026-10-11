@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import type { SiteSpec } from './spec.js';
 
 export const esc = (s: string) =>
@@ -10,6 +11,8 @@ export interface RenderOptions {
   mint?: string | null;
   /** Basis-URL der API für den Transparenz-Check, leer = gleiche Domain */
   apiBase?: string;
+  /** false = keine Skripte (Vorschau in der Sandbox). Der Live-Check zeigt dann einen festen Hinweis. */
+  interactive?: boolean;
 }
 
 const PALETTE = {
@@ -43,10 +46,13 @@ const WIDGET = `
     .catch((e) => li('warn', 'Check nicht verfügbar', e.message));
 })();`;
 
+export const WIDGET_HASH = `'sha256-${createHash('sha256').update(WIDGET).digest('base64')}'`;
+
 export function renderSite(spec: SiteSpec, opts: RenderOptions): string {
   const p = PALETTE[spec.mode];
   const [hero, ...gallery] = opts.images;
   const mint = opts.mint ?? '';
+  const interactive = opts.interactive ?? true;
   return `<!doctype html>
 <html lang="de">
 <head>
@@ -76,6 +82,7 @@ h2{font-size:1.2rem;margin:0 0 12px}
 #check li{background:var(--card);border-radius:12px;padding:12px 14px;border-left:5px solid var(--muted)}
 #check li p{margin:2px 0 0;color:var(--muted);font-size:.9rem}
 #check li.pass{border-color:#2f9e44}#check li.fail{border-color:#e03131}#check li.warn{border-color:var(--accent)}
+a.btn{display:inline-block;background:var(--accent);color:var(--on-accent);font-weight:700;text-decoration:none;border-radius:999px;padding:10px 20px}
 footer{margin-top:48px;color:var(--muted);font-size:.8rem;text-align:center}
 </style>
 </head>
@@ -90,11 +97,11 @@ ${hero ? `<img src="${esc(hero)}" alt="">` : ''}
 <section><p>${esc(spec.about)}</p></section>
 <section><div class="cards">${spec.features.map((f) => `<div class="card"><b>${esc(f.title)}</b><span>${esc(f.text)}</span></div>`).join('')}</div></section>
 ${gallery.length ? `<section><div class="gallery">${gallery.map((g) => `<img src="${esc(g)}" alt="">`).join('')}</div></section>` : ''}
-<section><h2>Contract-Adresse</h2><div class="ca">${mint ? esc(mint) : 'Noch nicht gestartet'}</div></section>
-<section id="check" data-mint="${esc(mint)}" data-api="${esc(opts.apiBase ?? '')}"><h2>Live-Check aus der Blockchain</h2><ul></ul></section>
+<section><h2>Contract-Adresse</h2><div class="ca">${mint ? esc(mint) : 'Noch nicht gestartet'}</div>${mint ? `<p style="text-align:center"><a class="btn" href="https://pump.fun/coin/${esc(mint)}" target="_blank" rel="noopener noreferrer">Auf pump.fun ansehen</a></p>` : ''}</section>
+<section id="check" data-mint="${esc(mint)}" data-api="${esc(opts.apiBase ?? '')}"><h2>Live-Check aus der Blockchain</h2><ul>${interactive ? '' : '<li class="info"><b>i Wird nach dem Launch angezeigt</b><p>Dann erscheinen hier die Live-Kennzahlen aus der Blockchain.</p></li>'}</ul></section>
 <footer>Memecoins sind reine Spekulation ohne inneren Wert. Keine Finanzberatung. Setze nur Geld ein, dessen Verlust du verkraftest.</footer>
 </main>
-<script>${WIDGET}</script>
+${interactive ? `<script>${WIDGET}</script>` : ''}
 </body>
 </html>`;
 }
