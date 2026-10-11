@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coin-Seiten-Generator</title>
+<style>
+:root{--bg:#fffdf7;--fg:#1c1a14;--card:#fff;--muted:#6b6556;--accent:#f59f00}
+@media (prefers-color-scheme:dark){:root{--bg:#14120d;--fg:#f4efe2;--card:#1f1c14;--muted:#a8a08a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,sans-serif}
+main{max-width:640px;margin:0 auto;padding:32px 16px}
+h1{margin:0 0 4px}p.lead{color:var(--muted);margin:0 0 24px}
+form{display:grid;gap:14px;background:var(--card);padding:20px;border-radius:16px}
+label{display:grid;gap:6px;font-weight:600}
+input,textarea{font:inherit;padding:10px;border-radius:10px;border:1px solid var(--muted);background:var(--bg);color:var(--fg)}
+.row{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+.check{display:flex;gap:10px;align-items:flex-start;font-weight:400}
+button{font:inherit;font-weight:700;background:var(--accent);color:#111;border:0;border-radius:999px;padding:12px 20px;cursor:pointer}
+button:disabled{opacity:.5;cursor:wait}
+#msg{min-height:1.4em}#msg.err{color:#e03131}
+iframe{width:100%;height:720px;border:1px solid var(--muted);border-radius:12px;margin-top:20px;background:#fff}
+</style>
+</head>
+<body>
+<main>
+<h1>Coin-Seiten-Generator</h1>
+<p class="lead">Beschreibe deine Idee, lade Bilder hoch und erhalte eine Vorschau der Seite. Es wird noch kein Token erstellt.</p>
+<form id="f">
+  <label>Idee<textarea name="idea" rows="4" maxlength="1000" required placeholder="Ein Beamter, der jeden Antrag ablehnt, und das Formular 7b..."></textarea></label>
+  <div class="row">
+    <label>Name (optional)<input name="name" maxlength="32"></label>
+    <label>Symbol (optional)<input name="symbol" maxlength="10"></label>
+  </div>
+  <label>Bilder (bis zu 4, je max. 2 MB)<input type="file" name="images" accept="image/png,image/jpeg,image/webp,image/gif" multiple></label>
+  <label class="check"><input type="checkbox" name="rights" value="true" required> Ich besitze die Rechte an den Bildern und nutze keine Namen, Marken oder Gesichter echter Personen.</label>
+  <button id="go">Seite erzeugen</button>
+  <div id="msg" role="status"></div>
+</form>
+<iframe id="preview" title="Vorschau" hidden sandbox="allow-scripts"></iframe>
+</main>
+<script>
+const f = document.getElementById('f'), msg = document.getElementById('msg'), go = document.getElementById('go'), prev = document.getElementById('preview');
+f.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  go.disabled = true; msg.className = ''; msg.textContent = 'Wird erzeugt...';
+  try {
+    const res = await fetch('/api/generate', { method: 'POST', body: new FormData(f) });
+    const j = await res.json();
+    if (!res.ok) throw new Error(j.error || 'Fehler');
+    prev.hidden = false; prev.src = j.url;
+    msg.innerHTML = '';
+    const a = Object.assign(document.createElement('a'), { href: j.url, target: '_blank', textContent: 'Seite in neuem Tab öffnen' });
+    msg.append(a);
+  } catch (err) { msg.className = 'err'; msg.textContent = err.message; }
+  go.disabled = false;
+});
+</script>
+</body>
+</html>

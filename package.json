@@ -1,22 +1,22 @@
 {
-  "name": "memecoin",
+  "name": "launchpad",
   "private": true,
   "type": "module",
   "scripts": {
-    "create": "tsx scripts/create-token.ts",
-    "revoke": "tsx scripts/revoke-authorities.ts",
-    "sync-site": "tsx scripts/sync-site.ts",
+    "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts",
+    "test": "tsx --test test/*.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@metaplex-foundation/mpl-token-metadata": "^3.4.0",
-    "@metaplex-foundation/mpl-toolbox": "^0.11.5",
-    "@metaplex-foundation/umi": "^1.6.0",
-    "@metaplex-foundation/umi-bundle-defaults": "^1.6.0"
+    "@anthropic-ai/sdk": "^0.133.0",
+    "@hono/node-server": "^2.1.4",
+    "hono": "^4.13.13",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
     "tsx": "^4.23.15",
-    "typescript": "^5.9.3"
+    "typescript": "^7.0.2"
   }
 }

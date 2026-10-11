@@ -1,5 +1,3 @@
 node_modules/
 .env
-# Niemals Wallet-Keypairs committen
-*keypair*.json
-id.json
+data/
