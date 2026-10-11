@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Slop Mop</title>
+<meta name="description" content="Das Launchpad für Memecoins, bei dem jede Seite ihre eigenen Zahlen offenlegt. Idee aufschreiben, Bilder hochladen, deployen.">
+<meta property="og:title" content="Slop Mop: Wir machen den Dreck weg">
+<meta property="og:description" content="Memecoin-Launchpad mit Live-Check aus der Blockchain. Deine Schlüssel bleiben bei dir.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap bar__in">
+    <a class="brand" href="#top" aria-label="Slop Mop, zum Seitenanfang">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M21 4 14.5 17" stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M6.5 18.5h17l-1.8 10H8.3z" fill="#F2C200"/><path d="M11 22.5v6M15 22.5v6M19 22.5v6" stroke="#0D2230" stroke-width="1.4"/></svg>
+      Slop Mop
+    </a>
+    <nav class="nav" aria-label="Hauptnavigation">
+      <a href="#ablauf">Ablauf</a><a href="#protokoll">Live-Check</a><a href="#regeln">Regeln</a><a href="#zugang">Zugang</a><a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn--signal btn--small" data-app href="#zugang">Launchpad öffnen</a>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero">
+  <div class="wrap">
+    <p class="hero__meta mono"><span>Prüfprotokoll</span><span>Coin-Launchpad für Solana</span><span id="today"></span></p>
+    <div class="hero__stage" id="stage">
+      <h1 class="hero__title">Wir machen<br>den Dreck<br><span class="hl">weg.</span></h1>
+      <canvas id="dirt" aria-hidden="true"></canvas>
+    </div>
+    <p class="hero__lead">Das Launchpad für Memecoins, bei dem jede Seite ihre eigenen Zahlen offenlegt. Idee aufschreiben, Bilder hochladen, deployen. Webseite und Coin entstehen in einem Zug.</p>
+    <div class="hero__cta">
+      <a class="btn btn--signal" data-app href="#zugang">Launchpad öffnen</a>
+      <a class="btn" href="#ablauf">So funktioniert es</a>
+    </div>
+    <p class="hero__hint mono" id="hint" hidden>Da liegt noch Dreck. Wisch drüber.</p>
+  </div>
+</section>
+
+<section class="promises" aria-label="Drei Dinge, die wir nie tun">
+  <div class="wrap">
+    <ul>
+      <li><h3>Wir halten deine Schlüssel nicht</h3><p>Jede Transaktion signierst du selbst in deiner Wallet. Unser Server kann kein Geld bewegen.</p></li>
+      <li><h3>Wir versprechen keine Gewinne</h3><p>Auch deine Seite darf es nicht. Wer 100x verspricht, wird abgelehnt.</p></li>
+      <li><h3>Wir prüfen vor dem Start</h3><p>Text und Bilder laufen durch eine Inhaltsprüfung. Fällt sie aus, geht nichts online.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section class="block" id="ablauf">
+  <div class="wrap">
+    <p class="label">Ablauf</p>
+    <h2>Wer macht was</h2>
+    <p class="lede">Jeder Schritt hat einen klaren Zuständigen. Der private Schlüssel liegt die ganze Zeit bei dir.</p>
+
+    <div class="matrix" role="region" aria-label="Zuständigkeiten pro Schritt" tabindex="0">
+      <table>
+        <thead><tr><th scope="col">Schritt</th><th class="who" scope="col">Du</th><th class="who" scope="col">Wir</th><th class="who" scope="col">Chain</th></tr></thead>
+        <tbody>
+          <tr class="key"><td class="what"><b>Privater Schlüssel</b><span>Bleibt in deiner Wallet.</span></td><td class="who"><span class="dot dot--sig" title="Du"></span><span class="sr" hidden>Du</span></td><td class="who"><span class="never">nie</span></td><td class="who"></td></tr>
+          <tr><td class="what"><b>Anmelden</b><span>Eine Nachricht signieren. Es wird kein Geld bewegt.</span></td><td class="who"><span class="dot"></span></td><td class="who"></td><td class="who"></td></tr>
+          <tr><td class="what"><b>Zugang prüfen</b><span>Token-Bestand lesen, Tageskontingent setzen.</span></td><td class="who"></td><td class="who"><span class="dot"></span></td><td class="who"></td></tr>
+          <tr><td class="what"><b>Idee und Bilder liefern</b><span>Bis zu vier Bilder, je 2 MB.</span></td><td class="who"><span class="dot"></span></td><td class="who"></td><td class="who"></td></tr>
+          <tr><td class="what"><b>Seite schreiben und prüfen</b><span>KI-Text, danach Inhaltsprüfung von Text und Bildern.</span></td><td class="who"></td><td class="who"><span class="dot"></span></td><td class="who"></td></tr>
+          <tr><td class="what"><b>Transaktion vorbereiten</b><span>Mit dem offiziellen pump.fun-SDK.</span></td><td class="who"></td><td class="who"><span class="dot"></span></td><td class="who"></td></tr>
+          <tr><td class="what"><b>Prüfen, signieren, bezahlen</b><span>Du siehst alle Beträge, bevor du bestätigst.</span></td><td class="who"><span class="dot"></span></td><td class="who"></td><td class="who"></td></tr>
+          <tr><td class="what"><b>Coin entsteht</b><span>Auf pump.fun, endgültig.</span></td><td class="who"></td><td class="who"></td><td class="who"><span class="dot"></span></td></tr>
+          <tr><td class="what"><b>Nachprüfen und veröffentlichen</b><span>Wir lesen die Transaktion selbst von der Chain.</span></td><td class="who"></td><td class="who"><span class="dot"></span></td><td class="who"></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="protokoll">
+  <div class="wrap">
+    <p class="label">Live-Check</p>
+    <h2>Jede Seite führt ihr<br>Prüfprotokoll</h2>
+    <p class="lede">Beim Aufruf liest die Seite frisch aus der Blockchain: Wer kann neue Tokens erzeugen, wer Wallets einfrieren, steckt etwas im Token, und wie ist er verteilt? Das Ergebnis steht öffentlich auf der Seite, auch wenn es unbequem ist.</p>
+
+    <div class="sheet" id="sheet">
+      <div class="sheet__head">
+        <h3>Prüfprotokoll</h3>
+        <span class="mono" style="color:var(--bad)">Beispiel, keine echten Daten</span>
+      </div>
+      <div class="sheet__meta mono"><span>Objekt: $BEISPIEL</span><span>Kontrolle: automatisch</span><span>Intervall: bei jedem Aufruf</span></div>
+      <ol>
+        <li class="chk pass" data-anim>
+          <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg></span>
+          <span class="st"><b>Mint-Authority abgegeben</b><span class="tag">in Ordnung</span></span>
+          <p>Es können keine neuen Tokens erzeugt werden.</p>
+        </li>
+        <li class="chk pass" data-anim>
+          <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg></span>
+          <span class="st"><b>Freeze-Authority abgegeben</b><span class="tag">in Ordnung</span></span>
+          <p>Wallets können nicht eingefroren werden.</p>
+        </li>
+        <li class="chk pass" data-anim>
+          <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg></span>
+          <span class="st"><b>Keine gefährlichen Erweiterungen</b><span class="tag">in Ordnung</span></span>
+          <p>Weder Permanent Delegate, Transfer Hook noch Pausierung.</p>
+        </li>
+        <li class="chk warn" data-anim>
+          <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v9M12 19v.5"/></svg></span>
+          <span class="st"><b>Stark konzentrierte Verteilung</b><span class="tag">auffällig</span></span>
+          <p>Ohne Bonding Curve hält das größte Konto 41,3 % der umlaufenden Tokens, die Top 10 halten 78,0 %.</p>
+        </li>
+      </ol>
+      <div class="sheet__foot mono"><span>Kürzel: automatisch</span><span>Stand: <span id="stamp-date"></span></span></div>
+    </div>
+    <p class="note">Die Bonding Curve rechnen wir bei der Verteilung heraus. Sonst sähe jeder neue Coin konzentriert aus, weil sie anfangs fast alles hält.</p>
+  </div>
+</section>
+
+<section class="block" id="regeln">
+  <div class="wrap">
+    <p class="label">Regeln</p>
+    <h2>Was nicht<br>durchkommt</h2>
+    <p class="lede">Eine KI prüft Text und Bilder, bevor etwas online geht. Bei klaren Verstößen wird abgelehnt, nichts davon wird gespeichert, und du erfährst den Grund. Ist die Prüfung nicht erreichbar, geht gar nichts online.</p>
+
+    <ul class="rej">
+      <li><div><small>Eingereicht</small><q>Das Gesicht eines bekannten Sängers</q></div><span class="stamp" data-anim>Abgelehnt</span></li>
+      <li><div><small>Eingereicht</small><q>100x garantiert, kein Risiko</q></div><span class="stamp" data-anim>Abgelehnt</span></li>
+      <li><div><small>Eingereicht</small><q>Das Logo einer bekannten Marke</q></div><span class="stamp" data-anim>Abgelehnt</span></li>
+      <li><div><small>Eingereicht</small><q>Von einer Agentur auditiert</q></div><span class="stamp" data-anim>Abgelehnt</span></li>
+      <li><div><small>Eingereicht</small><q>Sexuelle Inhalte</q></div><span class="stamp" data-anim>Abgelehnt</span></li>
+      <li><div><small>Eingereicht</small><q>Aufruf zu Gewalt</q></div><span class="stamp" data-anim>Abgelehnt</span></li>
+    </ul>
+    <p class="note">Erlaubt sind Humor, Tierfiguren und frei erfundene Maskottchen. Ein Beamter, der jeden Antrag ablehnt, geht durch.</p>
+  </div>
+</section>
+
+<section class="block" id="zugang">
+  <div class="wrap">
+    <p class="label">Zugang</p>
+    <h2>Für Halter des<br>Plattform-Tokens</h2>
+    <p class="lede">Wer den Token hält, kann sich anmelden. Je größer der Bestand, desto mehr Launches pro Tag. Der Bestand wird bei jedem Launch frisch geprüft, ein kurz geliehener Betrag genügt nicht.</p>
+
+    <div class="tiers" aria-label="Beispielstufen">
+      <div class="tier"><div class="n">1<small>Launch pro Tag</small></div><p>Einstieg. Mindestbestand wird zum Start festgelegt.</p></div>
+      <div class="tier"><div class="n">3<small>Launches pro Tag</small></div><p>Mittlere Stufe. Mindestbestand wird zum Start festgelegt.</p></div>
+      <div class="tier"><div class="n">10<small>Launches pro Tag</small></div><p>Höchste Stufe. Mindestbestand wird zum Start festgelegt.</p></div>
+    </div>
+    <p class="note">Die Stufen sind Beispielwerte. Verbindlich sind erst die Angaben im Launchpad.</p>
+
+    <div class="ca" id="ca">
+      <span class="mono">Contract</span>
+      <code id="ca-addr">Noch nicht gestartet</code>
+      <button class="btn" id="ca-copy" hidden type="button">Kopieren</button>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="faq">
+  <div class="wrap">
+    <p class="label">Fragen</p>
+    <h2>Kurz beantwortet</h2>
+    <div class="faq">
+      <details><summary>Was kostet ein Launch?</summary><p>Die Netzwerkgebühren von Solana und pump.fun, dazu möglicherweise eine Plattformgebühr. Alle Beträge siehst du in deiner Wallet, bevor du bestätigst.</p></details>
+      <details><summary>Verwahrt ihr mein Geld?</summary><p>Nein. Wir bauen eine Transaktion, und du signierst sie in deiner Wallet. Unser Server hat keinen Zugriff auf deinen privaten Schlüssel und kann nichts für dich bezahlen.</p></details>
+      <details><summary>Garantiert ihr Gewinne?</summary><p>Nein, und niemand sonst kann das. Memecoins sind Spekulation ohne inneren Wert. Du kannst alles verlieren, was du einsetzt.</p></details>
+      <details><summary>Kann ich einen Coin zurücknehmen?</summary><p>Nein. Was auf der Blockchain steht, bleibt dort. Deshalb zeigen wir dir vorher eine Vorschau und verlangen zwei Bestätigungen.</p></details>
+      <details><summary>Warum wurde mein Entwurf abgelehnt?</summary><p>Du bekommst den Grund direkt angezeigt, meist ein echter Name, eine fremde Marke oder ein Gewinnversprechen. Formuliere die Idee um und versuche es erneut. Pro Tag sind zehn Entwürfe möglich, abgelehnte zählen mit.</p></details>
+      <details><summary>Gehört Slop Mop zu pump.fun?</summary><p>Nein. Wir sind ein unabhängiges Projekt und nutzen das öffentliche SDK von pump.fun. Dein Coin liegt auf pump.fun und folgt deren Regeln.</p></details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <a class="brand" href="#top" style="margin:0 0 14px"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M21 4 14.5 17" stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M6.5 18.5h17l-1.8 10H8.3z" fill="#F2C200"/><path d="M11 22.5v6M15 22.5v6M19 22.5v6" stroke="#0D2230" stroke-width="1.4"/></svg>Slop Mop</a>
+      <p class="legal">Memecoins sind reine Spekulation ohne inneren Wert. Das ist keine Finanzberatung. Setze nur Geld ein, dessen Verlust du verkraftest. Slop Mop steht in keiner Verbindung zu pump.fun.</p>
+    </div>
+    <nav aria-label="Weitere Links"><a data-app href="#zugang">Launchpad</a><a id="lnk-x" href="#" hidden>X</a><a id="lnk-tg" href="#" hidden>Telegram</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></nav>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
