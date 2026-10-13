@@ -85,8 +85,10 @@ img{max-width:100%}
 .static-frog .crack{stroke-dashoffset:0}
 .mound{position:absolute;left:-28%;right:-28%;bottom:-2%;height:30%;z-index:4}
 .mound svg{width:100%;height:100%;display:block}
-.ground{position:absolute;left:0;right:0;bottom:0;height:calc(9svh + 36px);z-index:5;
-  background:linear-gradient(transparent 55%,rgba(11,14,10,.85)),radial-gradient(150% 100% at 50% 100%,#2b2218 0 64%,#231b13 66%,transparent 67.5%)}
+.ground{position:absolute;left:-12%;right:-12%;bottom:0;z-index:5;pointer-events:none;
+  /* top edge sits 9% of the scene height above the mound's base, so the two always overlap */
+  height:calc(9svh + min(56svh,540px) * .11);border-radius:50% 50% 0 0 / 36px 36px 0 0;
+  background:linear-gradient(#2b2218 0,#2b2218 30%,#1f1912 70%,var(--soil) 100%)}
 #dirt{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:7}
 .glow{position:absolute;left:0;right:0;margin-inline:auto;bottom:4svh;width:min(96vw,980px);height:46svh;border-radius:50%;z-index:2;pointer-events:none;opacity:.35;
   background:radial-gradient(ellipse at center,rgba(134,210,74,.34),rgba(134,210,74,.08) 45%,transparent 68%)}
@@ -95,7 +97,7 @@ img{max-width:100%}
 .flash{position:absolute;inset:0;z-index:9;background:var(--slime);opacity:0;pointer-events:none;mix-blend-mode:screen}
 @media (max-width:640px){
   .cluster{left:50%;height:min(46svh,64vw);bottom:15svh}
-  .ground{height:calc(15svh + 30px)}
+  .ground{height:calc(15svh + min(46svh,64vw) * .11);border-radius:50% 50% 0 0 / 22px 22px 0 0}
   .back{white-space:normal;font-size:clamp(58px,19vw,120px);line-height:.82}
   .tree{opacity:.5}
 }
@@ -1041,10 +1043,12 @@ html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor se
     // leaving the graveyard: he sinks back into his grave, the sky drops away
     G.timeline({ scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 1 } })
       .to(rig, { sink: .55, ease: 'power1.in' }, 0)
-      .to('.headline', { yPercent: -70, opacity: 0, ease: 'none' }, 0)
+      .to('.headline', { yPercent: -40, ease: 'none' }, 0)
       .to('.tree', { yPercent: 14, ease: 'none' }, 0)
       .to('.far', { yPercent: 20, ease: 'none' }, 0)
-      .to('.hero .cta', { opacity: 0, y: 40, ease: 'none' }, 0);
+      ;
+    // text and buttons leave early and cleanly, never sliding under the nav or off the bottom edge
+    G.to(['.headline', '.hero .cta'], { opacity: 0, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: () => '+=' + Math.min(160, innerHeight * .16), scrub: true } });
     if(!reduced){
       // the monitor drifts with the pointer, each layer at its own depth
       const par = [['.tree', 26, 10], ['.far', 12, 5], ['.cluster', 16, 6], ['.headline', 10, 4], ['#glow', 20, 8]]
