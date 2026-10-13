@@ -72,9 +72,9 @@ body.locked #nav{opacity:0;pointer-events:none}
 .cluster{position:absolute;left:53%;bottom:9svh;translate:-50% 0;height:min(56svh,540px);aspect-ratio:1.3;z-index:3}
 .cluster-in{position:absolute;inset:0}
 .hole{position:absolute;left:0;bottom:4%;width:41%;height:120%;overflow:hidden}
-.frog{position:absolute;left:0;bottom:0;height:70%;width:auto;max-width:none;filter:drop-shadow(0 0 24px rgba(134,210,74,.25))}
+.frog{position:absolute;left:0;bottom:0;height:65%;width:auto;max-width:none;filter:drop-shadow(0 0 24px rgba(134,210,74,.25))}
 .hero:not(.is-back) .frog{visibility:hidden}
-.tomb{position:absolute;left:35%;bottom:6%;width:50%;transform-origin:10% 100%;z-index:2;filter:drop-shadow(0 20px 30px rgba(0,0,0,.6))}
+.tomb{position:absolute;left:32%;bottom:6%;width:50%;transform-origin:10% 100%;z-index:2;filter:drop-shadow(0 20px 30px rgba(0,0,0,.6))}
 .tomb svg{width:100%;height:auto;display:block;overflow:visible}
 .crack{stroke-dasharray:420;stroke-dashoffset:420}
 .hero.is-back .crack{stroke-dashoffset:0}
@@ -82,15 +82,8 @@ body.locked #nav{opacity:0;pointer-events:none}
 .mound svg{width:100%;height:100%;display:block}
 .ground{position:absolute;left:0;right:0;bottom:0;height:12svh;z-index:5;background:linear-gradient(transparent,var(--soil) 70%)}
 #dirt{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:7}
-.press{position:absolute;left:0;right:0;bottom:calc(30px + env(safe-area-inset-bottom,0px));z-index:8;display:flex;flex-direction:column;align-items:center;gap:14px}
-.press p{font-family:var(--mono);font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
-#fkey{width:74px;height:74px;font-family:var(--heavy);font-size:34px;color:var(--bone);cursor:pointer;
-  background:linear-gradient(#2b302a,#171a16);border:2px solid #4d5249;border-bottom-width:7px;border-radius:12px;box-shadow:0 0 0 0 rgba(234,179,58,.5);
-  animation:pulse 2.2s ease-out infinite;transition:transform .1s,border-bottom-width .1s}
-#fkey:hover{color:var(--fomo);border-color:var(--fomo)}
-#fkey:active{transform:translateY(4px);border-bottom-width:3px}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(234,179,58,.45)}70%{box-shadow:0 0 0 22px rgba(234,179,58,0)}100%{box-shadow:0 0 0 0 rgba(234,179,58,0)}}
-.hero.is-back .press{display:none}
+.glow{position:absolute;left:0;right:0;margin-inline:auto;bottom:4svh;width:min(96vw,980px);height:46svh;border-radius:50%;z-index:2;pointer-events:none;opacity:.35;
+  background:radial-gradient(ellipse at center,rgba(134,210,74,.34),rgba(134,210,74,.08) 45%,transparent 68%)}
 .cta{position:absolute;left:0;right:0;bottom:calc(26px + env(safe-area-inset-bottom,0px));z-index:8;display:none;justify-content:center;gap:10px;flex-wrap:wrap;padding-inline:16px}
 .hero.is-back .cta{display:flex}
 .flash{position:absolute;inset:0;z-index:9;background:var(--slime);opacity:0;pointer-events:none;mix-blend-mode:screen}
@@ -107,13 +100,30 @@ section{position:relative;padding-block:clamp(100px,14vw,200px);padding-inline:c
 .h2{font-family:var(--heavy);font-weight:400;font-size:clamp(52px,9vw,150px);line-height:.9;letter-spacing:.005em;text-transform:uppercase;margin-top:26px;text-wrap:balance}
 .h2 em{font-style:normal;font-family:var(--drip);color:var(--slime);text-transform:none;letter-spacing:0}
 .sw-mask{padding-bottom:.1em;margin-bottom:-.1em}
+/* manifesto: words light up as you scroll */
+.manifesto .words{font-family:var(--heavy);font-size:clamp(40px,6.2vw,100px);line-height:1;text-transform:uppercase;max-width:17ch;margin-top:40px;text-wrap:balance}
+.manifesto .words em{font-family:var(--drip);font-style:normal;color:var(--slime);text-transform:none}
 .lede{color:var(--dim);font-size:clamp(16px,1.3vw,19px);line-height:1.6;max-width:52ch;margin-top:26px}
 
 /* deaths ledger */
 .tally{display:flex;gap:clamp(24px,5vw,80px);flex-wrap:wrap;margin-top:44px;font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
 .tally b{display:block;font-family:var(--heavy);font-weight:400;font-size:clamp(54px,7vw,100px);color:var(--bone);letter-spacing:0;line-height:1}
 .tally .zero b{color:var(--slime)}
-.deaths{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:18px;margin-top:clamp(48px,7vw,90px)}
+.hscroll{padding:0}
+.hscroll .sticky{height:100vh;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+.track{display:flex;align-items:center;gap:clamp(22px,3vw,48px);padding-inline:clamp(16px,6vw,96px);width:max-content;will-change:transform}
+.track .lead{width:min(78vw,640px);flex:none}
+.deaths{list-style:none;display:flex;gap:clamp(22px,3vw,48px)}
+.deaths .cert{width:min(72vw,360px);flex:none}
+.hand-line{position:relative;margin:clamp(40px,7svh,80px) clamp(16px,6vw,96px) 0;height:2px;background:var(--line)}
+.hand-line i{position:absolute;inset:0;background:var(--slime);transform-origin:0 50%;transform:scaleX(0)}
+.hand-line svg{position:absolute;bottom:0;left:0;width:46px;translate:-50% 0;overflow:visible}
+.hscroll.stacked .sticky{height:auto;padding-block:clamp(90px,14vw,160px)}
+.hscroll.stacked .track{flex-direction:column;align-items:stretch;width:auto}
+.hscroll.stacked .track .lead{width:auto}
+.hscroll.stacked .deaths{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:18px;margin-top:40px}
+.hscroll.stacked .deaths .cert{width:auto}
+.hscroll.stacked .hand-line{display:none}
 .cert{position:relative;background:linear-gradient(#efe6cf,#ddd1b2);color:#1d1a12;padding:28px 26px 30px;min-height:230px;display:flex;flex-direction:column;gap:12px;overflow:hidden;
   box-shadow:0 18px 40px rgba(0,0,0,.45);transform:rotate(var(--r,0deg))}
 .cert::after{content:"";position:absolute;inset:8px;border:1px solid rgba(29,26,18,.25);pointer-events:none}
@@ -142,10 +152,12 @@ section{position:relative;padding-block:clamp(100px,14vw,200px);padding-inline:c
 
 /* tokenomics + buy */
 .tok{display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--line);border-left:2px solid var(--line);margin-top:clamp(48px,7vw,90px)}
-.tok div{padding:clamp(26px,3.5vw,48px) clamp(18px,2.4vw,32px);border-right:2px solid var(--line);border-bottom:2px solid var(--line);min-width:0}
+.tok div{position:relative;overflow:hidden;padding:clamp(26px,3.5vw,48px) clamp(18px,2.4vw,32px);border-right:2px solid var(--line);border-bottom:2px solid var(--line);min-width:0}
 .tok b{display:block;font-family:var(--heavy);font-weight:400;font-size:clamp(46px,6vw,96px);line-height:.95;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
 .tok span{display:block;margin-top:14px;font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
 .tok .wide{grid-column:1/-1}
+.tok div::before{content:"";position:absolute;inset:0;opacity:0;transition:opacity .5s;pointer-events:none;background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%),rgba(234,179,58,.14),transparent 60%)}
+.tok div:hover::before{opacity:1}
 @media (max-width:860px){.tok{grid-template-columns:1fr 1fr}}
 .buy{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(36px,6vw,110px);align-items:start}
 .buy .left{position:sticky;top:110px;display:flex;flex-direction:column;gap:26px}
@@ -170,6 +182,17 @@ section{position:relative;padding-block:clamp(100px,14vw,200px);padding-inline:c
 footer{padding-block:48px calc(40px + env(safe-area-inset-bottom,0px));padding-inline:clamp(16px,6vw,96px);border-top:2px solid var(--line);display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;color:var(--dim);font-size:12px;line-height:1.7;font-family:var(--mono)}
 footer p{max-width:70ch}
 
+/* progress + cursor */
+.progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:45;pointer-events:none}
+.progress i{display:block;height:100%;background:var(--slime);transform-origin:0 50%;transform:scaleX(0)}
+.cur-dot,.cur-ring{position:fixed;left:0;top:0;pointer-events:none;z-index:95;border-radius:50%;display:none}
+html.has-cursor .cur-dot{display:block}
+html.has-cursor .cur-ring{display:grid}
+.cur-dot{width:7px;height:7px;margin:-3.5px 0 0 -3.5px;background:var(--slime)}
+.cur-ring{width:46px;height:46px;margin:-23px 0 0 -23px;border:2px solid rgba(239,230,207,.45);place-items:center;font-family:var(--mono);font-weight:700;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#141008;
+  transition:width .45s cubic-bezier(.16,1,.3,1),height .45s cubic-bezier(.16,1,.3,1),margin .45s cubic-bezier(.16,1,.3,1),background .4s,border-color .4s}
+.cur-ring.big{width:88px;height:88px;margin:-44px 0 0 -44px;background:var(--fomo);border-color:var(--fomo)}
+html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor select{cursor:none}
 #mute{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));right:16px;z-index:41;font-family:var(--mono);font-size:10px;letter-spacing:.16em;background:rgba(11,14,10,.7);backdrop-filter:blur(6px);border:1px solid var(--line);color:var(--dim);padding:9px 12px;cursor:pointer}
 @media (max-width:640px){#mute{bottom:auto;right:auto;left:50%;translate:-50% 0;top:calc(22px + env(safe-area-inset-top,0px))}}
 
@@ -208,6 +231,7 @@ footer p{max-width:70ch}
     <p class="sub" id="sub">DEADFROG · the coin that refuses to die · $DEAD</p>
   </div>
 
+  <div class="glow" id="glow" aria-hidden="true"></div>
   <div class="cluster"><div class="cluster-in" id="cluster">
     <div class="hole"><img class="frog" id="frog" src="img/frog.png" alt="DEADFROG, a zombie frog in a torn FOMO shirt, climbing out of his grave"></div>
     <div class="tomb" id="tomb">
@@ -242,10 +266,6 @@ footer p{max-width:70ch}
   <div class="ground" aria-hidden="true"></div>
   <canvas id="dirt" aria-hidden="true"></canvas>
 
-  <div class="press" id="press">
-    <p>Press F to pay respects</p>
-    <button id="fkey" type="button" aria-label="Press F to pay respects">F</button>
-  </div>
   <div class="cta" id="cta">
     <a class="btn solid" href="#buy">Buy $DEAD</a>
     <a class="btn" href="#tombstone">Make a tombstone</a>
@@ -254,22 +274,35 @@ footer p{max-width:70ch}
 </header>
 
 <main id="site">
-  <section id="deaths">
-    <p class="kicker" data-reveal>Medical history</p>
-    <h2 class="h2 split">Declared dead. <em>Again.</em></h2>
-    <p class="lede" data-reveal>Every cycle someone writes the obituary. Every cycle the frog climbs back out, a little greener and a lot smellier.</p>
-    <div class="tally" data-reveal>
-      <div>Times declared dead<b data-count="6">6</b></div>
-      <div class="zero">Times stayed dead<b>0</b></div>
+  <section class="manifesto" id="story">
+    <p class="kicker" data-reveal>The legend</p>
+    <p class="words" id="words">Every cycle someone writes the obituary. Every cycle the frog climbs back out, a little <em>greener</em> and a lot smellier. You can bury a frog. You can’t bury a <em>meme.</em></p>
+  </section>
+
+  <section class="hscroll" id="deaths">
+    <div class="sticky">
+      <div class="track" id="track">
+        <div class="lead">
+          <p class="kicker">Medical history</p>
+          <h2 class="h2 split">Declared dead. <em>Again.</em></h2>
+          <div class="tally">
+            <div>Times declared dead<b data-count="6">6</b></div>
+            <div class="zero">Times stayed dead<b>0</b></div>
+          </div>
+        </div>
+        <ul class="deaths">
+          <li class="cert" style="--r:-1.2deg"><span class="no">Certificate No. 001</span><h3>Dev went to sleep</h3><p>Nine hours without a tweet. The group chat held a funeral.</p><span class="cause">Back: the dev woke up.</span><span class="stamp">RESURRECTED</span></li>
+          <li class="cert" style="--r:.8deg"><span class="no">Certificate No. 002</span><h3>“It’s over”</h3><p>Somebody typed it in the chat. Two people agreed. Panic followed.</p><span class="cause">Back: somebody typed “we’re so back”.</span><span class="stamp">RESURRECTED</span></li>
+          <li class="cert" style="--r:-.5deg"><span class="no">Certificate No. 003</span><h3>Sideways chart</h3><p>Twenty minutes of a flat line. Doctors called it.</p><span class="cause">Back: it went sideways the other way.</span><span class="stamp">RESURRECTED</span></li>
+          <li class="cert" style="--r:1.4deg"><span class="no">Certificate No. 004</span><h3>Mom asked</h3><p>“What is a memecoin?” at Sunday dinner. Nobody could answer.</p><span class="cause">Back: she bought some.</span><span class="stamp">RESURRECTED</span></li>
+          <li class="cert" style="--r:-1deg"><span class="no">Certificate No. 005</span><h3>Bear market</h3><p>Frogs hibernate in winter. Everybody assumed the worst.</p><span class="cause">Back: he was only napping.</span><span class="stamp">RESURRECTED</span></li>
+          <li class="cert" style="--r:.6deg"><span class="no">Certificate No. 006</span><h3>The FUD thread</h3><p>A 47-part thread explained why the frog was finished.</p><span class="cause">Back: nobody read past part 3.</span><span class="stamp">RESURRECTED</span></li>
+        </ul>
+      </div>
+      <div class="hand-line" aria-hidden="true"><i id="handFill"></i>
+        <svg id="hand" viewBox="0 0 60 80"><path d="M22 80 L22 46 C 14 44 10 36 12 28 L 16 12 C 17 8 22 8 22 13 L 21 30 L 24 30 L 25 4 C 26 0 31 0 31 4 L 31 30 L 34 30 L 36 6 C 37 2 42 2 42 6 L 41 31 L 44 32 L 47 14 C 48 10 53 11 52 15 L 49 40 C 47 48 42 52 38 54 L 38 80 Z" fill="#86d24a" stroke="#1b2a12" stroke-width="2"/><path d="M26 60 l4 4 M33 66 l3 -3" stroke="#3d5a2a" stroke-width="2"/></svg>
+      </div>
     </div>
-    <ul class="deaths">
-      <li class="cert" style="--r:-1.2deg"><span class="no">Certificate No. 001</span><h3>Dev went to sleep</h3><p>Nine hours without a tweet. The group chat held a funeral.</p><span class="cause">Back: the dev woke up.</span><span class="stamp">RESURRECTED</span></li>
-      <li class="cert" style="--r:.8deg"><span class="no">Certificate No. 002</span><h3>“It’s over”</h3><p>Somebody typed it in the chat. Two people agreed. Panic followed.</p><span class="cause">Back: somebody typed “we’re so back”.</span><span class="stamp">RESURRECTED</span></li>
-      <li class="cert" style="--r:-.5deg"><span class="no">Certificate No. 003</span><h3>Sideways chart</h3><p>Twenty minutes of a flat line. Doctors called it.</p><span class="cause">Back: it went sideways the other way.</span><span class="stamp">RESURRECTED</span></li>
-      <li class="cert" style="--r:1.4deg"><span class="no">Certificate No. 004</span><h3>Mom asked</h3><p>“What is a memecoin?” at Sunday dinner. Nobody could answer.</p><span class="cause">Back: she bought some.</span><span class="stamp">RESURRECTED</span></li>
-      <li class="cert" style="--r:-1deg"><span class="no">Certificate No. 005</span><h3>Bear market</h3><p>Frogs hibernate in winter. Everybody assumed the worst.</p><span class="cause">Back: he was only napping.</span><span class="stamp">RESURRECTED</span></li>
-      <li class="cert" style="--r:.6deg"><span class="no">Certificate No. 006</span><h3>The FUD thread</h3><p>A 47-part thread explained why the frog was finished.</p><span class="cause">Back: nobody read past part 3.</span><span class="stamp">RESURRECTED</span></li>
-    </ul>
   </section>
 
   <section id="tombstone">
@@ -358,7 +391,9 @@ footer p{max-width:70ch}
   </footer>
 </main>
 
-<button id="mute" type="button" hidden>SOUND ON</button>
+<button id="mute" type="button">TAP FOR SOUND</button>
+<div class="progress" aria-hidden="true"><i id="prog"></i></div>
+<div class="cur-ring" id="ring"></div><div class="cur-dot" id="dot"></div>
 
 <script src="vendor/gsap.min.js"></script>
 <script src="vendor/ScrollTrigger.min.js"></script>
@@ -421,7 +456,10 @@ footer p{max-width:70ch}
     [49, 49.3, 73.5].forEach(f => { const o = actx.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f; o.connect(lp); o.start(); });
     lp.connect(g).connect(master);
   }
-  $('#mute').addEventListener('click', e => { muted = !muted; if(master) master.gain.value = muted ? 0 : .8; e.currentTarget.textContent = muted ? 'SOUND OFF' : 'SOUND ON'; });
+  $('#mute').addEventListener('click', e => {
+    if(!actx || actx.state !== 'running' || !droneOn){ muted = false; enableSound(); return; }
+    muted = !muted; master.gain.value = muted ? 0 : .8; e.currentTarget.textContent = muted ? 'SOUND OFF' : 'SOUND ON';
+  });
 
   /* ================= fog + fireflies ================= */
   const fog = $('#fog'), fx = fog.getContext('2d');
@@ -469,13 +507,29 @@ footer p{max-width:70ch}
       dx.fillStyle = c.c; dx.fillRect(-c.r, -c.r * .7, c.r * 2, c.r * 1.4); dx.restore();
     }
   }
+  // zombie flies buzzing around the frog's head
+  const flies2 = Array.from({ length: 5 }, (_, i) => ({ p: i * 1.3, s: 1.6 + Math.random() * 1.4, rx: 60 + Math.random() * 60, ry: 26 + Math.random() * 30 }));
+  function drawFlies(t){
+    if(state !== 'back' && state !== 'rising') return;
+    const hr = hero.getBoundingClientRect(), fr = $('#frog').getBoundingClientRect();
+    if(fr.height < 10) return;
+    const cx = fr.left - hr.left + fr.width * .5, cy = fr.top - hr.top + fr.height * .12, k = Math.max(1, fr.height / 300);
+    for(const f of flies2){
+      const a = t * f.s + f.p, x = cx + Math.cos(a) * f.rx + Math.sin(a * 2.7) * 8, y = cy + Math.sin(a * 1.3) * f.ry + Math.cos(a * 3.1) * 5;
+      const wing = (Math.abs(Math.sin(t * 60 + f.p)) * 5 + 3) * k;
+      dx.fillStyle = 'rgba(230,240,230,.55)'; dx.beginPath(); dx.ellipse(x - 3 * k, y - 4 * k, wing, 3 * k, -.6, 0, 6.283); dx.ellipse(x + 3 * k, y - 4 * k, wing, 3 * k, .6, 0, 6.283); dx.fill();
+      dx.fillStyle = '#0b0d0a'; dx.beginPath(); dx.ellipse(x, y, 5 * k, 3.6 * k, 0, 0, 6.283); dx.fill();
+      dx.fillStyle = '#b5482f'; dx.beginPath(); dx.arc(x + 4 * k, y - .5 * k, 1.4 * k, 0, 6.283); dx.fill();
+    }
+  }
   let heroRAF;
   function heroLoop(now){
-    if(scrollY < FH){ drawFog(now / 1000); drawDirt(); }
+    if(scrollY < FH){ drawFog(now / 1000); drawDirt(); if(!reduced) drawFlies(now / 1000); }
     heroRAF = requestAnimationFrame(heroLoop);
   }
 
-  /* ================= the resurrection ================= */
+  /* ================= the resurrection: plays by itself ================= */
+  const soundOK = () => actx && actx.state === 'running' && !muted;
   function unlock(){
     document.body.classList.remove('locked');
     try{ sessionStorage.setItem('deadfrogBack', '1'); }catch(e){}
@@ -483,32 +537,47 @@ footer p{max-width:70ch}
   }
   function resurrect(){
     if(state !== 'dead') return; state = 'rising';
-    try{ audio(); const t = actx.currentTime; rumble(t, 1.15); crack(t + .9); crack(t + 1.02); boom(t + 1.15); groan(t + 1.3); stab(t + 1.25); }catch(e){}
-    try{ navigator.vibrate && navigator.vibrate([60, 40, 60, 40, 80, 40, 400]); }catch(e){}
+    if(soundOK()){ try{ const t = actx.currentTime; rumble(t, 1.15); crack(t + .9); crack(t + 1.02); boom(t + 1.15); groan(t + 1.3); stab(t + 1.25); }catch(e){} }
     if(!hasG || reduced){ hero.classList.add('is-back'); spray(80, 14); state = 'back'; unlock(); return; }
     const title = SplitText.create('#backTitle', { type: 'words,chars' });
+    window.__deadTitle = title;
     const tl = G.timeline({ onComplete: () => { state = 'back'; unlock(); } });
-    tl.to('#press', { opacity: 0, y: 20, duration: .3 })
-      // the ground starts shaking, harder and harder
-      .to('#cluster', { x: 'random(-6,6)', y: 'random(-3,3)', duration: .05, repeat: 17, yoyo: true, ease: 'none' }, 0)
+    tl.to('#cluster', { x: 'random(-6,6)', y: 'random(-3,3)', duration: .05, repeat: 17, yoyo: true, ease: 'none' }, 0)
       .add(() => spray(18, 7), .3).add(() => spray(24, 9), .65)
+      .to('#glow', { opacity: .9, duration: 1.1, ease: 'power2.in' }, 0)
       .to('.crack', { strokeDashoffset: 0, duration: .3, ease: 'power2.in' }, .88)
       .to('#tomb', { rotation: 5, duration: .25, ease: 'power3.out' }, 1.1)
-      // BURST
       .add(() => { hero.classList.add('is-back'); spray(150, 16); }, 1.15)
       .fromTo('#frog', { yPercent: 105 }, { yPercent: 0, duration: 1, ease: 'back.out(1.4)' }, 1.15)
       .fromTo('#flash', { opacity: .55 }, { opacity: 0, duration: .6, ease: 'power2.out' }, 1.15)
       .to('#cluster', { x: 'random(-14,14)', y: 'random(-8,8)', duration: .045, repeat: 11, yoyo: true, ease: 'none' }, 1.15)
       .set('#cluster', { x: 0, y: 0 }, 1.7)
+      .to('#glow', { opacity: .45, duration: 1.4, ease: 'power2.out' }, 1.3)
       .from(title.chars, { scale: 3, opacity: 0, yPercent: -40, rotation: 'random(-25,25)', duration: .55, ease: 'back.out(2.2)', stagger: .04 }, 1.2)
       .from('#sub', { opacity: 0, y: 14, duration: .6 }, 1.9)
       .from('#cta > *', { opacity: 0, y: 24, duration: .7, ease: 'expo.out', stagger: .08 }, 2)
       .to('#tomb', { rotation: 3, duration: 1.2, ease: 'elastic.out(1,.3)' }, 1.4);
   }
-  $('#fkey').addEventListener('click', resurrect);
-  addEventListener('keydown', e => { if((e.key === 'f' || e.key === 'F') && state === 'dead' && !e.target.closest('input,select,textarea')) resurrect(); });
+  // suspense first: "it's so over", the ground starts to tremble, then he breaks out
+  function autoStart(){
+    if(state !== 'dead') return;
+    if(!hasG || reduced){ setTimeout(resurrect, 1200); return; }
+    G.timeline()
+      .from('#over', { opacity: 0, letterSpacing: '1em', duration: 1.2, ease: 'expo.out' }, .2)
+      .add(() => spray(4, 3), 1.2).add(() => spray(6, 4), 1.7)
+      .to('#tomb', { rotation: -1.5, duration: .08, yoyo: true, repeat: 3 }, 1.6)
+      .add(resurrect, 2.4);
+  }
+  // sound: browsers only allow it after a tap, click or key press
+  function enableSound(){
+    try{ audio(); actx.resume(); }catch(e){ return; }
+    if(state === 'back' && !droneOn){ drone(); droneOn = true; try{ groan(actx.currentTime + .05); }catch(e){} }
+    $('#mute').textContent = muted ? 'SOUND OFF' : 'SOUND ON';
+  }
+  let droneOn = false;
+  ['pointerdown', 'keydown', 'touchend'].forEach(ev => addEventListener(ev, enableSound, { once: true, capture: true }));
 
-  /* ================= tombstone generator ================= */
+/* ================= tombstone generator ================= */
   const tc = $('#tombCanvas'), tg = tc.getContext('2d'), frogImg = new Image();
   frogImg.src = 'img/frog.png'; frogImg.onload = () => drawTomb();
   const EPIS = $$('#gEpi option').filter(o => o.value !== 'custom').map(o => o.textContent);
@@ -599,55 +668,116 @@ footer p{max-width:70ch}
 
   /* ================= the page after the grave ================= */
   let siteReady = false;
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const mouse = { x: innerWidth / 2, y: innerHeight / 2, nx: 0, ny: 0 };
+  addEventListener('pointermove', e => { mouse.x = e.clientX; mouse.y = e.clientY; mouse.nx = e.clientX / innerWidth - .5; mouse.ny = e.clientY / innerHeight - .5; });
+
+  // the hero keeps living: breathing frog, pulsing glow, wobbling letters, crumbling dirt, parallax
+  function heroLife(){
+    if(!hasG || reduced) return;
+    G.to('#frog', { scaleY: 1.018, scaleX: .992, transformOrigin: '50% 100%', duration: 1.7, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+    G.to('.hole', { rotation: 1.4, transformOrigin: '50% 100%', duration: 3.2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+    G.to('#glow', { opacity: .7, scale: 1.06, duration: 2.6, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+    const t = window.__deadTitle;
+    if(t) G.to(t.chars, { y: -7, duration: 1.3, ease: 'sine.inOut', stagger: { each: .09, repeat: -1, yoyo: true } });
+    const crumble = () => { if(scrollY < FH * .6) spray(5 + Math.random() * 6 | 0, 3 + Math.random() * 3); G.delayedCall(2.2 + Math.random() * 2.5, crumble); };
+    G.delayedCall(1.5, crumble);
+    const layers = [['.tree', 26], ['.far', 12], ['#cluster', 16], ['.headline', 10], ['#glow', 20]].map(([sel, d]) => [G.quickTo(sel, 'x', { duration: 1.4, ease: 'power3' }), G.quickTo(sel, 'y', { duration: 1.4, ease: 'power3' }), d]);
+    G.ticker.add(() => { if(scrollY > FH) return; layers.forEach(([qx, qy, d]) => { qx(-mouse.nx * d); qy(-mouse.ny * d * .4); }); });
+  }
+
   function initSite(){
     if(siteReady) return; siteReady = true;
-    try{ if(actx){ drone(); $('#mute').hidden = false; } }catch(e){}
+    if(soundOK() && !droneOn){ drone(); droneOn = true; $('#mute').textContent = 'SOUND ON'; }
     if(!hasG) return;
     G.registerPlugin(ScrollTrigger, SplitText);
+    heroLife();
     if(!reduced && window.Lenis){
-      lenis = new Lenis({ lerp: .09 });
+      lenis = new Lenis({ lerp: .085 });
       lenis.on('scroll', ScrollTrigger.update);
       G.ticker.add(t => lenis.raf(t * 1000)); G.ticker.lagSmoothing(0);
     }
     $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
       const t = document.querySelector(a.getAttribute('href')); if(!t) return;
-      e.preventDefault(); lenis ? lenis.scrollTo(t, { duration: 1.6 }) : t.scrollIntoView();
+      e.preventDefault(); lenis ? lenis.scrollTo(t, { duration: 1.8, easing: k => 1 - Math.pow(1 - k, 4) }) : t.scrollIntoView();
     }));
-    // nav hides on the way down
+    G.to('#prog', { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: .3 } });
     ScrollTrigger.create({ start: 300, end: 'max', onUpdate: s => $('#nav').classList.toggle('hide', s.direction === 1), onLeaveBack: () => $('#nav').classList.remove('hide') });
-    // hero parallax as you leave the grave
+
+    // leaving the hero: the frog sinks back into his grave, the sky drops away
     G.timeline({ scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 1 } })
-      .to('.headline', { yPercent: -60, opacity: 0, ease: 'none' }, 0)
-      .to('#cluster', { yPercent: 18, ease: 'none' }, 0)
-      .to('.tree', { yPercent: 10, ease: 'none' }, 0)
-      .to('.far', { yPercent: 14, ease: 'none' }, 0);
-    if(reduced) return;
-    // headlines
-    $$('.split').forEach(el => {
-      const s = SplitText.create(el, { type: 'words', mask: 'words', wordsClass: 'sw' });
-      G.from(s.words, { yPercent: 110, duration: 1.1, ease: 'expo.out', stagger: .06, scrollTrigger: { trigger: el, start: 'top 85%' } });
+      .to('.headline', { yPercent: -70, opacity: 0, ease: 'none' }, 0)
+      .to('.hole', { yPercent: 40, ease: 'power1.in' }, 0)
+      .to('#tomb', { yPercent: 10, rotation: 8, ease: 'none' }, 0)
+      .to('.tree', { yPercent: 14, ease: 'none' }, 0)
+      .to('.far', { yPercent: 20, ease: 'none' }, 0)
+      .to('#cta', { opacity: 0, y: 40, ease: 'none' }, 0);
+
+    // words light up one by one
+    const words = SplitText.create('#words', { type: 'words' });
+    G.fromTo(words.words, { opacity: .12 }, { opacity: 1, ease: 'none', stagger: .1, scrollTrigger: { trigger: '#story', start: 'top 75%', end: 'bottom 60%', scrub: true } });
+
+    if(!reduced){
+      $$('.split').forEach(el => {
+        const sp = SplitText.create(el, { type: 'words', mask: 'words', wordsClass: 'sw' });
+        G.from(sp.words, { yPercent: 110, duration: 1.1, ease: 'expo.out', stagger: .06, scrollTrigger: { trigger: el, start: 'top 85%' } });
+      });
+      G.set('[data-reveal]', { y: 40, opacity: 0 });
+      ScrollTrigger.batch('[data-reveal]', { start: 'top 88%', once: true, onEnter: els => G.to(els, { y: 0, opacity: 1, duration: 1.1, ease: 'expo.out', stagger: .08 }) });
+    }
+
+    // stamping a certificate: drop it in, slam the stamp, jolt the paper
+    const stampIt = el => { const r = parseFloat(getComputedStyle(el).getPropertyValue('--r')) || 0; return G.timeline()
+      .fromTo(el, { y: 80, opacity: 0, rotation: r * 5 }, { y: 0, opacity: 1, rotation: r, duration: .9, ease: 'expo.out' })
+      .fromTo(el.querySelector('.stamp'), { scale: 2.6, opacity: 0 }, { scale: 1, opacity: .85, duration: .3, ease: 'back.out(3)' }, .45)
+      .fromTo(el, { x: -6 }, { x: 0, duration: .4, ease: 'elastic.out(1,.3)' }, .72); };
+
+    const mm = G.matchMedia();
+    mm.add('(min-width: 820px) and (prefers-reduced-motion: no-preference)', () => {
+      const track = $('#track'), travel = () => track.scrollWidth - innerWidth;
+      const tl = G.timeline({ scrollTrigger: { trigger: '#deaths', start: 'top top', end: () => '+=' + travel(), pin: '#deaths .sticky', scrub: 1, invalidateOnRefresh: true } });
+      tl.to(track, { x: () => -travel(), ease: 'none' }, 0).to('#handFill', { scaleX: 1, ease: 'none' }, 0).to('#hand', { left: '100%', ease: 'none' }, 0);
+      G.to('#hand', { rotation: 8, y: -3, transformOrigin: '50% 100%', duration: .5, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+      $$('.cert').forEach(el => { G.set(el, { opacity: 0 }); ScrollTrigger.create({ trigger: el, containerAnimation: tl, start: 'left 80%', once: true, onEnter: () => stampIt(el) }); });
     });
-    G.set('[data-reveal]', { y: 40, opacity: 0 });
-    ScrollTrigger.batch('[data-reveal]', { start: 'top 88%', once: true, onEnter: els => G.to(els, { y: 0, opacity: 1, duration: 1.1, ease: 'expo.out', stagger: .08 }) });
-    // death certificates drop in, then get stamped
-    G.set('.cert', { y: 80, opacity: 0 }); G.set('.stamp', { scale: 2.6, opacity: 0 });
-    ScrollTrigger.batch('.cert', { start: 'top 85%', once: true, onEnter: els => {
-      G.to(els, { y: 0, opacity: 1, duration: 1, ease: 'expo.out', stagger: .12 });
-      els.forEach((el, i) => G.to(el.querySelector('.stamp'), { scale: 1, opacity: .85, duration: .35, ease: 'back.out(3)', delay: .55 + i * .12,
-        onStart: () => G.fromTo(el, { x: -4 }, { x: 0, duration: .3, ease: 'elastic.out(1,.3)', delay: .3 }) }));
-    } });
-    // counters
+    mm.add('(max-width: 819px), (prefers-reduced-motion: reduce)', () => {
+      $('#deaths').classList.add('stacked');
+      if(!reduced) $$('.cert').forEach(el => { G.set(el, { opacity: 0 }); ScrollTrigger.create({ trigger: el, start: 'top 85%', once: true, onEnter: () => stampIt(el) }); });
+      return () => $('#deaths').classList.remove('stacked');
+    });
+
     $$('[data-count]').forEach(el => {
       const to = +el.dataset.count, o = { v: 0 };
       G.to(o, { v: to, duration: 2, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 88%' }, onUpdate: () => el.textContent = Math.round(o.v).toLocaleString('en-US') });
     });
+
     // marquee follows scroll speed and direction
     const rows = [$('#mq1'), $('#mq2')], pos = [0, 0]; let dir = 1;
     G.ticker.add(() => {
       const v = lenis ? lenis.velocity : 0; if(Math.abs(v) > .1) dir = v > 0 ? 1 : -1;
-      const sp = .8 + Math.min(Math.abs(v) * .5, 18);
+      const sp = (reduced ? 0 : .8) + Math.min(Math.abs(v) * .5, 18);
       rows.forEach((el, i) => { const half = el.scrollWidth / 2; pos[i] = G.utils.wrap(-half, 0, pos[i] - sp * dir * (i ? -1 : 1)); G.set(el, { x: pos[i], skewX: G.utils.clamp(-8, 8, -v * .2) }); });
     });
+
+    // cursor, magnetic buttons, spotlight cells
+    if(fine){
+      document.documentElement.classList.add('has-cursor');
+      const ring = $('#ring'), dot = $('#dot');
+      const rx = G.quickTo(ring, 'x', { duration: .5, ease: 'power3' }), ry = G.quickTo(ring, 'y', { duration: .5, ease: 'power3' });
+      const ddx = G.quickTo(dot, 'x', { duration: .08 }), ddy = G.quickTo(dot, 'y', { duration: .08 });
+      addEventListener('pointermove', e => { rx(e.clientX); ry(e.clientY); ddx(e.clientX); ddy(e.clientY); });
+      $$('a, button, select, .cert').forEach(el => {
+        el.addEventListener('pointerenter', () => { ring.classList.add('big'); ring.textContent = el.dataset.cursor || (el.classList.contains('cert') ? 'r.i.p.' : ''); });
+        el.addEventListener('pointerleave', () => { ring.classList.remove('big'); ring.textContent = ''; });
+      });
+      if(!reduced) $$('.btn').forEach(el => {
+        const qx = G.quickTo(el, 'x', { duration: .8, ease: 'elastic.out(1,.4)' }), qy = G.quickTo(el, 'y', { duration: .8, ease: 'elastic.out(1,.4)' });
+        el.addEventListener('pointermove', e => { const r = el.getBoundingClientRect(); qx((e.clientX - r.left - r.width / 2) * .3); qy((e.clientY - r.top - r.height / 2) * .4); });
+        el.addEventListener('pointerleave', () => { qx(0); qy(0); });
+      });
+    }
+    $$('.tok div').forEach(el => el.addEventListener('pointermove', e => { const r = el.getBoundingClientRect(); el.style.setProperty('--mx', (e.clientX - r.left) + 'px'); el.style.setProperty('--my', (e.clientY - r.top) + 'px'); }));
+
     (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => ScrollTrigger.refresh());
   }
 
@@ -655,7 +785,16 @@ footer p{max-width:70ch}
   sizeFog(); addEventListener('resize', sizeFog);
   if(hasG && !reduced) G.set('#frog', { yPercent: 105 });
   heroRAF = requestAnimationFrame(heroLoop);
-  try{ if(sessionStorage.getItem('deadfrogBack')){ hero.classList.add('is-back'); state = 'back'; unlock(); } }catch(e){}
+  try{ audio(); }catch(e){}   // allowed to start silently; it only plays once the browser says so
+  let returning = false;
+  try{ returning = !!sessionStorage.getItem('deadfrogBack'); }catch(e){}
+  if(returning){
+    hero.classList.add('is-back'); state = 'back';
+    if(hasG && !reduced){ G.set('#frog', { yPercent: 0 }); G.set('.crack', { strokeDashoffset: 0 }); G.set('#tomb', { rotation: 3 }); window.__deadTitle = SplitText.create('#backTitle', { type: 'words,chars' }); }
+    unlock();
+  } else {
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => setTimeout(autoStart, 300));
+  }
 })();
 </script>
 </body>
