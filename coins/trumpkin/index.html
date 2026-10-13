@@ -1,0 +1,1242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TRUMPKIN</title>
+<meta name="description" content="$MHGA: Trumpkin, the satirical pumpkin president, wants to Make Halloween Great Again. Get your memecoin endorsed by him.">
+<meta property="og:title" content="TRUMPKIN · Make Halloween Great Again">
+<meta property="og:description" content="Satire. Get your memecoin endorsed by the pumpkin at the podium.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Libre+Franklin:ital,wght@0,400;0,600;0,800;0,900;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+/* Layout: a live TV broadcast of a pumpkin rally on the Halloween White House lawn; below it the briefing room, a declassified fact sheet, a press conference and a bunting send-off. */
+:root{
+  color-scheme:dark;
+  --night:#0a1128; --navy:#1d2a4a; --ink:#0b1020; --pump:#ff7a1a; --ivory:#f2efe6; --red:#d6262f; --gold:#e8c15a; --mute:#9aa3b6; --line:rgba(242,239,230,.12);
+  --slab:'Alfa Slab One',Rockwell,'Roboto Slab',Georgia,serif;
+  --body:'Libre Franklin',system-ui,-apple-system,sans-serif;
+  --type:'Special Elite','Courier New',Courier,monospace;
+  --pw:clamp(170px,20vw,290px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--night);color:var(--ivory);font-family:var(--body);overflow-x:clip}
+html.lenis,html.lenis body{height:auto}
+a{color:inherit}
+::selection{background:var(--pump);color:#000}
+:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* campaign-pin buttons */
+.pin{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--body);font-weight:900;font-size:14px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;
+  padding:14px 26px;border-radius:999px;border:3px solid var(--gold);background:var(--red);color:#fff;cursor:pointer;box-shadow:0 5px 0 #7e1016,0 10px 24px rgba(0,0,0,.35);transition:transform .15s,box-shadow .15s,background .25s}
+.pin::before,.pin::after{content:"★";font-size:12px;color:var(--gold)}
+.pin:hover{transform:translateY(-2px) rotate(-1.5deg);box-shadow:0 7px 0 #7e1016,0 16px 30px rgba(0,0,0,.4)}
+.pin:active{transform:translateY(4px);box-shadow:0 1px 0 #7e1016}
+.pin.blue{background:var(--navy);box-shadow:0 5px 0 #0a1124,0 10px 24px rgba(0,0,0,.35)}
+.pin.blue:active{box-shadow:0 1px 0 #0a1124}
+.pin.ivory{background:var(--ivory);color:var(--navy);border-color:var(--navy);box-shadow:0 5px 0 #a39c88,0 10px 24px rgba(0,0,0,.3)}
+.pin.ivory::before,.pin.ivory::after{color:var(--red)}
+.pin[disabled]{opacity:.5;pointer-events:none}
+.pin.sm{padding:10px 18px;font-size:12px}
+
+/* nav */
+#nav{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:calc(12px + env(safe-area-inset-top,0px)) clamp(16px,4vw,44px) 12px;transition:transform .6s cubic-bezier(.16,1,.3,1)}
+#nav.hide{transform:translateY(-110%)}
+#nav::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(rgba(10,17,40,.95),rgba(10,17,40,.6) 70%,transparent);opacity:0;transition:opacity .4s}
+#nav.solid::before{opacity:1}
+.logo{font-family:var(--slab);font-size:22px;text-decoration:none;letter-spacing:.02em}
+.logo span{color:var(--pump)}
+.links{display:flex;align-items:center;gap:clamp(12px,2.4vw,26px);font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.links a:not(.pin){text-decoration:none}
+.links a:not(.pin):hover{color:var(--pump)}
+.snd{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:50%;background:rgba(10,17,40,.6);border:2px solid var(--line);color:var(--mute);cursor:pointer}
+.snd svg{width:19px;height:19px}.snd .w1,.snd .w2{display:none}.snd.on{color:var(--pump);border-color:rgba(255,122,26,.5)}.snd.on .w1,.snd.on .w2{display:inline}.snd.on .x{display:none}
+@media (max-width:720px){.links a:not(.pin){display:none}.links .pin{padding:10px 16px;font-size:12px}.links .pin::before,.links .pin::after{display:none}}
+
+/* ---------- hero: live from the lawn ---------- */
+.hero{position:relative;height:100vh;height:100svh;min-height:640px;overflow:hidden;background:radial-gradient(ellipse 80% 60% at 50% 30%,#1b2a52,#070b18 72%)}
+#sky{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.moon{position:absolute;right:9%;top:13%;width:clamp(70px,9vw,130px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 38% 35%,#fffbe6,#efe3b8 55%,#cdbb86);box-shadow:0 0 70px rgba(255,240,200,.35)}
+.wh{position:absolute;left:0;bottom:14svh;width:100%;height:56svh;filter:saturate(.95)}
+.fogband{position:absolute;left:0;right:0;bottom:12svh;height:16svh;background:linear-gradient(transparent,rgba(170,185,220,.18),transparent);filter:blur(10px);pointer-events:none}
+.stage{position:absolute;left:50%;bottom:0;width:min(1100px,140vw);height:16svh;translate:-50% 0;background:linear-gradient(#1d2a4a,#121b33);border-top:6px solid var(--gold)}
+.stage::before{content:"";position:absolute;left:0;right:0;top:0;height:44px;background:
+  radial-gradient(circle at 25px -6px,transparent 24px,#d6262f 25px 34px,transparent 35px) 0 0/50px 44px repeat-x;opacity:.95}
+.stage::after{content:"";position:absolute;left:0;right:0;top:10px;height:30px;background:radial-gradient(circle at 25px -2px,transparent 18px,#f2efe6 19px 24px,transparent 25px) 0 0/50px 30px repeat-x}
+.speaker{position:absolute;left:50%;bottom:calc(9svh + var(--pw) * .685);width:calc(var(--pw) * 1.3);translate:-50% 0;z-index:3}
+.speaker svg,.podium svg{width:100%;height:auto;display:block;overflow:visible}
+.podium{position:absolute;left:50%;bottom:9svh;width:var(--pw);translate:-50% 0;z-index:4}
+.flagpole{position:absolute;bottom:9svh;height:calc(var(--pw) * 1.5);width:calc(var(--pw) * .5);z-index:2}
+.flagpole.l{left:calc(50% - var(--pw) * 1.25)}.flagpole.r{left:calc(50% + var(--pw) * .75)}
+.flagpole svg{width:100%;height:100%;overflow:visible}
+#crowd{position:absolute;left:0;bottom:0;width:100%;height:20svh;z-index:5;pointer-events:none}
+.flash{position:absolute;inset:0;z-index:6;background:#fff;opacity:0;pointer-events:none;mix-blend-mode:screen}
+.headline{position:absolute;left:0;right:0;top:calc(76px + env(safe-area-inset-top,0px));z-index:6;text-align:center;padding-inline:16px;pointer-events:none}
+.headline h1{font-family:var(--slab);font-weight:400;font-size:clamp(34px,6.6vw,104px);line-height:.92;letter-spacing:.01em;text-wrap:balance;text-shadow:0 4px 0 #0a1128,0 0 40px rgba(255,122,26,.35)}
+.headline h1 em{font-style:normal;color:var(--pump)}
+.headline p{margin-top:10px;font-weight:800;letter-spacing:.3em;font-size:clamp(11px,1.2vw,14px);color:var(--gold)}
+/* TV furniture */
+.live{position:absolute;left:clamp(12px,3vw,40px);top:calc(74px + env(safe-area-inset-top,0px));z-index:7;display:flex;align-items:center;gap:8px;font-weight:900;font-size:12px;letter-spacing:.14em}
+.live b{background:var(--red);padding:4px 8px;border-radius:3px}
+.live i{width:8px;height:8px;border-radius:50%;background:#fff;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.caption{position:absolute;left:50%;bottom:calc(16svh + 54px);translate:-50% 0;z-index:7;max-width:min(760px,calc(100vw - 32px));width:max-content;padding:8px 14px;background:rgba(0,0,0,.78);font-weight:600;font-size:clamp(15px,1.6vw,20px);line-height:1.35;text-align:center;opacity:0}
+.chyron{position:absolute;left:0;right:0;bottom:0;z-index:8;display:flex;align-items:stretch;height:48px;background:var(--ivory);color:var(--ink);font-weight:800;font-size:15px;overflow:hidden;border-top:4px solid var(--red)}
+.chyron .tag{flex:none;display:flex;align-items:center;padding:0 16px;background:var(--red);color:#fff;font-family:var(--slab);font-weight:400;letter-spacing:.04em}
+.chyron .roll{flex:1;overflow:hidden;display:flex;align-items:center}
+.chyron .roll div{white-space:nowrap;will-change:transform}
+.chyron .roll span{padding-right:60px}
+.chyron .roll span::before{content:"🎃 ";}
+.hero .cta{position:absolute;left:0;right:0;bottom:calc(48px + 16svh + 10px);z-index:8;display:none}
+@media (max-width:720px){
+  :root{--pw:min(46vw,210px)}
+  .wh{height:44svh;bottom:18svh}
+  .stage{height:18svh}
+  .speaker{bottom:calc(11svh + var(--pw) * .685)}
+  .podium{bottom:11svh}
+  .flagpole{display:none}
+  .caption{bottom:calc(48px + 8px);font-size:14px}
+}
+
+/* ---------- sections ---------- */
+section{position:relative;padding-block:clamp(90px,12vw,170px);padding-inline:clamp(16px,6vw,96px)}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-weight:900;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+.eyebrow::before{content:"★ ★ ★";letter-spacing:.2em;color:var(--red)}
+.h2{font-family:var(--slab);font-weight:400;font-size:clamp(38px,6vw,96px);line-height:.95;margin-top:18px;text-wrap:balance}
+.h2 em{font-style:normal;color:var(--pump)}
+.lede{color:var(--mute);font-size:clamp(16px,1.3vw,19px);line-height:1.6;max-width:58ch;margin-top:18px}
+
+/* ---------- the endorsement (briefing room) ---------- */
+#endorse{background:linear-gradient(180deg,var(--night),#0d1733 40%,var(--night))}
+.brief{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,56px);margin-top:clamp(36px,5vw,64px);align-items:start}
+.card{background:#111a36;border:2px solid var(--line);border-radius:18px;padding:clamp(18px,2.4vw,30px)}
+.form{display:flex;flex-direction:column;gap:16px}
+.field{display:flex;flex-direction:column;gap:7px}
+.field label,.label{font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.field input,.field select{font-family:var(--body);font-weight:600;font-size:16px;color:var(--ivory);background:#0a1128;border:2px solid var(--line);border-radius:10px;padding:12px 14px;width:100%}
+.field input:focus,.field select:focus{outline:none;border-color:var(--pump)}
+.row2{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}
+.styles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.style{padding:12px 8px;border-radius:12px;border:2px solid var(--line);background:none;color:var(--ivory);font-weight:800;font-size:14px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+.style small{font-weight:400;font-size:11px;color:var(--mute)}
+.style[aria-pressed="true"]{border-color:var(--pump);background:rgba(255,122,26,.12)}
+.room{position:relative;aspect-ratio:16/11;border-radius:18px;overflow:hidden;border:2px solid var(--line);
+  background:linear-gradient(#22336a 0,#1a2a5a 60%,#0d1636 60.2%,#0b1430);box-shadow:inset 0 0 120px rgba(0,0,0,.6)}
+.room::before{content:"";position:absolute;inset:0 0 40% 0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 2px,transparent 2px 46px),radial-gradient(ellipse at 50% 30%,rgba(255,255,255,.12),transparent 60%)}
+.room .oval{position:absolute;left:50%;top:9%;width:30%;aspect-ratio:1.5;translate:-50% 0;border-radius:50%;border:3px solid var(--gold);background:radial-gradient(#2c3f7a,#1a2a5a);display:grid;place-items:center;font-family:var(--slab);font-size:clamp(11px,1.3vw,18px);color:var(--gold);text-align:center;line-height:1.05;padding:6%}
+.room .flagpole{bottom:14%;height:66%;width:16%}
+.room .flagpole.l{left:6%}.room .flagpole.r{left:auto;right:6%}
+.room .speaker{bottom:calc(10% + 25% * .685 * 1.05);width:calc(25% * 1.3)}
+.room .podium{bottom:10%;width:25%}
+.room .speaker{bottom:calc(10% + 18.2%)}
+.room .cap{position:absolute;left:4%;right:4%;bottom:4%;z-index:6;padding:8px 12px;background:rgba(0,0,0,.8);border-radius:8px;font-weight:600;font-size:clamp(13px,1.3vw,17px);line-height:1.35;text-align:center;min-height:2.9em;display:flex;align-items:center;justify-content:center}
+.room .onair{position:absolute;right:3%;top:4%;z-index:6;display:flex;align-items:center;gap:6px;font-weight:900;font-size:11px;letter-spacing:.14em;padding:5px 9px;border-radius:4px;background:rgba(0,0,0,.5);color:var(--mute)}
+.room .onair.on{background:var(--red);color:#fff}
+.room .play{position:absolute;inset:0;z-index:7;display:none;place-items:center;background:rgba(10,17,40,.55)}
+.room .play.on{display:grid}
+.outbox{display:none;margin-top:22px;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:22px;align-items:start}
+.outbox.on{display:grid}
+#eo{width:100%;height:auto;aspect-ratio:1080/1350;border-radius:12px;border:2px solid var(--line);display:block}
+.share{display:flex;flex-direction:column;gap:12px}
+.share code{font-family:var(--type);font-size:13px;word-break:break-all;padding:12px 14px;border:2px dashed rgba(242,239,230,.25);border-radius:10px;user-select:all}
+.share .r{display:flex;flex-wrap:wrap;gap:10px}
+.pay{margin-top:6px;padding:16px;border-radius:14px;background:rgba(232,193,90,.08);border:2px solid rgba(232,193,90,.3)}
+.pay p{color:var(--mute);font-size:14px;line-height:1.5;margin-bottom:12px}
+.pay b{color:var(--gold)}
+#payState{margin-top:10px;font-size:13px;color:var(--mute);word-break:break-all}
+@media (max-width:900px){.brief,.outbox{grid-template-columns:1fr}.room{order:-1}}
+
+/* ---------- fact sheet (tokenomics) ---------- */
+.sheet{position:relative;max-width:900px;margin:clamp(36px,5vw,64px) auto 0;background:#f6f1e2;color:#1b1f2a;font-family:var(--type);padding:clamp(24px,5vw,64px);border-radius:4px;box-shadow:0 30px 80px rgba(0,0,0,.5);transform:rotate(-.6deg)}
+.sheet::before{content:"";position:absolute;inset:12px;border:2px solid rgba(29,42,74,.25);pointer-events:none}
+.sheet h3{font-family:var(--slab);font-weight:400;font-size:clamp(22px,3vw,36px);text-align:center;letter-spacing:.02em}
+.sheet .sub{text-align:center;font-size:13px;letter-spacing:.2em;margin-top:6px;color:#5a6070}
+.sheet ol{list-style:none;margin-top:28px;display:flex;flex-direction:column;gap:16px;font-size:clamp(15px,1.6vw,19px);line-height:1.5}
+.sheet li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:baseline;border-bottom:1px dashed rgba(27,31,42,.25);padding-bottom:12px}
+.sheet li b{font-weight:400;font-size:clamp(18px,2.2vw,28px);position:relative;white-space:nowrap}
+.redact{position:absolute;inset:-4px -8px;background:#0b0d12;transform-origin:0 50%}
+.stamp{position:absolute;right:6%;top:8%;font-family:var(--slab);font-size:clamp(18px,2.4vw,30px);color:var(--red);border:4px solid var(--red);padding:6px 14px;transform:rotate(-14deg);opacity:.85;mix-blend-mode:multiply}
+.sheet .sign{margin-top:26px;display:flex;justify-content:flex-end;align-items:flex-end;gap:12px;font-size:13px}
+.sheet .sign svg{width:200px;height:60px}
+
+/* ---------- press conference (how to buy) ---------- */
+.press{display:flex;flex-direction:column;gap:22px;margin-top:clamp(36px,5vw,64px);max-width:980px}
+.qa{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:start}
+.qa .rep{width:56px;height:56px;border-radius:50%;background:#2a3657;display:grid;place-items:center;font-size:26px;border:3px solid var(--line)}
+.qa .q{font-weight:800;font-size:clamp(17px,1.8vw,22px);padding:14px 18px;border-radius:16px 16px 16px 4px;background:#16224a;border:2px solid var(--line);justify-self:start}
+.qa .q small{display:block;font-weight:600;font-size:11px;letter-spacing:.14em;color:var(--mute);text-transform:uppercase;margin-bottom:4px}
+.qa.a{grid-template-columns:minmax(0,1fr) auto}
+.qa.a .q{justify-self:end;background:var(--pump);color:#1b0d02;border-color:transparent;border-radius:16px 16px 4px 16px;font-weight:600;max-width:60ch}
+.qa.a .q b{font-weight:900}
+.qa.a .rep{background:#3a2210;font-size:28px}
+.ca{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
+.ca code{font-family:var(--type);font-size:14px;background:rgba(0,0,0,.15);padding:8px 12px;border-radius:8px;word-break:break-all}
+
+/* ---------- send-off ---------- */
+.sendoff{padding-block:0 0;padding-inline:0;overflow:hidden;background:linear-gradient(#0a1128,#0d1733)}
+.bunting{width:100%;height:clamp(60px,9vw,120px);display:block}
+.sendoff .big{text-align:center;font-family:var(--slab);font-size:clamp(40px,8vw,130px);line-height:.95;padding:clamp(40px,6vw,80px) 16px clamp(20px,3vw,40px)}
+.sendoff .big em{font-style:normal;color:var(--pump)}
+.sendoff .cta{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;padding:0 16px clamp(50px,7vw,90px)}
+footer{padding:28px clamp(16px,6vw,96px) calc(30px + env(safe-area-inset-bottom,0px));border-top:2px solid var(--line);display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;color:var(--mute);font-size:12.5px;line-height:1.7}
+footer p{max-width:80ch}
+
+.progress{position:fixed;top:0;left:0;right:0;height:4px;z-index:45;pointer-events:none;background:repeating-linear-gradient(90deg,var(--red) 0 20px,var(--ivory) 20px 40px);transform-origin:0 50%;transform:scaleX(0)}
+
+
+.caption{bottom:calc(48px + 14px)}
+.room .speaker{bottom:34.9%}
+.room .flagpole{bottom:10%}
+.rflash{position:absolute;z-index:5;width:90px;height:90px;margin:-45px 0 0 -45px;border-radius:50%;pointer-events:none;background:radial-gradient(#fff,rgba(255,255,255,.6) 20%,transparent 65%)}
+.rflash::before,.rflash::after{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:linear-gradient(90deg,transparent,#fff,transparent)}
+.rflash::after{transform:rotate(90deg)}
+#drop{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
+.hw{display:inline-block}
+.stamp{right:auto;left:6%;top:auto;bottom:5%}
+@media (max-width:720px){.sheet li{grid-template-columns:1fr;gap:4px}.sheet li b{justify-self:end}.stamp{bottom:86px;left:7%;font-size:16px}.sheet .sign{margin-top:76px}}
+.room .oval{left:auto;right:4%;top:5%;width:19%;translate:none;font-size:clamp(9px,1vw,14px)}
+.room .onair{right:auto;left:3%}
+@media (max-width:720px){
+  .room{aspect-ratio:4/5;background:linear-gradient(#22336a 0,#1a2a5a 66%,#0d1636 66.2%,#0b1430)}
+  .room::before{inset:0 0 34% 0}
+  .room .podium{width:34%;bottom:21%}
+  .room .speaker{width:44.2%;bottom:39.6%}
+  .room .flagpole{height:44%;bottom:21%;width:18%}
+  .room .flagpole.l{left:2%}.room .flagpole.r{right:2%}
+  .room .oval{width:26%;font-size:10px}
+  .room .cap{font-size:13.5px;min-height:4.4em}
+}
+.redact{transform-origin:100% 50%}
+.speaker{pointer-events:none}
+@media (max-width:900px){.room{order:0}}
+@media (max-width:720px){.caption{bottom:calc(48px + 10px)}.headline{top:calc(108px + env(safe-area-inset-top,0px))}.live{top:calc(70px + env(safe-area-inset-top,0px))}.moon{top:30%;right:6%}}
+.headline{top:calc(100px + env(safe-area-inset-top,0px))}
+.headline h1{font-size:clamp(34px,5.6vw,92px)}
+.moon{top:24%}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a class="logo" href="#top">TRUMP<span>KIN</span></a>
+  <div class="links">
+    <a href="#endorse">Endorsement</a>
+    <a href="#facts">Fact sheet</a>
+    <a href="#press">Press</a>
+    <button id="mute" class="snd" type="button" aria-label="Turn sound on" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path class="w1" d="M16 9.5a3.5 3.5 0 0 1 0 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="w2" d="M18.5 7a7 7 0 0 1 0 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="x" d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <a href="#press" class="pin sm">Buy $MHGA</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div class="moon" aria-hidden="true"></div>
+  <svg class="wh" viewBox="0 0 1600 700" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="whWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dfe3ea"/><stop offset="1" stop-color="#9aa3b6"/></linearGradient>
+    <linearGradient id="whShade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9c0cf"/><stop offset="1" stop-color="#7b8499"/></linearGradient>
+    <radialGradient id="winGlow" cx="50%" cy="60%" r="70%"><stop offset="0" stop-color="#ffd27a"/><stop offset=".6" stop-color="#ff8a1e"/><stop offset="1" stop-color="#9a3a00"/></radialGradient>
+    <radialGradient id="jackG" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#ffab45"/><stop offset="1" stop-color="#c25808"/></radialGradient>
+    <pattern id="wins" x="0" y="0" width="110" height="120" patternUnits="userSpaceOnUse">
+      <rect x="28" y="16" width="44" height="70" fill="#2a3350" stroke="#7b8499" stroke-width="4"/>
+      <rect x="28" y="16" width="44" height="70" fill="url(#winGlow)" class="win" opacity=".0"/>
+      <path d="M50 16 V86 M28 50 H72" stroke="#7b8499" stroke-width="3"/>
+      <path d="M22 12 H78 L 74 4 H26 Z" fill="#c6ccd8" stroke="#7b8499" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <!-- lawn + driveway -->
+  <path d="M0 700 L 0 600 C 400 580 1200 580 1600 600 L 1600 700 Z" fill="#0f1d16"/>
+  <!-- wings -->
+  <g stroke="#5b6478" stroke-width="3">
+    <rect x="150" y="300" width="460" height="290" fill="url(#whWall)"/>
+    <rect x="990" y="300" width="460" height="290" fill="url(#whWall)"/>
+    <rect x="150" y="300" width="460" height="290" fill="url(#wins)" stroke="none" opacity=".95"/>
+    <rect x="990" y="300" width="460" height="290" fill="url(#wins)" stroke="none" opacity=".95"/>
+    <rect x="140" y="282" width="480" height="22" fill="#e9ecf2"/><rect x="980" y="282" width="480" height="22" fill="#e9ecf2"/>
+    <path d="M140 282 H620 M980 282 H1460" stroke="#5b6478"/>
+    <rect x="150" y="440" width="460" height="10" fill="#c6ccd8"/><rect x="990" y="440" width="460" height="10" fill="#c6ccd8"/>
+    <!-- balustrade -->
+    <path d="M140 272 H620 M980 272 H1460" stroke="#c6ccd8" stroke-width="10"/>
+  </g>
+  <!-- centre block + portico -->
+  <g stroke="#5b6478" stroke-width="3">
+    <rect x="610" y="250" width="380" height="340" fill="url(#whShade)"/>
+    <rect x="610" y="250" width="380" height="340" fill="url(#wins)" stroke="none" opacity=".8"/>
+    <path d="M590 240 L 800 140 L 1010 240 Z" fill="#e9ecf2"/>
+    <path d="M630 232 L 800 156 L 970 232 Z" fill="#d3d8e2"/>
+    <circle cx="800" cy="200" r="16" fill="#c6ccd8"/>
+    <rect x="590" y="240" width="420" height="26" fill="#e9ecf2"/>
+    <g fill="#f2f4f8"><rect x="626" y="266" width="30" height="324"/><rect x="700" y="266" width="30" height="324"/><rect x="870" y="266" width="30" height="324"/><rect x="944" y="266" width="30" height="324"/></g>
+    <rect x="760" y="420" width="80" height="170" fill="#1c2238"/><path d="M760 420 A 40 40 0 0 1 840 420" fill="#2a3350"/>
+    <!-- steps -->
+    <rect x="580" y="586" width="440" height="12" fill="#c6ccd8"/><rect x="560" y="596" width="480" height="12" fill="#b9c0cf"/>
+  </g>
+  <!-- flag on the roof (stars-and-stripes-ish, waving) -->
+  <g id="flag"><path d="M800 140 V 70" stroke="#9aa3b6" stroke-width="4"/><path id="flagCloth" d="M802 72 C 830 64 850 80 880 72 L 880 108 C 850 116 830 100 802 108 Z" data-b="M802 72 C 830 80 850 64 880 76 L 880 112 C 850 100 830 116 802 108 Z" fill="#d6262f"/><path d="M802 84 C 830 76 850 92 880 84 M802 96 C 830 88 850 104 880 96" data-b="M802 84 C 830 92 850 76 880 88 M802 96 C 830 104 850 88 880 100" stroke="#f2f4f8" stroke-width="4" fill="none"/><rect x="802" y="72" width="30" height="20" fill="#1d2a4a"/></g>
+  <!-- halloween dressing -->
+  <g id="garland" fill="none" stroke="#3b2a1a" stroke-width="2">
+    <path d="M590 262 C 640 290 690 290 740 262 C 790 290 840 290 890 262 C 940 290 970 290 1010 262"/>
+    <path d="M140 304 C 200 326 260 326 320 304 C 380 326 440 326 500 304 C 540 322 590 322 620 304 M980 304 C 1040 326 1100 326 1160 304 C 1220 326 1280 326 1340 304 C 1380 322 1430 322 1460 304"/>
+  </g>
+  <g id="bulbs"></g>
+  <!-- cobwebs on the portico corners -->
+  <g stroke="rgba(240,240,250,.55)" stroke-width="1.6" fill="none">
+    <path d="M610 266 L 660 266 M610 266 L 610 316 M610 266 L 650 300 M622 266 Q 620 280 610 278 M640 266 Q 632 292 610 296 M658 266 Q 648 306 610 312"/>
+    <path d="M990 266 L 940 266 M990 266 L 990 316 M990 266 L 950 300 M978 266 Q 980 280 990 278 M960 266 Q 968 292 990 296 M942 266 Q 952 306 990 312"/>
+  </g>
+  <!-- jack-o'-lanterns on the steps and lawn -->
+  <g id="jacks" stroke="#2a1404" stroke-width="2.5">
+    <g transform="translate(600 586)"><ellipse rx="26" ry="20" cy="-18" fill="url(#jackG)"/><path d="M-12 -24 l6 -6 l4 6 Z M4 -24 l6 -6 l4 6 Z M-12 -12 q12 8 24 0" fill="#ffd27a"/></g>
+    <g transform="translate(1000 586)"><ellipse rx="26" ry="20" cy="-18" fill="url(#jackG)"/><path d="M-12 -24 l6 -6 l4 6 Z M4 -24 l6 -6 l4 6 Z M-12 -12 q12 8 24 0" fill="#ffd27a"/></g>
+    <g transform="translate(380 620) scale(1.4)"><ellipse rx="26" ry="20" cy="-18" fill="url(#jackG)"/><path d="M-12 -24 l6 -6 l4 6 Z M4 -24 l6 -6 l4 6 Z M-12 -12 q12 8 24 0" fill="#ffd27a"/></g>
+    <g transform="translate(1240 624) scale(1.2)"><ellipse rx="26" ry="20" cy="-18" fill="url(#jackG)"/><path d="M-12 -24 l6 -6 l4 6 Z M4 -24 l6 -6 l4 6 Z M-12 -12 q12 8 24 0" fill="#ffd27a"/></g>
+  </g>
+  <!-- bare trees -->
+  <path d="M40 600 C 50 520 44 460 30 400 M42 480 C 70 450 90 440 120 432 M38 440 C 20 420 6 410 -10 408 M1560 600 C 1550 520 1556 460 1570 400 M1558 480 C 1530 450 1510 440 1480 432" stroke="#05080d" stroke-width="12" fill="none" stroke-linecap="round"/>
+</svg>
+
+  <div class="fogband" aria-hidden="true"></div>
+  <div class="stage" aria-hidden="true"></div>
+  <div class="flagpole l" aria-hidden="true"><svg viewBox="0 0 100 300" preserveAspectRatio="xMidYMax meet"><rect x="8" y="10" width="4" height="290" rx="2" fill="#c9a24a"/><circle cx="10" cy="8" r="5" fill="#e8c15a"/><path d="M12.0 16.0 L18.0 16.6 L24.0 17.3 L30.0 17.8 L36.0 18.0 L42.0 17.5 L48.0 16.5 L54.0 15.1 L60.0 13.6 L66.0 12.6 L72.0 12.2 L78.0 12.9 L84.0 14.4 L90.0 16.6 L96.0 18.9 L96.0 27.0 L90.0 24.6 L84.0 22.5 L78.0 20.9 L72.0 20.3 L66.0 20.6 L60.0 21.6 L54.0 23.1 L48.0 24.5 L42.0 25.5 L36.0 26.0 L30.0 25.9 L24.0 25.3 L18.0 24.6 L12.0 24.0 Z" data-b="M12.0 16.0 L18.0 15.4 L24.0 14.7 L30.0 14.2 L36.0 14.0 L42.0 14.5 L48.0 15.5 L54.0 16.9 L60.0 18.4 L66.0 19.4 L72.0 19.8 L78.0 19.1 L84.0 17.6 L90.0 15.4 L96.0 13.1 L96.0 21.1 L90.0 23.4 L84.0 25.6 L78.0 27.1 L72.0 27.8 L66.0 27.5 L60.0 26.4 L54.0 24.9 L48.0 23.5 L42.0 22.5 L36.0 22.0 L30.0 22.2 L24.0 22.7 L18.0 23.4 L12.0 24.0 Z" fill="#d6262f"/><path d="M12.0 23.7 L18.0 24.3 L24.0 25.0 L30.0 25.6 L36.0 25.7 L42.0 25.2 L48.0 24.2 L54.0 22.8 L60.0 21.3 L66.0 20.3 L72.0 20.0 L78.0 20.6 L84.0 22.2 L90.0 24.3 L96.0 26.7 L96.0 34.7 L90.0 32.4 L84.0 30.2 L78.0 28.6 L72.0 28.0 L66.0 28.3 L60.0 29.4 L54.0 30.8 L48.0 32.2 L42.0 33.2 L36.0 33.7 L30.0 33.6 L24.0 33.0 L18.0 32.3 L12.0 31.7 Z" data-b="M12.0 23.7 L18.0 23.1 L24.0 22.4 L30.0 21.9 L36.0 21.7 L42.0 22.2 L48.0 23.2 L54.0 24.6 L60.0 26.1 L66.0 27.2 L72.0 27.5 L78.0 26.8 L84.0 25.3 L90.0 23.1 L96.0 20.8 L96.0 28.8 L90.0 31.1 L84.0 33.3 L78.0 34.8 L72.0 35.5 L66.0 35.2 L60.0 34.1 L54.0 32.7 L48.0 31.2 L42.0 30.2 L36.0 29.8 L30.0 29.9 L24.0 30.4 L18.0 31.1 L12.0 31.7 Z" fill="#f2efe6"/><path d="M12.0 31.4 L18.0 32.0 L24.0 32.7 L30.0 33.3 L36.0 33.4 L42.0 32.9 L48.0 31.9 L54.0 30.5 L60.0 29.1 L66.0 28.0 L72.0 27.7 L78.0 28.3 L84.0 29.9 L90.0 32.1 L96.0 34.4 L96.0 42.4 L90.0 40.1 L84.0 37.9 L78.0 36.3 L72.0 35.7 L66.0 36.0 L60.0 37.1 L54.0 38.5 L48.0 39.9 L42.0 41.0 L36.0 41.4 L30.0 41.3 L24.0 40.8 L18.0 40.1 L12.0 39.4 Z" data-b="M12.0 31.4 L18.0 30.8 L24.0 30.1 L30.0 29.6 L36.0 29.5 L42.0 29.9 L48.0 30.9 L54.0 32.4 L60.0 33.8 L66.0 34.9 L72.0 35.2 L78.0 34.5 L84.0 33.0 L90.0 30.8 L96.0 28.5 L96.0 36.5 L90.0 38.8 L84.0 41.0 L78.0 42.6 L72.0 43.2 L66.0 42.9 L60.0 41.8 L54.0 40.4 L48.0 39.0 L42.0 37.9 L36.0 37.5 L30.0 37.6 L24.0 38.1 L18.0 38.8 L12.0 39.4 Z" fill="#d6262f"/><path d="M12.0 39.1 L18.0 39.8 L24.0 40.5 L30.0 41.0 L36.0 41.1 L42.0 40.7 L48.0 39.6 L54.0 38.2 L60.0 36.8 L66.0 35.7 L72.0 35.4 L78.0 36.0 L84.0 37.6 L90.0 39.8 L96.0 42.1 L96.0 50.1 L90.0 47.8 L84.0 45.6 L78.0 44.0 L72.0 43.4 L66.0 43.7 L60.0 44.8 L54.0 46.2 L48.0 47.6 L42.0 48.7 L36.0 49.1 L30.0 49.0 L24.0 48.5 L18.0 47.8 L12.0 47.2 Z" data-b="M12.0 39.1 L18.0 38.5 L24.0 37.8 L30.0 37.3 L36.0 37.2 L42.0 37.6 L48.0 38.7 L54.0 40.1 L60.0 41.5 L66.0 42.6 L72.0 42.9 L78.0 42.3 L84.0 40.7 L90.0 38.5 L96.0 36.2 L96.0 44.2 L90.0 46.5 L84.0 48.7 L78.0 50.3 L72.0 50.9 L66.0 50.6 L60.0 49.5 L54.0 48.1 L48.0 46.7 L42.0 45.6 L36.0 45.2 L30.0 45.3 L24.0 45.8 L18.0 46.5 L12.0 47.2 Z" fill="#f2efe6"/><path d="M12.0 46.9 L18.0 47.5 L24.0 48.2 L30.0 48.7 L36.0 48.8 L42.0 48.4 L48.0 47.3 L54.0 45.9 L60.0 44.5 L66.0 43.4 L72.0 43.1 L78.0 43.7 L84.0 45.3 L90.0 47.5 L96.0 49.8 L96.0 57.8 L90.0 55.5 L84.0 53.3 L78.0 51.8 L72.0 51.1 L66.0 51.4 L60.0 52.5 L54.0 53.9 L48.0 55.4 L42.0 56.4 L36.0 56.8 L30.0 56.7 L24.0 56.2 L18.0 55.5 L12.0 54.9 Z" data-b="M12.0 46.9 L18.0 46.2 L24.0 45.5 L30.0 45.0 L36.0 44.9 L42.0 45.3 L48.0 46.4 L54.0 47.8 L60.0 49.2 L66.0 50.3 L72.0 50.6 L78.0 50.0 L84.0 48.4 L90.0 46.2 L96.0 43.9 L96.0 51.9 L90.0 54.2 L84.0 56.4 L78.0 58.0 L72.0 58.6 L66.0 58.3 L60.0 57.2 L54.0 55.8 L48.0 54.4 L42.0 53.4 L36.0 52.9 L30.0 53.0 L24.0 53.6 L18.0 54.3 L12.0 54.9 Z" fill="#d6262f"/><path d="M12.0 54.6 L18.0 55.2 L24.0 55.9 L30.0 56.4 L36.0 56.5 L42.0 56.1 L48.0 55.1 L54.0 53.6 L60.0 52.2 L66.0 51.1 L72.0 50.8 L78.0 51.5 L84.0 53.0 L90.0 55.2 L96.0 57.5 L96.0 65.5 L90.0 63.2 L84.0 61.0 L78.0 59.5 L72.0 58.8 L66.0 59.1 L60.0 60.2 L54.0 61.7 L48.0 63.1 L42.0 64.1 L36.0 64.6 L30.0 64.4 L24.0 63.9 L18.0 63.2 L12.0 62.6 Z" data-b="M12.0 54.6 L18.0 54.0 L24.0 53.3 L30.0 52.7 L36.0 52.6 L42.0 53.1 L48.0 54.1 L54.0 55.5 L60.0 56.9 L66.0 58.0 L72.0 58.3 L78.0 57.7 L84.0 56.1 L90.0 53.9 L96.0 51.6 L96.0 59.6 L90.0 62.0 L84.0 64.1 L78.0 65.7 L72.0 66.3 L66.0 66.0 L60.0 65.0 L54.0 63.5 L48.0 62.1 L42.0 61.1 L36.0 60.6 L30.0 60.7 L24.0 61.3 L18.0 62.0 L12.0 62.6 Z" fill="#f2efe6"/><path d="M12.0 62.3 L18.0 62.9 L24.0 63.6 L30.0 64.1 L36.0 64.3 L42.0 63.8 L48.0 62.8 L54.0 61.4 L60.0 59.9 L66.0 58.8 L72.0 58.5 L78.0 59.2 L84.0 60.7 L90.0 62.9 L96.0 65.2 L96.0 73.2 L90.0 70.9 L84.0 68.7 L78.0 67.2 L72.0 66.5 L66.0 66.9 L60.0 67.9 L54.0 69.4 L48.0 70.8 L42.0 71.8 L36.0 72.3 L30.0 72.1 L24.0 71.6 L18.0 70.9 L12.0 70.3 Z" data-b="M12.0 62.3 L18.0 61.7 L24.0 61.0 L30.0 60.4 L36.0 60.3 L42.0 60.8 L48.0 61.8 L54.0 63.2 L60.0 64.7 L66.0 65.7 L72.0 66.0 L78.0 65.4 L84.0 63.8 L90.0 61.7 L96.0 59.3 L96.0 67.4 L90.0 69.7 L84.0 71.9 L78.0 73.4 L72.0 74.1 L66.0 73.7 L60.0 72.7 L54.0 71.2 L48.0 69.8 L42.0 68.8 L36.0 68.3 L30.0 68.5 L24.0 69.0 L18.0 69.7 L12.0 70.3 Z" fill="#d6262f"/><path d="M12.0 16.0 L14.4 16.6 L16.9 17.3 L19.3 17.8 L21.7 18.0 L24.1 17.5 L26.6 16.5 L29.0 15.1 L31.4 13.6 L33.9 12.6 L36.3 12.2 L38.7 12.9 L41.1 14.4 L43.6 16.6 L46.0 18.9 L46.0 49.8 L43.6 47.5 L41.1 45.3 L38.7 43.7 L36.3 43.1 L33.9 43.4 L31.4 44.5 L29.0 45.9 L26.6 47.3 L24.1 48.4 L21.7 48.8 L19.3 48.7 L16.9 48.2 L14.4 47.5 L12.0 46.9 Z" data-b="M12.0 16.0 L14.4 15.4 L16.9 14.7 L19.3 14.2 L21.7 14.0 L24.1 14.5 L26.6 15.5 L29.0 16.9 L31.4 18.4 L33.9 19.4 L36.3 19.8 L38.7 19.1 L41.1 17.6 L43.6 15.4 L46.0 13.1 L46.0 43.9 L43.6 46.2 L41.1 48.4 L38.7 50.0 L36.3 50.6 L33.9 50.3 L31.4 49.2 L29.0 47.8 L26.6 46.4 L24.1 45.3 L21.7 44.9 L19.3 45.0 L16.9 45.5 L14.4 46.2 L12.0 46.9 Z" fill="#1d2a4a"/><path d="M15.0 21.0 L17.1 21.2 L19.1 21.5 L21.2 21.7 L23.3 21.7 L25.4 21.5 L27.4 21.2 L29.5 20.7 L31.6 20.2 L33.6 19.8 L35.7 19.7 L37.8 19.9 L39.9 20.4 L41.9 21.2 L44.0 22.0" data-b="M15.0 21.0 L17.1 20.8 L19.1 20.5 L21.2 20.3 L23.3 20.3 L25.4 20.5 L27.4 20.8 L29.5 21.3 L31.6 21.8 L33.6 22.2 L35.7 22.3 L37.8 22.1 L39.9 21.6 L41.9 20.8 L44.0 20.0" fill="none" stroke="#f2efe6" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="0 5.5"/><path d="M15.0 27.5 L17.1 27.7 L19.1 28.0 L21.2 28.2 L23.3 28.2 L25.4 28.0 L27.4 27.7 L29.5 27.2 L31.6 26.7 L33.6 26.3 L35.7 26.2 L37.8 26.4 L39.9 26.9 L41.9 27.7 L44.0 28.5" data-b="M15.0 27.5 L17.1 27.3 L19.1 27.0 L21.2 26.8 L23.3 26.8 L25.4 27.0 L27.4 27.3 L29.5 27.8 L31.6 28.3 L33.6 28.7 L35.7 28.8 L37.8 28.6 L39.9 28.1 L41.9 27.3 L44.0 26.5" fill="none" stroke="#f2efe6" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="0 5.5"/><path d="M15.0 34.0 L17.1 34.2 L19.1 34.5 L21.2 34.7 L23.3 34.7 L25.4 34.5 L27.4 34.2 L29.5 33.7 L31.6 33.2 L33.6 32.8 L35.7 32.7 L37.8 32.9 L39.9 33.4 L41.9 34.2 L44.0 35.0" data-b="M15.0 34.0 L17.1 33.8 L19.1 33.5 L21.2 33.3 L23.3 33.3 L25.4 33.5 L27.4 33.8 L29.5 34.3 L31.6 34.8 L33.6 35.2 L35.7 35.3 L37.8 35.1 L39.9 34.6 L41.9 33.8 L44.0 33.0" fill="none" stroke="#f2efe6" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="0 5.5"/></svg></div>
+  <div class="flagpole r" aria-hidden="true"><svg viewBox="0 0 100 300" preserveAspectRatio="xMidYMax meet"><rect x="8" y="10" width="4" height="290" rx="2" fill="#c9a24a"/><circle cx="10" cy="8" r="5" fill="#e8c15a"/><path d="M12.0 16.0 L18.0 16.6 L24.0 17.3 L30.0 17.8 L36.0 18.0 L42.0 17.5 L48.0 16.5 L54.0 15.1 L60.0 13.6 L66.0 12.6 L72.0 12.2 L78.0 12.9 L84.0 14.4 L90.0 16.6 L96.0 18.9 L96.0 72.9 L90.0 70.6 L84.0 68.4 L78.0 66.9 L72.0 66.2 L66.0 66.6 L60.0 67.6 L54.0 69.1 L48.0 70.5 L42.0 71.5 L36.0 72.0 L30.0 71.8 L24.0 71.3 L18.0 70.6 L12.0 70.0 Z" data-b="M12.0 16.0 L18.0 15.4 L24.0 14.7 L30.0 14.2 L36.0 14.0 L42.0 14.5 L48.0 15.5 L54.0 16.9 L60.0 18.4 L66.0 19.4 L72.0 19.8 L78.0 19.1 L84.0 17.6 L90.0 15.4 L96.0 13.1 L96.0 67.1 L90.0 69.4 L84.0 71.6 L78.0 73.1 L72.0 73.8 L66.0 73.4 L60.0 72.4 L54.0 70.9 L48.0 69.5 L42.0 68.5 L36.0 68.0 L30.0 68.2 L24.0 68.7 L18.0 69.4 L12.0 70.0 Z" fill="#1d2a4a"/><path d="M12.0 36.0 L18.0 36.6 L24.0 37.3 L30.0 37.8 L36.0 38.0 L42.0 37.5 L48.0 36.5 L54.0 35.1 L60.0 33.6 L66.0 32.6 L72.0 32.2 L78.0 32.9 L84.0 34.4 L90.0 36.6 L96.0 38.9 L96.0 52.9 L90.0 50.6 L84.0 48.4 L78.0 46.9 L72.0 46.2 L66.0 46.6 L60.0 47.6 L54.0 49.1 L48.0 50.5 L42.0 51.5 L36.0 52.0 L30.0 51.8 L24.0 51.3 L18.0 50.6 L12.0 50.0 Z" data-b="M12.0 36.0 L18.0 35.4 L24.0 34.7 L30.0 34.2 L36.0 34.0 L42.0 34.5 L48.0 35.5 L54.0 36.9 L60.0 38.4 L66.0 39.4 L72.0 39.8 L78.0 39.1 L84.0 37.6 L90.0 35.4 L96.0 33.1 L96.0 47.1 L90.0 49.4 L84.0 51.6 L78.0 53.1 L72.0 53.8 L66.0 53.4 L60.0 52.4 L54.0 50.9 L48.0 49.5 L42.0 48.5 L36.0 48.0 L30.0 48.2 L24.0 48.7 L18.0 49.4 L12.0 50.0 Z" fill="#ff7a1a"/><path d="M12.0 67.0 L18.0 67.6 L24.0 68.3 L30.0 68.8 L36.0 69.0 L42.0 68.5 L48.0 67.5 L54.0 66.1 L60.0 64.6 L66.0 63.6 L72.0 63.2 L78.0 63.9 L84.0 65.4 L90.0 67.6 L96.0 69.9 L96.0 74.9 L90.0 72.6 L84.0 70.4 L78.0 68.9 L72.0 68.2 L66.0 68.6 L60.0 69.6 L54.0 71.1 L48.0 72.5 L42.0 73.5 L36.0 74.0 L30.0 73.8 L24.0 73.3 L18.0 72.6 L12.0 72.0 Z" data-b="M12.0 67.0 L18.0 66.4 L24.0 65.7 L30.0 65.2 L36.0 65.0 L42.0 65.5 L48.0 66.5 L54.0 67.9 L60.0 69.4 L66.0 70.4 L72.0 70.8 L78.0 70.1 L84.0 68.6 L90.0 66.4 L96.0 64.1 L96.0 69.1 L90.0 71.4 L84.0 73.6 L78.0 75.1 L72.0 75.8 L66.0 75.4 L60.0 74.4 L54.0 72.9 L48.0 71.5 L42.0 70.5 L36.0 70.0 L30.0 70.2 L24.0 70.7 L18.0 71.4 L12.0 72.0 Z" fill="#e8c15a"/></svg></div>
+  <div class="speaker" id="spkH"><svg class="tk-svg" viewBox="0 0 400 430" overflow="visible">
+  <defs>
+    <radialGradient id="hPump" cx="42%" cy="35%" r="70%"><stop offset="0" stop-color="#ffab45"/><stop offset=".55" stop-color="#f27a12"/><stop offset="1" stop-color="#b44d06"/></radialGradient>
+    <radialGradient id="hGlow" cx="50%" cy="50%" r="60%"><stop offset="0" stop-color="#fff2a8"/><stop offset=".5" stop-color="#ffb52e"/><stop offset="1" stop-color="#e05a00"/></radialGradient>
+    <linearGradient id="hHairG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe08a"/><stop offset="1" stop-color="#e8a83a"/></linearGradient>
+    <linearGradient id="hSuit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d2a4a"/><stop offset="1" stop-color="#121b33"/></linearGradient>
+  </defs>
+  <g stroke="#120b06" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <!-- back arm (viewer left) -->
+    <g id="hArmL">
+      <path d="M118 300 C 96 300 84 318 82 340 L 78 410 L 116 414 L 124 344 Z" fill="url(#hSuit)"/>
+      <g id="hForeL">
+        <path d="M78 400 L 118 404 L 114 470 L 80 468 Z" fill="url(#hSuit)"/><rect x="78" y="460" width="38" height="12" rx="3" fill="#f4f1ea"/>
+        <g id="hHandL"><path d="M74 470 C 66 482 70 504 84 508 C 92 518 104 516 110 508 C 120 506 124 494 120 484 C 128 478 126 468 118 468 Z" fill="#fbfbf7"/><path d="M88 486 v12 M98 486 v14 M108 484 v12" fill="none" stroke-width="2.5"/></g>
+      </g>
+    </g>
+    <!-- torso: navy suit, white shirt, long red tie -->
+    <path d="M110 296 C 140 276 260 276 290 296 C 306 320 312 380 312 430 L 88 430 C 88 380 94 320 110 296 Z" fill="url(#hSuit)"/>
+    <path d="M170 282 L 200 360 L 230 282 Z" fill="#f4f1ea"/>
+    <path d="M150 284 L 200 372 L 176 300 Z M250 284 L 200 372 L 224 300 Z" fill="#26355c"/>
+    <g id="hTie"><path d="M190 290 L 210 290 L 214 302 L 222 420 L 200 438 L 178 420 L 186 302 Z" fill="#d6262f"/><path d="M186 320 L 216 312 M184 348 L 218 340 M182 376 L 219 368 M181 404 L 220 396" stroke="#8f121a" stroke-width="5"/><path d="M188 286 L 212 286 L 210 302 L 190 302 Z" fill="#b51d25"/></g>
+    <circle cx="258" cy="320" r="7" fill="#e8c15a" stroke-width="2.5"/>
+    <!-- front arm (viewer right) -->
+    <g id="hArmR">
+      <path d="M282 300 C 304 300 316 318 318 340 L 322 410 L 284 414 L 276 344 Z" fill="url(#hSuit)"/>
+      <g id="hForeR">
+        <path d="M322 400 L 282 404 L 286 470 L 320 468 Z" fill="url(#hSuit)"/><rect x="284" y="460" width="38" height="12" rx="3" fill="#f4f1ea"/>
+        <g id="hHandR">
+          <g id="hPalmR"><path d="M326 470 C 334 482 330 504 316 508 C 308 518 296 516 290 508 C 280 506 276 494 280 484 C 272 478 274 468 282 468 Z" fill="#fbfbf7"/><path d="M312 486 v12 M302 486 v14 M292 484 v12" fill="none" stroke-width="2.5"/></g>
+          <g id="hPointR" opacity="0"><path d="M282 470 C 276 482 280 500 292 504 L 314 504 C 322 500 324 488 318 480 L 318 470 Z" fill="#fbfbf7"/><path d="M300 470 L 300 420 C 300 412 312 412 312 420 L 312 470" fill="#fbfbf7"/></g>
+          <g id="hThumbR" opacity="0"><path d="M282 470 C 276 482 280 504 296 508 L 318 506 C 326 500 326 482 318 474 L 300 470 Z" fill="#fbfbf7"/><path d="M296 472 L 292 438 C 292 428 306 428 306 438 L 308 472" fill="#fbfbf7"/><path d="M286 486 h28 M286 496 h28" fill="none" stroke-width="2.5"/></g>
+        </g>
+      </g>
+    </g>
+    <!-- head: a jack-o'-lantern with a famous comb-over -->
+    <g id="hHead">
+      <path d="M200 300 C 120 304 66 258 66 186 C 66 116 122 66 200 66 C 278 66 334 116 334 186 C 334 258 280 304 200 300 Z" fill="url(#hPump)"/>
+      <path d="M200 70 C 170 110 166 250 200 298 M200 70 C 230 110 234 250 200 298 M200 70 C 130 90 112 250 150 292 M200 70 C 270 90 288 250 250 292" fill="none" stroke="#c45c0a" stroke-width="3" opacity=".7"/>
+      <!-- carved face, glowing -->
+      <g id="hEyes"><path d="M120 156 L 176 174 L 150 200 Z" fill="url(#hGlow)"/><path d="M280 156 L 224 174 L 250 200 Z" fill="url(#hGlow)"/></g>
+      <path d="M112 142 L 178 160 M288 142 L 222 160" fill="none" stroke-width="7"/>
+      <path d="M200 198 L 188 222 L 212 222 Z" fill="url(#hGlow)"/>
+      <g id="hMouth"><path d="M118 238 C 150 252 250 252 282 238 C 276 268 246 284 200 284 C 154 284 124 268 118 238 Z" fill="url(#hGlow)"/>
+        <path d="M150 248 L 160 262 L 170 250 Z M190 252 L 200 266 L 210 252 Z M230 250 L 240 262 L 250 248 Z" fill="#c45c0a" stroke-width="2.5"/></g>
+      <!-- stem peeking out -->
+      <path d="M192 74 C 190 56 196 44 210 38 C 214 50 210 62 210 74 Z" fill="#4c7a2a"/>
+      <!-- the hair -->
+      <g id="hHair">
+        <path d="M70 168 C 58 108 104 52 186 48 C 252 46 318 70 340 120 C 348 140 344 160 336 174 C 324 140 296 116 250 108 C 210 102 170 110 140 128 C 110 146 86 160 70 168 Z" fill="url(#hHairG)"/>
+        <path d="M100 118 C 150 82 230 76 300 104 M90 140 C 140 108 210 98 280 112 M120 92 C 170 70 240 70 290 86" fill="none" stroke="#c9862a" stroke-width="3"/>
+        <path d="M330 120 C 356 112 372 124 366 146 C 358 136 346 132 336 138 Z" fill="url(#hHairG)"/>
+      </g>
+    </g>
+    <g id="hFolder" opacity="0">
+      <rect x="86" y="214" width="228" height="170" rx="8" fill="#1d2a4a"/>
+      <rect x="98" y="224" width="204" height="150" rx="3" fill="#f6f1e2"/>
+      <text x="200" y="250" text-anchor="middle" font-family="Special Elite, Courier New, monospace" font-size="15" fill="#1d2a4a" stroke="none">EXECUTIVE ORDER</text>
+      <path d="M116 266 h168 M116 280 h150 M116 294 h160" stroke="#8a8f9c" stroke-width="3"/>
+      <path class="sig" d="M120 344 C 130 310 142 362 150 330 C 156 308 166 358 176 326 C 184 304 192 356 202 324 C 210 300 220 352 230 322 C 238 302 248 350 262 318 C 270 302 280 330 290 322" fill="none" stroke="#111" stroke-width="5"/>
+      <path d="M74 300 C 64 312 68 334 82 338 C 90 348 102 346 108 338 C 118 336 122 324 118 314 C 126 308 124 298 116 298 Z" fill="#fbfbf7"/>
+      <path d="M326 300 C 336 312 332 334 318 338 C 310 348 298 346 292 338 C 282 336 278 324 282 314 C 274 308 276 298 284 298 Z" fill="#fbfbf7"/>
+    </g>
+  </g>
+</svg>
+</div>
+  <div class="podium"><svg viewBox="0 0 300 260" overflow="visible" aria-hidden="true">
+ <g stroke="#120b06" stroke-width="4" stroke-linejoin="round"><path d="M20 20 L 280 20 L 262 250 L 38 250 Z" fill="#6b3f22"/><path d="M10 6 L 290 6 L 280 24 L 20 24 Z" fill="#8a5530"/>
+ <path d="M60 40 L 240 40 L 230 230 L 70 230 Z" fill="#5a331b" stroke-width="3"/>
+ <circle cx="150" cy="110" r="54" fill="#1d2a4a"/><circle cx="150" cy="110" r="46" fill="none" stroke="#e8c15a" stroke-width="3"/>
+ <path d="M128 112 C 110 96 100 100 96 112 C 108 108 116 114 128 118 Z M172 112 C 190 96 200 100 204 112 C 192 108 184 114 172 118 Z" fill="#0b0d12" stroke-width="2"/>
+ <ellipse cx="150" cy="116" rx="22" ry="18" fill="#f27a12"/><path d="M146 98 q4 -8 10 -6 l-2 8" fill="#4c7a2a" stroke-width="2"/>
+ <path id="hpSeal" d="M104 112 A 46 46 0 0 1 196 112" fill="none" stroke="none"/><text font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="8.6" letter-spacing=".5" fill="#e8c15a" stroke="none"><textPath href="#hpSeal" startOffset="50%" text-anchor="middle">OFFICE OF THE PUMPKIN</textPath></text>
+ <text x="150" y="196" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="18" letter-spacing="2" fill="#e8c15a" stroke="none">MHGA</text>
+ <path d="M150 6 C 148 -18 150 -30 150 -40" fill="none" stroke="#222" stroke-width="5"/><rect x="141" y="-60" width="18" height="26" rx="8" fill="#333"/></g></svg></div>
+  <canvas id="crowd" aria-hidden="true"></canvas>
+  <div class="headline">
+    <h1>Make Halloween <em>Great</em> Again</h1>
+    <p>TRUMPKIN · $MHGA · A SATIRE</p>
+  </div>
+  <div class="live" aria-hidden="true"><b>LIVE</b><i></i>THE PUMPKIN HOUSE LAWN</div>
+  <p class="caption" id="capH" aria-live="polite"></p>
+  <div class="chyron" aria-hidden="true"><span class="tag">BREAKING</span><div class="roll"><div id="roll"></div></div></div>
+  <div class="flash" id="flashH"></div>
+</header>
+
+<main>
+  <section id="endorse">
+    <p class="eyebrow">The Trumpkin Endorsement</p>
+    <h2 class="h2">Get your coin <em>endorsed.</em> Bigly.</h2>
+    <p class="lede">Tell him about your memecoin. He walks into the briefing room, gives a speech nobody asked for, signs an executive order and holds it up for the cameras. You get a link anyone can open to watch it, plus the order as an image.</p>
+    <div class="brief">
+      <form class="card form" id="eForm" novalidate>
+        <div class="row2">
+          <div class="field"><label for="eName">Coin name</label><input id="eName" maxlength="24" autocomplete="off" placeholder="Bonk" value="Bonk"></div>
+          <div class="field"><label for="eTick">Ticker</label><input id="eTick" maxlength="12" autocomplete="off" placeholder="$BONK" value="$BONK"></div>
+        </div>
+        <div class="field"><label for="eC1">Brag #1</label><input id="eC1" maxlength="70" autocomplete="off" placeholder="the dog that saved Solana" value="the dog that saved Solana"></div>
+        <div class="field"><label for="eC2">Brag #2 (optional)</label><input id="eC2" maxlength="70" autocomplete="off" placeholder="a community that never sleeps"></div>
+        <div class="field"><label for="eC3">Brag #3 (optional)</label><input id="eC3" maxlength="70" autocomplete="off" placeholder="the chart only goes up"></div>
+        <div class="field">
+          <span class="label" id="styLbl">Style</span>
+          <div class="styles" role="group" aria-labelledby="styLbl">
+            <button class="style" type="button" data-s="hype" aria-pressed="true">🔥 Hype<small>tremendous</small></button>
+            <button class="style" type="button" data-s="roast" aria-pressed="false">🍗 Roast<small>loving, mostly</small></button>
+            <button class="style" type="button" data-s="rally" aria-pressed="false">📣 Rally<small>to the moon</small></button>
+          </div>
+        </div>
+        <button class="pin" type="submit" id="eGo">Endorse it</button>
+        <p style="color:var(--mute);font-size:12.5px;line-height:1.5">Satire. Trumpkin is a fictional pumpkin. The words come from your input and a joke generator, not from any real person.</p>
+      </form>
+      <div>
+        <div class="room" id="room">
+          <div class="oval">THE PUMPKIN<br>HOUSE</div>
+          <div class="flagpole l" aria-hidden="true"><svg viewBox="0 0 100 300" preserveAspectRatio="xMidYMax meet"><rect x="8" y="10" width="4" height="290" rx="2" fill="#c9a24a"/><circle cx="10" cy="8" r="5" fill="#e8c15a"/><path d="M12.0 16.0 L18.0 16.6 L24.0 17.3 L30.0 17.8 L36.0 18.0 L42.0 17.5 L48.0 16.5 L54.0 15.1 L60.0 13.6 L66.0 12.6 L72.0 12.2 L78.0 12.9 L84.0 14.4 L90.0 16.6 L96.0 18.9 L96.0 27.0 L90.0 24.6 L84.0 22.5 L78.0 20.9 L72.0 20.3 L66.0 20.6 L60.0 21.6 L54.0 23.1 L48.0 24.5 L42.0 25.5 L36.0 26.0 L30.0 25.9 L24.0 25.3 L18.0 24.6 L12.0 24.0 Z" data-b="M12.0 16.0 L18.0 15.4 L24.0 14.7 L30.0 14.2 L36.0 14.0 L42.0 14.5 L48.0 15.5 L54.0 16.9 L60.0 18.4 L66.0 19.4 L72.0 19.8 L78.0 19.1 L84.0 17.6 L90.0 15.4 L96.0 13.1 L96.0 21.1 L90.0 23.4 L84.0 25.6 L78.0 27.1 L72.0 27.8 L66.0 27.5 L60.0 26.4 L54.0 24.9 L48.0 23.5 L42.0 22.5 L36.0 22.0 L30.0 22.2 L24.0 22.7 L18.0 23.4 L12.0 24.0 Z" fill="#d6262f"/><path d="M12.0 23.7 L18.0 24.3 L24.0 25.0 L30.0 25.6 L36.0 25.7 L42.0 25.2 L48.0 24.2 L54.0 22.8 L60.0 21.3 L66.0 20.3 L72.0 20.0 L78.0 20.6 L84.0 22.2 L90.0 24.3 L96.0 26.7 L96.0 34.7 L90.0 32.4 L84.0 30.2 L78.0 28.6 L72.0 28.0 L66.0 28.3 L60.0 29.4 L54.0 30.8 L48.0 32.2 L42.0 33.2 L36.0 33.7 L30.0 33.6 L24.0 33.0 L18.0 32.3 L12.0 31.7 Z" data-b="M12.0 23.7 L18.0 23.1 L24.0 22.4 L30.0 21.9 L36.0 21.7 L42.0 22.2 L48.0 23.2 L54.0 24.6 L60.0 26.1 L66.0 27.2 L72.0 27.5 L78.0 26.8 L84.0 25.3 L90.0 23.1 L96.0 20.8 L96.0 28.8 L90.0 31.1 L84.0 33.3 L78.0 34.8 L72.0 35.5 L66.0 35.2 L60.0 34.1 L54.0 32.7 L48.0 31.2 L42.0 30.2 L36.0 29.8 L30.0 29.9 L24.0 30.4 L18.0 31.1 L12.0 31.7 Z" fill="#f2efe6"/><path d="M12.0 31.4 L18.0 32.0 L24.0 32.7 L30.0 33.3 L36.0 33.4 L42.0 32.9 L48.0 31.9 L54.0 30.5 L60.0 29.1 L66.0 28.0 L72.0 27.7 L78.0 28.3 L84.0 29.9 L90.0 32.1 L96.0 34.4 L96.0 42.4 L90.0 40.1 L84.0 37.9 L78.0 36.3 L72.0 35.7 L66.0 36.0 L60.0 37.1 L54.0 38.5 L48.0 39.9 L42.0 41.0 L36.0 41.4 L30.0 41.3 L24.0 40.8 L18.0 40.1 L12.0 39.4 Z" data-b="M12.0 31.4 L18.0 30.8 L24.0 30.1 L30.0 29.6 L36.0 29.5 L42.0 29.9 L48.0 30.9 L54.0 32.4 L60.0 33.8 L66.0 34.9 L72.0 35.2 L78.0 34.5 L84.0 33.0 L90.0 30.8 L96.0 28.5 L96.0 36.5 L90.0 38.8 L84.0 41.0 L78.0 42.6 L72.0 43.2 L66.0 42.9 L60.0 41.8 L54.0 40.4 L48.0 39.0 L42.0 37.9 L36.0 37.5 L30.0 37.6 L24.0 38.1 L18.0 38.8 L12.0 39.4 Z" fill="#d6262f"/><path d="M12.0 39.1 L18.0 39.8 L24.0 40.5 L30.0 41.0 L36.0 41.1 L42.0 40.7 L48.0 39.6 L54.0 38.2 L60.0 36.8 L66.0 35.7 L72.0 35.4 L78.0 36.0 L84.0 37.6 L90.0 39.8 L96.0 42.1 L96.0 50.1 L90.0 47.8 L84.0 45.6 L78.0 44.0 L72.0 43.4 L66.0 43.7 L60.0 44.8 L54.0 46.2 L48.0 47.6 L42.0 48.7 L36.0 49.1 L30.0 49.0 L24.0 48.5 L18.0 47.8 L12.0 47.2 Z" data-b="M12.0 39.1 L18.0 38.5 L24.0 37.8 L30.0 37.3 L36.0 37.2 L42.0 37.6 L48.0 38.7 L54.0 40.1 L60.0 41.5 L66.0 42.6 L72.0 42.9 L78.0 42.3 L84.0 40.7 L90.0 38.5 L96.0 36.2 L96.0 44.2 L90.0 46.5 L84.0 48.7 L78.0 50.3 L72.0 50.9 L66.0 50.6 L60.0 49.5 L54.0 48.1 L48.0 46.7 L42.0 45.6 L36.0 45.2 L30.0 45.3 L24.0 45.8 L18.0 46.5 L12.0 47.2 Z" fill="#f2efe6"/><path d="M12.0 46.9 L18.0 47.5 L24.0 48.2 L30.0 48.7 L36.0 48.8 L42.0 48.4 L48.0 47.3 L54.0 45.9 L60.0 44.5 L66.0 43.4 L72.0 43.1 L78.0 43.7 L84.0 45.3 L90.0 47.5 L96.0 49.8 L96.0 57.8 L90.0 55.5 L84.0 53.3 L78.0 51.8 L72.0 51.1 L66.0 51.4 L60.0 52.5 L54.0 53.9 L48.0 55.4 L42.0 56.4 L36.0 56.8 L30.0 56.7 L24.0 56.2 L18.0 55.5 L12.0 54.9 Z" data-b="M12.0 46.9 L18.0 46.2 L24.0 45.5 L30.0 45.0 L36.0 44.9 L42.0 45.3 L48.0 46.4 L54.0 47.8 L60.0 49.2 L66.0 50.3 L72.0 50.6 L78.0 50.0 L84.0 48.4 L90.0 46.2 L96.0 43.9 L96.0 51.9 L90.0 54.2 L84.0 56.4 L78.0 58.0 L72.0 58.6 L66.0 58.3 L60.0 57.2 L54.0 55.8 L48.0 54.4 L42.0 53.4 L36.0 52.9 L30.0 53.0 L24.0 53.6 L18.0 54.3 L12.0 54.9 Z" fill="#d6262f"/><path d="M12.0 54.6 L18.0 55.2 L24.0 55.9 L30.0 56.4 L36.0 56.5 L42.0 56.1 L48.0 55.1 L54.0 53.6 L60.0 52.2 L66.0 51.1 L72.0 50.8 L78.0 51.5 L84.0 53.0 L90.0 55.2 L96.0 57.5 L96.0 65.5 L90.0 63.2 L84.0 61.0 L78.0 59.5 L72.0 58.8 L66.0 59.1 L60.0 60.2 L54.0 61.7 L48.0 63.1 L42.0 64.1 L36.0 64.6 L30.0 64.4 L24.0 63.9 L18.0 63.2 L12.0 62.6 Z" data-b="M12.0 54.6 L18.0 54.0 L24.0 53.3 L30.0 52.7 L36.0 52.6 L42.0 53.1 L48.0 54.1 L54.0 55.5 L60.0 56.9 L66.0 58.0 L72.0 58.3 L78.0 57.7 L84.0 56.1 L90.0 53.9 L96.0 51.6 L96.0 59.6 L90.0 62.0 L84.0 64.1 L78.0 65.7 L72.0 66.3 L66.0 66.0 L60.0 65.0 L54.0 63.5 L48.0 62.1 L42.0 61.1 L36.0 60.6 L30.0 60.7 L24.0 61.3 L18.0 62.0 L12.0 62.6 Z" fill="#f2efe6"/><path d="M12.0 62.3 L18.0 62.9 L24.0 63.6 L30.0 64.1 L36.0 64.3 L42.0 63.8 L48.0 62.8 L54.0 61.4 L60.0 59.9 L66.0 58.8 L72.0 58.5 L78.0 59.2 L84.0 60.7 L90.0 62.9 L96.0 65.2 L96.0 73.2 L90.0 70.9 L84.0 68.7 L78.0 67.2 L72.0 66.5 L66.0 66.9 L60.0 67.9 L54.0 69.4 L48.0 70.8 L42.0 71.8 L36.0 72.3 L30.0 72.1 L24.0 71.6 L18.0 70.9 L12.0 70.3 Z" data-b="M12.0 62.3 L18.0 61.7 L24.0 61.0 L30.0 60.4 L36.0 60.3 L42.0 60.8 L48.0 61.8 L54.0 63.2 L60.0 64.7 L66.0 65.7 L72.0 66.0 L78.0 65.4 L84.0 63.8 L90.0 61.7 L96.0 59.3 L96.0 67.4 L90.0 69.7 L84.0 71.9 L78.0 73.4 L72.0 74.1 L66.0 73.7 L60.0 72.7 L54.0 71.2 L48.0 69.8 L42.0 68.8 L36.0 68.3 L30.0 68.5 L24.0 69.0 L18.0 69.7 L12.0 70.3 Z" fill="#d6262f"/><path d="M12.0 16.0 L14.4 16.6 L16.9 17.3 L19.3 17.8 L21.7 18.0 L24.1 17.5 L26.6 16.5 L29.0 15.1 L31.4 13.6 L33.9 12.6 L36.3 12.2 L38.7 12.9 L41.1 14.4 L43.6 16.6 L46.0 18.9 L46.0 49.8 L43.6 47.5 L41.1 45.3 L38.7 43.7 L36.3 43.1 L33.9 43.4 L31.4 44.5 L29.0 45.9 L26.6 47.3 L24.1 48.4 L21.7 48.8 L19.3 48.7 L16.9 48.2 L14.4 47.5 L12.0 46.9 Z" data-b="M12.0 16.0 L14.4 15.4 L16.9 14.7 L19.3 14.2 L21.7 14.0 L24.1 14.5 L26.6 15.5 L29.0 16.9 L31.4 18.4 L33.9 19.4 L36.3 19.8 L38.7 19.1 L41.1 17.6 L43.6 15.4 L46.0 13.1 L46.0 43.9 L43.6 46.2 L41.1 48.4 L38.7 50.0 L36.3 50.6 L33.9 50.3 L31.4 49.2 L29.0 47.8 L26.6 46.4 L24.1 45.3 L21.7 44.9 L19.3 45.0 L16.9 45.5 L14.4 46.2 L12.0 46.9 Z" fill="#1d2a4a"/><path d="M15.0 21.0 L17.1 21.2 L19.1 21.5 L21.2 21.7 L23.3 21.7 L25.4 21.5 L27.4 21.2 L29.5 20.7 L31.6 20.2 L33.6 19.8 L35.7 19.7 L37.8 19.9 L39.9 20.4 L41.9 21.2 L44.0 22.0" data-b="M15.0 21.0 L17.1 20.8 L19.1 20.5 L21.2 20.3 L23.3 20.3 L25.4 20.5 L27.4 20.8 L29.5 21.3 L31.6 21.8 L33.6 22.2 L35.7 22.3 L37.8 22.1 L39.9 21.6 L41.9 20.8 L44.0 20.0" fill="none" stroke="#f2efe6" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="0 5.5"/><path d="M15.0 27.5 L17.1 27.7 L19.1 28.0 L21.2 28.2 L23.3 28.2 L25.4 28.0 L27.4 27.7 L29.5 27.2 L31.6 26.7 L33.6 26.3 L35.7 26.2 L37.8 26.4 L39.9 26.9 L41.9 27.7 L44.0 28.5" data-b="M15.0 27.5 L17.1 27.3 L19.1 27.0 L21.2 26.8 L23.3 26.8 L25.4 27.0 L27.4 27.3 L29.5 27.8 L31.6 28.3 L33.6 28.7 L35.7 28.8 L37.8 28.6 L39.9 28.1 L41.9 27.3 L44.0 26.5" fill="none" stroke="#f2efe6" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="0 5.5"/><path d="M15.0 34.0 L17.1 34.2 L19.1 34.5 L21.2 34.7 L23.3 34.7 L25.4 34.5 L27.4 34.2 L29.5 33.7 L31.6 33.2 L33.6 32.8 L35.7 32.7 L37.8 32.9 L39.9 33.4 L41.9 34.2 L44.0 35.0" data-b="M15.0 34.0 L17.1 33.8 L19.1 33.5 L21.2 33.3 L23.3 33.3 L25.4 33.5 L27.4 33.8 L29.5 34.3 L31.6 34.8 L33.6 35.2 L35.7 35.3 L37.8 35.1 L39.9 34.6 L41.9 33.8 L44.0 33.0" fill="none" stroke="#f2efe6" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="0 5.5"/></svg></div>
+          <div class="flagpole r" aria-hidden="true"><svg viewBox="0 0 100 300" preserveAspectRatio="xMidYMax meet"><rect x="8" y="10" width="4" height="290" rx="2" fill="#c9a24a"/><circle cx="10" cy="8" r="5" fill="#e8c15a"/><path d="M12.0 16.0 L18.0 16.6 L24.0 17.3 L30.0 17.8 L36.0 18.0 L42.0 17.5 L48.0 16.5 L54.0 15.1 L60.0 13.6 L66.0 12.6 L72.0 12.2 L78.0 12.9 L84.0 14.4 L90.0 16.6 L96.0 18.9 L96.0 72.9 L90.0 70.6 L84.0 68.4 L78.0 66.9 L72.0 66.2 L66.0 66.6 L60.0 67.6 L54.0 69.1 L48.0 70.5 L42.0 71.5 L36.0 72.0 L30.0 71.8 L24.0 71.3 L18.0 70.6 L12.0 70.0 Z" data-b="M12.0 16.0 L18.0 15.4 L24.0 14.7 L30.0 14.2 L36.0 14.0 L42.0 14.5 L48.0 15.5 L54.0 16.9 L60.0 18.4 L66.0 19.4 L72.0 19.8 L78.0 19.1 L84.0 17.6 L90.0 15.4 L96.0 13.1 L96.0 67.1 L90.0 69.4 L84.0 71.6 L78.0 73.1 L72.0 73.8 L66.0 73.4 L60.0 72.4 L54.0 70.9 L48.0 69.5 L42.0 68.5 L36.0 68.0 L30.0 68.2 L24.0 68.7 L18.0 69.4 L12.0 70.0 Z" fill="#1d2a4a"/><path d="M12.0 36.0 L18.0 36.6 L24.0 37.3 L30.0 37.8 L36.0 38.0 L42.0 37.5 L48.0 36.5 L54.0 35.1 L60.0 33.6 L66.0 32.6 L72.0 32.2 L78.0 32.9 L84.0 34.4 L90.0 36.6 L96.0 38.9 L96.0 52.9 L90.0 50.6 L84.0 48.4 L78.0 46.9 L72.0 46.2 L66.0 46.6 L60.0 47.6 L54.0 49.1 L48.0 50.5 L42.0 51.5 L36.0 52.0 L30.0 51.8 L24.0 51.3 L18.0 50.6 L12.0 50.0 Z" data-b="M12.0 36.0 L18.0 35.4 L24.0 34.7 L30.0 34.2 L36.0 34.0 L42.0 34.5 L48.0 35.5 L54.0 36.9 L60.0 38.4 L66.0 39.4 L72.0 39.8 L78.0 39.1 L84.0 37.6 L90.0 35.4 L96.0 33.1 L96.0 47.1 L90.0 49.4 L84.0 51.6 L78.0 53.1 L72.0 53.8 L66.0 53.4 L60.0 52.4 L54.0 50.9 L48.0 49.5 L42.0 48.5 L36.0 48.0 L30.0 48.2 L24.0 48.7 L18.0 49.4 L12.0 50.0 Z" fill="#ff7a1a"/><path d="M12.0 67.0 L18.0 67.6 L24.0 68.3 L30.0 68.8 L36.0 69.0 L42.0 68.5 L48.0 67.5 L54.0 66.1 L60.0 64.6 L66.0 63.6 L72.0 63.2 L78.0 63.9 L84.0 65.4 L90.0 67.6 L96.0 69.9 L96.0 74.9 L90.0 72.6 L84.0 70.4 L78.0 68.9 L72.0 68.2 L66.0 68.6 L60.0 69.6 L54.0 71.1 L48.0 72.5 L42.0 73.5 L36.0 74.0 L30.0 73.8 L24.0 73.3 L18.0 72.6 L12.0 72.0 Z" data-b="M12.0 67.0 L18.0 66.4 L24.0 65.7 L30.0 65.2 L36.0 65.0 L42.0 65.5 L48.0 66.5 L54.0 67.9 L60.0 69.4 L66.0 70.4 L72.0 70.8 L78.0 70.1 L84.0 68.6 L90.0 66.4 L96.0 64.1 L96.0 69.1 L90.0 71.4 L84.0 73.6 L78.0 75.1 L72.0 75.8 L66.0 75.4 L60.0 74.4 L54.0 72.9 L48.0 71.5 L42.0 70.5 L36.0 70.0 L30.0 70.2 L24.0 70.7 L18.0 71.4 L12.0 72.0 Z" fill="#e8c15a"/></svg></div>
+          <div class="speaker" id="spkB"><svg class="tk-svg" viewBox="0 0 400 430" overflow="visible">
+  <defs>
+    <radialGradient id="bPump" cx="42%" cy="35%" r="70%"><stop offset="0" stop-color="#ffab45"/><stop offset=".55" stop-color="#f27a12"/><stop offset="1" stop-color="#b44d06"/></radialGradient>
+    <radialGradient id="bGlow" cx="50%" cy="50%" r="60%"><stop offset="0" stop-color="#fff2a8"/><stop offset=".5" stop-color="#ffb52e"/><stop offset="1" stop-color="#e05a00"/></radialGradient>
+    <linearGradient id="bHairG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe08a"/><stop offset="1" stop-color="#e8a83a"/></linearGradient>
+    <linearGradient id="bSuit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d2a4a"/><stop offset="1" stop-color="#121b33"/></linearGradient>
+  </defs>
+  <g stroke="#120b06" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <!-- back arm (viewer left) -->
+    <g id="bArmL">
+      <path d="M118 300 C 96 300 84 318 82 340 L 78 410 L 116 414 L 124 344 Z" fill="url(#bSuit)"/>
+      <g id="bForeL">
+        <path d="M78 400 L 118 404 L 114 470 L 80 468 Z" fill="url(#bSuit)"/><rect x="78" y="460" width="38" height="12" rx="3" fill="#f4f1ea"/>
+        <g id="bHandL"><path d="M74 470 C 66 482 70 504 84 508 C 92 518 104 516 110 508 C 120 506 124 494 120 484 C 128 478 126 468 118 468 Z" fill="#fbfbf7"/><path d="M88 486 v12 M98 486 v14 M108 484 v12" fill="none" stroke-width="2.5"/></g>
+      </g>
+    </g>
+    <!-- torso: navy suit, white shirt, long red tie -->
+    <path d="M110 296 C 140 276 260 276 290 296 C 306 320 312 380 312 430 L 88 430 C 88 380 94 320 110 296 Z" fill="url(#bSuit)"/>
+    <path d="M170 282 L 200 360 L 230 282 Z" fill="#f4f1ea"/>
+    <path d="M150 284 L 200 372 L 176 300 Z M250 284 L 200 372 L 224 300 Z" fill="#26355c"/>
+    <g id="bTie"><path d="M190 290 L 210 290 L 214 302 L 222 420 L 200 438 L 178 420 L 186 302 Z" fill="#d6262f"/><path d="M186 320 L 216 312 M184 348 L 218 340 M182 376 L 219 368 M181 404 L 220 396" stroke="#8f121a" stroke-width="5"/><path d="M188 286 L 212 286 L 210 302 L 190 302 Z" fill="#b51d25"/></g>
+    <circle cx="258" cy="320" r="7" fill="#e8c15a" stroke-width="2.5"/>
+    <!-- front arm (viewer right) -->
+    <g id="bArmR">
+      <path d="M282 300 C 304 300 316 318 318 340 L 322 410 L 284 414 L 276 344 Z" fill="url(#bSuit)"/>
+      <g id="bForeR">
+        <path d="M322 400 L 282 404 L 286 470 L 320 468 Z" fill="url(#bSuit)"/><rect x="284" y="460" width="38" height="12" rx="3" fill="#f4f1ea"/>
+        <g id="bHandR">
+          <g id="bPalmR"><path d="M326 470 C 334 482 330 504 316 508 C 308 518 296 516 290 508 C 280 506 276 494 280 484 C 272 478 274 468 282 468 Z" fill="#fbfbf7"/><path d="M312 486 v12 M302 486 v14 M292 484 v12" fill="none" stroke-width="2.5"/></g>
+          <g id="bPointR" opacity="0"><path d="M282 470 C 276 482 280 500 292 504 L 314 504 C 322 500 324 488 318 480 L 318 470 Z" fill="#fbfbf7"/><path d="M300 470 L 300 420 C 300 412 312 412 312 420 L 312 470" fill="#fbfbf7"/></g>
+          <g id="bThumbR" opacity="0"><path d="M282 470 C 276 482 280 504 296 508 L 318 506 C 326 500 326 482 318 474 L 300 470 Z" fill="#fbfbf7"/><path d="M296 472 L 292 438 C 292 428 306 428 306 438 L 308 472" fill="#fbfbf7"/><path d="M286 486 h28 M286 496 h28" fill="none" stroke-width="2.5"/></g>
+        </g>
+      </g>
+    </g>
+    <!-- head: a jack-o'-lantern with a famous comb-over -->
+    <g id="bHead">
+      <path d="M200 300 C 120 304 66 258 66 186 C 66 116 122 66 200 66 C 278 66 334 116 334 186 C 334 258 280 304 200 300 Z" fill="url(#bPump)"/>
+      <path d="M200 70 C 170 110 166 250 200 298 M200 70 C 230 110 234 250 200 298 M200 70 C 130 90 112 250 150 292 M200 70 C 270 90 288 250 250 292" fill="none" stroke="#c45c0a" stroke-width="3" opacity=".7"/>
+      <!-- carved face, glowing -->
+      <g id="bEyes"><path d="M120 156 L 176 174 L 150 200 Z" fill="url(#bGlow)"/><path d="M280 156 L 224 174 L 250 200 Z" fill="url(#bGlow)"/></g>
+      <path d="M112 142 L 178 160 M288 142 L 222 160" fill="none" stroke-width="7"/>
+      <path d="M200 198 L 188 222 L 212 222 Z" fill="url(#bGlow)"/>
+      <g id="bMouth"><path d="M118 238 C 150 252 250 252 282 238 C 276 268 246 284 200 284 C 154 284 124 268 118 238 Z" fill="url(#bGlow)"/>
+        <path d="M150 248 L 160 262 L 170 250 Z M190 252 L 200 266 L 210 252 Z M230 250 L 240 262 L 250 248 Z" fill="#c45c0a" stroke-width="2.5"/></g>
+      <!-- stem peeking out -->
+      <path d="M192 74 C 190 56 196 44 210 38 C 214 50 210 62 210 74 Z" fill="#4c7a2a"/>
+      <!-- the hair -->
+      <g id="bHair">
+        <path d="M70 168 C 58 108 104 52 186 48 C 252 46 318 70 340 120 C 348 140 344 160 336 174 C 324 140 296 116 250 108 C 210 102 170 110 140 128 C 110 146 86 160 70 168 Z" fill="url(#bHairG)"/>
+        <path d="M100 118 C 150 82 230 76 300 104 M90 140 C 140 108 210 98 280 112 M120 92 C 170 70 240 70 290 86" fill="none" stroke="#c9862a" stroke-width="3"/>
+        <path d="M330 120 C 356 112 372 124 366 146 C 358 136 346 132 336 138 Z" fill="url(#bHairG)"/>
+      </g>
+    </g>
+    <g id="bFolder" opacity="0">
+      <rect x="86" y="214" width="228" height="170" rx="8" fill="#1d2a4a"/>
+      <rect x="98" y="224" width="204" height="150" rx="3" fill="#f6f1e2"/>
+      <text x="200" y="250" text-anchor="middle" font-family="Special Elite, Courier New, monospace" font-size="15" fill="#1d2a4a" stroke="none">EXECUTIVE ORDER</text>
+      <path d="M116 266 h168 M116 280 h150 M116 294 h160" stroke="#8a8f9c" stroke-width="3"/>
+      <path class="sig" d="M120 344 C 130 310 142 362 150 330 C 156 308 166 358 176 326 C 184 304 192 356 202 324 C 210 300 220 352 230 322 C 238 302 248 350 262 318 C 270 302 280 330 290 322" fill="none" stroke="#111" stroke-width="5"/>
+      <path d="M74 300 C 64 312 68 334 82 338 C 90 348 102 346 108 338 C 118 336 122 324 118 314 C 126 308 124 298 116 298 Z" fill="#fbfbf7"/>
+      <path d="M326 300 C 336 312 332 334 318 338 C 310 348 298 346 292 338 C 282 336 278 324 282 314 C 274 308 276 298 284 298 Z" fill="#fbfbf7"/>
+    </g>
+  </g>
+</svg>
+</div>
+          <div class="podium"><svg viewBox="0 0 300 260" overflow="visible" aria-hidden="true">
+ <g stroke="#120b06" stroke-width="4" stroke-linejoin="round"><path d="M20 20 L 280 20 L 262 250 L 38 250 Z" fill="#6b3f22"/><path d="M10 6 L 290 6 L 280 24 L 20 24 Z" fill="#8a5530"/>
+ <path d="M60 40 L 240 40 L 230 230 L 70 230 Z" fill="#5a331b" stroke-width="3"/>
+ <circle cx="150" cy="110" r="54" fill="#1d2a4a"/><circle cx="150" cy="110" r="46" fill="none" stroke="#e8c15a" stroke-width="3"/>
+ <path d="M128 112 C 110 96 100 100 96 112 C 108 108 116 114 128 118 Z M172 112 C 190 96 200 100 204 112 C 192 108 184 114 172 118 Z" fill="#0b0d12" stroke-width="2"/>
+ <ellipse cx="150" cy="116" rx="22" ry="18" fill="#f27a12"/><path d="M146 98 q4 -8 10 -6 l-2 8" fill="#4c7a2a" stroke-width="2"/>
+ <path id="bpSeal" d="M104 112 A 46 46 0 0 1 196 112" fill="none" stroke="none"/><text font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="8.6" letter-spacing=".5" fill="#e8c15a" stroke="none"><textPath href="#bpSeal" startOffset="50%" text-anchor="middle">OFFICE OF THE PUMPKIN</textPath></text>
+ <text x="150" y="196" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="18" letter-spacing="2" fill="#e8c15a" stroke="none">MHGA</text>
+ <path d="M150 6 C 148 -18 150 -30 150 -40" fill="none" stroke="#222" stroke-width="5"/><rect x="141" y="-60" width="18" height="26" rx="8" fill="#333"/></g></svg></div>
+          <div class="onair" id="onair"><span>●</span> ON AIR</div>
+          <p class="cap" id="capB" aria-live="polite">The briefing room is ready. Fill in your coin and hit “Endorse it”.</p>
+          <div class="play" id="playOv"><button class="pin" type="button" id="playBtn">▶ Watch Trumpkin’s endorsement</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="outbox" id="outbox">
+      <canvas id="eo" width="1080" height="1350" role="img" aria-label="Executive order image"></canvas>
+      <div class="share">
+        <p class="label">Share the speech</p>
+        <code id="shareLink"></code>
+        <div class="r">
+          <button class="pin blue sm" type="button" id="copyLink">Copy link</button>
+          <a class="pin blue sm" id="shareX" href="#" target="_blank" rel="noopener">Post on X</a>
+          <button class="pin ivory sm" type="button" id="saveEo">Save the order</button>
+          <button class="pin ivory sm" type="button" id="again">Play again</button>
+        </div>
+        <div class="pay">
+          <p>The free version has a <b>PARODY · PREVIEW</b> watermark. Pay <b id="price">10,000 $MHGA</b> to unlock the clean, signed order for your announcement.</p>
+          <button class="pin" type="button" id="payBtn">Unlock with $MHGA</button>
+          <p id="payState"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="facts">
+    <p class="eyebrow">Declassified</p>
+    <h2 class="h2">The <em>fact</em> sheet</h2>
+    <div class="sheet" id="sheet">
+      <span class="stamp" id="stamp">DECLASSIFIED</span>
+      <h3>FACT SHEET: $MHGA</h3>
+      <p class="sub">OFFICE OF THE PUMPKIN · FOR IMMEDIATE RELEASE</p>
+      <ol>
+        <li><span>Total supply, the biggest number, everybody agrees</span><b>1,000,000,000<span class="redact"></span></b></li>
+        <li><span>Buy and sell tax. Zero. Can you believe it?</span><b>0%<span class="redact"></span></b></li>
+        <li><span>Team tokens. None. Not one.</span><b>0<span class="redact"></span></b></li>
+        <li><span>Launch. Fair. The fairest. On pump.fun.</span><b>100%<span class="redact"></span></b></li>
+        <li><span>Pumpkins that are great again</span><b>ALL<span class="redact"></span></b></li>
+      </ol>
+      <div class="sign"><span>Signed,</span><svg viewBox="0 0 200 60"><path id="sheetSig" d="M6 40 C 18 6 26 54 36 26 C 44 6 52 50 62 22 C 70 4 80 50 90 20 C 98 4 108 48 120 22 C 128 6 138 44 150 22 C 160 8 170 36 194 18" fill="none" stroke="#1b1f2a" stroke-width="4" stroke-linecap="round"/></svg></div>
+    </div>
+  </section>
+
+  <section id="press">
+    <p class="eyebrow">Press conference</p>
+    <h2 class="h2">How do I <em>buy?</em> Great question.</h2>
+    <div class="press">
+      <div class="qa" data-q><span class="rep">🎤</span><p class="q"><small>Reporter, The Daily Candy</small>Mr. Pumpkin, how does an ordinary person buy $MHGA?</p></div>
+      <div class="qa a" data-q><p class="q">Very easy. The easiest. You get a <b>Solana wallet</b>: Phantom, Solflare, Backpack, beautiful wallets. Write the seed phrase on paper. Don’t tell anybody. Not even me.</p><span class="rep">🎃</span></div>
+      <div class="qa" data-q><span class="rep">📰</span><p class="q"><small>Reporter, Fake Gourd News</small>And then?</p></div>
+      <div class="qa a" data-q><p class="q">Then you buy some <b>SOL</b> on an exchange and send it to your wallet. People do it every day. Tremendous people.</p><span class="rep">🎃</span></div>
+      <div class="qa" data-q><span class="rep">📸</span><p class="q"><small>Reporter, Spooky Street Journal</small>Where is the token?</p></div>
+      <div class="qa a" data-q><p class="q">Open <b>pump.fun</b>, paste the official address, check every letter. There are fakes out there, very bad fakes.
+        <span class="ca"><code id="ca">Not live yet. Soon. Very soon.</code><button class="pin ivory sm" type="button" id="copyCa">Copy</button><a class="pin blue sm" href="https://pump.fun" target="_blank" rel="noopener">pump.fun ↗</a></span></p><span class="rep">🎃</span></div>
+      <div class="qa" data-q><span class="rep">🎙️</span><p class="q"><small>Reporter, The Haunted Herald</small>Any advice for buyers?</p></div>
+      <div class="qa a" data-q><p class="q">Only spend what you can lose. It’s a meme. It’s a pumpkin. Next question. Actually no more questions. Thank you!</p><span class="rep">🎃</span></div>
+    </div>
+  </section>
+
+  <section class="sendoff" aria-label="Make Halloween Great Again">
+    <canvas id="drop" aria-hidden="true"></canvas>
+    <svg class="bunting" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true" id="bunting"></svg>
+    <p class="big">Make Halloween<br><em>Great Again.</em></p>
+    <div class="cta"><a class="pin" href="#press">Buy $MHGA</a><a class="pin blue" href="#endorse">Get endorsed</a></div>
+    <footer>
+      <div>$MHGA · TRUMPKIN © 2026</div>
+      <p>Satire and parody. Trumpkin is a fictional cartoon pumpkin. This project is not affiliated with, endorsed by, or connected to Donald J. Trump, his campaigns, the White House, the U.S. government or the $TRUMP token. The seal shown is a parody seal, not the Presidential Seal. Endorsement speeches are generated from user input for entertainment. $MHGA is a memecoin with no intrinsic value and no expectation of financial return. Not financial advice.</p>
+    </footer>
+  </section>
+</main>
+
+<template id="tkTpl"><svg xmlns="http://www.w3.org/2000/svg" width="400" height="430" viewBox="0 0 400 430">
+  <defs>
+    <radialGradient id="cPump" cx="42%" cy="35%" r="70%"><stop offset="0" stop-color="#ffab45"/><stop offset=".55" stop-color="#f27a12"/><stop offset="1" stop-color="#b44d06"/></radialGradient>
+    <radialGradient id="cGlow" cx="50%" cy="50%" r="60%"><stop offset="0" stop-color="#fff2a8"/><stop offset=".5" stop-color="#ffb52e"/><stop offset="1" stop-color="#e05a00"/></radialGradient>
+    <linearGradient id="cHairG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe08a"/><stop offset="1" stop-color="#e8a83a"/></linearGradient>
+    <linearGradient id="cSuit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d2a4a"/><stop offset="1" stop-color="#121b33"/></linearGradient>
+  </defs>
+  <g stroke="#120b06" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <!-- back arm (viewer left) -->
+    <g id="cArmL">
+      <path d="M118 300 C 96 300 84 318 82 340 L 78 410 L 116 414 L 124 344 Z" fill="url(#cSuit)"/>
+      <g id="cForeL">
+        <path d="M78 400 L 118 404 L 114 470 L 80 468 Z" fill="url(#cSuit)"/><rect x="78" y="460" width="38" height="12" rx="3" fill="#f4f1ea"/>
+        <g id="cHandL"><path d="M74 470 C 66 482 70 504 84 508 C 92 518 104 516 110 508 C 120 506 124 494 120 484 C 128 478 126 468 118 468 Z" fill="#fbfbf7"/><path d="M88 486 v12 M98 486 v14 M108 484 v12" fill="none" stroke-width="2.5"/></g>
+      </g>
+    </g>
+    <!-- torso: navy suit, white shirt, long red tie -->
+    <path d="M110 296 C 140 276 260 276 290 296 C 306 320 312 380 312 430 L 88 430 C 88 380 94 320 110 296 Z" fill="url(#cSuit)"/>
+    <path d="M170 282 L 200 360 L 230 282 Z" fill="#f4f1ea"/>
+    <path d="M150 284 L 200 372 L 176 300 Z M250 284 L 200 372 L 224 300 Z" fill="#26355c"/>
+    <g id="cTie"><path d="M190 290 L 210 290 L 214 302 L 222 420 L 200 438 L 178 420 L 186 302 Z" fill="#d6262f"/><path d="M186 320 L 216 312 M184 348 L 218 340 M182 376 L 219 368 M181 404 L 220 396" stroke="#8f121a" stroke-width="5"/><path d="M188 286 L 212 286 L 210 302 L 190 302 Z" fill="#b51d25"/></g>
+    <circle cx="258" cy="320" r="7" fill="#e8c15a" stroke-width="2.5"/>
+    <!-- front arm (viewer right) -->
+    <g id="cArmR">
+      <path d="M282 300 C 304 300 316 318 318 340 L 322 410 L 284 414 L 276 344 Z" fill="url(#cSuit)"/>
+      <g id="cForeR">
+        <path d="M322 400 L 282 404 L 286 470 L 320 468 Z" fill="url(#cSuit)"/><rect x="284" y="460" width="38" height="12" rx="3" fill="#f4f1ea"/>
+        <g id="cHandR">
+          <g id="cPalmR"><path d="M326 470 C 334 482 330 504 316 508 C 308 518 296 516 290 508 C 280 506 276 494 280 484 C 272 478 274 468 282 468 Z" fill="#fbfbf7"/><path d="M312 486 v12 M302 486 v14 M292 484 v12" fill="none" stroke-width="2.5"/></g>
+          
+          
+        </g>
+      </g>
+    </g>
+    <!-- head: a jack-o'-lantern with a famous comb-over -->
+    <g id="cHead">
+      <path d="M200 300 C 120 304 66 258 66 186 C 66 116 122 66 200 66 C 278 66 334 116 334 186 C 334 258 280 304 200 300 Z" fill="url(#cPump)"/>
+      <path d="M200 70 C 170 110 166 250 200 298 M200 70 C 230 110 234 250 200 298 M200 70 C 130 90 112 250 150 292 M200 70 C 270 90 288 250 250 292" fill="none" stroke="#c45c0a" stroke-width="3" opacity=".7"/>
+      <!-- carved face, glowing -->
+      <g id="cEyes"><path d="M120 156 L 176 174 L 150 200 Z" fill="url(#cGlow)"/><path d="M280 156 L 224 174 L 250 200 Z" fill="url(#cGlow)"/></g>
+      <path d="M112 142 L 178 160 M288 142 L 222 160" fill="none" stroke-width="7"/>
+      <path d="M200 198 L 188 222 L 212 222 Z" fill="url(#cGlow)"/>
+      <g id="cMouth"><path d="M118 238 C 150 252 250 252 282 238 C 276 268 246 284 200 284 C 154 284 124 268 118 238 Z" fill="url(#cGlow)"/>
+        <path d="M150 248 L 160 262 L 170 250 Z M190 252 L 200 266 L 210 252 Z M230 250 L 240 262 L 250 248 Z" fill="#c45c0a" stroke-width="2.5"/></g>
+      <!-- stem peeking out -->
+      <path d="M192 74 C 190 56 196 44 210 38 C 214 50 210 62 210 74 Z" fill="#4c7a2a"/>
+      <!-- the hair -->
+      <g id="cHair">
+        <path d="M70 168 C 58 108 104 52 186 48 C 252 46 318 70 340 120 C 348 140 344 160 336 174 C 324 140 296 116 250 108 C 210 102 170 110 140 128 C 110 146 86 160 70 168 Z" fill="url(#cHairG)"/>
+        <path d="M100 118 C 150 82 230 76 300 104 M90 140 C 140 108 210 98 280 112 M120 92 C 170 70 240 70 290 86" fill="none" stroke="#c9862a" stroke-width="3"/>
+        <path d="M330 120 C 356 112 372 124 366 146 C 358 136 346 132 336 138 Z" fill="url(#cHairG)"/>
+      </g>
+    </g>
+    </g>
+</svg>
+</template>
+<div class="progress" id="prog" aria-hidden="true"></div>
+
+<script src="vendor/gsap.min.js"></script>
+<script>window.gsap||document.write('<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"><\/script>')</script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script>window.ScrollTrigger||document.write('<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"><\/script>')</script>
+<script src="vendor/SplitText.min.js"></script>
+<script>window.SplitText||document.write('<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"><\/script>')</script>
+<script src="vendor/lenis.min.js"></script>
+<script>window.Lenis||document.write('<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"><\/script>')</script>
+<script>
+(()=>{
+'use strict';
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const pick=a=>a[Math.random()*a.length|0];
+gsap.registerPlugin(ScrollTrigger,SplitText);
+
+/* ============ payment config: fill in at launch ============ */
+const PAY={
+  mint:'',                 // $MHGA mint address (pump.fun CA)
+  treasury:'',             // wallet that receives endorsement payments
+  amount:10000,            // whole tokens per clean order
+  decimals:6,              // pump.fun tokens use 6
+  rpc:'https://api.mainnet-beta.solana.com' // swap for a private RPC (Helius, QuickNode...) at launch
+};
+const CA='';               // official contract address for the press section
+
+/* ============ sound ============ */
+let AC=null,OUT=null,NOISE=null,soundOn=false,userMuted=false;
+function audio(){
+  if(!AC){try{
+    AC=new(window.AudioContext||window.webkitAudioContext)();OUT=AC.createGain();OUT.gain.value=.9;OUT.connect(AC.destination);
+    const len=AC.sampleRate*2;NOISE=AC.createBuffer(1,len,AC.sampleRate);const d=NOISE.getChannelData(0);for(let i=0;i<len;i++)d[i]=Math.random()*2-1;
+  }catch(e){AC=null}}
+  if(AC&&AC.state==='suspended')AC.resume().catch(()=>{});
+  return AC;
+}
+const live=()=>soundOn&&!userMuted&&AC;
+function sfx(fn){if(!live())return;try{fn(AC,AC.currentTime)}catch(e){}}
+const muteBtn=$('#mute');
+function showSound(){const on=soundOn&&!userMuted;muteBtn.classList.toggle('on',on);muteBtn.setAttribute('aria-pressed',String(on));muteBtn.setAttribute('aria-label',on?'Turn sound off':'Turn sound on')}
+try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
+const UNLOCK=['pointerdown','keydown','touchend'];
+function unlock(e){
+  if(e&&e.target&&e.target.closest&&e.target.closest('#mute'))return;
+  audio();if(!userMuted){soundOn=true;showSound()}
+  UNLOCK.forEach(t=>removeEventListener(t,unlock,true));
+}
+UNLOCK.forEach(t=>addEventListener(t,unlock,true));
+muteBtn.addEventListener('click',()=>{
+  audio();
+  if(soundOn&&!userMuted){userMuted=true;try{speechSynthesis.cancel()}catch(e){}}
+  else{userMuted=false;soundOn=true}
+  showSound();
+});
+function nsrc(a,type,f,q){const s=a.createBufferSource();s.buffer=NOISE;s.loop=true;const fl=a.createBiquadFilter();fl.type=type;fl.frequency.value=f;fl.Q.value=q;const g=a.createGain();g.gain.value=0;s.connect(fl);fl.connect(g);g.connect(OUT);return{s,g,fl}}
+function swell(a,t,{dur=2,f=1000,q=.7,gain=.25,att=.2}={}){const{s,g}=nsrc(a,'bandpass',f,q);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(gain,t+att);g.gain.setTargetAtTime(0,t+att+dur*.35,dur*.22);s.start(t,Math.random());s.stop(t+dur+1.2)}
+function claps(a,t,dur,n=36,gain=.16){const{s,g}=nsrc(a,'bandpass',1600,.9);const ts=[];for(let i=0;i<n;i++)ts.push(t+Math.random()*dur);ts.sort((x,y)=>x-y);g.gain.setValueAtTime(0,t);ts.forEach((c,i)=>{const fade=1-i/n*.6;g.gain.setValueAtTime(gain*fade*rnd(.4,1),c);g.gain.setTargetAtTime(0,c+.004,.018)});s.start(t,Math.random());s.stop(t+dur+.4)}
+function whistle(a,s){const o=a.createOscillator(),g=a.createGain();o.type='sine';const f=rnd(1900,2600);o.frequency.setValueAtTime(f,s);o.frequency.linearRampToValueAtTime(f*1.3,s+.22);o.frequency.linearRampToValueAtTime(f*.9,s+.6);g.gain.setValueAtTime(0,s);g.gain.linearRampToValueAtTime(.045,s+.05);g.gain.linearRampToValueAtTime(0,s+.65);o.connect(g);g.connect(OUT);o.start(s);o.stop(s+.7)}
+const S={
+  blip(dur,pitch){sfx((a,t)=>{
+    const o=a.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(pitch,t);o.frequency.linearRampToValueAtTime(pitch*rnd(.82,1.15),t+dur);
+    const f1=a.createBiquadFilter();f1.type='peaking';f1.frequency.value=rnd(550,850);f1.Q.value=2.5;f1.gain.value=16;
+    const lp=a.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1500;
+    const g=a.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.16,t+.025);g.gain.setValueAtTime(.16,t+dur*.6);g.gain.linearRampToValueAtTime(0,t+dur);
+    o.connect(f1);f1.connect(lp);lp.connect(g);g.connect(OUT);o.start(t);o.stop(t+dur+.05);
+  })},
+  cheer(k=1){sfx((a,t)=>{swell(a,t,{dur:2.6*k,f:1000,q:.6,gain:.26,att:.25});swell(a,t+.08,{dur:2.2*k,f:2500,q:1.1,gain:.09,att:.3});claps(a,t+.1,2*k);for(let i=0;i<3;i++)whistle(a,t+rnd(.1,1.3))})},
+  laugh(){sfx((a,t)=>{const{s,g}=nsrc(a,'bandpass',750,1.6);g.gain.setValueAtTime(0,t);for(let i=0;i<10;i++){const c=t+i*.16+rnd(0,.03),k=1-i/12;g.gain.setValueAtTime(.02,c);g.gain.linearRampToValueAtTime(.3*k,c+.04);g.gain.linearRampToValueAtTime(.025,c+.13)}g.gain.linearRampToValueAtTime(0,t+1.8);s.start(t,Math.random());s.stop(t+2);claps(a,t+.3,1.2,14,.1)})},
+  ooh(){sfx((a,t)=>{[200,252,301,356].forEach(f=>{const o=a.createOscillator(),lp=a.createBiquadFilter(),g=a.createGain();o.type='sawtooth';o.frequency.setValueAtTime(f*1.12,t);o.frequency.linearRampToValueAtTime(f*.86,t+1.3);lp.type='lowpass';lp.frequency.value=650;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.035,t+.2);g.gain.linearRampToValueAtTime(0,t+1.4);o.connect(lp);lp.connect(g);g.connect(OUT);o.start(t);o.stop(t+1.5)});swell(a,t,{dur:1.2,f:600,q:.8,gain:.08,att:.2})})},
+  chant(){sfx((a,t)=>{for(let b=0;b<4;b++){const s=t+b*.42;[190,240,286,330,410].forEach(f=>{const o=a.createOscillator(),bp=a.createBiquadFilter(),g=a.createGain();o.type='sawtooth';o.frequency.value=f*rnd(.97,1.03);bp.type='bandpass';bp.frequency.value=800;bp.Q.value=1.2;g.gain.setValueAtTime(0,s);g.gain.linearRampToValueAtTime(.05,s+.04);g.gain.linearRampToValueAtTime(0,s+.28);o.connect(bp);bp.connect(g);g.connect(OUT);o.start(s);o.stop(s+.32)});claps(a,s+.05,.08,6,.22)}S.cheer(1.1)})},
+  shutter(){sfx((a,t)=>{const{s,g}=nsrc(a,'highpass',2600,.7);g.gain.setValueAtTime(.3,t);g.gain.setTargetAtTime(0,t+.012,.01);g.gain.setValueAtTime(.2,t+.07);g.gain.setTargetAtTime(0,t+.08,.01);s.start(t,Math.random());s.stop(t+.2)})},
+  thump(v=.5){sfx((a,t)=>{const o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(110,t);o.frequency.exponentialRampToValueAtTime(38,t+.25);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);o.connect(g);g.connect(OUT);o.start(t);o.stop(t+.32)})},
+  micTap(){S.thump(.35);setTimeout(()=>S.thump(.3),180);sfx((a,t)=>{const o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(2350,t+.4);o.frequency.linearRampToValueAtTime(2480,t+.9);g.gain.setValueAtTime(0,t+.4);g.gain.linearRampToValueAtTime(.025,t+.6);g.gain.linearRampToValueAtTime(0,t+.95);o.connect(g);g.connect(OUT);o.start(t+.4);o.stop(t+1)})},
+  scribble(dur=1.1){sfx((a,t)=>{const{s,g}=nsrc(a,'bandpass',3200,1.8);g.gain.setValueAtTime(0,t);for(let i=0;i<14;i++){const c=t+i*dur/14;g.gain.linearRampToValueAtTime(rnd(.05,.16),c+.02);g.gain.linearRampToValueAtTime(.01,c+dur/14)}g.gain.linearRampToValueAtTime(0,t+dur+.05);s.start(t,Math.random());s.stop(t+dur+.2)})},
+  step(){S.thump(.12)},
+  coin(){sfx((a,t)=>{[988,1319].forEach((f,i)=>{const o=a.createOscillator(),g=a.createGain();o.type='square';o.frequency.value=f;const s=t+i*.08;g.gain.setValueAtTime(.06,s);g.gain.exponentialRampToValueAtTime(.001,s+.3);o.connect(g);g.connect(OUT);o.start(s);o.stop(s+.32)})})}
+};
+
+/* ============ text-to-speech (endorsements) ============ */
+const ttsOK=()=>'speechSynthesis'in window&&typeof SpeechSynthesisUtterance!=='undefined';
+let VOICE=null;
+function pickVoice(){
+  try{const vs=speechSynthesis.getVoices();if(!vs.length)return null;
+    const us=vs.filter(v=>/^en[-_]US/i.test(v.lang)),pool=us.length?us:vs.filter(v=>/^en/i.test(v.lang));
+    for(const n of['Fred','Alex','Aaron','Reed','Rocko','Eddy','Microsoft Guy','Microsoft David','Google US English','Daniel'])
+      {const v=pool.find(v=>v.name.includes(n));if(v)return v}
+    return pool[0]||null}catch(e){return null}
+}
+if(ttsOK()){VOICE=pickVoice();try{speechSynthesis.addEventListener('voiceschanged',()=>{VOICE=pickVoice()})}catch(e){}}
+
+/* ============ the pumpkin rig ============ */
+const POSES={
+  rest:  {aL:8,  fL:0,  aR:-8,  fR:0,   hand:'palm'},
+  wave:  {aL:8,  fL:0,  aR:-142,fR:-18, hand:'palm', loop:R=>gsap.to(R.foreR,{rotation:16,duration:.24,repeat:-1,yoyo:true,ease:'sine.inOut',delay:.45})},
+  wide:  {aL:62, fL:30, aR:-62, fR:-30, hand:'palm'},
+  shrug: {aL:42, fL:72, aR:-42, fR:-72, hand:'palm', head:-7},
+  point: {aL:8,  fL:0,  aR:-78, fR:-26, hand:'point',loop:R=>gsap.to(R.foreR,{rotation:-40,duration:.32,repeat:-1,yoyo:true,ease:'power2.inOut',delay:.45})},
+  one:   {aL:8,  fL:0,  aR:-156,fR:-6,  hand:'point'},
+  thumbs:{aL:22, fL:30, aR:-42, fR:-112,hand:'thumb', loop:R=>gsap.to(R.armR,{rotation:-52,duration:.3,repeat:-1,yoyo:true,ease:'sine.inOut',delay:.45})},
+  chop:  {aL:8,  fL:0,  aR:-96, fR:12,  hand:'palm', loop:R=>gsap.to(R.armR,{rotation:-70,duration:.16,repeat:-1,yoyo:true,ease:'power2.in',repeatDelay:.12,delay:.45})},
+  fist:  {aL:8,  fL:0,  aR:-150,fR:-34, hand:'thumb', loop:R=>gsap.to(R.armR,{rotation:-162,duration:.21,repeat:-1,yoyo:true,ease:'power2.inOut',delay:.45})},
+  both:  {aL:120,fL:30, aR:-120,fR:-30, hand:'palm', loop:R=>gsap.to([R.foreL,R.foreR],{rotation:i=>i?-12:12,duration:.3,repeat:-1,yoyo:true,ease:'sine.inOut',delay:.45})}
+};
+function makeRig(p){
+  const g=id=>document.getElementById(p+id);
+  const R={svg:document.querySelector(`#${p==='h'?'spkH':'spkB'} svg`),armL:g('ArmL'),foreL:g('ForeL'),armR:g('ArmR'),foreR:g('ForeR'),head:g('Head'),mouth:g('Mouth'),eyes:g('Eyes'),hair:g('Hair'),palm:g('PalmR'),point:g('PointR'),thumb:g('ThumbR'),folder:g('Folder')};
+  R.sig=R.folder.querySelector('.sig');
+  gsap.set(R.armL,{svgOrigin:'104 314'});gsap.set(R.foreL,{svgOrigin:'98 404'});
+  gsap.set(R.armR,{svgOrigin:'296 314'});gsap.set(R.foreR,{svgOrigin:'302 404'});
+  gsap.set(R.head,{svgOrigin:'200 292'});gsap.set(R.mouth,{svgOrigin:'200 240'});
+  gsap.set(R.hair,{svgOrigin:'84 164'});gsap.set(R.eyes,{svgOrigin:'200 178'});
+  gsap.set(R.folder,{svgOrigin:'200 214',scale:.8,y:86});
+  let handNow='palm',loopTw=null;
+  R.hand=h=>{if(h===handNow)return;handNow=h;gsap.to(R.palm,{opacity:h==='palm'?1:0,duration:.06});gsap.to(R.point,{opacity:h==='point'?1:0,duration:.06});gsap.to(R.thumb,{opacity:h==='thumb'?1:0,duration:.06})};
+  R.pose=(name,d=.45)=>{
+    const P=POSES[name]||POSES.rest;if(loopTw){loopTw.kill();loopTw=null}
+    const o={duration:d,ease:'back.out(1.5)',overwrite:'auto'};
+    gsap.to(R.armL,{...o,rotation:P.aL});gsap.to(R.foreL,{...o,rotation:P.fL});
+    gsap.to(R.armR,{...o,rotation:P.aR});gsap.to(R.foreR,{...o,rotation:P.fR});
+    R.hand(P.hand||'palm');
+    gsap.to(R.head,{rotation:P.head||0,duration:d,ease:'sine.inOut'});
+    if(P.loop&&!RM)loopTw=P.loop(R);
+  };
+  R.flap=dur=>{gsap.timeline().to(R.mouth,{scaleY:rnd(1.08,1.3),scaleX:rnd(.97,1.05),duration:dur*.4,ease:'power2.out'}).to(R.mouth,{scaleY:.5,scaleX:1,duration:dur*.6,ease:'power2.in'})};
+  R.shut=()=>gsap.to(R.mouth,{scaleY:1,scaleX:1,duration:.25,ease:'back.out(2)'});
+  R.nod=()=>{const r=rnd(-6,6);gsap.to(R.head,{rotation:r,duration:.35,ease:'sine.inOut'});gsap.to(R.hair,{rotation:-r*.9,duration:.9,ease:'elastic.out(1,.35)',delay:.05})};
+  R.flop=()=>{gsap.timeline().to(R.hair,{rotation:-24,duration:.18,ease:'power2.out'}).to(R.hair,{rotation:0,duration:1.1,ease:'elastic.out(1.1,.28)'})};
+  R.squint=()=>gsap.to(R.eyes,{scaleY:.45,duration:.12,yoyo:true,repeat:1,repeatDelay:.6});
+  R.pose('rest',0);
+  if(!RM){
+    gsap.to(R.head,{y:-3,duration:1.7,repeat:-1,yoyo:true,ease:'sine.inOut'});
+    (function flick(){gsap.to(R.eyes,{opacity:rnd(.62,1),duration:.07,onComplete:()=>gsap.delayedCall(rnd(.05,.5),flick)})})();
+  }
+  return R;
+}
+
+/* ============ captions ============ */
+function capSet(el,text){
+  el.textContent='';const ln=document.createElement('span');ln.className='ln';el.appendChild(ln);
+  return text.split(/\s+/).filter(Boolean).map((w,i)=>{if(i)ln.appendChild(document.createTextNode(' '));const s=document.createElement('span');s.textContent=w;s.style.opacity='.3';s.style.transition='opacity .12s';ln.appendChild(s);return s});
+}
+/* cartoon gibberish voice, mouth in sync with every syllable */
+async function babble(R,spans,tok,pitch=108){
+  for(let i=0;i<spans.length;i++){
+    if(tok&&tok.dead)return;
+    const w=spans[i].textContent;spans[i].style.opacity='1';
+    const syl=Math.max(1,Math.min(3,(w.toLowerCase().match(/[aeiouy]+/g)||[]).length));
+    for(let k=0;k<syl;k++){const d=rnd(.12,.17);R.flap(d);S.blip(d,pitch*rnd(.9,1.14));await sleep(d*1000+18)}
+    if(Math.random()<.22)R.nod();
+    await sleep(/[.!?]$/.test(w)?300:/[,;:]$/.test(w)?160:40);
+  }
+  R.shut();
+}
+/* real speech for endorsements; captions follow word boundaries when the browser reports them */
+function ttsLine(R,spans,text,tok){return new Promise(res=>{
+  const spoken=text.replace(/\$(?=[A-Za-z0-9])/g,'');
+  const offs=[];spoken.replace(/\S+/g,(m,o)=>{offs.push(o);return m});
+  let done=false,boundary=false,i=0,flapping=true;
+  let started=false;
+  const fin=(ok=true)=>{if(done)return;done=true;flapping=false;clearTimeout(safety);clearTimeout(nostart);clearInterval(tick);if(ok)spans.forEach(s=>s.style.opacity='1');R.shut();tok.cancel=null;res(ok)};
+  const nostart=setTimeout(()=>{if(!started){try{speechSynthesis.cancel()}catch(e){}fin(false)}},2600);
+  const u=new SpeechSynthesisUtterance(spoken);
+  if(VOICE){u.voice=VOICE;u.lang=VOICE.lang}else u.lang='en-US';
+  u.pitch=.72;u.rate=1;u.volume=1;
+  u.onboundary=e=>{if(e.name&&e.name!=='word')return;boundary=true;let k=0;while(k+1<offs.length&&offs[k+1]<=e.charIndex)k++;for(let j=0;j<=k&&j<spans.length;j++)spans[j].style.opacity='1'};
+  u.onstart=()=>{started=true};u.onend=()=>fin();u.onerror=()=>fin(started);
+  const tick=setInterval(()=>{if(started&&!boundary&&i<spans.length)spans[i++].style.opacity='1'},340);
+  const safety=setTimeout(fin,spoken.length*95+4500);
+  tok.cancel=()=>{try{speechSynthesis.cancel()}catch(e){}fin()};
+  (async()=>{while(flapping){if(!started){await sleep(60);continue}const d=rnd(.1,.17);R.flap(d);await sleep(d*1000+rnd(10,70));if(Math.random()<.08)R.nod()}})();
+  try{speechSynthesis.speak(u)}catch(e){fin(false)}
+})}
+
+/* ============ hero: live from the lawn ============ */
+const hR=makeRig('h'),bR=makeRig('b');
+const capH=$('#capH');
+const HERO=[
+  {t:"Thank you. Thank you. What a crowd. The biggest crowd in the history of Halloween. Everybody says it.",g:'wave',r:'cheer'},
+  {t:"Nobody has ever seen a pumpkin like this. They said, sir, you're very orange. I said, thank you. Thank you very much.",g:'shrug',r:'laugh'},
+  {t:"We're going to build a candy wall. A big, beautiful candy wall. And the ghosts are going to pay for it.",g:'wide',r:'cheer'},
+  {t:"Halloween and the midterms. Same season. Is that a coincidence? I don't think so. Many people are saying it.",g:'point',r:'ooh'},
+  {t:"My opponent? Low energy. Very low energy. Folks, he's a turnip. Nobody wants a turnip. Sad!",g:'chop',r:'laugh'},
+  {t:"Under my plan every kid gets the full-size candy bars. Not the tiny ones. Nobody likes the tiny ones.",g:'thumbs',r:'cheer'},
+  {t:"People ask me, are you a vegetable? Actually I'm a fruit. I know fruits. I have the best fruits.",g:'one',r:'laugh'},
+  {t:"So say it with me. Make Halloween great again! M! H! G! A!",g:'fist',r:'chant'}
+];
+const CHY=["PUMPKIN CLAIMS RECORD CROWD, CROWD IS MOSTLY GHOSTS","CANDY WALL: GHOSTS REFUSE TO PAY","LOCAL TURNIP DEMANDS EQUAL AIRTIME","$MHGA TRENDING IN SEVERAL GRAVEYARDS","EXPERTS CONFIRM PUMPKIN IS 'VERY ORANGE'","EXECUTIVE ORDER DECLARES OCTOBER 'THE BEST MONTH, MAYBE EVER'","FACT CHECK: THE COMB-OVER IS REAL, THE STEM IS ALSO REAL","SQUASH LOBBY SILENT AFTER RALLY"];
+(function chyron(){
+  const r=$('#roll');const mk=()=>CHY.map(t=>`<span>${t}</span>`).join('');r.innerHTML=mk()+mk();
+  if(RM)return;gsap.to(r,{xPercent:-50,duration:70,ease:'none',repeat:-1});
+})();
+
+/* sky: stars, sweeping searchlights, bats */
+(function sky(){
+  const c=$('#sky'),x=c.getContext('2d');let W,H,dpr,stars=[],bats=[],nextBat=2;
+  function size(){dpr=Math.min(2,devicePixelRatio||1);W=c.clientWidth;H=c.clientHeight;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);
+    stars=Array.from({length:Math.round(W*H/6000)},()=>({x:Math.random()*W,y:Math.random()*H*.62,r:rnd(.4,1.5),p:Math.random()*6.3,s:rnd(.6,2)}))}
+  function bat(b,t){const f=Math.sin(t*14+b.p)*b.s*.9;x.save();x.translate(b.x,b.y);x.scale(b.s,b.s);x.beginPath();x.moveTo(0,0);x.quadraticCurveTo(-6,-6-f,-14,-2-f*1.4);x.quadraticCurveTo(-10,0,-8,3);x.quadraticCurveTo(-4,1,0,4);x.quadraticCurveTo(4,1,8,3);x.quadraticCurveTo(10,0,14,-2-f*1.4);x.quadraticCurveTo(6,-6-f,0,0);x.fill();x.restore()}
+  let vis=true;ScrollTrigger.create({trigger:'.hero',start:'top bottom',end:'bottom top',onToggle:s=>vis=s.isActive});
+  size();addEventListener('resize',size);
+  let last=0;
+  gsap.ticker.add(t=>{
+    if(!vis)return;const dt=Math.min(.05,t-last);last=t;
+    x.clearRect(0,0,W,H);
+    // searchlights from behind the house
+    x.globalCompositeOperation='lighter';
+    [[.18,1],[.82,-1],[.5,.6]].forEach(([px,dir],i)=>{
+      const a=-Math.PI/2+Math.sin(t*.25*(i?1.15:1)+i*2)*.42*dir,bx=W*px,by=H*.82,L=H*1.2,w=.045;
+      const gr=x.createLinearGradient(bx,by,bx+Math.cos(a)*L,by+Math.sin(a)*L);gr.addColorStop(0,'rgba(255,236,190,.16)');gr.addColorStop(1,'rgba(255,236,190,0)');
+      x.fillStyle=gr;x.beginPath();x.moveTo(bx,by);x.lineTo(bx+Math.cos(a-w)*L,by+Math.sin(a-w)*L);x.lineTo(bx+Math.cos(a+w)*L,by+Math.sin(a+w)*L);x.fill();
+    });
+    x.globalCompositeOperation='source-over';
+    for(const s of stars){x.globalAlpha=.35+.65*Math.abs(Math.sin(t*s.s+s.p));x.fillStyle='#fff8e6';x.fillRect(s.x,s.y,s.r,s.r)}
+    x.globalAlpha=1;x.fillStyle='#05070d';
+    if(!RM&&t>nextBat){nextBat=t+rnd(5,10);const dir=Math.random()<.5?1:-1,y0=rnd(.12,.45)*H,n=3+(Math.random()*4|0);for(let i=0;i<n;i++)bats.push({x:dir>0?-40-i*rnd(20,40):W+40+i*rnd(20,40),y:y0+rnd(-30,30),v:dir*rnd(90,150),s:rnd(.9,1.6),p:Math.random()*6,w:rnd(.6,1.4)})}
+    bats=bats.filter(b=>{b.x+=b.v*dt;b.y+=Math.sin(t*2+b.p)*.5*b.w;bat(b,t);return b.x>-120&&b.x<W+120});
+  });
+})();
+
+/* crowd: halloween rally-goers with phones, signs and hats */
+const crowd=(function(){
+  const c=$('#crowd'),x=c.getContext('2d');let W,H,dpr,ppl=[],fl=[];let hype=.15;
+  const SIGNS=['MHGA','🎃 4 PRESIDENT','CANDY WALL NOW','FULL SIZE BARS!','BOO-LIEVE'];
+  function size(){dpr=Math.min(2,devicePixelRatio||1);W=c.clientWidth;H=c.clientHeight;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);build()}
+  function build(){ppl=[];const rows=[{s:.62,y:.38,gap:30},{s:.8,y:.6,gap:40},{s:1,y:.86,gap:52}];
+    rows.forEach((r,ri)=>{const k=Math.max(.7,Math.min(1.25,H/170));const gap=r.gap*k;for(let px=-gap*Math.random();px<W+gap;px+=gap*rnd(.8,1.15)){
+      const roll=Math.random();
+      ppl.push({x:px,row:ri,base:H*r.y,sc:r.s*k,p:Math.random()*6.3,sp:rnd(5,8),hat:roll<.12?'witch':roll<.2?'pump':roll<.27?'ears':null,
+        phone:Math.random()<.22,sign:ri<2&&Math.random()<.07?pick(SIGNS):null,arms:Math.random()<.55,shade:rnd(0,1)})}});
+  }
+  function person(o,t){
+    const bob=Math.abs(Math.sin(t*o.sp+o.p))*(2+hype*9)*o.sc,yb=o.base-bob,s=o.sc,hr=11*s;
+    const col=`rgb(${8+o.shade*10|0},${11+o.shade*12|0},${22+o.shade*18|0})`;
+    x.fillStyle=col;
+    if(o.arms&&hype>.45){x.strokeStyle=col;x.lineWidth=6*s;x.lineCap='round';const lift=Math.sin(t*o.sp*1.3+o.p)*6*s;x.beginPath();x.moveTo(o.x-12*s,yb-6*s);x.lineTo(o.x-20*s,yb-42*s+lift);x.moveTo(o.x+12*s,yb-6*s);x.lineTo(o.x+20*s,yb-42*s-lift);x.stroke()}
+    x.beginPath();x.ellipse(o.x,yb+20*s,22*s,26*s,0,Math.PI,0);x.lineTo(o.x+22*s,H);x.lineTo(o.x-22*s,H);x.fill();
+    if(o.hat==='pump'){x.fillStyle='#d8650e';x.beginPath();x.ellipse(o.x,yb-14*s,hr*1.15,hr,0,0,7);x.fill();x.fillStyle='#ffd27a';x.fillRect(o.x-5*s,yb-17*s,3*s,3*s);x.fillRect(o.x+2*s,yb-17*s,3*s,3*s);x.fillRect(o.x-4*s,yb-11*s,8*s,2*s)}
+    else{x.beginPath();x.arc(o.x,yb-14*s,hr,0,7);x.fill()}
+    if(o.hat==='witch'){x.fillStyle=col;x.beginPath();x.moveTo(o.x-17*s,yb-21*s);x.lineTo(o.x+17*s,yb-21*s);x.lineTo(o.x+4*s,yb-50*s);x.closePath();x.fill()}
+    if(o.hat==='ears'){x.beginPath();x.moveTo(o.x-10*s,yb-20*s);x.lineTo(o.x-8*s,yb-34*s);x.lineTo(o.x-2*s,yb-24*s);x.moveTo(o.x+10*s,yb-20*s);x.lineTo(o.x+8*s,yb-34*s);x.lineTo(o.x+2*s,yb-24*s);x.fill()}
+    // rim light from the stage
+    x.strokeStyle='rgba(255,170,90,.18)';x.lineWidth=1.5;x.beginPath();x.arc(o.x,yb-14*s,hr,Math.PI*1.1,Math.PI*1.9);x.stroke();
+    if(o.phone){const py=yb-44*s+Math.sin(t*2+o.p)*2;x.fillStyle=col;x.fillRect(o.x+10*s,py+10*s,4*s,26*s);x.fillStyle='rgba(200,225,255,.95)';x.fillRect(o.x+6*s,py-2*s,12*s,18*s);x.fillStyle='rgba(200,225,255,.18)';x.beginPath();x.arc(o.x+12*s,py+7*s,18*s,0,7);x.fill()}
+    if(o.sign){const sw=x.measureText(o.sign).width+16,sy=yb-70*s+Math.sin(t*3+o.p)*(2+hype*6);x.fillStyle=col;x.fillRect(o.x-2,sy+16,4,60*s);x.save();x.translate(o.x,sy);x.rotate(Math.sin(t*2+o.p)*.06);x.fillStyle=o.shade>.5?'#f2efe6':'#d6262f';x.fillRect(-sw/2,-2,sw,22);x.fillStyle=o.shade>.5?'#1d2a4a':'#fff';x.fillText(o.sign,0,14);x.restore()}
+  }
+  let vis=true;ScrollTrigger.create({trigger:'.hero',start:'top bottom',end:'bottom top',onToggle:s=>vis=s.isActive});
+  size();addEventListener('resize',size);
+  gsap.ticker.add(t=>{
+    if(!vis)return;x.clearRect(0,0,W,H);x.font='800 11px "Libre Franklin",system-ui,sans-serif';x.textAlign='center';
+    for(const o of ppl)person(o,RM?0:t);
+    hype=Math.max(.12,hype*.992);
+    fl=fl.filter(f=>{f.l-=.06;if(f.l<=0)return false;const r=f.r*(1.4-f.l*.4);const g=x.createRadialGradient(f.x,f.y,0,f.x,f.y,r);g.addColorStop(0,`rgba(255,255,255,${f.l})`);g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.beginPath();x.arc(f.x,f.y,r,0,7);x.fill();x.strokeStyle=`rgba(255,255,255,${f.l*.8})`;x.lineWidth=2;x.beginPath();x.moveTo(f.x-r,f.y);x.lineTo(f.x+r,f.y);x.moveTo(f.x,f.y-r*.7);x.lineTo(f.x,f.y+r*.7);x.stroke();return true});
+  });
+  return{
+    hype:v=>{hype=Math.max(hype,v)},
+    flash:n=>{for(let i=0;i<n;i++)setTimeout(()=>{fl.push({x:rnd(.05,.95)*W,y:rnd(.15,.7)*H,r:rnd(18,34),l:1});S.shutter()},i*rnd(70,160))}
+  };
+})();
+function flashScreen(o=.22){if(RM)return;gsap.fromTo('#flashH',{opacity:o},{opacity:0,duration:.35,ease:'power2.out'})}
+function react(kind){
+  if(kind==='cheer'){S.cheer();crowd.hype(1);crowd.flash(6);flashScreen(.16);hR.flop()}
+  else if(kind==='laugh'){S.laugh();crowd.hype(.6);crowd.flash(2);hR.squint()}
+  else if(kind==='ooh'){S.ooh();crowd.hype(.35);crowd.flash(3)}
+  else if(kind==='chant'){S.chant();crowd.hype(1);for(let b=0;b<4;b++)setTimeout(()=>{crowd.flash(2);flashScreen(.12);hR.nod()},b*420);setTimeout(()=>hR.flop(),1700)}
+}
+
+/* white house dressing: lights on, bulbs chase, flags wave */
+const wins=$$('.wh .win');
+(function dress(){
+  const NS='http://www.w3.org/2000/svg',bulbs=$('#bulbs'),cols=['#ff7a1a','#9b5cff','#7dff6a','#ffcf3a'];
+  $$('#garland path').forEach(p=>{const L=p.getTotalLength();for(let d=6,i=0;d<L;d+=22,i++){const pt=p.getPointAtLength(d);const c=document.createElementNS(NS,'circle');c.setAttribute('cx',pt.x.toFixed(1));c.setAttribute('cy',(pt.y+4).toFixed(1));c.setAttribute('r','4.2');c.setAttribute('fill',cols[i%4]);c.setAttribute('class','bulb b'+(i%4));bulbs.appendChild(c)}});
+  if(RM)return;
+  [0,1,2,3].forEach(k=>gsap.to('.bulb.b'+k,{opacity:.25,duration:.45,repeat:-1,yoyo:true,ease:'steps(1)',delay:k*.22}));
+  $$('[data-b]').forEach(p=>gsap.to(p,{attr:{d:p.dataset.b},duration:rnd(.9,1.2),repeat:-1,yoyo:true,ease:'sine.inOut'}));
+  gsap.to('.moon',{y:-8,duration:4,repeat:-1,yoyo:true,ease:'sine.inOut'});
+})();
+
+/* ============ smooth scroll + chrome ============ */
+const lenis=RM?null:new Lenis({lerp:.1,smoothWheel:true});
+if(lenis){lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0)}
+const goTo=(el,off=-80)=>{const y=el===document.body?0:Math.max(0,el.getBoundingClientRect().top+scrollY+off);if(lenis){lenis.scrollTo(scrollY,{immediate:true});lenis.scrollTo(y,{duration:1.4})}else scrollTo({top:y,behavior:RM?'auto':'smooth'})};
+$$('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href');const el=id==='#top'?document.body:$(id);if(!el)return;e.preventDefault();goTo(el,id==='#top'?0:-70)}));
+(function nav(){const n=$('#nav');let ly=0;addEventListener('scroll',()=>{const y=scrollY;n.classList.toggle('solid',y>40);n.classList.toggle('hide',y>ly&&y>300);ly=y},{passive:true})})();
+gsap.to('#prog',{scaleX:1,ease:'none',scrollTrigger:{trigger:document.documentElement,start:'top top',end:'bottom bottom',scrub:.3}});
+
+/* ============ hero intro + speech loop ============ */
+let heroVis=true,heroHold=false;
+ScrollTrigger.create({trigger:'.hero',start:'top bottom',end:'bottom 20%',onToggle:s=>heroVis=s.isActive});
+const h1=new SplitText('.headline h1',{type:'chars,words',wordsClass:'hw'});
+const heroIntro=new Promise(res=>{
+  if(RM){wins.forEach(w=>w.setAttribute('opacity','.9'));return res()}
+  const tl=gsap.timeline({defaults:{ease:'power3.out'},onComplete:res});
+  tl.from('.moon',{scale:.5,opacity:0,duration:1.6},0)
+    .from('.wh',{yPercent:5,opacity:0,duration:1.3},0)
+    .to(wins,{attr:{opacity:.9},duration:.05},.7).to(wins,{attr:{opacity:.15},duration:.05},.78).to(wins,{attr:{opacity:.9},duration:.05},.86).to(wins,{attr:{opacity:.3},duration:.04},.95).to(wins,{attr:{opacity:.9},duration:.3},1.02)
+    .from('#bulbs',{opacity:0,duration:.6},1.1)
+    .from('.stage',{yPercent:100,duration:.9},.3)
+    .from('.flagpole',{scaleY:0,transformOrigin:'50% 100%',duration:.8,stagger:.1,ease:'back.out(1.4)'},.6)
+    .from('.hero .podium',{yPercent:120,duration:.9,ease:'back.out(1.3)'},.5)
+    .from(hR.svg,{y:'62%',duration:1.1,ease:'back.out(1.5)'},1.05)
+    .from(h1.chars,{yPercent:110,opacity:0,rotation:6,stagger:.025,duration:.8,ease:'back.out(2)'},.35)
+    .from('.headline p',{opacity:0,y:10,duration:.6},1)
+    .from('#crowd',{yPercent:30,opacity:0,duration:1},.4)
+    .from('.chyron',{yPercent:100,duration:.6},1.1)
+    .from('.live',{opacity:0,x:-20,duration:.5},1.25)
+    .add(()=>{hR.pose('both');react('cheer')},1.7)
+    .to({},{duration:1.6});
+});
+gsap.to('.headline',{yPercent:-50,opacity:0,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'45% top',scrub:true}});
+gsap.to('.wh',{yPercent:6,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+(async function heroLoop(){
+  await heroIntro;
+  if(RM){capSet(capH,HERO[0].t).forEach(s=>s.style.opacity='1');capH.style.opacity=1;return}
+  for(let k=0;;k++){
+    while(!heroVis||heroHold||document.hidden)await sleep(300);
+    const L=HERO[k%HERO.length];
+    hR.pose(L.g);
+    const spans=capSet(capH,L.t);gsap.to(capH,{opacity:1,duration:.25});
+    await babble(hR,spans,null,106);
+    react(L.r);
+    await sleep(1500);
+    hR.pose('rest');
+    gsap.to(capH,{opacity:0,duration:.3});
+    await sleep(700);
+  }
+})();
+
+/* ============ the endorsement ============ */
+const capB=$('#capB'),room=$('#room'),onair=$('#onair'),outbox=$('#outbox');
+const clean=(s,n)=>String(s||'').replace(/[\u0000-\u001f\u007f<>]/g,'').replace(/\s+/g,' ').trim().slice(0,n);
+const cap1=s=>s?s[0].toUpperCase()+s.slice(1):s;
+const stripDot=s=>s.replace(/[.!?\s]+$/,'');
+let style='hype';
+$$('[data-s]').forEach(b=>b.addEventListener('click',()=>{style=b.dataset.s;$$('[data-s]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)))}));
+function readForm(){
+  const n=clean($('#eName').value,24)||'Bonk';
+  let t=clean($('#eTick').value,12).replace(/\s/g,'').toUpperCase();
+  if(t&&t[0]!=='$')t='$'+t; if(!t||t==='$')t='$'+n.replace(/[^A-Za-z0-9]/g,'').slice(0,8).toUpperCase();
+  const c=['#eC1','#eC2','#eC3'].map(id=>stripDot(clean($(id).value,70))).filter(Boolean);
+  return{n,t,c,s:style};
+}
+function fillForm(d){$('#eName').value=d.n;$('#eTick').value=d.t;['#eC1','#eC2','#eC3'].forEach((id,i)=>$(id).value=d.c[i]||'');style=['hype','roast','rally'].includes(d.s)?d.s:'hype';$$('[data-s]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.s===style)))}
+function speech(d){
+  const N=d.n,T=d.t,C=d.c;const L=[];
+  if(d.s==='roast'){
+    L.push({t:`So they asked me to endorse ${N}. I said, who? Never heard of it. Then I looked. Wow.`,g:'shrug'});
+    L.push({t:`${T}. Interesting ticker. Very interesting. My nephew picked a better one, and he's a squash.`,g:'point',r:'laugh'});
+    const f=[c=>`They say, and I quote, ${c}. Sure. That's what they all say.`,c=>`${cap1(c)}? We'll see. We'll see what happens.`,c=>`And ${c}. Somebody has been eating too much candy.`];
+    C.forEach((c,i)=>L.push({t:f[i](c),g:pick(['chop','shrug','point']),r:i===C.length-1?'laugh':null}));
+    L.push({t:`But you know what? I like them. I like winners who look like losers. ${N}, you're a winner. Probably.`,g:'thumbs'});
+  }else if(d.s==='rally'){
+    L.push({t:`Hello, ${N} nation! What a crowd! What a crowd!`,g:'both',r:'cheer'});
+    L.push({t:`We're taking ${T} to the moon. And then past the moon. The moon is going to be very jealous.`,g:'one'});
+    const f=[c=>`${cap1(c)}! Say it louder!`,c=>`${cap1(c)}! Nobody can stop it!`,c=>`${cap1(c)}! They hate to see it!`];
+    C.forEach((c,i)=>L.push({t:f[i](c),g:pick(['fist','point','wide']),r:'cheer'}));
+    L.push({t:`${T} holders, you have pumpkin hands. Very orange, very strong hands.`,g:'thumbs'});
+  }else{
+    L.push({t:`Folks, I've been asked to talk about a coin. A tremendous coin. It's called ${N}.`,g:'wide'});
+    L.push({t:`${T}. Beautiful ticker. People see that ticker and they cry. Big, strong traders, crying.`,g:'point'});
+    const f=[c=>`They tell me, and I quote, ${c}. I believe it. Many people are saying it.`,c=>`And ${c}. Can you believe it? Nobody has ever done that.`,c=>`Also, ${c}. Fantastic. Very fantastic.`];
+    C.forEach((c,i)=>L.push({t:f[i](c),g:pick(['thumbs','chop','one','wide'])}));
+    L.push({t:`Is it the best coin ever? I'm a pumpkin, I don't know. But it's very, very good. Maybe the best.`,g:'shrug'});
+  }
+  L.push({t:`And that's why, today, I am signing an executive order. A beautiful order.`,g:'one'});
+  L.push({eo:true});
+  return L;
+}
+/* press flashes inside the briefing room */
+function roomFlash(n=5){for(let i=0;i<n;i++)setTimeout(()=>{const f=document.createElement('i');f.className='rflash';f.style.left=rnd(4,96)+'%';f.style.top=rnd(55,95)+'%';room.appendChild(f);S.shutter();gsap.fromTo(f,{scale:.2,opacity:1},{scale:1.4,opacity:0,duration:.4,ease:'power2.out',onComplete:()=>f.remove()})},i*rnd(70,170))}
+gsap.set(bR.svg,{x:'240%'});
+let running=null,lastData=null,paid=false,paidSig='',ttsAlive=true;
+async function line(R,text,g,tok,useTTS){
+  if(g)R.pose(g);
+  const spans=capSet(capB,text);
+  if(useTTS&&!userMuted&&ttsAlive){if(await ttsLine(R,spans,text,tok))return;ttsAlive=false;spans.forEach(s=>s.style.opacity='.3')}
+  await babble(R,spans,tok,104);
+}
+async function runEndorse(d,opt={}){
+  if(running){running.dead=true;running.cancel&&running.cancel()}
+  const tok={dead:false};running=tok;heroHold=true;lastData=d;
+  const useTTS=ttsOK()&&!userMuted&&(()=>{try{return speechSynthesis.getVoices().length>0||!!VOICE}catch(e){return false}})();ttsAlive=true;
+  if(useTTS){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u)}catch(e){}}
+  $('#playOv').classList.remove('on');outbox.classList.remove('on');
+  const r=room.getBoundingClientRect();if(opt.scroll!==false&&(r.top<60||r.bottom>innerHeight))goTo(room,-90);
+  capB.textContent='Ladies and gentlemen, the Pumpkin.';
+  gsap.killTweensOf(bR.svg);gsap.set(bR.svg,{x:'240%',y:0,rotation:0});
+  gsap.set([bR.armL,bR.armR],{opacity:1});gsap.set(bR.folder,{opacity:0});bR.pose('wave',.2);
+  await sleep(500);if(tok.dead)return;
+  onair.classList.add('on');S.thump(.3);
+  // the walk in, a little strut
+  const walk=gsap.timeline();
+  walk.to(bR.svg,{x:'0%',duration:RM?.01:1.5,ease:'power2.out'},0);
+  if(!RM)for(let i=0;i<5;i++)walk.to(bR.svg,{y:-10,rotation:i%2?2:-2,duration:.14,ease:'sine.out',onStart:S.step},i*.28).to(bR.svg,{y:0,duration:.14,ease:'sine.in'},i*.28+.14);
+  walk.set(bR.svg,{rotation:0});
+  await walk.then();if(tok.dead)return;
+  bR.pose('rest');S.micTap();bR.nod();await sleep(700);
+  for(const L of speech(d)){
+    if(tok.dead)return;
+    if(L.eo){await eoMoment(d,tok,useTTS);continue}
+    await line(bR,L.t,L.g,tok,useTTS);
+    if(tok.dead)return;
+    if(L.r==='laugh'){S.laugh();bR.squint()}else if(L.r==='cheer'){S.cheer(.7);roomFlash(3)}
+    bR.flop&&Math.random()<.4&&bR.flop();
+    await sleep(320);
+  }
+  if(tok.dead)return;
+  bR.pose('wave');capB.textContent='Thank you! Great coin. Great people. No questions!';
+  await drawEO(d);
+  outbox.classList.add('on');gsap.from(outbox,{y:30,opacity:0,duration:.7,ease:'power3.out'});
+  const link=shareURL(d);$('#shareLink').textContent=link;
+  $('#shareX').href='https://x.com/intent/post?text='+encodeURIComponent(`Trumpkin just endorsed ${d.t}. Tremendous. Executive order signed. 🎃 #MHGA`)+'&url='+encodeURIComponent(link);
+  ScrollTrigger.refresh();
+  setTimeout(()=>{if(running!==tok)return;onair.classList.remove('on');bR.pose('rest');const o=outbox.getBoundingClientRect();if(o.top>innerHeight*.8)goTo(outbox,-120)},1800);
+  running=null;heroHold=false;
+}
+async function eoMoment(d,tok,useTTS){
+  const R=bR;
+  R.pose('rest',.25);
+  await gsap.to(R.svg,{y:'30%',duration:.35,ease:'power2.in'}).then();
+  gsap.set([R.armL,R.armR],{opacity:0});gsap.set(R.folder,{opacity:1,rotation:0});
+  const L=R.sig.getTotalLength();gsap.set(R.sig,{strokeDasharray:L,strokeDashoffset:L});
+  S.thump(.25);
+  await gsap.to(R.svg,{y:'-14%',duration:.6,ease:'back.out(1.5)'}).then();
+  if(tok.dead)return;
+  capB.textContent='✍️  *signs it, very strongly*';
+  S.scribble(1.1);R.squint();
+  await gsap.to(R.sig,{strokeDashoffset:0,duration:RM?.01:1.1,ease:'none'}).then();
+  gsap.fromTo(R.folder,{rotation:-4},{rotation:4,duration:.18,repeat:5,yoyo:true,ease:'sine.inOut',onComplete:()=>gsap.to(R.folder,{rotation:0,duration:.2})});
+  roomFlash(8);S.cheer(.6);
+  await sleep(900);if(tok.dead)return;
+  await line(R,`${d.n} is hereby declared the Official Coin of Halloween. Effective immediately. Signed, sealed, very legal.`,null,tok,useTTS);
+  if(tok.dead)return;
+  roomFlash(4);await sleep(500);
+  await gsap.to(R.svg,{y:'30%',duration:.35,ease:'power2.in'}).then();
+  gsap.set(R.folder,{opacity:0});gsap.set([R.armL,R.armR],{opacity:1});
+  await gsap.to(R.svg,{y:'0%',duration:.5,ease:'back.out(1.6)'}).then();
+}
+function shareURL(d){const q=new URLSearchParams();q.set('n',d.n);q.set('t',d.t);d.c.forEach((c,i)=>q.set('c'+(i+1),c));q.set('s',d.s);return location.origin+location.pathname+'?'+q.toString()+'#endorse'}
+$('#eForm').addEventListener('submit',e=>{e.preventDefault();audio();if(!userMuted){soundOn=true;showSound()}paid=false;paidSig='';$('#payState').textContent='';runEndorse(readForm())});
+$('#playBtn').addEventListener('click',()=>{audio();if(!userMuted){soundOn=true;showSound()}runEndorse(readForm(),{scroll:false})});
+$('#again').addEventListener('click',()=>{if(lastData)runEndorse(lastData)});
+$('#copyLink').addEventListener('click',e=>copy($('#shareLink').textContent,e.currentTarget));
+function copy(text,btn){
+  const done=()=>{const o=btn.textContent;btn.textContent='Copied!';S.coin();setTimeout(()=>btn.textContent=o,1400)};
+  if(navigator.clipboard&&isSecureContext)navigator.clipboard.writeText(text).then(done,()=>fallback());else fallback();
+  function fallback(){const t=document.createElement('textarea');t.value=text;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();try{document.execCommand('copy');done()}catch(e){}t.remove()}
+}
+/* shared link: prefill, take the visitor to the briefing room */
+(function fromLink(){
+  const q=new URLSearchParams(location.search);const n=clean(q.get('n'),24);if(!n)return;
+  fillForm({n,t:clean(q.get('t'),12)||'',c:['c1','c2','c3'].map(k=>stripDot(clean(q.get(k),70))).filter(Boolean),s:q.get('s')});
+  $('#playOv').classList.add('on');capB.textContent=`${n} has an endorsement waiting.`;
+  heroIntro.then(()=>setTimeout(()=>goTo($('#endorse'),-60),400));
+})();
+
+/* ============ the executive order card ============ */
+const eo=$('#eo'),ex=eo.getContext('2d');
+let tkImg=null;
+function loadTk(){return new Promise(r=>{if(tkImg)return r(tkImg);const t=$('#tkTpl');if(!t)return r(null);const im=new Image();im.onload=()=>{tkImg=im;r(im)};im.onerror=()=>r(null);im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(t.innerHTML.trim())})}
+function hash(s){let h=2166136261;for(const ch of s){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
+function seeded(seed){let s=seed||1;return()=>{s=Math.imul(s^s>>>15,1|s);s^=s+Math.imul(s^s>>>7,61|s);return((s^s>>>14)>>>0)/4294967296}}
+function wrap(c,text,x,y,maxW,lh){const words=text.split(' ');let lineTxt='',yy=y;for(const w of words){const test=lineTxt?lineTxt+' '+w:w;if(c.measureText(test).width>maxW&&lineTxt){c.fillText(lineTxt,x,yy);lineTxt=w;yy+=lh}else lineTxt=test}if(lineTxt)c.fillText(lineTxt,x,yy);return yy+lh}
+async function drawEO(d){
+  try{await Promise.race([Promise.all(['92px "Alfa Slab One"','30px "Special Elite"','900 26px "Libre Franklin"'].map(f=>document.fonts.load(f))),sleep(1500)])}catch(e){}
+  const img=await loadTk();
+  const c=ex,W=1080,H=1350,R=seeded(hash(d.n+d.t));
+  c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,W,H);
+  // parchment
+  const bg=c.createRadialGradient(W/2,H*.45,200,W/2,H/2,900);bg.addColorStop(0,'#fbf6e6');bg.addColorStop(1,'#e6dcbf');c.fillStyle=bg;c.fillRect(0,0,W,H);
+  c.globalAlpha=.06;c.strokeStyle='#6b5a3a';for(let i=0;i<260;i++){const x=R()*W,y=R()*H;c.lineWidth=R()*1.5;c.beginPath();c.moveTo(x,y);c.lineTo(x+R()*40-20,y+R()*6-3);c.stroke()}c.globalAlpha=1;
+  c.strokeStyle='#1d2a4a';c.lineWidth=16;c.strokeRect(36,36,W-72,H-72);c.strokeStyle='#b8902e';c.lineWidth=3;c.strokeRect(62,62,W-124,H-124);
+  // parody seal
+  const sx=W/2,sy=190;c.fillStyle='#1d2a4a';c.beginPath();c.arc(sx,sy,96,0,7);c.fill();c.strokeStyle='#e8c15a';c.lineWidth=5;c.beginPath();c.arc(sx,sy,82,0,7);c.stroke();
+  c.fillStyle='#0b0d12';c.beginPath();c.moveTo(sx-24,sy+4);c.bezierCurveTo(sx-60,sy-30,sx-80,sy-18,sx-86,sy+2);c.bezierCurveTo(sx-62,sy-6,sx-46,sy+8,sx-24,sy+14);c.fill();c.beginPath();c.moveTo(sx+24,sy+4);c.bezierCurveTo(sx+60,sy-30,sx+80,sy-18,sx+86,sy+2);c.bezierCurveTo(sx+62,sy-6,sx+46,sy+8,sx+24,sy+14);c.fill();
+  const pg=c.createRadialGradient(sx-8,sy-4,4,sx,sy+8,40);pg.addColorStop(0,'#ffab45');pg.addColorStop(1,'#c25808');c.fillStyle=pg;c.beginPath();c.ellipse(sx,sy+10,36,30,0,0,7);c.fill();
+  c.fillStyle='#4c7a2a';c.fillRect(sx-4,sy-28,8,14);c.fillStyle='#ffd27a';c.beginPath();c.moveTo(sx-20,sy+2);c.lineTo(sx-8,sy+8);c.lineTo(sx-16,sy+16);c.fill();c.beginPath();c.moveTo(sx+20,sy+2);c.lineTo(sx+8,sy+8);c.lineTo(sx+16,sy+16);c.fill();c.fillRect(sx-16,sy+24,32,5);
+  c.save();c.fillStyle='#e8c15a';c.font='900 15px "Libre Franklin",Arial,sans-serif';const ring='OFFICE OF THE PUMPKIN  ★  MAKE HALLOWEEN GREAT AGAIN  ★  ';const step=Math.PI*2/ring.length;c.translate(sx,sy);for(let i=0;i<ring.length;i++){c.save();c.rotate(i*step-Math.PI/2+step/2);c.translate(0,-64);c.textAlign='center';c.fillText(ring[i],0,0);c.restore()}c.restore();
+  // heading
+  c.textAlign='center';c.fillStyle='#1d2a4a';
+  c.font='900 26px "Libre Franklin",Arial,sans-serif';c.fillText('T H E   P U M P K I N   H O U S E',W/2,338);
+  c.font='88px "Alfa Slab One",Rockwell,Georgia,serif';c.fillText('EXECUTIVE ORDER',W/2,430);
+  c.fillStyle='#d6262f';c.font='30px "Special Elite","Courier New",monospace';c.fillText(`No. 13-${String(hash(d.n)%900+100)}  ·  OCTOBER 31`,W/2,478);
+  c.fillStyle='#b8902e';c.fillText('★  ★  ★',W/2,522);
+  // body
+  c.textAlign='left';c.fillStyle='#1b1f2a';c.font='30px "Special Elite","Courier New",monospace';
+  let y=wrap(c,'By the authority vested in me as the Pumpkin of the Pumpkin House, and because nobody has ever seen a coin like this, it is hereby ordered:',110,580,860,40)+10;
+  const secs=[`${d.n} (${d.t}) is declared the Official Coin of Halloween.`,...d.c.slice(0,2).map(c=>cap1(c)+'.'),'Haters shall receive only the tiny candy bars.'];
+  c.font='29px "Special Elite","Courier New",monospace';
+  secs.forEach((s,i)=>{c.fillStyle='#d6262f';c.fillText(`Sec. ${i+1}.`,110,y);c.fillStyle='#1b1f2a';y=wrap(c,s,240,y,i>=1?500:730,38)+8});
+  // trumpkin, proud
+  if(img)c.drawImage(img,700,918,306,329);
+  // signature
+  const by=1170;c.strokeStyle='#1b1f2a';c.lineWidth=2;c.beginPath();c.moveTo(110,by);c.lineTo(640,by);c.stroke();
+  c.lineWidth=7;c.lineJoin='round';c.lineCap='round';c.strokeStyle='#0d0d10';c.beginPath();let x=130;c.moveTo(x,by-20);
+  for(let i=0;i<15;i++){const dx=30;c.lineTo(x+dx*.35,by-30-R()*80);c.lineTo(x+dx*.7,by-12-R()*16);x+=dx}
+  c.stroke();c.lineWidth=5;c.beginPath();c.moveTo(130,by-6);c.bezierCurveTo(300,by-30,480,by+8,620,by-28);c.stroke();
+  c.fillStyle='#1b1f2a';c.font='900 22px "Libre Franklin",Arial,sans-serif';c.fillText('TRUMPKIN',110,by+34);c.font='22px "Special Elite","Courier New",monospace';c.fillText('Pumpkin of the Pumpkin House',110,by+62);
+  // stamp
+  c.save();c.translate(560,1020);c.rotate(-.2);c.strokeStyle='rgba(214,38,47,.85)';c.fillStyle='rgba(214,38,47,.85)';c.lineWidth=6;c.strokeRect(-130,-42,260,84);c.font='48px "Alfa Slab One",Georgia,serif';c.textAlign='center';c.fillText('OFFICIAL',0,16);c.restore();
+  // footer
+  c.textAlign='center';c.fillStyle='#6b6f7c';c.font='18px "Special Elite","Courier New",monospace';c.fillText('SATIRE · not a real executive order · Trumpkin is a fictional pumpkin · $MHGA',W/2,H-76);
+  if(!paid){c.save();c.translate(W/2,H/2);c.rotate(-Math.PI/6);c.fillStyle='rgba(214,38,47,.15)';c.font='72px "Alfa Slab One",Georgia,serif';c.textAlign='center';for(let r=-6;r<=6;r++)c.fillText('PARODY · PREVIEW · PARODY · PREVIEW',(r%2)*160,r*170);c.restore()}
+  else{c.textAlign='right';c.fillStyle='#b8902e';c.font='16px "Special Elite","Courier New",monospace';c.fillText('paid in $MHGA · tx '+paidSig.slice(0,10)+'…',W-84,H-104)}
+}
+$('#saveEo').addEventListener('click',()=>{
+  eo.toBlob(b=>{if(!b)return;const name='trumpkin-executive-order.png';const f=new File([b],name,{type:'image/png'});
+    if(matchMedia('(pointer:coarse)').matches&&navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:'Executive Order'}).catch(()=>{});return}
+    const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)},'image/png');
+});
+
+/* ============ pay in $MHGA (Phantom / Solflare / Backpack) ============ */
+$('#price').textContent=PAY.amount.toLocaleString('en-US')+' $MHGA';
+const payState=$('#payState');
+function loadScript(src){return new Promise((res,rej)=>{if(window.solanaWeb3)return res();const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s)})}
+$('#payBtn').addEventListener('click',async()=>{
+  if(!lastData)return;
+  if(!PAY.mint||!PAY.treasury){payState.textContent='Payments open at launch. Until then the preview is free, so share away.';return}
+  const prov=(window.phantom&&window.phantom.solana)||window.solflare||(window.backpack&&window.backpack.solana)||window.solana;
+  if(!prov){
+    if(matchMedia('(pointer:coarse)').matches){location.href='https://phantom.app/ul/browse/'+encodeURIComponent(location.href)+'?ref='+encodeURIComponent(location.origin);return}
+    payState.textContent='No Solana wallet found. Install Phantom, Solflare or Backpack and reload.';return}
+  const btn=$('#payBtn');btn.disabled=true;
+  try{
+    payState.textContent='Loading…';await loadScript('vendor/solana-web3.iife.min.js');
+    const W3=window.solanaWeb3,{PublicKey,Transaction,TransactionInstruction,Connection,SystemProgram}=W3;
+    payState.textContent='Connect your wallet…';
+    const res=await prov.connect();const owner=new PublicKey(((res&&res.publicKey)||prov.publicKey).toString());
+    const conn=new Connection(PAY.rpc,'confirmed');
+    const mint=new PublicKey(PAY.mint),dest=new PublicKey(PAY.treasury);
+    const info=await conn.getAccountInfo(mint);if(!info)throw new Error('Token not found on chain.');
+    const TOKEN=info.owner,ATA=new PublicKey('ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL');
+    const ata=o=>PublicKey.findProgramAddressSync([o.toBytes(),TOKEN.toBytes(),mint.toBytes()],ATA)[0];
+    const src=ata(owner),dst=ata(dest);
+    const raw=BigInt(PAY.amount)*10n**BigInt(PAY.decimals);
+    const data=new Uint8Array(10);data[0]=12;new DataView(data.buffer).setBigUint64(1,raw,true);data[9]=PAY.decimals;
+    const tx=new Transaction();
+    tx.add(new TransactionInstruction({programId:ATA,data:Uint8Array.of(1),keys:[
+      {pubkey:owner,isSigner:true,isWritable:true},{pubkey:dst,isSigner:false,isWritable:true},{pubkey:dest,isSigner:false,isWritable:false},
+      {pubkey:mint,isSigner:false,isWritable:false},{pubkey:SystemProgram.programId,isSigner:false,isWritable:false},{pubkey:TOKEN,isSigner:false,isWritable:false}]}));
+    tx.add(new TransactionInstruction({programId:TOKEN,data,keys:[
+      {pubkey:src,isSigner:false,isWritable:true},{pubkey:mint,isSigner:false,isWritable:false},{pubkey:dst,isSigner:false,isWritable:true},{pubkey:owner,isSigner:true,isWritable:false}]}));
+    const{blockhash,lastValidBlockHeight}=await conn.getLatestBlockhash('confirmed');
+    tx.recentBlockhash=blockhash;tx.feePayer=owner;
+    payState.textContent='Approve the payment in your wallet…';
+    const sent=await prov.signAndSendTransaction(tx);const sig=(sent&&sent.signature)||sent;
+    payState.textContent='Confirming on Solana…';
+    await conn.confirmTransaction({signature:sig,blockhash,lastValidBlockHeight},'confirmed');
+    paid=true;paidSig=String(sig);await drawEO(lastData);S.cheer(.8);roomFlash(6);
+    payState.innerHTML='';const a=document.createElement('a');a.href='https://solscan.io/tx/'+paidSig;a.target='_blank';a.rel='noopener';a.textContent='Paid. Clean order unlocked. View transaction ↗';payState.appendChild(a);
+  }catch(e){payState.textContent='Not paid: '+((e&&e.message)||'cancelled')}
+  finally{btn.disabled=false}
+});
+
+/* ============ fact sheet ============ */
+gsap.from('.sheet',{y:90,rotation:-5,opacity:0,duration:1.1,ease:'power3.out',scrollTrigger:{trigger:'.sheet',start:'top 88%'}});
+$$('.redact').forEach(r=>gsap.to(r,{scaleX:0,ease:'none',scrollTrigger:{trigger:r.closest('li'),start:'top 82%',end:'top 52%',scrub:.6}}));
+gsap.fromTo('#stamp',{scale:3.2,opacity:0,rotation:-34},{scale:1,opacity:.85,rotation:-14,duration:.42,ease:'power4.in',immediateRender:false,
+  scrollTrigger:{trigger:'.sheet',start:'top 45%'},onComplete:()=>{S.thump(.6);gsap.fromTo('.sheet',{x:-8},{x:0,duration:.5,ease:'elastic.out(1,.3)'})}});
+(function(){const p=$('#sheetSig'),L=p.getTotalLength();gsap.set(p,{strokeDasharray:L,strokeDashoffset:L});gsap.to(p,{strokeDashoffset:0,ease:'none',scrollTrigger:{trigger:'.sheet .sign',start:'top 90%',end:'top 60%',scrub:.5}})})();
+
+/* ============ press conference ============ */
+$$('.qa').forEach(q=>{const a=q.classList.contains('a');
+  const tl=gsap.timeline({scrollTrigger:{trigger:q,start:'top 88%'}});
+  tl.from(q.querySelector('.rep'),{scale:0,rotation:a?20:-20,duration:.5,ease:'back.out(2.2)'})
+    .from(q.querySelector('.q'),{x:a?70:-70,scale:.85,opacity:0,transformOrigin:a?'100% 100%':'0% 100%',duration:.7,ease:'back.out(1.6)'},'-=.3');
+});
+$('#ca').textContent=CA||'Not live yet. Soon. Very soon.';
+$('#copyCa').addEventListener('click',e=>{if(CA)copy(CA,e.currentTarget);else{const b=e.currentTarget,o=b.textContent;b.textContent='Soon!';setTimeout(()=>b.textContent=o,1200)}});
+$$('#endorse .h2,#facts .h2,#press .h2').forEach(h=>{const s=new SplitText(h,{type:'words',wordsClass:'hw'});gsap.from(s.words,{yPercent:80,opacity:0,rotation:3,stagger:.06,duration:.8,ease:'back.out(1.7)',scrollTrigger:{trigger:h,start:'top 86%'}})});
+gsap.from('#endorse .card,#endorse .room',{y:50,opacity:0,stagger:.12,duration:.9,ease:'power3.out',scrollTrigger:{trigger:'.brief',start:'top 85%'}});
+
+/* ============ send-off: bunting + balloon drop ============ */
+(function bunting(){
+  const s=$('#bunting'),NS='http://www.w3.org/2000/svg',cols=['#d6262f','#f2efe6','#1d2a4a'];
+  const rope=x=>{const u=(x%600)/600;return 8+Math.sin(u*Math.PI)*40};
+  const p=document.createElementNS(NS,'path');let d='M0 8';for(let x=0;x<=1200;x+=20)d+=` L${x} ${rope(x).toFixed(1)}`;p.setAttribute('d',d);p.setAttribute('fill','none');p.setAttribute('stroke','#e8c15a');p.setAttribute('stroke-width','2.5');s.appendChild(p);
+  for(let i=0;i<20;i++){const x=30+i*60,y=rope(x);const g=document.createElementNS(NS,'g');const t=document.createElementNS(NS,'path');t.setAttribute('d',`M${x-26} ${y} L${x+26} ${y} L${x} ${y+64} Z`);t.setAttribute('fill',cols[i%3]);g.appendChild(t);
+    if(i%3===2){const st=document.createElementNS(NS,'text');st.setAttribute('x',x);st.setAttribute('y',y+30);st.setAttribute('text-anchor','middle');st.setAttribute('font-size','20');st.setAttribute('fill','#f2efe6');st.textContent='★';g.appendChild(st)}
+    s.appendChild(g);if(!RM)gsap.to(g,{rotation:rnd(-5,5),svgOrigin:`${x} ${y}`,duration:rnd(1.2,1.8),repeat:-1,yoyo:true,ease:'sine.inOut',delay:-Math.random()*2})}
+})();
+const big=new SplitText('.sendoff .big',{type:'chars,words',wordsClass:'hw'});
+gsap.from(big.chars,{yPercent:110,opacity:0,rotation:8,stagger:.025,duration:.8,ease:'back.out(2)',scrollTrigger:{trigger:'.sendoff .big',start:'top 85%'}});
+(function drop(){
+  const c=$('#drop'),x=c.getContext('2d');let W,H,dpr,B=[],active=false,spawnUntil=0,spawned=0;
+  const COLS=[['#ff5560','#b3121c'],['#ffffff','#c9c3b2'],['#3d5ba8','#16224a'],['#ffab45','#c25808']];
+  function size(){dpr=Math.min(2,devicePixelRatio||1);W=c.clientWidth;H=c.clientHeight;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0)}
+  function add(){const r=rnd(22,40)*(W<600?.75:1),col=pick(COLS);B.push({x:rnd(0,W),y:-r*2-rnd(0,80),r,vy:rnd(60,120),p:Math.random()*6.3,sw:rnd(.6,1.4),col,pump:col[0]==='#ffab45',conf:false})}
+  function confetti(){for(let i=0;i<60;i++)B.push({conf:true,x:rnd(0,W),y:rnd(-200,-10),vy:rnd(90,180),p:Math.random()*6.3,s:rnd(4,9),c:pick(['#d6262f','#f2efe6','#3d5ba8','#e8c15a','#ff7a1a'])})}
+  size();addEventListener('resize',size);
+  ScrollTrigger.create({trigger:'.sendoff',start:'top 70%',end:'bottom top',onEnter:start,onEnterBack:start,onLeave:()=>active=false,onLeaveBack:()=>active=false});
+  let T0=0;
+  function start(){if(RM)return;size();active=true;spawnUntil=performance.now()+3200;spawned=0;confetti();S.cheer(.8)}
+  let last=performance.now();
+  gsap.ticker.add(()=>{
+    const now=performance.now(),dt=Math.min(.05,(now-last)/1000);last=now;
+    if(!active&&!B.length)return;
+    if(active&&now<spawnUntil&&Math.random()<(W<600?.1:.28))add();
+    x.clearRect(0,0,W,H);
+    B=B.filter(b=>{b.y+=b.vy*dt;b.p+=dt*(b.conf?6:1.4);
+      if(b.conf){x.save();x.translate(b.x+Math.sin(b.p)*14,b.y);x.rotate(b.p);x.fillStyle=b.c;x.fillRect(-b.s/2,-b.s/4,b.s,b.s/2);x.restore();return b.y<H+20}
+      const bx=b.x+Math.sin(b.p)*12*b.sw;
+      x.strokeStyle='rgba(242,239,230,.5)';x.lineWidth=1.2;x.beginPath();x.moveTo(bx,b.y+b.r*1.15);x.quadraticCurveTo(bx+8,b.y+b.r*1.9,bx-2,b.y+b.r*2.6);x.stroke();
+      const g=x.createRadialGradient(bx-b.r*.35,b.y-b.r*.4,b.r*.1,bx,b.y,b.r*1.2);g.addColorStop(0,b.col[0]);g.addColorStop(1,b.col[1]);x.fillStyle=g;
+      x.beginPath();x.ellipse(bx,b.y,b.r*(b.pump?1.1:.9),b.r*(b.pump?.95:1.12),0,0,7);x.fill();
+      x.beginPath();x.moveTo(bx-4,b.y+b.r*1.18);x.lineTo(bx+4,b.y+b.r*1.18);x.lineTo(bx,b.y+b.r*1.05);x.fill();
+      if(b.pump){x.fillStyle='#2a1404';x.beginPath();x.moveTo(bx-b.r*.45,b.y-b.r*.2);x.lineTo(bx-b.r*.15,b.y-b.r*.05);x.lineTo(bx-b.r*.4,b.y+b.r*.08);x.fill();x.beginPath();x.moveTo(bx+b.r*.45,b.y-b.r*.2);x.lineTo(bx+b.r*.15,b.y-b.r*.05);x.lineTo(bx+b.r*.4,b.y+b.r*.08);x.fill();x.beginPath();x.ellipse(bx,b.y+b.r*.38,b.r*.42,b.r*.14,0,0,Math.PI);x.fill()}
+      else{x.fillStyle='rgba(255,255,255,.35)';x.beginPath();x.ellipse(bx-b.r*.35,b.y-b.r*.45,b.r*.14,b.r*.24,-.5,0,7);x.fill()}
+      return b.y<H+b.r*3});
+  });
+})();
+})();
+
+</script>
+</body>
+</html>
