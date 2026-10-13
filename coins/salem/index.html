@@ -26,8 +26,31 @@ a{color:inherit}
   animation:grain 1s steps(6) infinite}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-5%,3%)}40%{transform:translate(4%,-6%)}60%{transform:translate(-3%,5%)}80%{transform:translate(6%,2%)}100%{transform:translate(0,0)}}
 
-/* ---------- STAGE 1: black screen ---------- */
-#broken{position:fixed;inset:0;z-index:50;background:#000}
+/* ---------- STAGE 1: the lure ---------- */
+#broken{position:fixed;inset:0;z-index:50;background:#000;display:grid;place-items:center;overflow:hidden}
+#vortex{position:absolute;inset:0;width:100%;height:100%}
+#broken::after{content:"";position:absolute;inset:0;pointer-events:none;transition:background 1.2s ease;
+  background:radial-gradient(circle at 50% 50%,transparent 25%,rgba(0,0,0,.85) 75%)}
+#broken.lean::after{background:radial-gradient(circle at 50% 50%,transparent 8%,rgba(0,0,0,.97) 45%)}
+.lure{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;padding:16px;
+  opacity:0;animation:fadein 2.5s ease .6s forwards}
+@keyframes fadein{to{opacity:1}}
+.halo{position:absolute;top:-20px;left:50%;width:300px;height:220px;translate:-50% 0;border-radius:50%;pointer-events:none;
+  background:radial-gradient(ellipse at center,rgba(198,255,61,.10),transparent 65%);animation:breathe 4s ease-in-out infinite}
+.sleeper{position:relative;width:min(56vw,220px);overflow:visible}
+.sleeper .body{transform-origin:50% 100%;transform-box:fill-box;animation:breathe 4s ease-in-out infinite}
+@keyframes breathe{50%{transform:scale(1.035,1.06)}}
+.zzz{position:absolute;top:-6px;left:calc(50% - 70px);font-family:var(--mono);color:var(--dim);font-size:14px;pointer-events:none}
+.zzz i{position:absolute;font-style:normal;opacity:0;animation:z 3.6s ease-out infinite}
+.zzz i:nth-child(2){animation-delay:1.2s;font-size:11px}.zzz i:nth-child(3){animation-delay:2.4s;font-size:9px}
+@keyframes z{0%{opacity:0;transform:translate(0,0)}20%{opacity:.8}100%{opacity:0;transform:translate(-26px,-46px)}}
+.whisper{font-family:var(--mono);font-size:12px;letter-spacing:.32em;color:var(--dim);margin:26px 0 30px;text-transform:lowercase}
+#pet{position:relative;font-family:var(--mono);font-size:13px;letter-spacing:.4em;text-transform:lowercase;color:var(--ink);
+  background:rgba(0,0,0,.5);border:1px solid rgba(239,233,220,.3);padding:16px 30px 16px 38px;cursor:pointer;
+  transition:border-color .5s,color .5s,box-shadow .5s,letter-spacing .6s}
+#pet::before{content:"";position:absolute;inset:-1px;border:1px solid var(--eye);opacity:0;animation:ring 2.8s ease-out infinite}
+@keyframes ring{0%{opacity:.5;transform:scale(1)}100%{opacity:0;transform:scale(1.35,1.7)}}
+#pet:hover,#pet:focus-visible{border-color:var(--eye);color:var(--eye);letter-spacing:.55em;outline:none;box-shadow:0 0 40px rgba(198,255,61,.18)}
 
 /* ---------- STAGE 2: jumpscare ---------- */
 #scare{position:fixed;inset:0;z-index:60;background:#000;display:none;align-items:center;justify-content:center;overflow:hidden}
@@ -123,8 +146,27 @@ footer p{max-width:62ch}
 <div class="grain"></div>
 <div class="cursor" id="cur"></div>
 
-<!-- STAGE 1 — nothing. just black. -->
-<div id="broken"></div>
+<!-- STAGE 1 — the lure: hypnotic pull toward a sleeping cat -->
+<div id="broken">
+  <canvas id="vortex" aria-hidden="true"></canvas>
+  <div class="lure">
+    <div class="halo"></div>
+    <span class="zzz" aria-hidden="true"><i>z</i><i>z</i><i>z</i></span>
+    <svg class="sleeper" viewBox="0 0 200 120" aria-hidden="true">
+      <g class="body">
+        <path d="M30 104 C 18 62 62 36 112 38 C 162 40 188 72 176 104 Z" fill="#000" stroke="#2c2c27" stroke-width="1.5"/>
+        <path d="M34 66 L 30 38 L 54 56 Z M 64 52 L 74 28 L 84 56 Z" fill="#000" stroke="#2c2c27" stroke-width="1.5" stroke-linejoin="round"/>
+        <circle cx="58" cy="78" r="28" fill="#000"/>
+        <path d="M30 78 A 28 28 0 0 1 58 50" fill="none" stroke="#2c2c27" stroke-width="1.5"/>
+        <path d="M43 80 q5 4 10 0 M62 80 q5 4 10 0" fill="none" stroke="#c6ff3d" stroke-width="1.6" stroke-linecap="round" opacity=".55"/>
+      </g>
+      <path d="M176 100 C 152 114 92 116 58 106" fill="none" stroke="#000" stroke-width="12" stroke-linecap="round"/>
+      <path d="M176 94 C 152 108 92 110 58 100" fill="none" stroke="#2c2c27" stroke-width="1.2"/>
+    </svg>
+    <p class="whisper">shh… salem is sleeping</p>
+    <button id="pet">pet him</button>
+  </div>
+</div>
 
 <!-- STAGE 2 — jumpscare -->
 <div id="scare" aria-hidden="true">
@@ -235,7 +277,7 @@ footer p{max-width:62ch}
     if(actx) return;
     actx = new (window.AudioContext || window.webkitAudioContext)();
     master = actx.createGain(); master.gain.value = .9; master.connect(actx.destination);
-    GESTURES.forEach(ev=>addEventListener(ev, ()=>actx.resume(), true));
+    actx.resume();
   }
   function noiseBuf(sec){
     const b = actx.createBuffer(1, actx.sampleRate*sec, actx.sampleRate), d = b.getChannelData(0);
@@ -271,22 +313,58 @@ footer p{max-width:62ch}
     lp.connect(g).connect(master);
   }
 
-  /* ---------- stage 1: a perfectly normal dead page ---------- */
-  const broken = $('#broken');
-  const IDLE_MS = 6000;
-  const GESTURES = ['pointerdown','touchend','keydown','click'];
-  let fired = false;
-  function trigger(){
-    if(fired) return; fired = true;
-    GESTURES.forEach(ev=>removeEventListener(ev, trigger, true));
-    scare();
+  /* ---------- stage 1: the lure ---------- */
+  const broken = $('#broken'), pet = $('#pet');
+  let fired = false, vraf;
+
+  // particles spiral slowly into the centre — pulls the eye onto the cat
+  const vc = $('#vortex'), vx = vc.getContext('2d');
+  let W, H, pull = 1, pullTo = 1, beat = 0;
+  const parts = [];
+  function sizeV(){
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight; vc.width = W*dpr; vc.height = H*dpr; vx.setTransform(dpr,0,0,dpr,0,0);
+    vx.fillStyle = '#000'; vx.fillRect(0,0,W,H);
   }
-  // any tap, click or key springs it
-  GESTURES.forEach(ev=>addEventListener(ev, trigger, true));
-  // browsers that already allow sound (media engagement) get it with zero interaction
-  setTimeout(()=>{ audio(); if(actx.state === 'running') trigger(); }, 4000);
-  // nobody leaves staring at black: silent scare after IDLE_MS, sound unlocks on first tap
-  setTimeout(trigger, IDLE_MS);
+  function spawn(p, anywhere){
+    const R = Math.hypot(W,H)/2;
+    p.r = anywhere ? 40 + Math.random()*R : R*(.85+Math.random()*.25);
+    p.a = Math.random()*Math.PI*2; p.s = .25 + Math.random()*.6;
+    p.g = Math.random() < .12; p.w = .4 + Math.random()*1.1;
+    return p;
+  }
+  sizeV(); addEventListener('resize', sizeV);
+  for(let i=0;i<(W < 600 ? 320 : 650);i++) parts.push(spawn({}, true));
+  function vortex(t){
+    pull += (pullTo - pull)*.03;
+    const cxv = W/2, cyv = H/2, k = (reduced ? .15 : 1)*pull;
+    vx.fillStyle = 'rgba(0,0,0,.09)'; vx.fillRect(0,0,W,H);
+    for(const p of parts){
+      const x0 = cxv + Math.cos(p.a)*p.r, y0 = cyv + Math.sin(p.a)*p.r*.82;
+      p.a += k*p.s*(14/(p.r+60)); p.r -= k*p.s*(.35 + 60/(p.r+40));
+      if(p.r < 30){ spawn(p); continue; }
+      const x1 = cxv + Math.cos(p.a)*p.r, y1 = cyv + Math.sin(p.a)*p.r*.82;
+      const fade = Math.min(1, p.r/220);
+      vx.strokeStyle = p.g ? `rgba(198,255,61,${.5*fade})` : `rgba(239,233,220,${.28*fade})`;
+      vx.lineWidth = p.w; vx.beginPath(); vx.moveTo(x0,y0); vx.lineTo(x1,y1); vx.stroke();
+    }
+    // heartbeat rings collapsing inward (lub-dub every ~2.2s)
+    const ph = (t/1000) % 2.2;
+    [0, .32].forEach(o=>{
+      const q = (ph - o)/1.4; if(q < 0 || q > 1) return;
+      vx.strokeStyle = `rgba(198,255,61,${.10*(1-q)})`; vx.lineWidth = 1;
+      vx.beginPath(); vx.ellipse(cxv, cyv, (1-q)*Math.max(W,H)*.6 + 40, ((1-q)*Math.max(W,H)*.6 + 40)*.82, 0, 0, Math.PI*2); vx.stroke();
+    });
+    vraf = requestAnimationFrame(vortex);
+  }
+  vraf = requestAnimationFrame(vortex);
+
+  // hovering the button tightens the pull — they lean in
+  const lean = on => { pullTo = on ? 3.2 : 1; broken.classList.toggle('lean', on); };
+  pet.addEventListener('pointerenter', ()=>lean(true));
+  pet.addEventListener('pointerleave', ()=>lean(false));
+  pet.addEventListener('focus', ()=>lean(true));
+  pet.addEventListener('click', ()=>{ if(fired) return; fired = true; scare(); });
 
   /* ---------- static canvas ---------- */
   const cv = $('#static'), cx = cv.getContext('2d'); let raf;
@@ -299,7 +377,7 @@ footer p{max-width:62ch}
 
   /* ---------- stage 2 → 3 ---------- */
   function reveal(){
-    cancelAnimationFrame(raf);
+    cancelAnimationFrame(raf); cancelAnimationFrame(vraf);
     $('#scare').classList.remove('on','flash');
     broken.remove();
     document.body.classList.remove('locked');
@@ -309,13 +387,15 @@ footer p{max-width:62ch}
   }
   function scare(){
     audio();
-        // half a second of dead silence & black — the "it really broke" beat
+    // everything vanishes at once — a split second of pure black, then BAMM
+    cancelAnimationFrame(vraf);
+    broken.innerHTML = '';
     setTimeout(()=>{
       const s = $('#scare'); s.classList.add('on'); if(!reduced) s.classList.add('flash');
-      staticLoop(); if(actx.state === 'running') screech();
+      staticLoop(); screech();
       if(navigator.vibrate) navigator.vibrate([200,60,300]);
       setTimeout(reveal, 1900);
-    }, 650);
+    }, 180);
   }
   try{ if(sessionStorage.getItem('salemSeen')){ fired = true; reveal(); } }catch(e){}
 
