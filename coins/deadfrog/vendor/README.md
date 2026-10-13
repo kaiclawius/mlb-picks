@@ -6,3 +6,4 @@ Third-party libraries, copied unmodified from npm:
 Effects adapted from Magic UI (MIT, https://github.com/magicuidesign/magicui) and rewritten in plain JS:
 Morphing Text (hero headline), Flickering Grid (monitor background), Pixel Image (patient reveal),
 Animated List (group chat), Terminal (tokenomics), Cool Mode (click confetti), Border Beam (buttons).
+- pixi.js@7.4.2 (pixi.min.js) — MIT, https://github.com/pixijs/pixijs — used for the mesh warp that rigs the frog image

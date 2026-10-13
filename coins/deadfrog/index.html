@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rubik+Wet+Paint&family=Anton&family=Archivo:ital,wght@0,400;0,500;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* Layout: an ICU monitor that loops 'it's so over' / 'we're so back'; below it the chat, the death ledger, the tombstone maker and the vitals. */
+/* Layout: a night graveyard where the frog climbs out of his own grave; below it the chat, the death ledger, the tombstone maker and the vitals. */
 :root{
   color-scheme:dark;
   --soil:#0b0e0a; --night:#0e1411; --bone:#efe6cf; --dim:#8f8b78; --slime:#86d24a; --fomo:#eab33a; --rot:#b5482f; --stone:#6b7068; --line:rgba(239,230,207,.12);
@@ -55,57 +55,58 @@ img{max-width:100%}
 .btn.solid::before{background:var(--slime)}
 .btn.solid:hover{border-color:var(--slime)}
 
-/* ---------- hero: the life-support monitor ---------- */
-@property --c{syntax:'<color>';inherits:true;initial-value:#86d24a}
+/* ---------- hero: the grave ---------- */
+.hero{position:relative;height:100vh;height:100svh;min-height:600px;overflow:hidden;
+  background:radial-gradient(ellipse 80% 55% at 50% 100%,rgba(134,210,74,.16),transparent 60%),linear-gradient(#060908 0%,#0d1612 55%,#12201a 100%)}
+#fog{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.far{position:absolute;left:0;right:0;bottom:16svh;width:100%;height:30svh;pointer-events:none}
+.tree{position:absolute;left:max(-40px,2vw);bottom:14svh;height:62svh;pointer-events:none;opacity:.9}
+.headline{position:absolute;left:0;right:0;top:calc(76px + env(safe-area-inset-top,0px));text-align:center;z-index:6;padding-inline:16px;pointer-events:none}
+.over{font-family:var(--mono);font-size:clamp(13px,1.5vw,16px);letter-spacing:.4em;text-transform:lowercase;color:var(--dim)}
+.back{font-family:var(--drip);font-weight:400;font-size:clamp(58px,11.5vw,190px);line-height:.86;color:var(--slime);text-shadow:0 6px 0 #1b2a12,0 0 60px rgba(134,210,74,.35);display:none;white-space:nowrap}
+.sub{margin-top:14px;font-family:var(--mono);font-size:clamp(11px,1.3vw,14px);letter-spacing:.24em;text-transform:uppercase;color:var(--bone);display:none}
+.hero.is-back .over{display:none}
+.hero.is-back .back,.hero.is-back .sub{display:block}
+.cluster{position:absolute;left:53%;bottom:9svh;translate:-50% 0;height:min(56svh,540px);aspect-ratio:1.3;z-index:3}
+.cluster-in{position:absolute;inset:0}
+.rig-box{position:absolute;left:-40%;right:-40%;top:-85%;bottom:0;z-index:1;pointer-events:none}
+.rig-box canvas{display:block;filter:drop-shadow(0 0 22px rgba(134,210,74,.22))}
+.hole{position:absolute;left:0;bottom:4%;width:41%;height:120%;overflow:hidden;display:none}
+.frog-src{position:absolute;left:0;bottom:0;height:68%;width:auto;max-width:none}
+.static-frog .hole{display:block}
+.arms{position:absolute;left:-30%;right:0;top:-80%;bottom:0;overflow:hidden;z-index:3;pointer-events:none}
+.arm{position:absolute;bottom:0;width:calc(21% / 1.3);aspect-ratio:140/380;overflow:visible;transform-origin:50% 80%}
+#armL{left:calc(30% / 1.3 - 6% / 1.3)}
+#armR{left:calc(30% / 1.3 + 19% / 1.3)}
+.static-frog .arms{display:none}
+.tomb{position:absolute;left:32%;bottom:6%;width:50%;transform-origin:10% 100%;z-index:2;filter:drop-shadow(0 20px 30px rgba(0,0,0,.6))}
+.tomb svg{width:100%;height:auto;display:block;overflow:visible}
+.crack{stroke-dasharray:420;stroke-dashoffset:420}
+.static-frog .crack{stroke-dashoffset:0}
+.mound{position:absolute;left:-28%;right:-28%;bottom:-2%;height:30%;z-index:4}
+.mound svg{width:100%;height:100%;display:block}
+.ground{position:absolute;left:0;right:0;bottom:0;height:calc(9svh + 36px);z-index:5;
+  background:linear-gradient(transparent 55%,rgba(11,14,10,.85)),radial-gradient(150% 100% at 50% 100%,#2b2218 0 64%,#231b13 66%,transparent 67.5%)}
+#dirt{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:7}
+.glow{position:absolute;left:0;right:0;margin-inline:auto;bottom:4svh;width:min(96vw,980px);height:46svh;border-radius:50%;z-index:2;pointer-events:none;opacity:.35;
+  background:radial-gradient(ellipse at center,rgba(134,210,74,.34),rgba(134,210,74,.08) 45%,transparent 68%)}
+.cta{position:absolute;left:0;right:0;bottom:calc(26px + env(safe-area-inset-bottom,0px));z-index:8;display:none;justify-content:center;gap:10px;flex-wrap:wrap;padding-inline:16px}
+.hero.is-back .cta{display:flex}
+.flash{position:absolute;inset:0;z-index:9;background:var(--slime);opacity:0;pointer-events:none;mix-blend-mode:screen}
+@media (max-width:640px){
+  .cluster{height:min(48svh,70vw);bottom:15svh}
+  .ground{height:calc(15svh + 30px)}
+  .back{white-space:normal;font-size:clamp(58px,19vw,120px);line-height:.82}
+  .tree{opacity:.5}
+}
+
 @property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
-.hero{--c:var(--slime);position:relative;height:100vh;height:100svh;min-height:620px;overflow:hidden;background:#060906;transition:--c .9s ease}
-.hero[data-state="over"]{--c:#ff4a3d}
-.hero-in{position:absolute;inset:0;transform-origin:50% 60%}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 50% 58%,color-mix(in srgb,var(--c) 16%,transparent),transparent 70%)}
-#grid,#ecg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-#ecg{z-index:2}
-.scan{position:absolute;inset:0;z-index:6;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(0,0,0,.22) 0 1px,transparent 1px 3px)}
-.vig{position:absolute;inset:0;z-index:6;pointer-events:none;background:radial-gradient(ellipse at 50% 55%,transparent 45%,rgba(0,0,0,.8))}
-.morph-wrap{position:absolute;left:0;right:0;top:calc(84px + env(safe-area-inset-top,0px));z-index:5;pointer-events:none;filter:drop-shadow(0 0 28px color-mix(in srgb,var(--c) 55%,transparent))}
-.morph{position:relative;height:clamp(52px,10.5vw,170px);font-family:var(--heavy);font-size:clamp(46px,10.5vw,170px);line-height:1;text-transform:uppercase;color:var(--c);text-align:center;filter:url(#threshold) blur(.6px)}
-.morph span{position:absolute;left:0;right:0;top:0;white-space:nowrap}
-.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.patient-pos{position:absolute;left:50%;top:58%;translate:-50% -50%;z-index:3}
-.patient{width:min(36svh,330px);background:#0a0e0a;border:2px solid var(--c);box-shadow:0 0 0 6px color-mix(in srgb,var(--c) 10%,transparent),0 0 60px color-mix(in srgb,var(--c) 30%,transparent);transform-origin:50% 100%}
-.patient .pbar{display:flex;justify-content:space-between;gap:10px;padding:8px 10px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--c);border-bottom:2px solid var(--c)}
-.patient .pbar.foot{border-bottom:0;border-top:2px solid var(--c)}
-.patient .pbar b{font-weight:700;color:var(--bone)}
-.shot{position:relative;aspect-ratio:439/588;overflow:hidden;background:var(--c);-webkit-mask:linear-gradient(90deg,#000 80%,rgba(0,0,0,.25) 100%);mask:linear-gradient(90deg,#000 80%,rgba(0,0,0,.25) 100%)}
-#dither{position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:multiply;image-rendering:pixelated}
-#frogImg{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:left top;-webkit-mask:linear-gradient(90deg,#000 82%,transparent 99%);mask:linear-gradient(90deg,#000 82%,transparent 99%)}
-.shot::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(to bottom,rgba(0,0,0,.18) 0 1px,transparent 1px 3px);pointer-events:none}
-.hud{position:absolute;z-index:5;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb,var(--c) 65%,var(--bone));pointer-events:none}
-.hud b{display:block;margin-top:6px;font-family:var(--heavy);font-weight:400;font-size:clamp(30px,3.6vw,60px);letter-spacing:0;line-height:1;color:var(--c);font-variant-numeric:tabular-nums}
-.hud.tl{left:clamp(16px,4vw,56px);top:44%}
-.hud.tr{right:clamp(16px,4vw,56px);top:44%;text-align:right}
-.hud.bl{left:clamp(16px,4vw,56px);bottom:calc(112px + env(safe-area-inset-bottom,0px))}
-.hud.br{right:clamp(16px,4vw,56px);bottom:calc(112px + env(safe-area-inset-bottom,0px));text-align:right}
-.hud .heart{display:inline-block;color:var(--c)}
-.clear{position:absolute;inset:0;z-index:7;display:grid;place-items:center;pointer-events:none}
-.clear span{font-family:var(--drip);font-size:clamp(64px,13vw,220px);color:#fff;text-shadow:0 0 30px #fff,0 0 90px var(--c);opacity:0;white-space:nowrap}
-.flash{position:absolute;inset:0;z-index:8;background:#fff;opacity:0;pointer-events:none}
-.hero .cta{position:absolute;left:0;right:0;bottom:calc(28px + env(safe-area-inset-bottom,0px));z-index:7;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding-inline:16px}
 /* a light that runs around the button edge (after Magic UI's Border Beam) */
 .beam::after{content:"";position:absolute;inset:0;padding:2px;pointer-events:none;z-index:1;
   background:conic-gradient(from var(--a),transparent 0 72%,var(--fomo) 84%,#fff 88%,transparent 94%);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:beam 3.2s linear infinite}
 .btn.solid.beam::after{background:conic-gradient(from var(--a),transparent 0 72%,#fff 86%,transparent 94%)}
 @keyframes beam{to{--a:360deg}}
-@media (max-width:760px){
-  .hud.tl,.hud.tr{top:calc(84px + env(safe-area-inset-top,0px) + 14vw)}
-  .hud.bl,.hud.br{display:none}
-  .hud b{font-size:30px}
-  .patient{width:min(38svh,58vw)}
-  .patient-pos{top:55%}
-  .morph{font-size:clamp(46px,13.5vw,90px);height:clamp(52px,13.5vw,90px)}
-  .hero .cta{bottom:calc(20px + env(safe-area-inset-bottom,0px))}
-}
-
 /* the group chat (after Magic UI's Animated List) */
 .chat-sec{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(36px,6vw,100px);align-items:center}
 .phone{position:relative;width:100%;max-width:420px;height:560px;margin-inline:auto;border:2px solid var(--line);border-radius:30px;background:#0b0f0b;overflow:hidden;padding:64px 14px 14px;box-shadow:0 40px 90px rgba(0,0,0,.5)}
@@ -260,32 +261,70 @@ html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor se
   </div>
 </nav>
 
-<header class="hero" id="top" data-state="over">
-  <div class="hero-in">
-    <div class="hero-bg"></div>
-    <canvas id="grid" aria-hidden="true"></canvas>
-    <h1 class="sr-only">DEADFROG ($DEAD): it’s so over, we’re so back. The coin that refuses to die.</h1>
-    <div class="morph-wrap" aria-hidden="true"><div class="morph"><span id="m1">IT’S SO OVER</span><span id="m2"></span></div></div>
-    <div class="hud tl"><span class="heart">♥</span> Heart rate<b id="hr">0</b></div>
-    <div class="hud tr">Status<b id="status">DECEASED</b></div>
-    <div class="hud bl">Resurrections<b id="rez">1,336</b></div>
-    <div class="hud br">Patient<b>$DEAD</b></div>
-    <div class="patient-pos"><div class="patient-par"><div class="patient">
-      <div class="pbar"><span>Patient 001</span><b>DEADFROG</b></div>
-      <div class="shot"><canvas id="dither" aria-hidden="true"></canvas><img id="frogImg" src="img/frog.png" alt="DEADFROG, a zombie frog in a torn FOMO shirt"></div>
-      <div class="pbar foot"><span>Condition</span><b id="cond">Deceased</b></div>
-    </div></div></div>
-    <canvas id="ecg" aria-hidden="true"></canvas>
-    <div class="scan" aria-hidden="true"></div><div class="vig" aria-hidden="true"></div>
-    <div class="clear" aria-hidden="true"><span id="clearTxt">CLEAR!</span></div>
+<header class="hero" id="top">
+  <canvas id="fog" aria-hidden="true"></canvas>
+  <svg class="far" viewBox="0 0 1440 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <path fill="#0a120e" d="M0 300 L0 210 C 200 180 380 230 560 205 C 760 178 960 226 1160 200 C 1280 186 1380 196 1440 190 L1440 300Z"/>
+    <g fill="#101a15">
+      <path d="M140 220 v-40 q0 -22 20 -22 q20 0 20 22 v40z"/><path d="M300 214 v-26 h-10 v-10 h10 v-12 h10 v12 h10 v10 h-10 v26z"/>
+      <path d="M470 212 v-34 q0 -18 16 -18 q16 0 16 18 v34z"/><path d="M880 214 v-48 q0 -26 24 -26 q24 0 24 26 v48z"/>
+      <path d="M1040 208 v-28 h-12 v-12 h12 v-14 h12 v14 h12 v12 h-12 v28z"/><path d="M1240 204 v-36 q0 -20 18 -20 q18 0 18 20 v36z"/>
+    </g>
+  </svg>
+  <svg class="tree" viewBox="0 0 300 500" aria-hidden="true"><path fill="#070c09" d="M140 500 C 150 420 146 360 136 300 C 110 280 70 270 30 240 C 70 255 100 262 128 270 C 120 230 100 200 70 170 C 104 190 124 214 136 246 C 140 200 132 150 110 100 C 140 140 152 190 150 250 C 166 210 196 180 240 160 C 206 190 178 222 164 270 C 196 262 230 250 270 226 C 236 258 200 280 160 300 C 154 360 160 430 176 500 Z"/></svg>
+
+  <div class="headline">
+    <p class="over" id="over">it’s so over.</p>
+    <h1 class="back" id="backTitle" aria-label="We're so back">WE’RE SO BACK</h1>
+    <p class="sub" id="sub">DEADFROG · the coin that refuses to die · $DEAD</p>
   </div>
-  <div class="flash" id="flash"></div>
-  <div class="cta">
+
+  <div class="glow" id="glow" aria-hidden="true"></div>
+  <div class="cluster"><div class="cluster-in" id="cluster">
+    <div class="rig-box" id="rigBox" aria-hidden="true"></div>
+    <div class="hole"><img class="frog-src" id="frogSrc" src="img/frog.png" alt="DEADFROG, a zombie frog in a torn FOMO shirt, climbing out of his grave"></div>
+    <div class="tomb" id="tomb">
+      <svg viewBox="0 0 300 400" aria-label="Tombstone: R.I.P. DEADFROG, 2024 to 2024, it's so over">
+        <defs>
+          <linearGradient id="stoneG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b9087"/><stop offset=".55" stop-color="#62675f"/><stop offset="1" stop-color="#3f433c"/></linearGradient>
+          <linearGradient id="stoneSide" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2c2f2a"/><stop offset="1" stop-color="#1c1e1a"/></linearGradient>
+        </defs>
+        <path d="M268 396 L268 140 Q268 34 158 26 L174 30 Q284 42 284 146 L284 390 Z" fill="url(#stoneSide)"/>
+        <path d="M16 400 L16 142 Q16 26 142 26 Q268 26 268 142 L268 400 Z" fill="url(#stoneG)"/>
+        <path d="M30 392 L30 146 Q30 42 142 42 Q254 42 254 146 L254 392" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="3"/>
+        <ellipse cx="54" cy="372" rx="44" ry="20" fill="#3d5a2a" opacity=".85"/><ellipse cx="236" cy="384" rx="36" ry="14" fill="#3d5a2a" opacity=".7"/>
+        <ellipse cx="200" cy="60" rx="26" ry="9" fill="#4a6b31" opacity=".6"/>
+        <g font-family="Anton, Impact, sans-serif" text-anchor="middle">
+          <text x="142" y="120" font-size="44" fill="#9ea398" opacity=".5">R.I.P.</text><text x="142" y="118" font-size="44" fill="#2a2d28">R.I.P.</text>
+          <text x="142" y="186" font-size="40" fill="#9ea398" opacity=".5">DEADFROG</text><text x="142" y="184" font-size="40" fill="#2a2d28">DEADFROG</text>
+          <text x="142" y="230" font-size="22" fill="#2a2d28" font-family="Space Mono, monospace">2024 – 2024</text>
+          <text x="142" y="290" font-size="20" fill="#2a2d28" font-family="Archivo, sans-serif" font-style="italic">“it’s so over”</text>
+        </g>
+        <path class="crack" d="M150 28 L138 70 L156 96 L132 150 L150 178 L126 236 L146 262 L120 330 L134 400" fill="none" stroke="#1a1c18" stroke-width="3.5" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="arms" aria-hidden="true">
+      <svg class="arm" id="armL" viewBox="0 -20 140 380"></svg>
+      <svg class="arm" id="armR" viewBox="0 -20 140 380"></svg>
+    </div>
+    <div class="mound" aria-hidden="true">
+      <svg viewBox="0 0 600 160" preserveAspectRatio="none">
+        <path d="M0 160 C 90 120 150 52 230 40 C 290 32 330 30 380 38 C 460 50 520 120 600 160 Z" fill="#1f1912"/>
+        <path d="M30 160 C 120 120 190 76 280 70 C 370 64 440 100 570 160 Z" fill="#2b2218"/>
+        <g fill="#3a2e20"><circle cx="200" cy="56" r="6"/><circle cx="262" cy="44" r="4"/><circle cx="330" cy="40" r="7"/><circle cx="398" cy="50" r="5"/><circle cx="452" cy="72" r="4"/></g>
+        <g fill="#2f4a22"><path d="M110 128 l6 -18 l4 18z M150 100 l5 -16 l4 16z M470 104 l6 -18 l4 18z M520 132 l5 -14 l4 14z"/></g>
+      </svg>
+    </div>
+  </div></div>
+  <div class="ground" aria-hidden="true"></div>
+  <canvas id="dirt" aria-hidden="true"></canvas>
+
+  <div class="cta" id="cta">
     <a class="btn solid beam" href="#buy">Buy $DEAD</a>
     <a class="btn beam" href="#tombstone">Make a tombstone</a>
   </div>
+  <div class="flash" id="flash"></div>
 </header>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="threshold"><feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 255 -140"/></filter></svg>
 
 <main id="site">
   <section class="manifesto" id="story">
@@ -426,6 +465,7 @@ html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor se
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script src="vendor/SplitText.min.js"></script>
 <script src="vendor/lenis.min.js"></script>
+<script src="vendor/pixi.min.js"></script>
 <script>
 (() => {
   const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
@@ -435,8 +475,194 @@ html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor se
   const hero = $('.hero');
   let lenis = null;
 
-  /* ================= sound: monitor beeps, flatline, defibrillator ================= */
-  let actx, master, muted = false, enabledAt = 0;
+  // builds one zombie arm as inline SVG markup; every finger has two segments that can curl
+  function zombieArm(id){
+  const finger = (cls, x, y, ang, len, w) => {
+    const a = len * .55, b = len * .45;
+    return `<g class="fg ${cls}" transform="translate(${x} ${y}) rotate(${ang})">
+      <g class="seg1"><path d="M${-w/2} 4 C ${-w/2-1} ${-a*.5} ${-w*.42} ${-a} ${-w*.38} ${-a} L ${w*.38} ${-a} C ${w*.42} ${-a} ${w/2+1} ${-a*.5} ${w/2} 4 Z" fill="url(#armSkin)"/>
+        <ellipse cx="0" cy="${-a}" rx="${w*.46}" ry="${w*.3}" fill="#7d9846"/>
+        <g class="seg2" transform="translate(0 ${-a})"><path d="M${-w*.38} 0 C ${-w*.36} ${-b*.6} ${-w*.25} ${-b} 0 ${-b-2} C ${w*.25} ${-b} ${w*.36} ${-b*.6} ${w*.38} 0 Z" fill="url(#armSkin)"/>
+          <path d="M${-w*.22} ${-b+4} L 0 ${-b-12} L ${w*.22} ${-b+4} Z" fill="#d9cfa0"/></g></g></g>`;
+  };
+  return `<g id="${id}" class="zarm">
+    <g stroke="#11150c" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M40 360 C 36 300 34 240 40 186 C 42 168 44 158 50 150 C 46 140 48 132 56 128 L 92 128 C 100 132 102 142 98 150 C 104 160 106 172 106 190 C 110 250 106 300 104 360 Z" fill="url(#armSkin)"/>
+      <g stroke="none"><ellipse cx="60" cy="214" rx="9" ry="15" fill="#3d5222"/><ellipse cx="88" cy="262" rx="7" ry="11" fill="#3d5222"/><ellipse cx="64" cy="290" rx="5" ry="7" fill="#3d5222"/><ellipse cx="90" cy="196" rx="4" ry="6" fill="#3d5222"/><path d="M70 236 l14 -5 l-5 13 z" fill="#8c2a1a"/></g>
+      <path d="M52 250 q8 6 4 16 M80 166 q-6 8 0 16 M94 316 q-8 4 -6 12" fill="none" stroke-width="2.5"/>
+      <path d="M30 360 L 32 318 L 42 328 L 50 312 L 60 326 L 70 310 L 80 324 L 92 312 L 100 326 L 112 318 L 112 360 Z" fill="#c0903c"/>
+      <path d="M44 344 l6 -10 M88 342 l-4 -12" fill="none" stroke-width="2.5"/>
+      ${finger('f0', 40, 122, -62, 46, 17)}
+      <path d="M34 122 C 30 98 44 80 72 78 C 100 78 114 96 110 122 C 104 138 44 140 34 122 Z" fill="url(#armPalm)"/>
+      <g stroke="none" fill="#3d5222"><ellipse cx="60" cy="112" rx="6" ry="4"/><ellipse cx="92" cy="104" rx="4" ry="3"/></g>
+      ${finger('f1', 46, 90, -24, 70, 17)}
+      ${finger('f2', 64, 82, -7, 80, 18)}
+      ${finger('f3', 84, 82, 9, 76, 18)}
+      ${finger('f4', 102, 92, 26, 62, 16)}
+    </g></g>`;
+};
+  const zombieArmDefs = `<linearGradient id="armSkin" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#55702e"/><stop offset=".45" stop-color="#7d9846"/><stop offset="1" stop-color="#4a6228"/></linearGradient>
+  <radialGradient id="armPalm" cx="45%" cy="40%" r="65%"><stop offset="0" stop-color="#86a24c"/><stop offset="1" stop-color="#55702e"/></radialGradient>`;
+
+  /* ================= the frog rig: PixiJS mesh warp ("puppet warp") over the flat image ================= */
+  // Image is 439x588. Joints measured on the artwork: neck, left shoulder, hips.
+  const IW = 439, IH = 588, NECK = [290, 262], SHOULDER = [112, 300], HIP = [232, 470];
+  const smooth = (e0, e1, x) => { const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0))); return t * t * (3 - 2 * t); };
+  // the rig: every value here is animated by GSAP
+  const rig = { y: 1.05, x: 0, rot: 0, sx: 1, sy: 1, head: 0, headY: 0, lean: 0, arm: 0, shake: 0, phase: 0, breath: 0, sink: 0 };
+  // dirt stuck to him after the climb; shaken off later (precomputed points on the artwork)
+  const STUCK = [[205,30],[250,14],[300,22],[350,30],[180,70],[230,48],[400,60],[160,120],[190,150],[150,200],[330,180],[260,250],[140,250],[90,300],[70,330],[60,380],[200,300],[240,330],[300,300],[360,330],[170,380],[260,400],[330,410],[120,420],[220,440],[60,440],[100,500],[280,470],[180,500],[390,380],[420,400],[300,120]];
+  let app = null, plane = null, verts0 = null, frogLayer = null, maskG = null, clumpG = null, clumps = [], pxScale = 1, origin = { x: 0, y: 0 }, maskY = 0;
+  function warp(u, v){
+    // local coords around the feet (bottom centre of the artwork)
+    let x = u - IW / 2, y = v - IH;
+    const wHead = smooth(320, 225, v), wUpper = smooth(500, 250, v), wArm = smooth(160, 95, u) * smooth(285, 345, v);
+    // head turns on the neck
+    let a = rig.head * wHead, cx = NECK[0] - IW / 2, cy = NECK[1] - IH;
+    if(a){ const c = Math.cos(a), s = Math.sin(a), dx = x - cx, dy = y - cy; x = cx + dx * c - dy * s; y = cy + dx * s + dy * c; }
+    y += rig.headY * wHead;
+    // left arm swings on the shoulder
+    a = rig.arm * wArm; cx = SHOULDER[0] - IW / 2; cy = SHOULDER[1] - IH;
+    if(a){ const c = Math.cos(a), s = Math.sin(a), dx = x - cx, dy = y - cy; x = cx + dx * c - dy * s; y = cy + dx * s + dy * c; }
+    // wet-dog shake: a sideways wave that travels up the body
+    if(rig.shake){ const w = .15 + .85 * wUpper; x += Math.sin(rig.phase + v * .013) * rig.shake * w; y += Math.cos(rig.phase * 1.3 + u * .02) * rig.shake * .12 * w; }
+    // breathing swells the chest a touch
+    if(rig.breath){ const wc = smooth(250, 330, v) * smooth(470, 380, v); x *= 1 + rig.breath * wc; }
+    // upper body bends on the hips
+    a = rig.lean * wUpper; cx = HIP[0] - IW / 2; cy = HIP[1] - IH;
+    if(a){ const c = Math.cos(a), s = Math.sin(a), dx = x - cx, dy = y - cy; x = cx + dx * c - dy * s; y = cy + dx * s + dy * c; }
+    // squash and stretch from the feet, then the whole body tilt
+    x *= rig.sx; y *= rig.sy;
+    if(rig.rot){ const c = Math.cos(rig.rot), s = Math.sin(rig.rot); const nx = x * c - y * s; y = x * s + y * c; x = nx; }
+    return [x, y];
+  }
+  function layoutRig(){
+    if(!app) return;
+    const box = $('#rigBox'), cl = $('#cluster');
+    const bw = box.clientWidth, bh = box.clientHeight;
+    app.renderer.resize(bw, bh);
+    const cr = cl.getBoundingClientRect(), br = box.getBoundingClientRect();
+    const frogH = cl.clientHeight * .82; pxScale = frogH / IH;
+    // feet sit on the bottom of the grave, which is the bottom of the cluster
+    origin = { x: cr.left - br.left + cl.clientWidth * .2, y: cr.top - br.top + cl.clientHeight * .99 };
+    maskY = origin.y;
+    maskG.clear().beginFill(0xffffff).drawRect(0, 0, bw, maskY).endFill();
+  }
+  function drawRig(){
+    if(!plane) return;
+    const buf = plane.geometry.getBuffer('aVertexPosition'), d = buf.data;
+    const ox = origin.x + rig.x * pxScale, oy = origin.y + (rig.y + rig.sink) * IH * pxScale;
+    for(let i = 0; i < d.length; i += 2){
+      const [x, y] = warp(verts0[i], verts0[i + 1]);
+      d[i] = (x + IW / 2) * pxScale + ox - IW / 2 * pxScale; d[i + 1] = y * pxScale + oy;
+    }
+    buf.update();
+    clumpG.clear();
+    for(const c of clumps){
+      if(c.gone) continue;
+      const [x, y] = warp(c.u, c.v);
+      c.sx = (x + IW / 2) * pxScale + ox - IW / 2 * pxScale; c.sy = y * pxScale + oy;
+      if(c.sy > maskY) continue;
+      clumpG.beginFill(c.col).drawEllipse(c.sx, c.sy, c.r * pxScale * 1.4, c.r * pxScale).endFill();
+    }
+  }
+  function initRig(){
+    if(!window.PIXI || reduced) return false;
+    try{
+      app = new PIXI.Application({ backgroundAlpha: 0, antialias: true, resolution: Math.min(devicePixelRatio || 1, 2), autoDensity: true, width: 10, height: 10 });
+    }catch(e){ app = null; return false; }
+    $('#rigBox').appendChild(app.view);
+    frogLayer = new PIXI.Container(); app.stage.addChild(frogLayer);
+    maskG = new PIXI.Graphics(); app.stage.addChild(maskG); frogLayer.mask = maskG;
+    const tex = PIXI.Texture.from($('#frogSrc'));
+    plane = new PIXI.SimplePlane(tex, 14, 18);
+    frogLayer.addChild(plane);
+    clumpG = new PIXI.Graphics(); frogLayer.addChild(clumpG);
+    const pos = plane.geometry.getBuffer('aVertexPosition').data;
+    verts0 = Float32Array.from(pos);                      // texture-space coordinates (0..439, 0..588)
+    layoutRig();
+    app.ticker.add(drawRig);
+    hero.classList.add('has-rig');
+    return true;
+  }
+  function stickDirt(){
+    clumps = STUCK.map(([u, v]) => ({ u: u + (Math.random() - .5) * 14, v: v + (Math.random() - .5) * 14, r: 6 + Math.random() * 9, col: [0x3a2e20, 0x2b2218, 0x4a3a28, 0x2f4a22][Math.random() * 4 | 0], gone: false }));
+  }
+  // flick stuck clumps off into the hero-wide dirt canvas
+  function shedDirt(share){
+    const hr = hero.getBoundingClientRect(), br = $('#rigBox').getBoundingClientRect();
+    clumps.filter(c => !c.gone).sort(() => Math.random() - .5).slice(0, Math.ceil(clumps.length * share)).forEach(c => {
+      c.gone = true;
+      const dir = Math.sign(Math.sin(rig.phase + c.v * .013)) || 1;
+      flying.push({ x: c.sx + br.left - hr.left, y: c.sy + br.top - hr.top, vx: dir * (3 + Math.random() * 7), vy: -3 - Math.random() * 6, r: c.r * pxScale * 1.2, life: 1, c: '#' + c.col.toString(16).padStart(6, '0'), rot: Math.random() * 6 });
+    });
+  }
+
+  /* ================= hero-wide dirt + fog canvases ================= */
+  const fog = $('#fog'), fx = fog.getContext('2d'), dirt = $('#dirt'), dx = dirt.getContext('2d'), flying = [];
+  let FW = 0, FH = 0, blobs = [], flies = [];
+  function sizeHero(){
+    const dpr = Math.min(devicePixelRatio || 1, 2); FW = hero.clientWidth; FH = hero.clientHeight;
+    [fog, dirt].forEach(c => { c.width = FW * dpr; c.height = FH * dpr; c.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0); });
+    blobs = Array.from({ length: 9 }, (_, i) => ({ x: Math.random() * FW, y: FH * (.55 + Math.random() * .4), r: 160 + Math.random() * 260, v: (.15 + Math.random() * .35) * (i % 2 ? 1 : -1) }));
+    flies = Array.from({ length: Math.round(FW / 40) }, () => ({ x: Math.random() * FW, y: FH * (.3 + Math.random() * .6), p: Math.random() * 6.28, s: .5 + Math.random() }));
+    layoutRig();
+  }
+  function drawFog(t){
+    fx.clearRect(0, 0, FW, FH);
+    for(const b of blobs){
+      if(!reduced) b.x += b.v; if(b.x > FW + b.r) b.x = -b.r; if(b.x < -b.r) b.x = FW + b.r;
+      const g = fx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r); g.addColorStop(0, 'rgba(190,220,180,.07)'); g.addColorStop(1, 'rgba(190,220,180,0)');
+      fx.fillStyle = g; fx.fillRect(b.x - b.r, b.y - b.r, b.r * 2, b.r * 2);
+    }
+    for(const f of flies){
+      const a = Math.max(0, Math.sin(f.p + t * f.s * 1.3));
+      fx.globalAlpha = reduced ? .5 : a; fx.fillStyle = '#c8ff7a'; fx.shadowColor = '#86d24a'; fx.shadowBlur = 12;
+      fx.beginPath(); fx.arc(f.x + Math.sin(t * .4 * f.s + f.p) * 30, f.y + Math.cos(t * .5 * f.s + f.p) * 18, 1.8, 0, 6.283); fx.fill();
+    }
+    fx.globalAlpha = 1; fx.shadowBlur = 0;
+  }
+  // spray dirt from a point (hero coords) or from an element's bottom edge
+  function spray(n, power, at){
+    const hr = hero.getBoundingClientRect();
+    let ox, oy, spread;
+    if(at && at.nodeType){ const r = at.getBoundingClientRect(); ox = r.left - hr.left + r.width / 2; oy = r.top - hr.top + r.height * .25; spread = r.width; }
+    else if(at){ ox = at.x; oy = at.y; spread = 40; }
+    else { const r = $('#cluster').getBoundingClientRect(); ox = r.left - hr.left + r.width * .2; oy = r.top - hr.top + r.height * .78; spread = r.width * .35; }
+    for(let k = 0; k < n; k++){
+      const a = -Math.PI / 2 + (Math.random() - .5) * 1.9, v = power * (.4 + Math.random());
+      flying.push({ x: ox + (Math.random() - .5) * spread, y: oy, vx: Math.cos(a) * v, vy: Math.sin(a) * v, r: 1.5 + Math.random() * 5, life: 1, c: Math.random() < .2 ? '#3d5a2a' : (Math.random() < .5 ? '#3a2e20' : '#2b2218'), rot: Math.random() * 6 });
+    }
+  }
+  // zombie flies circle his head once he is out
+  const buzz = Array.from({ length: 5 }, (_, i) => ({ p: i * 1.3, s: 1.6 + Math.random() * 1.4, rx: 60 + Math.random() * 60, ry: 26 + Math.random() * 30 }));
+  let fliesOn = false;
+  function drawDirt(t){
+    dx.clearRect(0, 0, FW, FH);
+    for(let i = flying.length - 1; i >= 0; i--){
+      const c = flying[i]; c.x += c.vx; c.y += c.vy; c.vy += .45; c.vx *= .99; c.life -= .008; c.rot += .1;
+      if(c.life <= 0 || c.y > FH + 20){ flying.splice(i, 1); continue; }
+      dx.save(); dx.translate(c.x, c.y); dx.rotate(c.rot); dx.globalAlpha = Math.min(1, c.life * 2); dx.fillStyle = c.c; dx.fillRect(-c.r, -c.r * .7, c.r * 2, c.r * 1.4); dx.restore();
+    }
+    if(fliesOn && !reduced){
+      const hr = hero.getBoundingClientRect(), br = $('#rigBox').getBoundingClientRect();
+      const [hx, hy] = plane ? warp(300, 60) : [0, 0];
+      const cx = plane ? (hx + IW / 2) * pxScale + origin.x - IW / 2 * pxScale + br.left - hr.left : FW * .4;
+      const cy = plane ? hy * pxScale + origin.y + (rig.y + rig.sink) * IH * pxScale + br.top - hr.top : FH * .5;
+      const k = Math.max(1, pxScale * 1.6);
+      for(const f of buzz){
+        const a = t * f.s + f.p, x = cx + Math.cos(a) * f.rx + Math.sin(a * 2.7) * 8, y = cy + Math.sin(a * 1.3) * f.ry;
+        const wing = (Math.abs(Math.sin(t * 60 + f.p)) * 5 + 3) * k;
+        dx.fillStyle = 'rgba(230,240,230,.55)'; dx.beginPath(); dx.ellipse(x - 3 * k, y - 4 * k, wing, 3 * k, -.6, 0, 6.283); dx.ellipse(x + 3 * k, y - 4 * k, wing, 3 * k, .6, 0, 6.283); dx.fill();
+        dx.fillStyle = '#0b0d0a'; dx.beginPath(); dx.ellipse(x, y, 5 * k, 3.6 * k, 0, 0, 6.283); dx.fill();
+        dx.fillStyle = '#b5482f'; dx.beginPath(); dx.arc(x + 4 * k, y - .5 * k, 1.4 * k, 0, 6.283); dx.fill();
+      }
+    }
+  }
+  function heroLoop(now){ if(scrollY < FH){ drawFog(now / 1000); drawDirt(now / 1000); } requestAnimationFrame(heroLoop); }
+
+  /* ================= sound for the climb ================= */
+  let actx, master, muted = false, enabledAt = 0, droneOn = false;
   function audio(){
     if(actx) return;
     try{ if(navigator.audioSession) navigator.audioSession.type = 'playback'; }catch(e){}
@@ -444,181 +670,138 @@ html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor se
     master = actx.createGain(); master.gain.value = .8; master.connect(actx.destination);
   }
   const soundOK = () => actx && actx.state === 'running' && !muted;
+  const sfx = fn => () => { if(soundOK()) try{ fn(actx.currentTime); }catch(e){} };
   function noise(sec){ const b = actx.createBuffer(1, actx.sampleRate * sec, actx.sampleRate), d = b.getChannelData(0); for(let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; return b; }
   function env(peak, t, a, end){ const g = actx.createGain(); g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(.0001, t + end); return g; }
-  function beep(){ if(!soundOK()) return; const t = actx.currentTime, o = actx.createOscillator(); o.type = 'sine'; o.frequency.value = 980; o.connect(env(.12, t, .005, .11)).connect(master); o.start(t); o.stop(t + .14); }
-  function flatTone(dur){ if(!soundOK()) return; const t = actx.currentTime, o = actx.createOscillator(); o.type = 'sine'; o.frequency.value = 980;
-    const g = actx.createGain(); g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.09, t + .03); g.gain.setValueAtTime(.09, t + dur - .05); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
-    o.connect(g).connect(master); o.start(t); o.stop(t + dur + .05); }
-  function zap(){ if(!soundOK()) return; const t = actx.currentTime;
-    const n = actx.createBufferSource(); n.buffer = noise(.5); const bp = actx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 2400; bp.Q.value = .7;
-    n.connect(bp).connect(env(.8, t, .003, .45)).connect(master); n.start(t);
-    const o = actx.createOscillator(); o.type = 'sawtooth'; o.frequency.setValueAtTime(1800, t); o.frequency.exponentialRampToValueAtTime(60, t + .4);
-    o.connect(env(.35, t, .003, .42)).connect(master); o.start(t); o.stop(t + .45);
-    const k = actx.createOscillator(); k.frequency.setValueAtTime(120, t); k.frequency.exponentialRampToValueAtTime(35, t + .4);
-    k.connect(env(.9, t, .004, .5)).connect(master); k.start(t); k.stop(t + .55); }
-  function stab(){ if(!soundOK()) return; const t = actx.currentTime + .08;
-    [196, 246.94, 293.66, 392].forEach(f => { const o = actx.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f;
-      const lp = actx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(400, t); lp.frequency.exponentialRampToValueAtTime(3200, t + .25);
-      o.connect(lp).connect(env(.1, t, .01, 1.3)).connect(master); o.start(t); o.stop(t + 1.4); }); }
+  function dirtHit(t, size){ const n = actx.createBufferSource(); n.buffer = noise(.5); const lp = actx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 500 + size * 900; n.connect(lp).connect(env(.5 + size * .4, t, .004, .25 + size * .3)).connect(master); n.start(t);
+    const o = actx.createOscillator(); o.frequency.setValueAtTime(90 + size * 40, t); o.frequency.exponentialRampToValueAtTime(35, t + .3); o.connect(env(.6 * size + .2, t, .004, .35)).connect(master); o.start(t); o.stop(t + .4); }
+  function rumble(t, dur){ const n = actx.createBufferSource(); n.buffer = noise(dur); const lp = actx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(70, t); lp.frequency.linearRampToValueAtTime(220, t + dur); n.connect(lp).connect(env(.8, t, dur * .8, dur + .05)).connect(master); n.start(t); }
+  function groan(t, len = 1.2, pitch = 1){ const o = actx.createOscillator(); o.type = 'sawtooth'; o.frequency.setValueAtTime(115 * pitch, t); o.frequency.linearRampToValueAtTime(88 * pitch, t + len);
+    const v = actx.createOscillator(), vg = actx.createGain(); v.frequency.value = 6; vg.gain.value = 4; v.connect(vg).connect(o.frequency); v.start(t); v.stop(t + len + .1);
+    const out = env(.5, t, .12, len); [[520, 6], [1100, 9]].forEach(([f, q]) => { const bp = actx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = f; bp.Q.value = q; o.connect(bp).connect(out); }); out.connect(master); o.start(t); o.stop(t + len + .1); }
+  function stab(t){ [196, 246.94, 293.66, 392].forEach(f => { const o = actx.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f; const lp = actx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(400, t); lp.frequency.exponentialRampToValueAtTime(3200, t + .25); o.connect(lp).connect(env(.11, t, .01, 1.4)).connect(master); o.start(t); o.stop(t + 1.5); }); }
+  function shakeSnd(t){ for(let i = 0; i < 7; i++){ const n = actx.createBufferSource(); n.buffer = noise(.12); const bp = actx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 900 + Math.random() * 900; bp.Q.value = 1.2; n.connect(bp).connect(env(.25, t + i * .13, .01, .1)).connect(master); n.start(t + i * .13); } }
+  function drone(){ const t = actx.currentTime, g = actx.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.035, t + 5); const lp = actx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 300; [49, 49.3, 73.5].forEach(f => { const o = actx.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f; o.connect(lp); o.start(); }); lp.connect(g).connect(master); }
   const showSound = () => { const on = soundOK(), b = $('#mute'); b.classList.toggle('on', !!on); b.setAttribute('aria-pressed', !!on); b.setAttribute('aria-label', on ? 'Turn sound off' : 'Turn sound on'); };
-  function enableSound(){ enabledAt = performance.now(); try{ audio(); actx.resume().then(showSound, showSound); }catch(e){} }
+  function enableSound(){ enabledAt = performance.now(); try{ audio(); actx.resume().then(() => { if(!droneOn && actx.state === 'running'){ drone(); droneOn = true; } showSound(); }, showSound); }catch(e){} }
   ['pointerdown', 'keydown', 'touchend'].forEach(ev => addEventListener(ev, enableSound, { once: true, capture: true }));
   $('#mute').addEventListener('click', () => {
     if(!actx || actx.state !== 'running' || performance.now() - enabledAt < 600){ muted = false; enableSound(); return; }
     muted = !muted; master.gain.value = muted ? 0 : .8; showSound();
   });
+  try{ audio(); }catch(e){}
 
-  /* ================= the monitor: flickering ECG paper + a sweeping trace ================= */
-  const gridC = $('#grid'), gx = gridC.getContext('2d'), ecgC = $('#ecg'), ex = ecgC.getContext('2d');
-  const col = { r: 255, g: 74, b: 61 };                      // tweened between red (over) and green (back)
-  const CELL = 4, GAP = 9;
-  let HW = 0, HH = 0, cells = null, gcols = 0, grows = 0, buf = null, headAbs = 0;
-  function sizeHero(){
-    const dpr = Math.min(devicePixelRatio || 1, 2);
-    HW = hero.clientWidth; HH = hero.clientHeight;
-    [gridC, ecgC].forEach(c => { c.width = HW * dpr; c.height = HH * dpr; c.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0); });
-    gcols = Math.ceil(HW / (CELL + GAP)); grows = Math.ceil(HH / (CELL + GAP));
-    cells = new Float32Array(gcols * grows).map(() => Math.random() * .22);
-    buf = new Float32Array(Math.ceil(HW)).fill(NaN); headAbs = 0;
-    buildDither();
+  /* ================= the climb: a full sequence, plays by itself ================= */
+  const armR = '#armR', armL = '#armL';
+  // finger poses: open claw, gripping
+  const spread = sel => G.to(`${sel} .seg1`, { rotation: (i) => [-14, -10, -4, 4, 12][i], duration: .25, ease: 'back.out(3)' });
+  const curl = (sel, d = .18) => G.timeline()
+    .to(`${sel} .seg1`, { scaleY: .62, rotation: 0, duration: d, ease: 'power2.in' }, 0)
+    .to(`${sel} .seg2`, { scaleY: .5, duration: d, ease: 'power2.in' }, 0);
+  const open = (sel, d = .2) => G.timeline()
+    .to(`${sel} .seg1`, { scaleY: 1, duration: d, ease: 'back.out(2)' }, 0)
+    .to(`${sel} .seg2`, { scaleY: 1, duration: d, ease: 'back.out(2)' }, 0);
+  const at = sel => $(sel).querySelector('.palm-pt');
+  function finish(){
+    hero.classList.add('is-back'); fliesOn = true;
+    try{ sessionStorage.setItem('deadfrogBack', '1'); }catch(e){}
+    idle();
   }
-  function drawGrid(dt){
-    gx.clearRect(0, 0, HW, HH);
-    const rgb = `${col.r | 0},${col.g | 0},${col.b | 0}`;
-    for(let i = 0; i < cells.length; i++){
-      if(!reduced && Math.random() < 1.2 * dt) cells[i] = Math.random() * .22;
-      const a = cells[i]; if(a < .03) continue;
-      gx.fillStyle = `rgba(${rgb},${a.toFixed(2)})`;
-      gx.fillRect((i % gcols) * (CELL + GAP), ((i / gcols) | 0) * (CELL + GAP), CELL, CELL);
+  function idle(){
+    G.to(rig, { breath: .018, duration: 1.6, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+    G.to(rig, { lean: .03, duration: 3, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+    G.to(rig, { arm: -.06, duration: 2.2, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: .4 });
+    // the head follows the pointer a little, and nods off now and then
+    const qh = G.quickTo(rig, 'head', { duration: 1.2, ease: 'power3' });
+    addEventListener('pointermove', e => qh((e.clientX / innerWidth - .5) * .22));
+    const nod = () => { G.timeline().to(rig, { headY: 10, duration: .5, ease: 'power2.in' }).to(rig, { headY: 0, duration: .25, ease: 'back.out(3)' }, '+=.6'); G.delayedCall(6 + Math.random() * 5, nod); };
+    G.delayedCall(4, nod);
+    const crumble = () => { if(scrollY < FH * .6) spray(4 + Math.random() * 5 | 0, 3 + Math.random() * 3); G.delayedCall(2.5 + Math.random() * 3, crumble); };
+    G.delayedCall(2, crumble);
+  }
+  function climb(){
+    const title = SplitText.create('#backTitle', { type: 'words,chars' });
+    stickDirt();
+    G.set([armR, armL], { yPercent: 110 }); G.set(armR, { rotation: 4 }); G.set(armL, { rotation: -6 });
+    const tl = G.timeline({ onComplete: finish });
+    window.__climb = tl;
+    tl.from('#over', { opacity: 0, letterSpacing: '1em', duration: 1.2, ease: 'expo.out' }, .2)
+      // 1. the ground stirs
+      .add(sfx(t => rumble(t, 1.4)), .8)
+      .to('.mound', { x: 'random(-4,4)', y: 'random(-2,2)', duration: .05, repeat: 23, yoyo: true, ease: 'none' }, .8)
+      .add(() => spray(8, 4), 1.1).add(() => spray(12, 6), 1.5)
+      .to('#glow', { opacity: .75, duration: 1.4, ease: 'power2.in' }, .8)
+      // 2. a hand bursts out of the dirt, claws at the air
+      .to(armR, { yPercent: 0, duration: .32, ease: 'back.out(1.6)' }, 2.05)
+      .add(() => { spray(40, 11, at(armR)); }, 2.05).add(sfx(t => dirtHit(t, .8)), 2.05)
+      .add(spread(armR), 2.1)
+      .to(armR, { rotation: 'random(-4,6)', duration: .06, repeat: 7, yoyo: true, ease: 'none' }, 2.35)
+      .add(curl(armR), 2.6).add(open(armR), 2.8).add(curl(armR), 3.0).add(open(armR), 3.2)
+      // 3. it slams onto the tombstone and grips it
+      .to(armR, { rotation: 32, yPercent: 8, duration: .2, ease: 'power3.in' }, 3.45)
+      .add(curl(armR, .12), 3.62)
+      .add(() => spray(14, 5, at(armR)), 3.65).add(sfx(t => dirtHit(t, .5)), 3.65)
+      .to('#tomb', { rotation: 2.5, duration: .08, yoyo: true, repeat: 1 }, 3.65)
+      // 4. the second hand, digging into the earth
+      .to(armL, { yPercent: 0, duration: .3, ease: 'back.out(1.6)' }, 3.85)
+      .add(() => spray(36, 10, at(armL)), 3.85).add(sfx(t => dirtHit(t, .7)), 3.85)
+      .add(spread(armL), 3.9)
+      .to(armL, { rotation: -44, yPercent: 14, duration: .22, ease: 'power3.in' }, 4.25)
+      .add(curl(armL, .12), 4.45)
+      .add(() => spray(16, 5, at(armL)), 4.47).add(sfx(t => dirtHit(t, .5)), 4.47)
+      // 5. the head comes up, he looks around
+      .to(rig, { y: .62, duration: .8, ease: 'power2.out' }, 4.6)
+      .add(sfx(t => groan(t, 1.1, 1.05)), 4.7)
+      .to(rig, { head: -.16, duration: .35, ease: 'power2.inOut' }, 5.2)
+      .to(rig, { head: .14, duration: .45, ease: 'power2.inOut' }, 5.6)
+      .to(rig, { head: 0, duration: .3, ease: 'power2.inOut' }, 6.1)
+      // 6. first heave: arms pull, body stretches up
+      .to([armR, armL], { yPercent: '+=20', scaleY: .86, duration: .35, ease: 'power3.in' }, 6.3)
+      .to(rig, { y: .36, sy: 1.08, sx: .96, lean: .1, duration: .35, ease: 'power3.in' }, 6.3)
+      .to(rig, { sy: 1, sx: 1, lean: 0, duration: .5, ease: 'elastic.out(1,.4)' }, 6.65)
+      .add(() => spray(30, 9), 6.55).add(sfx(t => { dirtHit(t, .9); groan(t + .05, .7, .92); }), 6.55)
+      // 7. anticipation ... and out of the grave
+      .to(rig, { y: .42, sy: .9, sx: 1.06, duration: .25, ease: 'power2.inOut' }, 7.15)
+      .to([armR, armL], { scaleY: .78, duration: .25, ease: 'power2.inOut' }, 7.15)
+      .addLabel('out', 7.4)
+      .to(rig, { y: -.14, sy: 1.14, sx: .92, duration: .38, ease: 'power3.out' }, 'out')
+      .to([armR, armL], { yPercent: 120, duration: .25, ease: 'power2.in' }, 'out')
+      .add(() => { hero.classList.add('is-out'); spray(170, 17); shake(); }, 'out')
+      .add(sfx(t => { dirtHit(t, 1.4); stab(t + .05); }), 'out')
+      .fromTo('#flash', { opacity: .5 }, { opacity: 0, duration: .6, ease: 'power2.out', immediateRender: false }, 'out')
+      .to('.crack', { strokeDashoffset: 0, duration: .25, ease: 'power2.in' }, 'out')
+      .to('#tomb', { rotation: 4, duration: 1.2, ease: 'elastic.out(1,.3)' }, 'out')
+      .from(title.chars, { scale: 3, opacity: 0, yPercent: -40, rotation: 'random(-25,25)', duration: .55, ease: 'back.out(2.2)', stagger: .04 }, 'out+=.05')
+      .to('#over', { opacity: 0, duration: .2 }, 'out')
+      // 8. lands with a squash
+      .to(rig, { y: 0, sy: .88, sx: 1.08, duration: .3, ease: 'power2.in' }, 'out+=.38')
+      .add(() => spray(40, 8), 'out+=.68').add(sfx(t => dirtHit(t, .8)), 'out+=.68')
+      .to(rig, { sy: 1, sx: 1, duration: .7, ease: 'elastic.out(1,.35)' }, 'out+=.68')
+      // 9. shakes the dirt off like a wet dog
+      .addLabel('shake', 'out+=1.25')
+      .add(sfx(shakeSnd), 'shake')
+      .fromTo(rig, { shake: 22 }, { shake: 0, duration: 1.15, ease: 'power2.in' }, 'shake')
+      .to(rig, { phase: '+=34', duration: 1.15, ease: 'none' }, 'shake')
+      .to(rig, { head: .2, duration: .09, yoyo: true, repeat: 9, ease: 'sine.inOut' }, 'shake')
+      .set(rig, { head: 0 }, 'shake+=1')
+      .add(() => shedDirt(.35), 'shake+=.15').add(() => shedDirt(.5), 'shake+=.4').add(() => shedDirt(1), 'shake+=.7')
+      .add(() => spray(24, 6), 'shake+=.3')
+      // 10. "we're so back"
+      .to('#glow', { opacity: .45, duration: 1.4 }, 'shake')
+      .from('#sub', { opacity: 0, y: 14, duration: .6 }, 'shake+=.2')
+      .from('.hero .cta > *', { opacity: 0, y: 24, duration: .7, ease: 'expo.out', stagger: .08 }, 'shake+=.4')
+      .add(sfx(t => groan(t, .9, 1.2)), 'shake+=1.25');
+    return tl;
+  }
+  function shake(){ G.to('.cluster-in', { x: 'random(-12,12)', y: 'random(-7,7)', duration: .045, repeat: 11, yoyo: true, ease: 'none', onComplete: () => G.set('.cluster-in', { x: 0, y: 0 }) }); }
+  function startHero(){
+    const rigged = initRig();
+    if(!hasG || reduced || !rigged){
+      // static fallback: the frog is simply out of his grave
+      hero.classList.add('is-back', 'is-out', 'static-frog'); fliesOn = !reduced; rig.y = 0;
+      return;
     }
-  }
-  // one heartbeat: P wave, QRS spike, T wave
-  const gauss = (x, m, s) => Math.exp(-((x - m) * (x - m)) / (2 * s * s));
-  const wave = x => (x < 0 || x > .6) ? 0 : .12 * gauss(x, .08, .025) - .15 * gauss(x, .165, .01) + gauss(x, .19, .012) - .35 * gauss(x, .215, .012) + .25 * gauss(x, .38, .045);
-  let beats = [], clock = 0, nextBeat = 0, bpm = 0, hrShown = 0;
-  const ecgAt = t => { let v = 0; for(const b of beats) v += wave(t - b); return v; };
-  function stepECG(dt){
-    const speed = HW / 4.2, from = headAbs, to = headAbs + speed * dt;
-    for(let x = Math.ceil(from); x < to; x++) buf[x % buf.length] = ecgAt(clock - (to - x) / speed) + (Math.random() - .5) * .02;
-    headAbs = to;
-  }
-  function drawECG(){
-    ex.clearRect(0, 0, HW, HH);
-    const n = buf.length, h = Math.floor(headAbs) % n, base = HH * (HW < 760 ? .86 : .64), amp = HH * (HW < 760 ? .1 : .17), rgb = `rgb(${col.r | 0},${col.g | 0},${col.b | 0})`;
-    ex.lineWidth = 2.6; ex.lineJoin = 'round'; ex.strokeStyle = rgb; ex.shadowColor = rgb; ex.shadowBlur = 16;
-    ex.beginPath(); let pen = false;
-    for(let x = 0; x < n; x++){
-      const ahead = (x - h + n) % n;
-      if((ahead > 0 && ahead < 40) || isNaN(buf[x])){ pen = false; continue; }
-      const y = base - buf[x] * amp; pen ? ex.lineTo(x, y) : ex.moveTo(x, y); pen = true;
-    }
-    ex.stroke();
-    if(!isNaN(buf[h])){ ex.fillStyle = '#fff'; ex.shadowColor = '#fff'; ex.shadowBlur = 24; ex.beginPath(); ex.arc(h, base - buf[h] * amp, 4, 0, 6.283); ex.fill(); }
-    ex.shadowBlur = 0;
-  }
-
-  /* ================= the patient: dithered when dead, full colour when back ================= */
-  const frogImg = $('#frogImg'), dc = $('#dither'), dctx = dc.getContext('2d');
-  let ditherFull = null, ditherShow = null, revealOrder = [], revealAt = 0;
-  function buildDither(){
-    const shot = $('.shot'), w = shot.clientWidth, h = shot.clientHeight;
-    if(!w || !frogImg.naturalWidth) return;
-    const ps = Math.max(3, Math.round(w / 85)), cols = Math.ceil(w / ps), rows = Math.ceil(h / ps);
-    dc.width = cols; dc.height = rows;
-    const off = document.createElement('canvas'); off.width = cols; off.height = rows;
-    const o = off.getContext('2d'); o.fillStyle = '#000'; o.fillRect(0, 0, cols, rows); o.drawImage(frogImg, 0, 0, cols, rows);
-    let d; try{ d = o.getImageData(0, 0, cols, rows).data; }catch(e){ return; }   // file:// can taint the canvas; the colour image still works
-    const B = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];       // 4x4 Bayer matrix
-    ditherFull = dctx.createImageData(cols, rows); ditherShow = dctx.createImageData(cols, rows);
-    revealOrder = [];
-    for(let y = 0; y < rows; y++) for(let x = 0; x < cols; x++){
-      const i = (y * cols + x) * 4, lum = Math.min(1, (.3 * d[i] + .59 * d[i + 1] + .11 * d[i + 2]) / 255 * 1.35);
-      const on = lum > (B[(y % 4) * 4 + (x % 4)] + .5) / 16 ? 255 : 0;
-      ditherFull.data.set([on, on, on, 255], i); ditherShow.data.set([0, 0, 0, 255], i);
-      revealOrder.push(i);
-    }
-    for(let i = revealOrder.length - 1; i > 0; i--){ const j = Math.random() * (i + 1) | 0; [revealOrder[i], revealOrder[j]] = [revealOrder[j], revealOrder[i]]; }
-    revealAt = reduced ? revealOrder.length : 0;
-    if(reduced) dctx.putImageData(ditherFull, 0, 0);
-  }
-  function stepReveal(dt){                               // pixels pop in at random (after Magic UI's Pixel Image)
-    if(!ditherFull || revealAt >= revealOrder.length) return;
-    const n = Math.min(revealOrder.length, revealAt + Math.ceil(revealOrder.length * dt / 1.3));
-    for(; revealAt < n; revealAt++){ const i = revealOrder[revealAt]; ditherShow.data[i] = ditherShow.data[i + 1] = ditherShow.data[i + 2] = ditherFull.data[i]; }
-    dctx.putImageData(ditherShow, 0, 0);
-  }
-  if(frogImg.complete) requestAnimationFrame(() => buildDither()); else frogImg.addEventListener('load', buildDither);
-
-  /* ================= headline: it's so over <-> we're so back (after Magic UI's Morphing Text) ================= */
-  const m1 = $('#m1'), m2 = $('#m2');
-  let headline = m1.textContent;
-  function morphTo(next){
-    if(next === headline) return;
-    if(!hasG || reduced){ m1.textContent = headline = next; return; }
-    m1.textContent = headline; m2.textContent = next;
-    const o = { f: 0 };
-    G.to(o, { f: 1, duration: 1.1, ease: 'power1.inOut', overwrite: true,
-      onUpdate(){ const f = Math.max(o.f, .001), inv = Math.max(1 - o.f, .001);
-        m2.style.filter = `blur(${Math.min(8 / f - 8, 100)}px)`; m2.style.opacity = Math.pow(f, .4);
-        m1.style.filter = `blur(${Math.min(8 / inv - 8, 100)}px)`; m1.style.opacity = Math.pow(inv, .4); },
-      onComplete(){ headline = next; m1.textContent = next; m1.style.filter = 'none'; m1.style.opacity = 1; m2.textContent = ''; m2.style.opacity = 0; } });
-  }
-
-  /* ================= the loop: back -> dying -> flatline -> CLEAR! -> back ================= */
-  const PH = { back: 6.4, dying: 2.8, flat: 1.9 };
-  let phase = 'flat', phaseT = 0, rez = 1336;
-  const setText = (sel, t) => { const el = $(sel); if(el.textContent !== t) el.textContent = t; };
-  function tint(r, g, b, d){ hasG ? G.to(col, { r, g, b, duration: d, ease: 'power2.inOut' }) : Object.assign(col, { r, g, b }); }
-  function goOver(){
-    hero.dataset.state = 'over'; tint(255, 74, 61, 1.4);
-    morphTo('IT’S SO OVER'); setText('#status', 'CRITICAL'); setText('#cond', 'Critical');
-    if(hasG){ G.to(frogImg, { opacity: 0, duration: 1.8, ease: 'power2.in' }); G.to('.patient', { rotation: -3, y: 10, duration: 2.4, ease: 'power2.inOut' }); }
-    else frogImg.style.opacity = 0;
-  }
-  function goFlat(){ setText('#status', 'DECEASED'); setText('#cond', 'Deceased'); flatTone(PH.flat); }
-  function shock(){
-    phase = 'back'; phaseT = 0; bpm = 150; nextBeat = clock + .05;
-    zap(); stab();
-    rez++; const o = { v: rez - 1 };
-    hasG ? G.to(o, { v: rez, duration: .8, ease: 'expo.out', onUpdate: () => setText('#rez', Math.round(o.v).toLocaleString('en-US')) }) : setText('#rez', rez.toLocaleString('en-US'));
-    hero.dataset.state = 'back'; tint(134, 210, 74, .5);
-    morphTo('WE’RE SO BACK'); setText('#status', 'RESURRECTED'); setText('#cond', 'Stable');
-    try{ navigator.vibrate && navigator.vibrate([30, 30, 80]); }catch(e){}
-    if(!hasG){ frogImg.style.opacity = 1; return; }
-    G.timeline()
-      .fromTo('#clearTxt', { scale: 2.6, opacity: 0, rotation: -8 }, { scale: 1, opacity: 1, rotation: -4, duration: .28, ease: 'back.out(2.4)' }, 0)
-      .to('#clearTxt', { opacity: 0, scale: 1.3, duration: .45, ease: 'power2.in' }, .75)
-      .fromTo('#flash', { opacity: .75 }, { opacity: 0, duration: .5, ease: 'power2.out' }, 0)
-      .to('.hero-in', { x: 'random(-14,14)', y: 'random(-9,9)', duration: .04, repeat: 9, yoyo: true, ease: 'none' }, 0)
-      .set('.hero-in', { x: 0, y: 0 }, .45)
-      .to(frogImg, { opacity: 1, duration: .25 }, 0)
-      .to('.patient', { rotation: 0, y: 0, duration: 1, ease: 'elastic.out(1,.35)' }, 0)
-      .fromTo('.patient', { scale: 1.12 }, { scale: 1, duration: .8, ease: 'elastic.out(1,.4)' }, 0);
-  }
-  function onBeat(){
-    beep();
-    if(hasG && !reduced){ G.fromTo('.patient', { scale: 1.035 }, { scale: 1, duration: .42, ease: 'power2.out', overwrite: 'auto' }); G.fromTo('.hud .heart', { scale: 1.6 }, { scale: 1, duration: .4, ease: 'power2.out' }); }
-  }
-  function tick(dt){
-    clock += dt; phaseT += dt;
-    if(phase === 'back'){ bpm = 122 + 16 * Math.sin(clock * .8); if(phaseT > PH.back){ phase = 'dying'; phaseT = 0; goOver(); } }
-    else if(phase === 'dying'){ bpm = 122 - 90 * Math.min(1, phaseT / PH.dying); if(phaseT > PH.dying){ phase = 'flat'; phaseT = 0; bpm = 0; goFlat(); } }
-    else if(phase === 'flat'){ bpm = 0; if(phaseT > PH.flat) shock(); }
-    if(bpm > 0 && clock >= nextBeat){ beats.push(clock); nextBeat = clock + 60 / bpm; onBeat(); }
-    beats = beats.filter(b => clock - b < .7);
-    hrShown += (bpm - hrShown) * Math.min(1, dt * 2.5);
-    setText('#hr', String(Math.round(hrShown)));
-  }
-  let lastNow = 0, gridAcc = 0;
-  function loop(now){
-    const dt = Math.min(.05, (now - (lastNow || now)) / 1000); lastNow = now;
-    if(scrollY < HH * 1.05){
-      if(!reduced) tick(dt);
-      stepECG(dt); drawECG(); stepReveal(dt);
-      gridAcc += dt; if(gridAcc > 1 / 24){ drawGrid(gridAcc); gridAcc = 0; }
-    }
-    requestAnimationFrame(loop);
+    climb();
   }
 
   /* ================= the group chat (after Magic UI's Animated List) ================= */
@@ -790,16 +973,18 @@ html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor se
     G.to('#prog', { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: .3 } });
     ScrollTrigger.create({ start: 300, end: 'max', onUpdate: s => $('#nav').classList.toggle('hide', s.direction === 1), onLeaveBack: () => $('#nav').classList.remove('hide') });
 
-    // leaving the monitor: it falls back into the dark
-    G.to('.hero-in', { scale: .9, opacity: .2, yPercent: 8, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
-    G.to('.hero .cta', { opacity: 0, y: 40, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: '30% top', scrub: true } });
+    // leaving the graveyard: he sinks back into his grave, the sky drops away
+    G.timeline({ scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 1 } })
+      .to(rig, { sink: .55, ease: 'power1.in' }, 0)
+      .to('.headline', { yPercent: -70, opacity: 0, ease: 'none' }, 0)
+      .to('.tree', { yPercent: 14, ease: 'none' }, 0)
+      .to('.far', { yPercent: 20, ease: 'none' }, 0)
+      .to('.hero .cta', { opacity: 0, y: 40, ease: 'none' }, 0);
     if(!reduced){
       // the monitor drifts with the pointer, each layer at its own depth
-      const par = [['.patient-par', 22, 14], ['.morph-wrap', 12, 6], ['.hud.tl', 8, 6], ['.hud.tr', 8, 6], ['.hud.bl', 14, 8], ['.hud.br', 14, 8]]
+      const par = [['.tree', 26, 10], ['.far', 12, 5], ['.cluster', 16, 6], ['.headline', 10, 4], ['#glow', 20, 8]]
         .map(([s, dx, dy]) => [G.quickTo(s, 'x', { duration: 1.3, ease: 'power3' }), G.quickTo(s, 'y', { duration: 1.3, ease: 'power3' }), dx, dy]);
-      G.ticker.add(() => { if(scrollY > HH) return; par.forEach(([qx, qy, dx, dy]) => { qx(-mouse.nx * dx * 2); qy(-mouse.ny * dy * 2); }); });
-      G.from('.hero .cta > *', { y: 30, opacity: 0, duration: 1, ease: 'expo.out', stagger: .1, delay: 2.3 });
-      G.from('.hud', { opacity: 0, duration: 1.2, stagger: .12, delay: .4 });
+      G.ticker.add(() => { if(scrollY > FH) return; par.forEach(([qx, qy, dx, dy]) => { qx(-mouse.nx * dx * 2); qy(-mouse.ny * dy * 2); }); });
     }
 
     // words light up one by one
@@ -858,8 +1043,8 @@ html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor se
       const rx = G.quickTo(ring, 'x', { duration: .5, ease: 'power3' }), ry = G.quickTo(ring, 'y', { duration: .5, ease: 'power3' });
       const ddx = G.quickTo(dot, 'x', { duration: .08 }), ddy = G.quickTo(dot, 'y', { duration: .08 });
       addEventListener('pointermove', e => { rx(e.clientX); ry(e.clientY); ddx(e.clientX); ddy(e.clientY); });
-      $$('a, button, select, .cert, .patient').forEach(el => {
-        el.addEventListener('pointerenter', () => { ring.classList.add('big'); ring.textContent = el.dataset.cursor || (el.classList.contains('cert') ? 'r.i.p.' : el.classList.contains('patient') ? 'clear!' : ''); });
+      $$('a, button, select, .cert').forEach(el => {
+        el.addEventListener('pointerenter', () => { ring.classList.add('big'); ring.textContent = el.dataset.cursor || (el.classList.contains('cert') ? 'r.i.p.' : ''); });
         el.addEventListener('pointerleave', () => { ring.classList.remove('big'); ring.textContent = ''; });
       });
       if(!reduced) $$('.btn').forEach(el => {
@@ -872,19 +1057,13 @@ html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor se
   }
 
   /* ================= boot ================= */
+  ['#armL', '#armR'].forEach(s => { $(s).innerHTML = '<defs>' + zombieArmDefs + '</defs>' + zombieArm(s.slice(1) + 'In') + '<circle class="palm-pt" cx="72" cy="100" r="2" fill="none"/>'; });
+  if(hasG){ G.set('.seg1, .seg2', { transformOrigin: '50% 100%' }); G.set('#armL', { scaleX: -1 }); }
   sizeHero(); addEventListener('resize', sizeHero);
-  if(reduced){
-    // a still, healthy monitor: a few beats already on the trace, colour image, "we're so back"
-    hero.dataset.state = 'back'; Object.assign(col, { r: 134, g: 210, b: 74 }); headline = 'WE’RE SO BACK'; m1.textContent = headline;
-    setText('#status', 'RESURRECTED'); setText('#cond', 'Stable'); setText('#hr', '120');
-    const speed = HW / 4.2; for(let x = 0; x < buf.length; x++) buf[x] = wave((x / speed) % .5);
-  } else {
-    frogImg.style.opacity = 0;
-    // a defibrillator patient can still be clicked back to life early
-    $('.patient').addEventListener('click', () => { if(phase !== 'back') shock(); });
-  }
-  requestAnimationFrame(loop);
-  initSite();
+  requestAnimationFrame(heroLoop);
+  const img = $('#frogSrc');
+  const go = () => { startHero(); initSite(); };
+  (img.decode ? img.decode() : Promise.resolve()).catch(() => {}).then(() => (document.fonts ? document.fonts.ready : null)).then(go, go);
 })();
 </script>
 </body>
