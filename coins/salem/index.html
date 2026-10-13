@@ -20,6 +20,8 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);overflow-x:clip}
 html{scroll-behavior:auto}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-stopped{overflow:hidden}
 body.locked{overflow:hidden;height:100vh}
 body.locked .grain{display:none}
 a{color:inherit}
@@ -81,12 +83,6 @@ a{color:inherit}
 .kicker::before{content:"";width:40px;height:1px;background:currentColor}
 .h2{font-family:var(--serif);font-weight:400;font-size:clamp(48px,8.4vw,140px);line-height:.92;letter-spacing:-.02em;text-wrap:balance}
 .h2 em,.panel h3 em{font-style:italic;color:var(--eye)}
-.w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
-.w>span{display:inline-block}
-html.motion .split .w>span{transform:translateY(110%);transition:transform 1.1s cubic-bezier(.16,1,.3,1);transition-delay:calc(var(--i)*45ms)}
-html.motion .split.in .w>span{transform:none}
-html.motion [data-reveal]{opacity:0;transform:translateY(40px);transition:opacity 1.2s cubic-bezier(.16,1,.3,1),transform 1.2s cubic-bezier(.16,1,.3,1);transition-delay:var(--d,0s)}
-html.motion [data-reveal].in{opacity:1;transform:none}
 
 /* progress + nav */
 .progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:45;pointer-events:none}
@@ -111,9 +107,14 @@ html.motion [data-reveal].in{opacity:1;transform:none}
 .btn.solid::before{background:var(--ink)}
 .magnetic{transition:transform .6s cubic-bezier(.16,1,.3,1),color .5s,border-color .5s}
 
+/* SplitText masks: room for descenders and italic overhang */
+.sw-mask{padding-bottom:.26em;margin-bottom:-.26em;padding-right:.08em;margin-right:-.08em}
+#heroTitle>div{padding-inline:.12em;margin-inline:-.12em}
+
 /* hero */
 .hero{position:relative;height:100svh;min-height:560px;overflow:hidden;background:radial-gradient(ellipse 90% 70% at 50% 40%,#12121a 0%,var(--night) 70%)}
 #sky,#trail{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.moon-wrap{position:absolute;inset:0;pointer-events:none;will-change:transform}
 .moon{position:absolute;left:50%;top:44%;width:min(64vw,60svh,620px);aspect-ratio:1;border-radius:50%;translate:-50% -50%;will-change:transform;
   background:
     radial-gradient(circle at 30% 34%,rgba(160,150,118,.35) 0 6%,transparent 7%),
@@ -126,8 +127,6 @@ html.motion #site.on .moon{animation:moonIn 2.4s cubic-bezier(.16,1,.3,1) .3s bo
 @keyframes moonIn{from{scale:.6;opacity:0;filter:blur(20px)}}
 .hero-title{position:absolute;left:0;right:0;bottom:4svh;text-align:center;font-family:var(--serif);font-style:italic;font-weight:400;
   font-size:clamp(120px,27vw,440px);line-height:.8;letter-spacing:-.03em;color:var(--ink);mix-blend-mode:difference;pointer-events:none;white-space:nowrap}
-.hero-title .w>span{transform:translateY(105%)}
-#site.on .hero-title .w>span{transform:none;transition:transform 1.6s cubic-bezier(.16,1,.3,1);transition-delay:calc(.9s + var(--i)*70ms)}
 .flyer{position:absolute;left:50%;top:40%;width:min(78vw,640px);translate:-50% -50%;z-index:3;will-change:transform;pointer-events:none}
 .flyer svg{width:100%;height:auto;overflow:visible;display:block}
 html.motion #site.on .flyer-in{animation:swoop 2.6s cubic-bezier(.16,1,.3,1) .5s both}
@@ -148,14 +147,11 @@ section{position:relative;padding-block:clamp(110px,16vw,220px);padding-inline:c
 
 /* manifesto: words light up with scroll */
 .manifesto .words{font-family:var(--serif);font-size:clamp(32px,5.2vw,82px);line-height:1.08;letter-spacing:-.01em;max-width:20ch;margin-top:44px;text-wrap:pretty}
-.manifesto .words span{opacity:.13;transition:opacity .5s ease,color .5s ease}
-.manifesto .words span.lit{opacity:1}
-.manifesto .words em{font-style:italic}
-.manifesto .words em span.lit{color:var(--eye)}
+.manifesto .words em{font-style:italic;color:var(--eye)}
 
 /* horizontal chapters */
 .hscroll{padding:0}
-.hscroll .sticky{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+.hscroll .sticky{height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
 .track{display:flex;gap:clamp(24px,4vw,64px);padding-inline:clamp(16px,6vw,96px);will-change:transform;width:max-content}
 .panel{width:min(72vw,760px);flex:none;border-top:1px solid var(--line);padding-top:28px;display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,56px);align-items:start}
 .panel .num{font-family:var(--serif);font-style:italic;font-size:clamp(120px,16vw,240px);line-height:.75;color:transparent;-webkit-text-stroke:1px rgba(239,233,220,.35)}
@@ -166,7 +162,7 @@ section{position:relative;padding-block:clamp(110px,16vw,220px);padding-inline:c
 .flightline{position:relative;margin:clamp(48px,8svh,90px) clamp(16px,6vw,96px) 0;height:1px;background:var(--line)}
 .flightline i{position:absolute;inset:0;background:var(--eye);transform-origin:0 50%;transform:scaleX(0)}
 .flightline svg{position:absolute;bottom:2px;left:0;width:120px;translate:-50% 0;overflow:visible;filter:drop-shadow(0 0 1px #c6ff3d) drop-shadow(0 0 8px rgba(198,255,61,.55))}
-.hscroll.stacked .sticky{position:static;height:auto;padding-block:clamp(90px,14vw,160px)}
+.hscroll.stacked .sticky{height:auto;padding-block:clamp(90px,14vw,160px)}
 .hscroll.stacked .track{flex-direction:column;width:auto;gap:64px}
 .hscroll.stacked .panel{width:auto}
 .hscroll.stacked .flightline{display:none}
@@ -212,14 +208,15 @@ footer{padding-block:48px calc(40px + env(safe-area-inset-bottom,0px));padding-i
 footer p{max-width:64ch}
 
 /* cursor */
-.cur-dot,.cur-ring{position:fixed;left:0;top:0;pointer-events:none;z-index:95;border-radius:50%}
+.cur-dot,.cur-ring{position:fixed;left:0;top:0;pointer-events:none;z-index:95;border-radius:50%;display:none}
+html.has-cursor .cur-dot{display:block}
+html.has-cursor .cur-ring{display:grid}
 .cur-dot{width:6px;height:6px;margin:-3px 0 0 -3px;background:var(--eye)}
-.cur-ring{width:44px;height:44px;margin:-22px 0 0 -22px;border:1px solid rgba(239,233,220,.5);display:grid;place-items:center;
+.cur-ring{width:44px;height:44px;margin:-22px 0 0 -22px;border:1px solid rgba(239,233,220,.5);place-items:center;
   font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#0a0a0a;transition:width .45s cubic-bezier(.16,1,.3,1),height .45s cubic-bezier(.16,1,.3,1),margin .45s cubic-bezier(.16,1,.3,1),background .45s,border-color .45s}
 .cur-ring.big{width:86px;height:86px;margin:-43px 0 0 -43px;background:var(--eye);border-color:var(--eye)}
-@media (hover:none){.cur-dot,.cur-ring{display:none}}
 body.locked .cur-dot,body.locked .cur-ring{display:none}
-@media (hover:hover){#site,#site a,#site button{cursor:none}}
+html.has-cursor #site,html.has-cursor #site a,html.has-cursor #site button{cursor:none}
 
 #mute{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));right:18px;z-index:41;font-family:var(--mono);font-size:10px;letter-spacing:.18em;background:rgba(8,8,12,.6);backdrop-filter:blur(6px);border:1px solid var(--line);color:var(--dim);padding:9px 12px;cursor:pointer}
 :focus-visible{outline:1px solid var(--eye);outline-offset:4px}
@@ -308,11 +305,11 @@ body.locked .cur-dot,body.locked .cur-ring{display:none}
 
   <header class="hero" id="top">
     <canvas id="sky" aria-hidden="true"></canvas>
-    <div class="moon" id="moon"></div>
+    <div class="moon-wrap" id="moonWrap"><div class="moon" id="moon"></div></div>
     <svg class="clouds c2" id="c2" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true"><path fill="#0d0d14" d="M0 120 C 90 60 180 70 240 110 C 300 50 420 40 480 100 C 560 30 700 40 760 110 C 840 60 960 50 1020 105 C 1100 40 1240 50 1300 110 C 1360 80 1410 90 1440 100 L1440 200 L0 200Z"/></svg>
     <h1 class="hero-title" id="heroTitle" aria-label="Salem">Salem</h1>
     <canvas id="trail" aria-hidden="true"></canvas>
-    <div class="flyer" id="flyer">
+    <div class="flyer" id="flyer"><div id="flyerExit"><div id="flyerBob">
       <div class="flyer-in">
         <svg viewBox="-40 0 560 300" role="img" aria-label="Salem, a black cat in a witch hat, flying on a broom">
           <use href="#broomcat"/>
@@ -325,7 +322,7 @@ body.locked .cur-dot,body.locked .cur-ring{display:none}
           <circle id="trailSrc" cx="-30" cy="212" r="1" fill="none"/>
         </svg>
       </div>
-    </div>
+    </div></div></div>
     <svg class="clouds c1" id="c1" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true"><path fill="#08080c" d="M0 110 C 70 70 150 80 200 120 C 270 60 380 60 430 115 C 500 70 610 70 660 120 C 740 50 880 60 930 120 C 1000 80 1100 80 1150 115 C 1220 60 1350 60 1440 110 L1440 200 L0 200Z"/></svg>
     <div class="hero-meta">
       <span>The familiar takes flight</span>
@@ -415,6 +412,10 @@ body.locked .cur-dot,body.locked .cur-ring{display:none}
 <div class="cur-ring" id="ring"></div><div class="cur-dot" id="dot"></div>
 <button id="mute" type="button" hidden>SOUND ON</button>
 
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="vendor/SplitText.min.js"></script>
+<script src="vendor/lenis.min.js"></script>
 <script>
 (() => {
   const $ = s => document.querySelector(s);
@@ -582,86 +583,19 @@ body.locked .cur-dot,body.locked .cur-ring{display:none}
     }, SCARE_DELAY*1000);
   }
 
-  /* =================== STAGE 3: the site =================== */
-  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
-  const lerp = (a, b, t) => a + (b - a) * t;
+  /* =================== STAGE 3: the site (GSAP + ScrollTrigger + SplitText + Lenis) =================== */
+  const G = window.gsap, hasG = !!(G && window.ScrollTrigger && window.SplitText);
   const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
-  let siteReady = false;
   const mouse = { x: innerWidth / 2, y: innerHeight / 2, nx: 0, ny: 0 };
+  let siteReady = false, lenis = null;
+  addEventListener('pointermove', e => {
+    mouse.x = e.clientX; mouse.y = e.clientY;
+    mouse.nx = e.clientX / innerWidth - .5; mouse.ny = e.clientY / innerHeight - .5;
+  });
 
-  // split text into masked words/letters (keeps <em>)
-  function split(el, letters){
-    let i = 0;
-    const walk = node => [...node.childNodes].forEach(n => {
-      if(n.nodeType === 3){
-        const frag = document.createDocumentFragment();
-        n.textContent.split(/(\s+)/).forEach(tok => {
-          if(!tok) return;
-          if(/^\s+$/.test(tok)){ frag.appendChild(document.createTextNode(' ')); return; }
-          const parts = letters ? [...tok] : [tok];
-          parts.forEach(p => {
-            const w = document.createElement('span'); w.className = 'w';
-            const s = document.createElement('span'); s.textContent = p; s.style.setProperty('--i', i++);
-            w.appendChild(s); frag.appendChild(w);
-          });
-        });
-        n.replaceWith(frag);
-      } else walk(n);
-    });
-    walk(el);
-  }
-  // words that light up one by one
-  function splitPlain(el){
-    const walk = node => [...node.childNodes].forEach(n => {
-      if(n.nodeType === 3){
-        const frag = document.createDocumentFragment();
-        n.textContent.split(/(\s+)/).forEach(tok => {
-          if(!tok) return;
-          if(/^\s+$/.test(tok)) frag.appendChild(document.createTextNode(' '));
-          else { const s = document.createElement('span'); s.textContent = tok; frag.appendChild(s); }
-        });
-        n.replaceWith(frag);
-      } else walk(n);
-    });
-    walk(el);
-    return [...el.querySelectorAll('span')];
-  }
-
-  split($('#heroTitle'), true);
-  document.querySelectorAll('.split').forEach(el => split(el));
-  const words = splitPlain($('#words'));
-  if(!reduced) document.documentElement.classList.add('motion');
-
-  /* ---------- smooth wheel scrolling (desktop only) ---------- */
-  const smooth = { on: fine && !reduced, target: 0, cur: 0, active: false };
-  const maxScroll = () => document.documentElement.scrollHeight - innerHeight;
-  function scrollToY(y){
-    y = clamp(y, 0, maxScroll());
-    if(smooth.on){ smooth.target = y; smooth.cur = scrollY; smooth.active = true; }
-    else scrollTo({ top: y, behavior: reduced ? 'auto' : 'smooth' });
-  }
-  if(smooth.on){
-    addEventListener('wheel', e => {
-      if(e.ctrlKey || !siteReady) return;
-      e.preventDefault();
-      if(!smooth.active){ smooth.cur = smooth.target = scrollY; }
-      smooth.target = clamp(smooth.target + e.deltaY * (e.deltaMode === 1 ? 40 : 1), 0, maxScroll());
-      smooth.active = true;
-    }, { passive: false });
-    addEventListener('keydown', () => { smooth.active = false; });
-    addEventListener('pointerdown', () => { smooth.active = false; });
-  }
-  document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
-    const t = document.querySelector(a.getAttribute('href'));
-    if(!t) return;
-    e.preventDefault();
-    scrollToY(t.getBoundingClientRect().top + scrollY);
-  }));
-
-  /* ---------- sky: twinkling stars ---------- */
-  const sky = $('#sky'), sx = sky.getContext('2d');
-  const trail = $('#trail'), tx = trail.getContext('2d');
-  const hero = $('.hero');
+  /* ---------- canvases: stars + broom sparks (hand-drawn, no library does this) ---------- */
+  const hero = $('.hero'), sky = $('#sky'), sx = sky.getContext('2d'), trail = $('#trail'), tx = trail.getContext('2d');
+  const trailSrc = $('#trailSrc'), sparks = [];
   let HW = 0, HH = 0, stars = [];
   function sizeHero(){
     const dpr = Math.min(devicePixelRatio || 1, 2);
@@ -675,23 +609,18 @@ body.locked .cur-dot,body.locked .cur-ring{display:none}
   function drawSky(t){
     sx.clearRect(0, 0, HW, HH);
     for(const s of stars){
-      const a = .25 + .75 * Math.abs(Math.sin(s.p + t * .001 * s.s));
-      sx.globalAlpha = reduced ? .6 : a;
+      sx.globalAlpha = reduced ? .6 : .25 + .75 * Math.abs(Math.sin(s.p + t * s.s));
       sx.fillStyle = s.r > 1.2 ? '#e8f7b8' : '#efe9dc';
       sx.beginPath(); sx.arc(s.x - mouse.nx * 14 * s.d, s.y - mouse.ny * 10 * s.d, s.r, 0, 6.283); sx.fill();
     }
     sx.globalAlpha = 1;
   }
-
-  /* ---------- broom trail sparks ---------- */
-  const sparks = [], trailSrc = $('#trailSrc');
   function drawTrail(){
     const hr = hero.getBoundingClientRect(), sr = trailSrc.getBoundingClientRect();
     const ox = sr.left - hr.left, oy = sr.top - hr.top;
     if(!reduced) for(let k = 0; k < 4; k++) sparks.push({
       x: ox + (Math.random() - .5) * 18, y: oy + (Math.random() - .5) * 26,
-      vx: -1.4 - Math.random() * 2.2, vy: (Math.random() - .3) * .9,
-      life: 1, r: Math.random() * 2.2 + .4, g: Math.random() < .55
+      vx: -1.4 - Math.random() * 2.2, vy: (Math.random() - .3) * .9, life: 1, r: Math.random() * 2.2 + .4, g: Math.random() < .55
     });
     tx.clearRect(0, 0, HW, HH);
     tx.globalCompositeOperation = 'lighter';
@@ -702,162 +631,166 @@ body.locked .cur-dot,body.locked .cur-ring{display:none}
       tx.globalAlpha = p.life * p.life;
       tx.fillStyle = p.g ? '#c6ff3d' : '#fff6d8';
       tx.beginPath(); tx.arc(p.x, p.y, p.r * p.life, 0, 6.283); tx.fill();
-      if(p.r > 2.1 && p.life > .6){ // little 4-point twinkles
-        tx.fillRect(p.x - 5 * p.life, p.y - .4, 10 * p.life, .8); tx.fillRect(p.x - .4, p.y - 5 * p.life, .8, 10 * p.life);
-      }
+      if(p.r > 2.1 && p.life > .6){ tx.fillRect(p.x - 5 * p.life, p.y - .4, 10 * p.life, .8); tx.fillRect(p.x - .4, p.y - 5 * p.life, .8, 10 * p.life); }
     }
     tx.globalAlpha = 1; tx.globalCompositeOperation = 'source-over';
   }
 
-  /* ---------- flyer ---------- */
-  const flyer = $('#flyer'), moon = $('#moon'), c1 = $('#c1'), c2 = $('#c2'), title = $('#heroTitle');
-  const pL = $('#pL'), pR = $('#pR');
-  const fly = { x: 0, y: 0, r: 0 };
-  function drawFlyer(t, p){
-    const s = t / 1000;
-    const bobY = reduced ? 0 : Math.sin(s * 1.6) * 14 + Math.sin(s * .7) * 8;
-    const bobX = reduced ? 0 : Math.sin(s * .5) * 18;
-    fly.x = lerp(fly.x, mouse.nx * 50, .05);
-    fly.y = lerp(fly.y, mouse.ny * 34, .05);
-    fly.r = lerp(fly.r, mouse.nx * 4, .05);
-    // on scroll he climbs away to the top right
-    const ex = p * HW * .75, ey = -p * HH * .7, er = -p * 16, sc = 1 - p * .35;
-    flyer.style.transform = `translate3d(${bobX + fly.x + ex}px, ${bobY + fly.y + ey}px, 0) rotate(${(reduced ? 0 : Math.sin(s * 1.1) * 3) + fly.r + er}deg) scale(${sc})`;
-    moon.style.transform = `translate3d(${-mouse.nx * 12}px, ${p * HH * .3 - mouse.ny * 8}px, 0) scale(${1 + p * .12})`;
-    title.style.transform = `translate3d(0, ${p * HH * .18}px, 0)`;
-    c2.style.transform = `translate3d(${mouse.nx * -16}px, ${p * HH * .12}px, 0)`;
-    c1.style.transform = `translate3d(${mouse.nx * -30}px, ${p * HH * -.05}px, 0)`;
-    // pupils follow the pointer
-    const dx = clamp((mouse.x / innerWidth - .5) * 2, -1, 1), dy = clamp((mouse.y / innerHeight - .4) * 2, -1, 1);
-    pL.setAttribute('x', 339.8 + dx * 3.2); pR.setAttribute('x', 362.8 + dx * 3.2);
-    pL.setAttribute('y', 90 + dy * 1.4); pR.setAttribute('y', 88 + dy * 1.4);
-  }
-
-  /* ---------- horizontal chapters ---------- */
-  const hs = $('.hscroll'), track = $('#track'), fill = $('#flightFill'), mini = $('#mini');
-  let horiz = false, travel = 0;
-  function sizeHoriz(){
-    horiz = !reduced && innerWidth >= 820;
-    hs.classList.toggle('stacked', !horiz);
-    track.style.transform = '';
-    if(horiz){ travel = track.scrollWidth - innerWidth; hs.style.height = (travel + innerHeight) + 'px'; }
-    else hs.style.height = '';
-  }
-
-  /* ---------- marquee ---------- */
-  const mq = [$('#mq1'), $('#mq2')];
-  mq[0].innerHTML = '<span>Trick or <em>token</em></span><span>Nine lives</span><span>One chart</span>'.repeat(4);
-  mq[1].innerHTML = '<span>Black cat season</span><span>Hop on the broom</span>'.repeat(4);
-  const mqPos = [0, 0];
-  let lastY = scrollY, vel = 0, dir = 1;
-
-  /* ---------- reveals + counters ---------- */
-  const io = new IntersectionObserver(es => es.forEach(e => {
-    if(!e.isIntersecting) return;
-    e.target.classList.add('in'); io.unobserve(e.target);
-    e.target.querySelectorAll('[data-count]').forEach(countUp);
-  }), { threshold: .2, rootMargin: '0px 0px -8% 0px' });
-  function countUp(el){
-    const to = +el.dataset.count, t0 = performance.now(), dur = reduced ? 0 : 2200;
-    const step = now => {
-      const k = dur ? clamp((now - t0) / dur) : 1, e = 1 - Math.pow(2, -10 * k);
-      el.textContent = Math.round(to * (k === 1 ? 1 : e)).toLocaleString('en-US');
-      if(k < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }
-
-  /* ---------- cursor, magnets, spotlight ---------- */
-  const ring = $('#ring'), dot = $('#dot');
-  const rp = { x: mouse.x, y: mouse.y };
-  addEventListener('pointermove', e => {
-    mouse.x = e.clientX; mouse.y = e.clientY;
-    mouse.nx = e.clientX / innerWidth - .5; mouse.ny = e.clientY / innerHeight - .5;
-  });
-  document.querySelectorAll('#site a, #site button').forEach(el => {
-    el.addEventListener('pointerenter', () => { ring.classList.add('big'); ring.textContent = el.dataset.cursor || ''; });
-    el.addEventListener('pointerleave', () => { ring.classList.remove('big'); ring.textContent = ''; });
-  });
-  if(fine && !reduced) document.querySelectorAll('.magnetic').forEach(el => {
-    el.addEventListener('pointermove', e => {
-      const r = el.getBoundingClientRect();
-      el.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .3}px, ${(e.clientY - r.top - r.height / 2) * .4}px)`;
-    });
-    el.addEventListener('pointerleave', () => { el.style.transform = ''; });
-  });
-  document.querySelectorAll('.cell').forEach(el => el.addEventListener('pointermove', e => {
-    const r = el.getBoundingClientRect();
-    el.style.setProperty('--mx', (e.clientX - r.left) + 'px'); el.style.setProperty('--my', (e.clientY - r.top) + 'px');
-  }));
-
   /* ---------- copy ---------- */
   $('#copy').addEventListener('click', e => {
     const btn = e.currentTarget, code = $('#ca');
-    const done = () => { btn.firstChild.textContent = 'Copied'; setTimeout(() => btn.firstChild.textContent = 'Copy address', 1600); };
+    const done = () => { btn.textContent = 'Copied'; setTimeout(() => btn.textContent = 'Copy address', 1600); };
     const pick = () => { const r = document.createRange(); r.selectNodeContents(code); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
     try{ navigator.clipboard.writeText(code.textContent).then(done, pick); }catch(err){ pick(); }
   });
 
-  /* ---------- the one loop ---------- */
-  const nav = $('#nav'), prog = $('#prog');
-  let navY = 0;
-  function frame(t){
-    if(smooth.active){
-      smooth.cur = lerp(smooth.cur, smooth.target, .09);
-      if(Math.abs(smooth.target - smooth.cur) < .5){ smooth.cur = smooth.target; smooth.active = false; }
-      scrollTo(0, smooth.cur);
-    }
-    const y = scrollY, vh = innerHeight;
-    vel = lerp(vel, y - lastY, .2); if(Math.abs(y - lastY) > .5) dir = y > lastY ? 1 : -1; lastY = y;
-
-    prog.style.transform = `scaleX(${clamp(y / Math.max(1, maxScroll()))})`;
-    if(Math.abs(y - navY) > 8){ nav.classList.toggle('hide', y > navY && y > 300); navY = y; }
-
-    // hero (only while visible)
-    if(y < HH){ drawSky(t); drawTrail(); drawFlyer(t, clamp(y / HH)); }
-
-    // manifesto words
-    const wr = $('#story').getBoundingClientRect();
-    if(wr.top < vh && wr.bottom > 0){
-      const p = clamp((vh * .8 - wr.top) / (wr.height * .85));
-      const n = Math.floor(p * words.length * 1.02);
-      words.forEach((w, i) => w.classList.toggle('lit', i < n));
-    }
-
-    // horizontal track
-    if(horiz){
-      const r = hs.getBoundingClientRect();
-      const p = clamp(-r.top / Math.max(1, r.height - vh));
-      track.style.transform = `translate3d(${-p * travel}px,0,0)`;
-      fill.style.transform = `scaleX(${p})`;
-      mini.style.left = (p * 100) + '%';
-      mini.style.transform = `translateY(${Math.sin(t / 300) * 3}px) rotate(${-4 + vel * .15}deg)`;
-    }
-
-    // marquee speeds up with scroll velocity and follows scroll direction
-    const sp = (reduced ? 0 : .7) + Math.min(Math.abs(vel) * .35, 18);
-    mq.forEach((el, i) => {
-      const half = el.scrollWidth / 2;
-      mqPos[i] -= sp * dir * (i ? -1 : 1);
-      if(mqPos[i] <= -half) mqPos[i] += half; if(mqPos[i] > 0) mqPos[i] -= half;
-      el.style.transform = `translate3d(${mqPos[i]}px,0,0) skewX(${clamp(-vel * .15, -8, 8)}deg)`;
-    });
-
-    // cursor
-    dot.style.transform = `translate3d(${mouse.x}px,${mouse.y}px,0)`;
-    rp.x = lerp(rp.x, mouse.x, .16); rp.y = lerp(rp.y, mouse.y, .16);
-    ring.style.transform = `translate3d(${rp.x}px,${rp.y}px,0)`;
-
-    requestAnimationFrame(frame);
-  }
+  /* ---------- marquee content ---------- */
+  $('#mq1').innerHTML = '<span>Trick or <em>token</em></span><span>Nine lives</span><span>One chart</span>'.repeat(4);
+  $('#mq2').innerHTML = '<span>Black cat season</span><span>Hop on the broom</span>'.repeat(4);
 
   function initSite(){
     if(siteReady) return; siteReady = true;
     setTimeout(() => $('#site').classList.add('open'), 1900);
-    sizeHero(); sizeHoriz();
-    addEventListener('resize', () => { sizeHero(); sizeHoriz(); });
-    document.querySelectorAll('[data-reveal], .split, .steps li').forEach(el => io.observe(el));
-    requestAnimationFrame(frame);
+    sizeHero(); addEventListener('resize', sizeHero);
+
+    // without the libraries the page still works: static, fully visible, native scroll
+    if(!hasG){
+      const loop = now => { if(scrollY < HH){ drawSky(now / 1000); drawTrail(); } requestAnimationFrame(loop); };
+      requestAnimationFrame(loop);
+      return;
+    }
+    G.registerPlugin(ScrollTrigger, SplitText);
+    if(!reduced) document.documentElement.classList.add('motion');
+
+    /* smooth scroll */
+    if(!reduced && window.Lenis){
+      lenis = new Lenis({ lerp: .085, wheelMultiplier: 1 });
+      lenis.on('scroll', ScrollTrigger.update);
+      G.ticker.add(t => lenis.raf(t * 1000));
+      G.ticker.lagSmoothing(0);
+    }
+    document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href')); if(!t) return;
+      e.preventDefault();
+      lenis ? lenis.scrollTo(t, { duration: 1.8, easing: k => 1 - Math.pow(1 - k, 4) }) : t.scrollIntoView();
+    }));
+
+    /* hero entrance */
+    const title = SplitText.create('#heroTitle', { type: 'chars,lines', mask: 'lines' });
+    G.from(title.chars, { yPercent: 110, duration: 1.6, ease: 'expo.out', stagger: .07, delay: .9 });
+    G.from('.hero-meta > *', { y: 20, opacity: 0, duration: 1.2, ease: 'expo.out', stagger: .1, delay: 1.6 });
+    G.from('#nav > *', { y: -30, opacity: 0, duration: 1.2, ease: 'expo.out', stagger: .1, delay: 1.4 });
+
+    /* hero: idle flight + pointer lean (ticker), scroll exit (ScrollTrigger) */
+    const bob = $('#flyerBob'), pL = $('#pL'), pR = $('#pR');
+    const bx = G.quickTo(bob, 'x', { duration: 1.2, ease: 'power3' }), by = G.quickTo(bob, 'y', { duration: 1.2, ease: 'power3' });
+    const br = G.quickTo(bob, 'rotation', { duration: 1.2, ease: 'power3' });
+    const mx = G.quickTo('#moonWrap', 'x', { duration: 1.6, ease: 'power3' }), cx1 = G.quickTo('#c1', 'x', { duration: 1.6, ease: 'power3' }), cx2 = G.quickTo('#c2', 'x', { duration: 1.6, ease: 'power3' });
+    G.ticker.add(time => {
+      if(scrollY > HH) return;
+      drawSky(time); drawTrail();
+      const still = reduced ? 0 : 1;
+      bx(still * Math.sin(time * .5) * 18 + mouse.nx * 100);
+      by(still * (Math.sin(time * 1.6) * 14 + Math.sin(time * .7) * 8) + mouse.ny * 68);
+      br(still * Math.sin(time * 1.1) * 3 + mouse.nx * 8);
+      mx(-mouse.nx * 24); cx1(-mouse.nx * 60); cx2(-mouse.nx * 32);
+      const dx = G.utils.clamp(-1, 1, (mouse.x / innerWidth - .5) * 2), dy = G.utils.clamp(-1, 1, (mouse.y / innerHeight - .4) * 2);
+      pL.setAttribute('x', 339.8 + dx * 3.2); pR.setAttribute('x', 362.8 + dx * 3.2);
+      pL.setAttribute('y', 90 + dy * 1.4); pR.setAttribute('y', 88 + dy * 1.4);
+    });
+    G.timeline({ scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 1 } })
+      .to('#flyerExit', { xPercent: 90, yPercent: -160, rotation: -16, scale: .65, ease: 'power1.in' }, 0)
+      .to('#moonWrap', { yPercent: 30, scale: 1.12, ease: 'none' }, 0)
+      .to('#heroTitle', { yPercent: 40, ease: 'none' }, 0)
+      .to('#c2', { yPercent: 40, ease: 'none' }, 0)
+      .to('#c1', { yPercent: -10, ease: 'none' }, 0);
+
+    /* progress bar + nav hide/show */
+    G.to('#prog', { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: .3 } });
+    ScrollTrigger.create({ start: 300, end: 'max', onUpdate: s => $('#nav').classList.toggle('hide', s.direction === 1) , onLeaveBack: () => $('#nav').classList.remove('hide') });
+
+    /* manifesto: words light up with scroll */
+    const words = SplitText.create('#words', { type: 'words' });
+    G.fromTo(words.words, { opacity: .13 }, { opacity: 1, ease: 'none', stagger: .1,
+      scrollTrigger: { trigger: '#story', start: 'top 75%', end: 'bottom 65%', scrub: true } });
+
+    /* masked headline reveals */
+    document.querySelectorAll('.split').forEach(el => {
+      const s = SplitText.create(el, { type: 'words', mask: 'words', wordsClass: 'sw' });
+      G.from(s.words, { yPercent: 110, duration: 1.2, ease: 'expo.out', stagger: .06, scrollTrigger: { trigger: el, start: 'top 85%' } });
+    });
+
+    /* fade-up reveals, batched so siblings stagger */
+    if(!reduced) G.set('[data-reveal]:not(.panel)', { y: 40, opacity: 0 });
+    ScrollTrigger.batch('[data-reveal]:not(.panel)', {
+      start: 'top 88%', once: true,
+      onEnter: els => { els.forEach(e => e.classList.add('in')); G.to(els, { y: 0, opacity: 1, duration: 1.2, ease: 'expo.out', stagger: .1 }); }
+    });
+
+    /* counters */
+    document.querySelectorAll('[data-count]').forEach(el => {
+      const to = +el.dataset.count, o = { v: 0 };
+      G.to(o, { v: to, duration: 2.2, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 85%' },
+        onUpdate: () => el.textContent = Math.round(o.v).toLocaleString('en-US') });
+    });
+
+    /* horizontal chapters (desktop), stacked on phones */
+    const mm = G.matchMedia();
+    mm.add('(min-width: 820px) and (prefers-reduced-motion: no-preference)', () => {
+      const track = $('#track'), travel = () => track.scrollWidth - innerWidth;
+      const tl = G.timeline({ scrollTrigger: { trigger: '.hscroll', start: 'top top', end: () => '+=' + travel(), pin: '.hscroll .sticky', scrub: 1, invalidateOnRefresh: true } });
+      tl.to(track, { x: () => -travel(), ease: 'none' }, 0)
+        .to('#flightFill', { scaleX: 1, ease: 'none' }, 0)
+        .to('#mini', { left: '100%', ease: 'none' }, 0);
+      G.to('#mini', { y: -4, rotation: -3, duration: .8, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+      // each chapter slides in as it enters the pinned view
+      G.utils.toArray('.panel:not(.lead)').forEach(p => G.from(p, { opacity: 0, y: 60, duration: 1, ease: 'expo.out',
+        scrollTrigger: { trigger: p, containerAnimation: tl, start: 'left 85%' } }));
+    });
+    mm.add('(max-width: 819px), (prefers-reduced-motion: reduce)', () => {
+      $('.hscroll').classList.add('stacked');
+      G.utils.toArray('.panel:not(.lead)').forEach(p => G.from(p, { opacity: 0, y: 40, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: p, start: 'top 88%' } }));
+      return () => $('.hscroll').classList.remove('stacked');
+    });
+
+    /* closing marquee: drifts on its own, speeds up and flips with scroll */
+    const rows = [$('#mq1'), $('#mq2')], pos = [0, 0];
+    let dir = 1;
+    G.ticker.add(() => {
+      const v = lenis ? lenis.velocity : 0;
+      if(Math.abs(v) > .1) dir = v > 0 ? 1 : -1;
+      const sp = (reduced ? 0 : .7) + Math.min(Math.abs(v) * .5, 18);
+      rows.forEach((el, i) => {
+        const half = el.scrollWidth / 2;
+        pos[i] = G.utils.wrap(-half, 0, pos[i] - sp * dir * (i ? -1 : 1));
+        G.set(el, { x: pos[i], skewX: G.utils.clamp(-8, 8, -v * .2) });
+      });
+    });
+
+    /* cursor, magnetic buttons, spotlight cells */
+    if(fine){
+      document.documentElement.classList.add('has-cursor');
+      const ring = $('#ring'), dot = $('#dot');
+      const rx = G.quickTo(ring, 'x', { duration: .55, ease: 'power3' }), ry = G.quickTo(ring, 'y', { duration: .55, ease: 'power3' });
+      const dx = G.quickTo(dot, 'x', { duration: .08 }), dy = G.quickTo(dot, 'y', { duration: .08 });
+      addEventListener('pointermove', e => { rx(e.clientX); ry(e.clientY); dx(e.clientX); dy(e.clientY); });
+      document.querySelectorAll('#site a, #site button').forEach(el => {
+        el.addEventListener('pointerenter', () => { ring.classList.add('big'); ring.textContent = el.dataset.cursor || ''; });
+        el.addEventListener('pointerleave', () => { ring.classList.remove('big'); ring.textContent = ''; });
+      });
+      if(!reduced) document.querySelectorAll('.magnetic').forEach(el => {
+        const qx = G.quickTo(el, 'x', { duration: .8, ease: 'elastic.out(1,.4)' }), qy = G.quickTo(el, 'y', { duration: .8, ease: 'elastic.out(1,.4)' });
+        el.addEventListener('pointermove', e => { const r = el.getBoundingClientRect(); qx((e.clientX - r.left - r.width / 2) * .3); qy((e.clientY - r.top - r.height / 2) * .4); });
+        el.addEventListener('pointerleave', () => { qx(0); qy(0); });
+      });
+    }
+    document.querySelectorAll('.cell').forEach(el => el.addEventListener('pointermove', e => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', (e.clientX - r.left) + 'px'); el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    }));
+
+    // fonts change line breaks; measure again once they are in
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => ScrollTrigger.refresh());
   }
 
   $('#mute').addEventListener('click', e=>{
