@@ -16,6 +16,7 @@
 /* Layout: a storm-lit lab where the monster is an AI agent; below it you build your own agent and watch it burn play money. */
 :root{
   color-scheme:dark;
+  --ah:clamp(220px,41vh,380px);
   --void:#07080d; --lab:#0d111a; --steel:#1b2130; --bone:#eef0ea; --dim:#8b93a4; --volt:#7cf7ff; --toxic:#a3ff4f; --warn:#ff3b5c; --line:rgba(238,240,234,.1);
   --display:'Bungee',Impact,'Arial Black',sans-serif;
   --shade:'Bungee Shade','Bungee',Impact,sans-serif;
@@ -73,10 +74,11 @@ img{max-width:100%}
 .coil{height:62%;aspect-ratio:120/360}
 .coil.c1{left:3%}
 .coil.c2{left:44%}
-.pod{left:15%;height:92%;aspect-ratio:220/440}
-.lever{left:53%;height:34%;aspect-ratio:120/200;bottom:16%}
-.doc{right:2%;height:100%;aspect-ratio:420/560;transform-origin:50% 100%}
-.doc svg,.pod svg,.coil svg,.lever svg{width:100%;height:100%;display:block;overflow:visible}
+.pod{left:15%;height:84%;aspect-ratio:220/440}
+.spot{right:9%;width:calc(var(--ah) * .8);height:var(--ah)}
+.spot .anc{left:calc(var(--ah) * .2);bottom:0}
+.spot .lever{position:absolute;left:calc(var(--ah) * .315);bottom:0;height:calc(var(--ah) * .75);aspect-ratio:120/200}
+.pod svg,.coil svg,.lever svg{width:100%;height:100%;display:block;overflow:visible}
 #arcs{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:4}
 .bubble{position:absolute;z-index:5;left:calc(15% + 10%);bottom:84%;padding:12px 16px;background:var(--bone);color:#07080d;font-family:var(--mono);font-weight:700;font-size:clamp(12px,1.2vw,15px);white-space:nowrap;opacity:0;
   clip-path:polygon(0 0,100% 0,100% 80%,30% 80%,18% 100%,20% 80%,0 80%);padding-bottom:22px}
@@ -93,8 +95,7 @@ img{max-width:100%}
   .coil.c1{left:-7%;height:50%}
   .coil.c2{left:43%;height:44%;bottom:6%;opacity:.9}
   .pod{left:6%;height:86%}
-  .doc{right:-14%;height:74%}
-  .lever{display:none}
+  .spot{right:-6%}
   .window{width:86vw;top:11%}
   .bubble{left:12%}
   .alive{font-size:clamp(46px,14vw,90px);white-space:normal}
@@ -209,6 +210,64 @@ footer p{max-width:76ch}
 .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:45;pointer-events:none}
 .progress i{display:block;height:100%;background:linear-gradient(90deg,var(--volt),var(--toxic));transform-origin:0 50%;transform:scaleX(0)}
 
+/* ---------- the travelling doctor ---------- */
+.anc{position:absolute;width:2px;height:2px;pointer-events:none}
+#stage{position:fixed;inset:0;z-index:30;pointer-events:none;overflow:hidden}
+#fx{position:absolute;inset:0;width:100%;height:100%}
+#actor{position:absolute;left:0;top:0;width:calc(var(--ah) * .677);height:var(--ah);will-change:transform;visibility:hidden}
+#actor svg{width:100%;height:100%;display:block;overflow:visible}
+.portal{position:absolute;left:0;top:0;width:calc(var(--ah) * .62);height:calc(var(--ah) * .95);opacity:0;will-change:transform}
+.portal svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 0 18px #7dff3a) drop-shadow(0 0 50px rgba(125,255,58,.55))}
+.no-actor #stage{display:none}
+/* story / md / tokenomics / buy / outro: room for the doctor */
+.with-doc{display:grid;grid-template-columns:minmax(0,1fr) calc(var(--ah) * .9);gap:clamp(20px,4vw,60px);align-items:end}
+.doc-room{position:relative;height:var(--ah)}
+.doc-room .anc{left:50%;bottom:0}
+@media (max-width:760px){
+  :root{--ah:190px}
+  .with-doc{grid-template-columns:1fr}
+  .doc-room{width:100%}
+}
+/* workshop in the Agent Lab */
+.workshop{position:relative;height:calc(var(--ah) * 1.08);margin-top:clamp(30px,5vw,60px);border-bottom:2px solid var(--line);
+  background:radial-gradient(ellipse 60% 70% at 40% 100%,rgba(124,247,255,.07),transparent 70%)}
+.workshop > *{position:absolute;bottom:0}
+.door{left:2%;height:calc(var(--ah) * 1.02);aspect-ratio:140/300}
+.door svg,.bench svg{width:100%;height:100%;display:block;overflow:visible}
+.bench{left:24%;width:calc(var(--ah) * 1.05);height:calc(var(--ah) * .62)}
+.ws-anc{left:calc(24% + var(--ah) * 1.25);bottom:0}
+.ws-spot{left:calc(24% + var(--ah) * 1.65);width:calc(var(--ah) * .8);height:var(--ah)}
+.ws-spot .anc{left:calc(var(--ah) * .2);bottom:0}
+.ws-spot .lever{position:absolute;left:calc(var(--ah) * .315);bottom:0;height:calc(var(--ah) * .75);aspect-ratio:120/200}
+.ws-spot .lever svg{width:100%;height:100%;display:block;overflow:visible}
+#labArcs{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;bottom:auto}
+.alive2{position:absolute;left:0;right:0;top:4%;bottom:auto;text-align:center;font-family:var(--shade);font-size:clamp(34px,6vw,80px);color:var(--volt);text-shadow:0 0 30px rgba(124,247,255,.6);opacity:0;pointer-events:none}
+.ws-note{position:absolute;right:0;top:8px;bottom:auto;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+@media (max-width:760px){
+  .workshop{height:calc(var(--ah) * 1.25)}
+  .door{display:none}
+  .bench{left:2%;width:calc(var(--ah) * .95)}
+  .ws-anc{left:calc(2% + var(--ah) * 1.1)}
+  .ws-spot{left:auto;right:-4%}
+}
+/* the real agent kit */
+.cfg-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field input[type=number],.field select{font-family:var(--mono);font-size:15px;color:var(--bone);background:#06080d;border:2px solid var(--line);padding:10px 12px;border-radius:0;width:100%}
+.field input[type=number]:focus,.field select:focus{outline:none;border-color:var(--volt)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+details.adv{border-top:1px dashed var(--line);padding-top:14px}
+details.adv summary{cursor:pointer;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--volt);list-style:none}
+details.adv summary::-webkit-details-marker{display:none}
+details.adv[open] summary{margin-bottom:16px}
+.kit{display:none;margin-top:24px;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;align-items:start}
+.kit.on{display:grid}
+.kit .files{display:flex;flex-direction:column;gap:10px}
+.kit .file-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;border:2px solid var(--line);background:var(--lab);font-family:var(--mono);font-size:13px}
+.kit .file-row span{color:var(--dim);font-size:11px}
+.kit pre{font-family:var(--mono);font-size:12.5px;line-height:1.7;background:#06080d;border:2px solid var(--line);padding:16px;white-space:pre-wrap;overflow-x:auto;color:#c9d1e0}
+.kit pre b{color:var(--toxic);font-weight:400}
+@media (max-width:900px){.kit{grid-template-columns:1fr}.cfg-grid{grid-template-columns:1fr 1fr}}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
@@ -285,6 +344,7 @@ footer p{max-width:76ch}
         </g>
       </svg>
     </div>
+    <div class="spot" id="heroSpot"><div class="anc" id="ancHero"></div>
     <div class="lever" id="leverBox">
       <svg viewBox="0 0 120 200" aria-hidden="true">
         <g stroke="#0b0d12" stroke-width="3.5" stroke-linejoin="round">
@@ -300,72 +360,7 @@ footer p{max-width:76ch}
         </g>
       </svg>
     </div>
-    <div class="doc" id="doc"><svg class="stein" viewBox="0 0 420 560" role="img" aria-label="Dr. Elonstein, a cartoon mad scientist with a flat-top head, neck bolts and a smug grin">
-  <defs>
-    <linearGradient id="esSkin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c3d3a4"/><stop offset="1" stop-color="#9fb47f"/></linearGradient>
-    <linearGradient id="esSkinSide" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8ea36f"/><stop offset="1" stop-color="#b3c595"/></linearGradient>
-    <linearGradient id="esCoat" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef0ea"/><stop offset="1" stop-color="#c8ccc2"/></linearGradient>
-    <linearGradient id="esHair" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3424"/><stop offset="1" stop-color="#2a1c12"/></linearGradient>
-    <radialGradient id="esGlow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#d8ff7a"/><stop offset="1" stop-color="#7fd23a"/></radialGradient>
-  </defs>
-  <g stroke="#14161a" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
-    <!-- body: lab coat over a black tee -->
-    <g id="esBody">
-      <path d="M58 560 C 60 470 92 420 150 400 L 270 400 C 328 420 360 470 362 560 Z" fill="url(#esCoat)"/>
-      <path d="M160 400 L 210 470 L 260 400 Z" fill="#17181c"/>
-      <path d="M150 400 L 186 470 L 168 560 M270 400 L 234 470 L 252 560" fill="none"/>
-      <path d="M150 400 C 166 420 176 440 186 470 L 150 452 Z M270 400 C 254 420 244 440 234 470 L 270 452 Z" fill="#dfe2da"/>
-      <!-- tiny rocket pin -->
-      <g transform="translate(286 470) rotate(30)"><path d="M0 -16 C 6 -10 6 4 4 10 L -4 10 C -6 4 -6 -10 0 -16 Z" fill="#e2e4ea"/><path d="M-4 6 L -9 13 L -4 11 Z M4 6 L 9 13 L 4 11 Z" fill="#c8352b"/><circle cx="0" cy="-4" r="2.5" fill="#6fb1ff" stroke-width="2"/></g>
-      <path d="M110 520 l 26 -6 M300 520 l -24 -6" fill="none" stroke-width="3"/>
-    </g>
-    <!-- neck + bolts -->
-    <path d="M170 360 L 172 410 L 248 410 L 250 360 Z" fill="url(#esSkinSide)"/>
-    <g id="esBolts">
-      <rect x="140" y="372" width="34" height="18" rx="4" fill="#9aa3ad"/><rect x="128" y="374" width="14" height="14" rx="3" fill="#7d8691"/>
-      <rect x="246" y="372" width="34" height="18" rx="4" fill="#9aa3ad"/><rect x="278" y="374" width="14" height="14" rx="3" fill="#7d8691"/>
-    </g>
-    <g id="esHead">
-      <!-- ears -->
-      <path d="M112 236 C 92 232 88 262 100 282 C 108 296 120 296 124 288 Z" fill="url(#esSkinSide)"/>
-      <path d="M308 236 C 328 232 332 262 320 282 C 312 296 300 296 296 288 Z" fill="url(#esSkinSide)"/>
-      <!-- flat-top skull with a long, square jaw -->
-      <path d="M118 150 L 118 290 C 122 330 150 362 186 372 C 200 376 220 376 234 372 C 270 362 298 330 302 290 L 302 150 C 302 134 290 124 270 122 L 150 122 C 130 124 118 134 118 150 Z" fill="url(#esSkin)"/>
-      <!-- chin cleft + jaw shading -->
-      <path d="M205 356 q5 6 10 0" fill="none" stroke-width="3"/>
-      <path d="M128 300 C 140 330 160 350 184 360" fill="none" stroke="#86996a" stroke-width="5" opacity=".6"/>
-      <!-- hair: swept-back flat top with a receding hairline -->
-      <path d="M112 166 C 104 120 120 84 160 72 C 196 62 236 62 268 72 C 302 84 318 112 310 166 C 300 150 290 142 276 140 C 268 126 252 120 234 124 C 222 116 206 114 190 120 C 168 116 150 124 142 140 C 130 142 118 150 112 166 Z" fill="url(#esHair)"/>
-      <path d="M150 92 C 180 80 230 80 266 92 M140 112 C 176 100 236 98 282 112" fill="none" stroke="#5c4330" stroke-width="3"/>
-      <!-- forehead scar with stitches -->
-      <path d="M150 170 C 190 160 236 160 276 172" fill="none" stroke="#5d3a3a" stroke-width="3"/>
-      <path d="M162 160 l -2 18 M182 156 l -1 18 M202 155 l 0 18 M222 155 l 1 18 M242 157 l 1 18 M262 162 l 2 17" fill="none" stroke-width="3"/>
-      <!-- cheek scar -->
-      <path d="M270 280 L 288 314" fill="none" stroke="#5d3a3a" stroke-width="3"/><path d="M272 292 l 10 -4 M278 304 l 10 -4" fill="none" stroke-width="2.5"/>
-      <!-- brows: one raised, villain style -->
-      <path id="esBrowL" d="M140 206 C 156 190 180 188 198 198 L 196 208 C 180 200 160 202 144 214 Z" fill="#2a1c12"/>
-      <path id="esBrowR" d="M222 196 C 240 182 266 184 282 196 L 280 206 C 264 196 244 196 226 206 Z" fill="#2a1c12"/>
-      <!-- eyes: narrow and smug, glowing irises -->
-      <g id="esEyes">
-        <path d="M148 232 C 160 220 184 220 194 232 C 184 240 160 240 148 232 Z" fill="#f4f1e6"/>
-        <path d="M226 230 C 238 218 262 218 274 230 C 262 238 238 238 226 230 Z" fill="#f4f1e6"/>
-        <circle id="esPupL" cx="174" cy="231" r="6.5" fill="url(#esGlow)" stroke-width="2.5"/>
-        <circle id="esPupR" cx="252" cy="229" r="6.5" fill="url(#esGlow)" stroke-width="2.5"/>
-        <path d="M146 228 C 160 222 184 222 196 228" fill="none" stroke-width="5"/>
-        <path d="M224 226 C 238 220 262 220 276 226" fill="none" stroke-width="5"/>
-      </g>
-      <!-- nose -->
-      <path d="M210 236 C 206 262 200 276 198 286 C 204 292 216 292 222 288" fill="none" stroke-width="3.5"/>
-      <!-- mouth: smug half smirk, and an open evil laugh (hidden) -->
-      <g id="esSmirk"><path d="M170 316 C 190 322 220 322 246 306 C 252 302 258 304 256 310" fill="none" stroke-width="4.5"/><path d="M250 300 q 8 6 6 14" fill="none" stroke-width="3"/></g>
-      <g id="esLaugh" opacity="0">
-        <path d="M160 304 C 186 300 234 298 262 300 C 258 336 234 352 210 352 C 186 352 164 336 160 304 Z" fill="#3a1414"/>
-        <path d="M164 306 C 190 302 232 300 258 302 L 256 316 C 230 312 192 314 166 318 Z" fill="#f4f1e6"/>
-        <path d="M182 344 C 196 334 226 334 240 344 C 230 350 192 350 182 344 Z" fill="#c4454b"/>
-      </g>
-    </g>
-  </g>
-</svg></div>
+    </div>
     <div class="bubble" id="bubble" aria-hidden="true">BUYING. DON’T ASK.</div>
     <canvas id="arcs" aria-hidden="true"></canvas>
   </div>
@@ -391,13 +386,46 @@ footer p{max-width:76ch}
 <main id="site">
   <section class="manifesto" id="story">
     <p class="kicker" data-reveal>The experiment</p>
-    <p class="words" id="words">Some men build rockets. Dr. Elonstein built something worse: an AI agent that trades your money, never asks, never explains, and only calls you when it is <em>broke.</em> He calls it innovation. We call it <em>$ELONSTEIN.</em></p>
+    <div class="with-doc"><p class="words" id="words">Some men build rockets. Dr. Elonstein built something worse: an AI agent that trades your money, never asks, never explains, and only calls you when it is <em>broke.</em> He calls it innovation. We call it <em>$ELONSTEIN.</em></p>
+    <div class="doc-room"><div class="anc" id="ancStory"></div></div></div>
   </section>
 
   <section id="lab">
     <p class="kicker" data-reveal>Agent Lab</p>
     <h2 class="h2 split">Build your own <em>monster</em></h2>
-    <p class="lede" data-reveal>Give it a name and a personality, hand it $1,000 of play money and pull the lever. It will not ask you anything. It will message you once. You know when.</p>
+    <p class="lede" data-reveal>Configure a real trading agent, then let the doctor bring it to life. You get a live preview with $1,000 of play money and the agent kit to run it for real. It will not ask you anything. It will message you once. You know when.</p>
+    <div class="workshop" id="workshop" aria-hidden="true">
+      <div class="door" id="doorBox"><svg viewBox="0 0 140 300">
+        <rect x="6" y="6" width="128" height="294" fill="#05060a" stroke="#232a3a" stroke-width="10"/>
+        <g id="doorPanel"><rect x="10" y="10" width="120" height="290" fill="#2a3142" stroke="#0b0d12" stroke-width="4"/><rect x="24" y="26" width="92" height="110" fill="#232a3a" stroke="#0b0d12" stroke-width="3"/><rect x="24" y="150" width="92" height="130" fill="#232a3a" stroke="#0b0d12" stroke-width="3"/>
+          <text x="70" y="90" font-family="Bungee, sans-serif" font-size="13" fill="#ff3b5c" text-anchor="middle">LAB</text><text x="70" y="108" font-family="JetBrains Mono, monospace" font-size="8" fill="#8b93a4" text-anchor="middle">KNOCK? NO.</text>
+          <circle cx="112" cy="160" r="7" fill="#c8a24a" stroke="#0b0d12" stroke-width="2"/></g></svg></div>
+      <div class="bench" id="bench"><svg viewBox="0 0 320 190">
+        <g stroke="#0b0d12" stroke-width="3.5" stroke-linejoin="round">
+          <rect x="10" y="96" width="300" height="20" rx="3" fill="#6b4a2e"/><rect x="24" y="116" width="16" height="74" fill="#4a3220"/><rect x="280" y="116" width="16" height="74" fill="#4a3220"/><rect x="40" y="150" width="240" height="10" fill="#4a3220"/>
+          <rect x="22" y="78" width="40" height="18" rx="3" fill="#9aa6bb"/><circle cx="80" cy="88" r="8" fill="#c8a24a"/><rect x="250" y="70" width="44" height="26" rx="4" fill="#3a4256"/><path d="M256 70 v-14 h32 v14" fill="none" stroke="#7a8496"/>
+          <g id="wsBot">
+            <rect x="140" y="20" width="4" height="12" fill="#4a5468"/><circle id="wsAnt" cx="142" cy="18" r="5" fill="#2a3142"/>
+            <rect x="116" y="30" width="52" height="38" rx="9" fill="#9aa6bb"/><rect x="122" y="38" width="40" height="16" rx="5" fill="#0d1018"/>
+            <g id="wsEyes"><rect x="127" y="41" width="11" height="9" rx="2" fill="#1a1f2b"/><rect x="146" y="41" width="11" height="9" rx="2" fill="#1a1f2b"/></g>
+            <rect x="112" y="66" width="60" height="30" rx="8" fill="#7d889c"/><rect x="100" y="70" width="12" height="22" rx="5" fill="#9aa6bb"/><rect x="172" y="70" width="12" height="22" rx="5" fill="#9aa6bb"/>
+          </g>
+          <path d="M184 92 C 210 70 230 110 250 84" fill="none" stroke="#c8352b" stroke-width="3"/><path d="M100 92 C 80 72 66 104 52 86" fill="none" stroke="#2f6fd0" stroke-width="3"/>
+        </g></svg></div>
+      <div class="anc ws-anc" id="ancLab"></div>
+      <div class="ws-spot"><div class="anc" id="ancLever"></div>
+        <div class="lever"><svg viewBox="0 0 120 200"><g stroke="#0b0d12" stroke-width="3.5" stroke-linejoin="round">
+          <rect x="16" y="40" width="88" height="150" rx="8" fill="#232a3a"/><rect x="30" y="54" width="60" height="120" rx="6" fill="#141926"/>
+          <text x="60" y="76" font-family="Bungee, sans-serif" font-size="12" fill="#ff3b5c" stroke="none" text-anchor="middle">OFF</text>
+          <text x="60" y="168" font-family="Bungee, sans-serif" font-size="12" fill="#a3ff4f" stroke="none" text-anchor="middle">LIFE</text>
+          <g id="labLever"><rect x="54" y="30" width="12" height="92" rx="6" fill="#9aa6bb"/><rect x="38" y="16" width="44" height="26" rx="10" fill="#ff3b5c"/></g>
+          <circle cx="60" cy="120" r="12" fill="#3a4256"/></g></svg></div></div>
+      <div class="anc" id="ancDoor" style="left:calc(2% + var(--ah) * .24);bottom:0"></div>
+      <canvas id="labArcs"></canvas>
+      <p class="alive2" id="alive2">IT’S ALIVE!</p>
+      <p class="ws-note">Dr. Elonstein’s workbench</p>
+    </div>
+
 
     <div class="lab">
       <form class="panel form" id="labForm" novalidate data-reveal>
@@ -416,8 +444,29 @@ footer p{max-width:76ch}
           <input type="range" id="aRisk" min="1" max="10" value="7">
           <div class="risk-row"><span>Careful</span><span id="riskTxt">Unhinged</span><span>Full Elonstein</span></div>
         </div>
-        <button class="btn solid" type="submit" id="start">⚡ Pull the lever</button>
-        <p class="empty">Play money only. Nothing on this page touches a real wallet.</p>
+        <div class="field">
+          <span class="label" id="modeLbl">Mode</span>
+          <div class="seg" role="group" aria-labelledby="modeLbl">
+            <button class="chip" type="button" data-mode="paper" aria-pressed="true">Paper<small>Real data, fake money</small></button>
+            <button class="chip" type="button" data-mode="live" aria-pressed="false">Live<small>Real SOL, your risk</small></button>
+          </div>
+        </div>
+        <div class="cfg-grid">
+          <div class="field"><label for="cBudget">Budget (SOL)</label><input type="number" id="cBudget" min="0.01" step="0.01" value="0.5"></div>
+          <div class="field"><label for="cMax">Max per trade (%)</label><input type="number" id="cMax" min="1" max="100" step="1" value="20"></div>
+        </div>
+        <details class="adv"><summary>+ Advanced settings</summary>
+          <div class="cfg-grid">
+            <div class="field"><label for="cTp">Take profit (%)</label><input type="number" id="cTp" min="1" step="1" value="60"></div>
+            <div class="field"><label for="cSl">Stop loss (%)</label><input type="number" id="cSl" min="1" max="100" step="1" value="30"></div>
+            <div class="field"><label for="cSrc">Token source</label><select id="cSrc"><option value="trending">Trending (boosted)</option><option value="new">Newest profiles</option><option value="elonstein-only">$ELONSTEIN only</option></select></div>
+            <div class="field"><label for="cInt">Check every</label><select id="cInt"><option value="30">30 seconds</option><option value="60" selected>1 minute</option><option value="300">5 minutes</option></select></div>
+            <div class="field"><label for="cLiq">Min liquidity (USD)</label><input type="number" id="cLiq" min="0" step="1000" value="10000"></div>
+            <div class="field"><label for="cDay">Max trades / day</label><input type="number" id="cDay" min="1" step="1" value="30"></div>
+          </div>
+        </details>
+        <button class="btn solid" type="submit" id="start">⚡ Bring it to life</button>
+        <p class="empty">The preview below runs on play money. The kit you download runs on your own machine with your own wallet.</p>
       </form>
 
       <div class="monitor" data-reveal>
@@ -435,6 +484,18 @@ footer p{max-width:76ch}
       </div>
     </div>
 
+
+    <div class="kit" id="kit">
+      <div class="files">
+        <p class="kicker">Your agent kit</p>
+        <div class="file-row"><div>elonstein-agent.config.json<br><span>your settings</span></div><button class="btn" type="button" id="dlCfg">Download</button></div>
+        <div class="file-row"><div><b id="kitMdName">AGENT-01</b>.md<br><span>its personality and rules</span></div><button class="btn" type="button" id="dlMd">Download</button></div>
+        <div class="file-row"><div>elonstein-agent.mjs<br><span>the agent program</span></div><a class="btn" href="agent/runner/elonstein-agent.mjs" download>Download</a></div>
+        <div class="file-row"><div>package.json<br><span>one dependency</span></div><a class="btn" href="agent/runner/package.json" download>Download</a></div>
+        <a class="btn solid" href="agent/runner/README.md" target="_blank" rel="noopener">Read the setup guide ↗</a>
+      </div>
+      <pre id="kitSteps"></pre>
+    </div>
     <div class="result" id="result">
       <canvas id="card" width="1200" height="630" role="img" aria-label="Your agent's result card"></canvas>
       <div class="acts">
@@ -462,6 +523,7 @@ footer p{max-width:76ch}
           <a class="btn solid" href="agent/ELONSTEIN-AGENT.md" download="ELONSTEIN-AGENT.md">Download .md</a>
           <button class="btn" type="button" id="copyMd">Copy text</button>
         </div>
+        <div class="doc-room" style="margin-top:30px"><div class="anc" id="ancMd"></div></div>
       </div>
       <div class="file" data-reveal>
         <div class="fbar"><span>ELONSTEIN-AGENT.md</span><span>markdown</span></div>
@@ -543,13 +605,14 @@ Before you give this file to a real agent with a real wallet:
   <section id="tokenomics">
     <p class="kicker" data-reveal>Tokenomics</p>
     <h2 class="h2 split">The <em>formula</em></h2>
+    <div style="position:relative;margin-top:calc(var(--ah) * .2)"><div class="anc" id="ancTok" style="right:12%;top:clamp(40px,6vw,80px)"></div>
     <div class="tok">
       <div class="wide" data-reveal><b data-count="1000000000">1,000,000,000</b><span>Total supply · $ELONSTEIN</span></div>
       <div data-reveal><b>0%</b><span>Buy &amp; sell tax</span></div>
       <div data-reveal><b><i data-count="100" style="font-style:normal">100</i>%</b><span>Fair launch on pump.fun</span></div>
       <div data-reveal><b>0</b><span>Team tokens</span></div>
       <div data-reveal><b>900 J</b><span>To bring it to life</span></div>
-    </div>
+    </div></div>
   </section>
 
   <section id="buy">
@@ -565,6 +628,7 @@ Before you give this file to a real agent with a real wallet:
             <a class="btn solid" href="https://pump.fun" target="_blank" rel="noopener">Open pump.fun ↗</a>
           </div>
         </div>
+        <div class="doc-room" style="margin-top:20px"><div class="anc" id="ancBuy"></div></div>
       </div>
       <ol class="steps">
         <li data-reveal><span class="n">01</span><div><h4>Get a Solana wallet</h4><p>Phantom, Solflare or Backpack. Keep the seed phrase on paper. Do not give it to any agent, evil or otherwise.</p></div></li>
@@ -575,9 +639,10 @@ Before you give this file to a real agent with a real wallet:
     </div>
   </section>
 
-  <section class="outro" aria-label="It's alive">
+  <section class="outro" id="outro" aria-label="It's alive">
     <div class="mq" id="mq1" aria-hidden="true"></div>
     <div class="mq r2" id="mq2" aria-hidden="true"></div>
+    <div class="doc-room" style="max-width:600px;margin:30px auto 0"><div class="anc" id="ancBye"></div></div>
   </section>
 
   <footer>
@@ -591,6 +656,98 @@ Before you give this file to a real agent with a real wallet:
   <div><b id="nTitle">AGENT-01</b><p id="nText">Boss. Need more SOL. Don’t ask.</p><small>now · Elonstein Labs</small></div>
 </div>
 <div class="progress" aria-hidden="true"><i id="prog"></i></div>
+<div id="stage" aria-hidden="true">
+  <canvas id="fx"></canvas>
+  <div class="portal" id="portal1"><svg viewBox="-60 -90 120 180" aria-hidden="true"><defs><radialGradient id="pg" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#f4ffd0"/><stop offset=".35" stop-color="#b6ff5c"/><stop offset=".75" stop-color="#3ccf2a"/><stop offset="1" stop-color="#0d5a14"/></radialGradient></defs>
+  <ellipse rx="56" ry="86" fill="url(#pg)"/>
+  <g class="swirl"><path d="M0 0 C 30 -10 34 -50 0 -70 M0 0 C -30 10 -34 50 0 70 M0 0 C 10 30 50 34 50 0 M0 0 C -10 -30 -50 -34 -50 0" fill="none" stroke="#e9ffb8" stroke-width="5" stroke-linecap="round" opacity=".75"/>
+  <path d="M0 0 C 18 -6 20 -30 0 -42 M0 0 C -18 6 -20 30 0 42" fill="none" stroke="#1f8a1c" stroke-width="4" stroke-linecap="round" opacity=".8"/></g></svg></div>
+  <div class="portal" id="portal2"><svg viewBox="-60 -90 120 180" aria-hidden="true"><defs><radialGradient id="pg2" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#f4ffd0"/><stop offset=".35" stop-color="#b6ff5c"/><stop offset=".75" stop-color="#3ccf2a"/><stop offset="1" stop-color="#0d5a14"/></radialGradient></defs>
+  <ellipse rx="56" ry="86" fill="url(#pg2)"/>
+  <g class="swirl"><path d="M0 0 C 30 -10 34 -50 0 -70 M0 0 C -30 10 -34 50 0 70 M0 0 C 10 30 50 34 50 0 M0 0 C -10 -30 -50 -34 -50 0" fill="none" stroke="#e9ffb8" stroke-width="5" stroke-linecap="round" opacity=".75"/>
+  <path d="M0 0 C 18 -6 20 -30 0 -42 M0 0 C -18 6 -20 30 0 42" fill="none" stroke="#1f8a1c" stroke-width="4" stroke-linecap="round" opacity=".8"/></g></svg></div>
+  <div id="actor"><svg class="actor-svg" viewBox="-60 -10 420 620" overflow="visible" aria-hidden="true">
+  <defs>
+    <linearGradient id="esSkin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c3d3a4"/><stop offset="1" stop-color="#9fb47f"/></linearGradient>
+    <linearGradient id="esSkinSide" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8ea36f"/><stop offset="1" stop-color="#b3c595"/></linearGradient>
+    <linearGradient id="esCoat" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef0ea"/><stop offset="1" stop-color="#c8ccc2"/></linearGradient>
+    <linearGradient id="esHair" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3424"/><stop offset="1" stop-color="#2a1c12"/></linearGradient>
+    <radialGradient id="esGlow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#d8ff7a"/><stop offset="1" stop-color="#7fd23a"/></radialGradient>
+  </defs>
+  <g id="acRoot">
+   <g id="acShadow"><ellipse cx="150" cy="598" rx="78" ry="10" fill="rgba(0,0,0,.45)"/></g>
+   <g id="acBody" stroke="#14161a" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <!-- back leg / arm first -->
+    <g id="acLegL"><path d="M112 396 L 146 396 L 142 498 L 114 498 Z" fill="#2b2f3a"/>
+      <g id="acShinL"><path d="M114 494 L 142 494 L 140 578 L 116 578 Z" fill="#2b2f3a"/><path d="M106 576 L 146 576 C 152 576 156 590 150 596 L 102 596 C 98 590 100 578 106 576 Z" fill="#111318"/></g></g>
+    <g id="acLegR"><path d="M154 396 L 188 396 L 186 498 L 158 498 Z" fill="#2b2f3a"/>
+      <g id="acShinR"><path d="M158 494 L 186 494 L 184 578 L 160 578 Z" fill="#2b2f3a"/><path d="M154 576 L 194 576 C 200 576 204 590 198 596 L 150 596 C 146 590 148 578 154 576 Z" fill="#111318"/></g></g>
+    <g id="acArmL"><path d="M86 256 C 80 256 76 262 76 270 L 80 350 L 112 350 L 112 270 C 112 262 104 256 96 256 Z" fill="url(#esCoat)"/>
+      <g id="acForeL"><path d="M80 344 L 112 344 L 110 420 L 82 420 Z" fill="url(#esCoat)"/><circle cx="96" cy="432" r="17" fill="url(#esSkin)"/><path d="M84 438 l -6 10 M96 448 l 0 10 M108 438 l 6 10" fill="none" stroke-width="3"/></g></g>
+    <!-- torso: black tee + open lab coat -->
+    <path d="M104 246 C 120 240 180 240 196 246 L 204 400 L 96 400 Z" fill="#17181c"/>
+    <g id="acTails"><path d="M92 380 L 96 452 L 140 444 L 136 380 Z" fill="url(#esCoat)"/><path d="M208 380 L 204 452 L 160 444 L 164 380 Z" fill="url(#esCoat)"/></g>
+    <path d="M92 252 C 98 246 112 242 124 244 L 140 330 L 128 400 L 94 400 Z" fill="url(#esCoat)"/>
+    <path d="M208 252 C 202 246 188 242 176 244 L 160 330 L 172 400 L 206 400 Z" fill="url(#esCoat)"/>
+    <path d="M124 244 L 140 300 L 120 290 Z M176 244 L 160 300 L 180 290 Z" fill="#dfe2da"/>
+    <g transform="translate(186 330) rotate(30) scale(.8)"><path d="M0 -16 C 6 -10 6 4 4 10 L -4 10 C -6 4 -6 -10 0 -16 Z" fill="#e2e4ea"/><path d="M-4 6 L -9 13 L -4 11 Z M4 6 L 9 13 L 4 11 Z" fill="#c8352b"/></g>
+    <rect x="100" y="388" width="100" height="14" rx="3" fill="#3a2a1e"/>
+    <g id="acArmR"><path d="M204 256 C 196 256 188 262 188 270 L 188 350 L 220 350 L 224 270 C 224 262 220 256 214 256 Z" fill="url(#esCoat)"/>
+      <g id="acForeR"><path d="M188 344 L 220 344 L 218 420 L 190 420 Z" fill="url(#esCoat)"/><circle cx="204" cy="432" r="17" fill="url(#esSkin)"/><path d="M192 438 l -6 10 M204 448 l 0 10 M216 438 l 6 10" fill="none" stroke-width="3"/>
+        <g id="acTool" opacity="0"><rect x="198" y="440" width="12" height="60" rx="4" fill="#7a4a1e"/><rect x="184" y="492" width="40" height="22" rx="4" fill="#9aa6bb"/></g></g></g>
+    <g id="acProp" opacity="0"><rect x="104" y="286" width="92" height="104" rx="4" fill="#efe6cf" transform="rotate(-6 150 338)"/><path d="M116 306 h56 M116 320 h66 M116 334 h48 M116 348 h62 M116 362 h40" stroke="#8b93a4" stroke-width="3" transform="rotate(-6 150 338)"/><text x="122" y="300" font-family="JetBrains Mono, monospace" font-size="11" fill="#2f6b16" stroke="none" transform="rotate(-6 150 338)">.md</text></g>
+    <g id="acHeadWrap" transform="translate(40.8 28) scale(.52)">
+    <!-- neck + bolts -->
+    <path d="M170 360 L 172 410 L 248 410 L 250 360 Z" fill="url(#esSkinSide)"/>
+    <g id="acBolts">
+      <rect x="140" y="372" width="34" height="18" rx="4" fill="#9aa3ad"/><rect x="128" y="374" width="14" height="14" rx="3" fill="#7d8691"/>
+      <rect x="246" y="372" width="34" height="18" rx="4" fill="#9aa3ad"/><rect x="278" y="374" width="14" height="14" rx="3" fill="#7d8691"/>
+    </g>
+    <g id="acHead">
+      <!-- ears -->
+      <path d="M112 236 C 92 232 88 262 100 282 C 108 296 120 296 124 288 Z" fill="url(#esSkinSide)"/>
+      <path d="M308 236 C 328 232 332 262 320 282 C 312 296 300 296 296 288 Z" fill="url(#esSkinSide)"/>
+      <!-- flat-top skull with a long, square jaw -->
+      <path d="M118 150 L 118 290 C 122 330 150 362 186 372 C 200 376 220 376 234 372 C 270 362 298 330 302 290 L 302 150 C 302 134 290 124 270 122 L 150 122 C 130 124 118 134 118 150 Z" fill="url(#esSkin)"/>
+      <!-- chin cleft + jaw shading -->
+      <path d="M205 356 q5 6 10 0" fill="none" stroke-width="3"/>
+      <path d="M128 300 C 140 330 160 350 184 360" fill="none" stroke="#86996a" stroke-width="5" opacity=".6"/>
+      <!-- hair: swept-back flat top with a receding hairline -->
+      <path d="M112 166 C 104 120 120 84 160 72 C 196 62 236 62 268 72 C 302 84 318 112 310 166 C 300 150 290 142 276 140 C 268 126 252 120 234 124 C 222 116 206 114 190 120 C 168 116 150 124 142 140 C 130 142 118 150 112 166 Z" fill="url(#esHair)"/>
+      <path d="M150 92 C 180 80 230 80 266 92 M140 112 C 176 100 236 98 282 112" fill="none" stroke="#5c4330" stroke-width="3"/>
+      <!-- forehead scar with stitches -->
+      <path d="M150 170 C 190 160 236 160 276 172" fill="none" stroke="#5d3a3a" stroke-width="3"/>
+      <path d="M162 160 l -2 18 M182 156 l -1 18 M202 155 l 0 18 M222 155 l 1 18 M242 157 l 1 18 M262 162 l 2 17" fill="none" stroke-width="3"/>
+      <!-- cheek scar -->
+      <path d="M270 280 L 288 314" fill="none" stroke="#5d3a3a" stroke-width="3"/><path d="M272 292 l 10 -4 M278 304 l 10 -4" fill="none" stroke-width="2.5"/>
+      <!-- brows: one raised, villain style -->
+      <path id="acBrowL" d="M140 206 C 156 190 180 188 198 198 L 196 208 C 180 200 160 202 144 214 Z" fill="#2a1c12"/>
+      <path id="acBrowR" d="M222 196 C 240 182 266 184 282 196 L 280 206 C 264 196 244 196 226 206 Z" fill="#2a1c12"/>
+      <!-- eyes: narrow and smug, glowing irises -->
+      <g id="acEyes">
+        <path d="M148 232 C 160 220 184 220 194 232 C 184 240 160 240 148 232 Z" fill="#f4f1e6"/>
+        <path d="M226 230 C 238 218 262 218 274 230 C 262 238 238 238 226 230 Z" fill="#f4f1e6"/>
+        <circle id="acPupL" cx="174" cy="231" r="6.5" fill="url(#esGlow)" stroke-width="2.5"/>
+        <circle id="acPupR" cx="252" cy="229" r="6.5" fill="url(#esGlow)" stroke-width="2.5"/>
+        <path d="M146 228 C 160 222 184 222 196 228" fill="none" stroke-width="5"/>
+        <path d="M224 226 C 238 220 262 220 276 226" fill="none" stroke-width="5"/>
+      </g>
+      <!-- nose -->
+      <path d="M210 236 C 206 262 200 276 198 286 C 204 292 216 292 222 288" fill="none" stroke-width="3.5"/>
+      <!-- mouth: smug half smirk, and an open evil laugh (hidden) -->
+      <g id="acSmirk"><path d="M170 316 C 190 322 220 322 246 306 C 252 302 258 304 256 310" fill="none" stroke-width="4.5"/><path d="M250 300 q 8 6 6 14" fill="none" stroke-width="3"/></g>
+      <g id="acLaugh" opacity="0">
+        <path d="M160 304 C 186 300 234 298 262 300 C 258 336 234 352 210 352 C 186 352 164 336 160 304 Z" fill="#3a1414"/>
+        <path d="M164 306 C 190 302 232 300 258 302 L 256 316 C 230 312 192 314 166 318 Z" fill="#f4f1e6"/>
+        <path d="M182 344 C 196 334 226 334 240 344 C 230 350 192 350 182 344 Z" fill="#c4454b"/>
+      </g>
+    </g>
+
+    </g>
+   </g>
+  </g>
+</svg></div>
+</div>
 
 <!-- vendor fallback: if the local copy is missing (page opened on its own), load the same version from jsDelivr -->
 <script src="vendor/gsap.min.js"></script>
@@ -648,6 +805,14 @@ Before you give this file to a real agent with a real wallet:
   }
   function blip(t, up){ const o = actx.createOscillator(); o.type = 'triangle'; o.frequency.setValueAtTime(up ? 660 : 330, t); o.frequency.exponentialRampToValueAtTime(up ? 990 : 180, t + .08); o.connect(env(.06, t, .004, .1)).connect(master); o.start(t); o.stop(t + .12); }
   function ping(t){ [1318, 1760].forEach((f, i) => { const o = actx.createOscillator(); o.type = 'sine'; o.frequency.value = f; o.connect(env(.18, t + i * .12, .005, .35)).connect(master); o.start(t + i * .12); o.stop(t + i * .12 + .4); }); }
+  function step(t){ const n = actx.createBufferSource(); n.buffer = noise(.06); const lp = actx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 500; n.connect(lp).connect(env(.25, t, .002, .05)).connect(master); n.start(t); }
+  function clank(t){ [1250, 2130, 3410].forEach((f, i) => { const o = actx.createOscillator(); o.type = 'sine'; o.frequency.value = f; o.connect(env(.09 / (i + 1), t, .001, .35)).connect(master); o.start(t); o.stop(t + .4); }); const n = actx.createBufferSource(); n.buffer = noise(.05); n.connect(env(.15, t, .001, .04)).connect(master); n.start(t); }
+  function whoosh(t){ const n = actx.createBufferSource(); n.buffer = noise(.8); const bp = actx.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 2; bp.frequency.setValueAtTime(300, t); bp.frequency.exponentialRampToValueAtTime(3200, t + .45); bp.frequency.exponentialRampToValueAtTime(600, t + .75);
+    n.connect(bp).connect(env(.5, t, .1, .75)).connect(master); n.start(t);
+    const o = actx.createOscillator(); o.type = 'sine'; o.frequency.setValueAtTime(180, t); o.frequency.exponentialRampToValueAtTime(520, t + .6); const lfo = actx.createOscillator(), lg = actx.createGain(); lfo.frequency.value = 9; lg.gain.value = 40; lfo.connect(lg).connect(o.frequency); lfo.start(t); lfo.stop(t + .7); o.connect(env(.12, t, .08, .7)).connect(master); o.start(t); o.stop(t + .75); }
+  function creak(t){ const o = actx.createOscillator(); o.type = 'sawtooth'; o.frequency.setValueAtTime(110, t); o.frequency.linearRampToValueAtTime(160, t + .5); const lfo = actx.createOscillator(), lg = actx.createGain(); lfo.frequency.value = 23; lg.gain.value = 18; lfo.connect(lg).connect(o.frequency); lfo.start(t); lfo.stop(t + .6);
+    const bp = actx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 900; bp.Q.value = 4; o.connect(bp).connect(env(.25, t, .05, .55)).connect(master); o.start(t); o.stop(t + .6); }
+  function thud(t){ const o = actx.createOscillator(); o.frequency.setValueAtTime(95, t); o.frequency.exponentialRampToValueAtTime(40, t + .18); o.connect(env(.5, t, .003, .22)).connect(master); o.start(t); o.stop(t + .25); }
   function rainLoop(){ if(rainOn || !soundOK()) return; rainOn = true; const n = actx.createBufferSource(); n.buffer = noise(4); n.loop = true; const bp = actx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 2400; bp.Q.value = .4; const g = actx.createGain(); g.gain.value = .05; n.connect(bp).connect(g).connect(master); n.start(); }
   const showSound = () => { const on = soundOK(), b = $('#mute'); b.classList.toggle('on', !!on); b.setAttribute('aria-pressed', !!on); b.setAttribute('aria-label', on ? 'Turn sound off' : 'Turn sound on'); };
   function enableSound(){ enabledAt = performance.now(); try{ audio(); actx.resume().then(() => { rainLoop(); showSound(); }, showSound); }catch(e){} }
@@ -704,45 +869,310 @@ Before you give this file to a real agent with a real wallet:
   }
   (function loop(){ if(scrollY < HH * 1.1) drawStorm(); requestAnimationFrame(loop); })();
 
-  /* ================= the doctor ================= */
-  const pupils = [$('#esPupL'), $('#esPupR')], base = [[174, 231], [252, 229]];
-  addEventListener('pointermove', e => {
-    const dx = Math.max(-1, Math.min(1, (e.clientX / innerWidth - .7) * 2.4)), dy = Math.max(-1, Math.min(1, (e.clientY / innerHeight - .55) * 2.4));
-    pupils.forEach((p, i) => { p.setAttribute('cx', base[i][0] + dx * 7); p.setAttribute('cy', base[i][1] + dy * 3); });
-  });
-  function cackle(){
-    if(!hasG) return;
-    sfx(laugh)();
-    G.timeline()
-      .set('#esSmirk', { opacity: 0 }).set('#esLaugh', { opacity: 1 })
-      .to('#esHead', { rotation: -6, y: -6, svgOrigin: '210 360', duration: .12, ease: 'power2.out' })
-      .to('#esHead', { rotation: 4, y: 0, duration: .1, yoyo: true, repeat: 7, ease: 'sine.inOut' })
-      .to('#esBody', { y: -4, duration: .1, yoyo: true, repeat: 7, ease: 'sine.inOut' }, '<')
-      .to('#esHead', { rotation: 0, y: 0, duration: .3 })
-      .set('#esLaugh', { opacity: 0 }).set('#esSmirk', { opacity: 1 });
+  /* ================= DR. ELONSTEIN: one rigged cartoon who travels through the page ================= */
+  // He lives in a fixed layer (#stage) and stands on an anchor in each section. Scrolling to the next
+  // section makes him leave (portal) and arrive there (portal, door, run-in or drop).
+  const actor = $('#actor'), fxC = $('#fx'), fx = fxC.getContext('2d');
+  const J = { ArmL: '94 262', ForeL: '96 347', ArmR: '206 262', ForeR: '204 347', LegL: '129 400', ShinL: '128 496', LegR: '171 400', ShinR: '172 496' };
+  const part = k => '#ac' + k;
+  const A = { from: 'hero', to: 'hero', t: 0, dx: 0, dy: 0, face: 1, hidden: false, clamp: 0 };
+  const ANC = { hero: '#ancHero', story: '#ancStory', lab: '#ancLab', lever: '#ancLever', door: '#ancDoor', md: '#ancMd', tok: '#ancTok', buy: '#ancBuy', bye: '#ancBye' };
+  const ORDER = ['hero', 'story', 'lab', 'md', 'tok', 'buy', 'bye'];
+  const ARRIVE = { story: 'portal', lab: 'door', md: 'run', tok: 'drop', buy: 'portal', bye: 'portal' };
+  let FW = 0, FH = 0, parts2 = [];
+  function sizeFx(){ const dpr = Math.min(devicePixelRatio || 1, 2); FW = innerWidth; FH = innerHeight; fxC.width = FW * dpr; fxC.height = FH * dpr; fx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+  const pt = name => { if(name === 'offL') return [-actor.offsetWidth, pt(A.to)[1]]; const r = $(ANC[name]).getBoundingClientRect(); return [r.left + 1, r.top + 1]; };
+  function place(){
+    const w = actor.offsetWidth, h = actor.offsetHeight, a = pt(A.from), b = pt(A.to);
+    const x = a[0] + (b[0] - a[0]) * A.t; let y = a[1] + (b[1] - a[1]) * A.t;
+    if(A.clamp){ const cy = Math.min(innerHeight - 16, Math.max(h * .98 + 70, y)); y += (cy - y) * A.clamp; }
+    G.set(actor, { x: x - w / 2 + A.dx, y: y - h * .98 + A.dy });
+    return [x, y];
   }
-  function browRaise(){ if(hasG) G.to('#esBrowR', { y: -8, duration: .18, yoyo: true, repeat: 1, repeatDelay: .6, ease: 'power2.out' }); }
+  const hand = () => { const r = $('#acForeR circle').getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
+  const facePos = () => { const r = $('#acHeadWrap').getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height * .45]; };
+
+  // ---- poses ----
+  const POSES = {
+    idle:  { ArmL: 8, ForeL: -6, ArmR: -8, ForeR: 6, LegL: 0, ShinL: 0, LegR: 0, ShinR: 0 },
+    belly: { ArmL: -30, ForeL: -80, ArmR: 30, ForeR: 80 },
+    point: { ArmL: 8, ForeL: -6, ArmR: -95, ForeR: -10 },
+    reach: { ArmR: -128, ForeR: -8, ArmL: 14, ForeL: -10 },
+    pull:  { ArmR: -62, ForeR: -4, ArmL: 22, ForeL: -30 },
+    hammerUp:   { ArmR: -120, ForeR: -70, ArmL: 10, ForeL: -40 },
+    hammerDown: { ArmR: -62, ForeR: 10, ArmL: 10, ForeL: -40 },
+    wave:  { ArmR: -150, ForeR: -20, ArmL: 8, ForeL: -6 },
+    read:  { ArmL: -38, ForeL: -96, ArmR: 38, ForeR: 96 },
+    facepalm: { ArmR: 18, ForeR: 150, ArmL: 8, ForeL: -6 },
+    shrug: { ArmL: 50, ForeL: -110, ArmR: -50, ForeR: 110 }
+  };
+  function pose(name, d = .35, ease = 'power2.out'){
+    const tl = G.timeline();
+    for(const [k, v] of Object.entries(POSES[name])) tl.to(part(k), { rotation: v, svgOrigin: J[k], duration: d, ease }, 0);
+    return tl;
+  }
+  const mouth = laughing => { G.set('#acSmirk', { opacity: laughing ? 0 : 1 }); G.set('#acLaugh', { opacity: laughing ? 1 : 0 }); };
+  const faceTo = dir => { if(A.face === dir) return; A.face = dir; G.to('#acRoot', { scaleX: dir, svgOrigin: '150 300', duration: .18, ease: 'power2.inOut' }); };
+
+  // ---- loops (one at a time) ----
+  let loop = null;
+  const stopLoop = () => { if(loop){ loop.kill(); loop = null; } G.set('#acBody', { y: 0, rotation: 0, svgOrigin: '150 596' }); G.set('#acTool', { opacity: 0 }); G.set('#acProp', { opacity: 0 }); };
+  function runCycle(dir){
+    stopLoop(); faceTo(dir);
+    G.set(['#acLegL', '#acLegR'], { scaleY: 1, svgOrigin: '150 400' });
+    loop = G.timeline({ repeat: -1 })
+      .to('#acLegL', { scaleY: .62, svgOrigin: J.LegL, duration: .13, ease: 'sine.out' }, 0).to('#acLegL', { scaleY: 1, svgOrigin: J.LegL, duration: .13, ease: 'sine.in' }, .13)
+      .to('#acLegR', { scaleY: .62, svgOrigin: J.LegR, duration: .13, ease: 'sine.out' }, .26).to('#acLegR', { scaleY: 1, svgOrigin: J.LegR, duration: .13, ease: 'sine.in' }, .39)
+      .to('#acArmL', { rotation: -40, svgOrigin: J.ArmL, duration: .26, ease: 'sine.inOut', yoyo: true, repeat: 1 }, 0)
+      .to('#acArmR', { rotation: 40, svgOrigin: J.ArmR, duration: .26, ease: 'sine.inOut', yoyo: true, repeat: 1 }, 0)
+      .to('#acBody', { y: -14, duration: .13, yoyo: true, repeat: 3, ease: 'sine.out' }, 0);
+    G.set(['#acForeL', '#acForeR'], { rotation: 0 });
+    G.to('#acForeL', { rotation: -95, svgOrigin: J.ForeL, duration: .15 }); G.to('#acForeR', { rotation: 95, svgOrigin: J.ForeR, duration: .15 });
+    G.to('#acBody', { rotation: 7 * dir, svgOrigin: '150 596', duration: .2 });
+    stepsSnd();
+  }
+  let stepTimer = null;
+  function stepsSnd(){ clearInterval(stepTimer); stepTimer = setInterval(() => { if(loop && loop.data !== 'idle') sfx(t => step(t))(); else clearInterval(stepTimer); }, 130); }
+  function endRun(){ clearInterval(stepTimer); stopLoop(); G.to(['#acLegL', '#acLegR'], { scaleY: 1, duration: .15 }); pose('idle', .25); }
+  function hammerLoop(){
+    stopLoop(); faceTo(-1); G.set('#acTool', { opacity: 1 });
+    loop = G.timeline({ repeat: -1, repeatDelay: .5 });
+    for(let i = 0; i < 3; i++){
+      loop.add(pose('hammerUp', .22, 'power2.out')).add(pose('hammerDown', .12, 'power3.in'))
+        .add(() => { if(curScene === 'lab'){ sparks(hand(), 14); sfx(clank)(); } });
+    }
+    loop.data = 'idle';
+  }
+  function presentLoop(){
+    stopLoop(); faceTo(-1); pose('point', .4);
+    loop = G.timeline({ repeat: -1, repeatDelay: 2.5 }).add(() => { if(Math.random() < .5) cackle(); else browRaise(); }, 2)
+      .to('#acForeR', { rotation: -30, svgOrigin: J.ForeR, duration: .2, yoyo: true, repeat: 3 }, 3);
+    loop.data = 'idle';
+  }
+  function readLoop(){
+    stopLoop(); faceTo(1); pose('read', .4); G.set('#acProp', { opacity: 1 });
+    loop = G.timeline({ repeat: -1, repeatDelay: 1.5 })
+      .to('#acHeadWrap', { rotation: 6, svgOrigin: '150 236', duration: .6, ease: 'sine.inOut', yoyo: true, repeat: 1 })
+      .add(() => { if(Math.random() < .4) cackle(); }, 1.4);
+    loop.data = 'idle';
+  }
+  function waveLoop(){
+    stopLoop(); faceTo(1); pose('wave', .35);
+    loop = G.timeline({ repeat: -1, repeatDelay: 1.2 }).to('#acForeR', { rotation: 25, svgOrigin: J.ForeR, duration: .18, yoyo: true, repeat: 5, ease: 'sine.inOut' });
+    loop.data = 'idle';
+  }
+  function standLoop(face = 1){
+    stopLoop(); faceTo(face); pose('idle', .3);
+    loop = G.timeline({ repeat: -1, repeatDelay: 3 })
+      .to('#acBody', { scaleY: 1.015, svgOrigin: '150 596', duration: 1.2, ease: 'sine.inOut', yoyo: true, repeat: 1 })
+      .add(() => { const r = Math.random(); r < .35 ? cackle() : r < .7 ? browRaise() : 0; }, 1);
+    loop.data = 'idle';
+  }
+  const IDLE = { hero: () => standLoop(1), story: presentLoop, lab: hammerLoop, md: readLoop, tok: () => { standLoop(-1); pose('point', .4); }, buy: () => { standLoop(1); pose('point', .4); }, bye: waveLoop };
+
+  // expressive one-shots
+  function cackle(){
+    sfx(laugh)(); mouth(true);
+    G.timeline({ onComplete: () => mouth(false) })
+      .to('#acHeadWrap', { rotation: -8, y: -4, svgOrigin: '150 236', duration: .12, ease: 'power2.out' })
+      .to('#acHeadWrap', { rotation: 4, y: 0, svgOrigin: '150 236', duration: .1, yoyo: true, repeat: 7, ease: 'sine.inOut' })
+      .to('#acBody', { y: -5, duration: .1, yoyo: true, repeat: 7, ease: 'sine.inOut' }, '<')
+      .to('#acHeadWrap', { rotation: 0, y: 0, svgOrigin: '150 236', duration: .3 });
+  }
+  function browRaise(){ G.to('#acBrowR', { y: -10, duration: .18, yoyo: true, repeat: 1, repeatDelay: .6, ease: 'power2.out' }); }
+  addEventListener('pointermove', e => {
+    if(!A.hidden){ const [fx0, fy0] = facePos(); const dx = Math.max(-1, Math.min(1, (e.clientX - fx0) / 300)) * A.face, dy = Math.max(-1, Math.min(1, (e.clientY - fy0) / 300));
+      [['#acPupL', 174, 231], ['#acPupR', 252, 229]].forEach(([s, x, y]) => { const el = $(s); el.setAttribute('cx', x + dx * 7); el.setAttribute('cy', y + dy * 3); }); }
+  });
+
+  // ---- particles: sparks, dust, portal motes ----
+  function sparks([x, y], n, col = '#ffd166'){ for(let i = 0; i < n; i++){ const a = rand(-Math.PI, 0), v = rand(2, 7); parts2.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, g: .25, life: 1, d: .04, r: rand(1, 2.4), c: col }); } }
+  function dust([x, y], n){ for(let i = 0; i < n; i++){ parts2.push({ x: x + rand(-30, 30), y, vx: rand(-3, 3), vy: rand(-2, -.3), g: 0, life: 1, d: .02, r: rand(6, 14), c: 'rgba(160,170,190,.35)', puff: true }); } }
+  function motes([x, y], n){ for(let i = 0; i < n; i++){ const a = rand(0, 6.28), v = rand(1, 4); parts2.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, g: -.02, life: 1, d: .025, r: rand(1.5, 3.5), c: '#b6ff5c' }); } }
+  function drawFx(){
+    fx.clearRect(0, 0, FW, FH);
+    for(const p of parts2){ p.x += p.vx; p.y += p.vy; p.vy += p.g; p.life -= p.d;
+      fx.globalAlpha = Math.max(0, p.life); fx.fillStyle = p.c;
+      if(!p.puff){ fx.shadowColor = p.c; fx.shadowBlur = 8; }
+      fx.beginPath(); fx.arc(p.x, p.y, p.puff ? p.r * (2 - p.life) : p.r, 0, 6.283); fx.fill(); fx.shadowBlur = 0; }
+    fx.globalAlpha = 1; parts2 = parts2.filter(p => p.life > 0);
+  }
+
+  // ---- portals ----
+  const portals = [$('#portal1'), $('#portal2')];
+  const portalAt = new Map();
+  function portalFollow(el, name, dy = .5){ portalAt.set(el, { name, dy, clamp: true }); }
+  function placePortals(){ for(const [el, o] of portalAt){ let [x, y] = pt(o.name); const h = actor.offsetHeight; if(o.clamp) y = Math.min(innerHeight - 16, Math.max(h * .98 + 70, y)); G.set(el, { x: x - el.offsetWidth / 2, y: y - actor.offsetHeight * o.dy - el.offsetHeight / 2 }); } }
+  function openPortal(el, name){
+    portalFollow(el, name);
+    sfx(whoosh)();
+    G.set(el, { opacity: 1 }); G.fromTo(el, { scale: 0, rotation: -90 }, { scale: 1, rotation: 0, duration: .45, ease: 'back.out(1.8)' });
+    G.to(el.querySelector('.swirl'), { rotation: 360, svgOrigin: '0 0', duration: 1.2, ease: 'none', repeat: -1 });
+    const [x, y] = pt(name); motes([x, y - actor.offsetHeight * .5], 24);
+  }
+  function closePortal(el){ return G.to(el, { scale: 0, rotation: 90, duration: .35, ease: 'back.in(2)', onComplete: () => { G.set(el, { opacity: 0 }); G.killTweensOf(el.querySelector('.swirl')); portalAt.delete(el); } }); }
+
+  // ---- leaving and arriving ----
+  function leave(){ // jump into a portal
+    return new Promise(res => {
+      stopLoop(); A.clamp = 1; const p = portals[0]; openPortal(p, A.to);
+      G.timeline({ onComplete: res })
+        .add(pose('reach', .2), 0)
+        .to(A, { dy: -30, duration: .25, ease: 'power2.out' }, .15)
+        .to(actor, { scale: .2, rotation: 540, opacity: 0, transformOrigin: '50% 55%', duration: .45, ease: 'power2.in' }, .3)
+        .add(() => closePortal(p), .75);
+    });
+  }
+  function arrive(name, how){
+    return new Promise(res => {
+      A.from = A.to = name; A.t = 0; A.dx = 0; A.dy = 0;
+      G.set(actor, { scale: 1, rotation: 0, opacity: 1 }); pose('idle', 0);
+      A.clamp = 1;
+      const done = () => { IDLE[name](); G.to(A, { clamp: 0, duration: .9, ease: 'power2.inOut', delay: .6 }); res(); };
+      if(how === 'portal'){
+        const p = portals[1]; openPortal(p, name); G.set(actor, { scale: .2, rotation: -540, opacity: 0 });
+        G.timeline({ onComplete: done })
+          .to(actor, { scale: 1, rotation: 0, opacity: 1, transformOrigin: '50% 55%', duration: .5, ease: 'back.out(1.5)' }, .25)
+          .fromTo(A, { dy: -40 }, { dy: 0, duration: .35, ease: 'power2.in' }, .5)
+          .add(() => { dust(pt(name), 6); sfx(t => thud(t))(); }, .85)
+          .fromTo('#acBody', { scaleY: .9 }, { scaleY: 1, svgOrigin: '150 596', duration: .5, ease: 'elastic.out(1,.4)', immediateRender: false }, .85)
+          .add(() => closePortal(p), .7);
+      } else if(how === 'door'){
+        A.from = 'door'; A.t = 0;
+        G.set(actor, { scale: .9, opacity: 0 });
+        G.timeline({ onComplete: () => { endRun(); done(); } })
+          .add(sfx(creak), 0)
+          .to('#doorPanel', { scaleX: .12, svgOrigin: '10 150', duration: .45, ease: 'power2.out' }, 0)
+          .to(actor, { opacity: 1, duration: .2 }, .3)
+          .add(() => runCycle(1), .35)
+          .to(actor, { scale: 1, duration: .5 }, .35)
+          .to(A, { t: 1, duration: 1.1, ease: 'power1.inOut' }, .35)
+          .to('#doorPanel', { scaleX: 1, svgOrigin: '10 150', duration: .35, ease: 'power3.in' }, 1.3)
+          .add(sfx(t => thud(t)), 1.62);
+      } else if(how === 'run'){
+        A.from = 'offL'; A.t = 0;
+        runCycle(1);
+        G.timeline({ onComplete: () => { endRun(); done(); } })
+          .to(A, { t: 1, duration: 1.1, ease: 'power2.out' })
+          .add(() => dust(pt(name), 5), '-=.15');
+      } else { // drop from the sky with a little parachute of lab coat
+        G.timeline({ onComplete: done })
+          .set(A, { dy: -innerHeight })
+          .add(pose('wave', .2), 0)
+          .to(A, { dy: 0, duration: .7, ease: 'power2.in' }, 0)
+          .add(() => { dust(pt(name), 10); sfx(t => thud(t))(); try{ navigator.vibrate && navigator.vibrate(30); }catch(e){} }, .7)
+          .fromTo('#acBody', { scaleY: .78, scaleX: 1.12 }, { scaleY: 1, scaleX: 1, svgOrigin: '150 596', duration: .6, ease: 'elastic.out(1,.35)', immediateRender: false }, .7);
+      }
+    });
+  }
+
+  // ---- scene changes driven by scroll ----
+  let curScene = 'hero', want = 'hero', busy = false, introDone = false, flow = null;
+  async function go(){
+    if(busy || !introDone) return; busy = true;
+    while(want !== curScene){
+      if(flow){ flow.kill(); flow = null; endRun(); }
+      const back = ORDER.indexOf(want) < ORDER.indexOf(curScene);
+      await leave();
+      const to = want;
+      await arrive(to, back ? 'portal' : ARRIVE[to] || 'portal');
+      curScene = to;
+    }
+    busy = false;
+  }
+  const request = name => { want = name; go(); };
+
+  // ---- the Agent Lab: he runs to the lever and brings the agent to life ----
+  function bringToLife(onAlive){
+    if(curScene !== 'lab' || busy || reduced || !hasG){ onAlive(); return; }
+    stopLoop();
+    flow = G.timeline({ onComplete: () => { flow = null; } })
+      .add(() => { mouth(true); browRaise(); }, 0)
+      .add(() => { A.from = 'lab'; A.to = 'lever'; A.t = 0; runCycle(1); }, .2)
+      .to(A, { t: 1, duration: .8, ease: 'power1.inOut' }, .2)
+      .add(() => { endRun(); mouth(false); }, 1)
+      .add(pose('reach', .22, 'back.out(2)'), 1.05)
+      .to('#acBody', { y: -18, svgOrigin: '150 596', duration: .2, ease: 'power2.out' }, 1.1)
+      .add(pose('pull', .26, 'power3.in'), 1.35)
+      .to('#acBody', { y: 10, scaleY: .92, svgOrigin: '150 596', duration: .26, ease: 'power3.in' }, 1.35)
+      .to('#labLever', { rotation: 160, svgOrigin: '60 120', duration: .28, ease: 'power3.in' }, 1.35)
+      .add(sfx(t => { hum(t, .5); }), 1.4)
+      .add(() => labStrike(onAlive), 1.65)
+      .to('#acBody', { y: 0, scaleY: 1, svgOrigin: '150 596', duration: .5, ease: 'elastic.out(1,.4)' }, 1.7)
+      .add(() => { pose('belly', .25); cackle(); }, 1.9)
+      .add(() => { A.from = 'lever'; A.to = 'lab'; A.t = 0; runCycle(-1); }, 3.6)
+      .to(A, { t: 1, duration: .8, ease: 'power1.inOut' }, 3.6)
+      .add(() => { endRun(); A.from = A.to = 'lab'; A.t = 0; hammerLoop(); }, 4.4)
+      .to('#labLever', { rotation: 0, svgOrigin: '60 120', duration: .6, ease: 'power2.inOut' }, 4.6);
+  }
+  // lightning from the lever into the robot on the bench
+  const la = $('#labArcs'), lx = la.getContext('2d'); let labBolts = [];
+  function sizeLab(){ const dpr = Math.min(devicePixelRatio || 1, 2), w = la.clientWidth, h = la.clientHeight; la.width = w * dpr; la.height = h * dpr; lx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+  function labStrike(onAlive){
+    const ws = $('#workshop').getBoundingClientRect(), lv = $('#labLever').getBoundingClientRect(), bot = $('#wsBot').getBoundingClientRect();
+    const a = [lv.left - ws.left + lv.width / 2, lv.top - ws.top], b = [bot.left - ws.left + bot.width / 2, bot.top - ws.top + bot.height * .3];
+    for(let i = 0; i < 4; i++) labBolts.push({ pts: jag(a[0], a[1], b[0], b[1], 160), life: 1 });
+    labBolts.push({ pts: jag(b[0] + rand(-60, 60), -20, b[0], b[1], 120), life: 1 });
+    sfx(t => { thunder(t, .9); zap(t, .7); boot(t + .5); })();
+    try{ navigator.vibrate && navigator.vibrate([60, 30, 120]); }catch(e){}
+    G.timeline()
+      .fromTo('#workshop', { backgroundColor: 'rgba(200,245,255,.35)' }, { backgroundColor: 'rgba(200,245,255,0)', duration: .6 })
+      .to('#workshop', { x: 'random(-8,8)', duration: .04, repeat: 7, yoyo: true }, 0).set('#workshop', { x: 0 })
+      .add(() => { $$('#wsEyes rect').forEach(r => r.setAttribute('fill', '#ff3b5c')); $('#wsAnt').setAttribute('fill', '#ff3b5c'); $('#wsEyes').style.filter = 'drop-shadow(0 0 6px #ff3b5c)'; }, .15)
+      .to('#wsBot', { y: -26, duration: .2, yoyo: true, repeat: 1, ease: 'power2.out' }, .2)
+      .fromTo('#alive2', { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: .4, ease: 'back.out(2)' }, .1)
+      .to('#alive2', { opacity: 0, duration: .5 }, 1.8)
+      .add(onAlive, .4);
+  }
+  function drawLab(){
+    if(!labBolts.length) return;
+    lx.clearRect(0, 0, la.clientWidth, la.clientHeight);
+    for(const b of labBolts){ lx.strokeStyle = `rgba(200,250,255,${b.life})`; lx.lineWidth = 3; lx.shadowColor = '#7cf7ff'; lx.shadowBlur = 20; lx.beginPath(); b.pts.forEach(([x, y], i) => i ? lx.lineTo(x, y) : lx.moveTo(x, y)); lx.stroke(); b.life -= .05; }
+    lx.shadowBlur = 0; labBolts = labBolts.filter(b => b.life > 0);
+    if(!labBolts.length) lx.clearRect(0, 0, la.clientWidth, la.clientHeight);
+  }
+  function onBroke(){
+    if(curScene !== 'lab' || busy || flow || !hasG || reduced) return;
+    stopLoop(); faceTo(1);
+    G.timeline().add(pose('facepalm', .3)).add(() => {}, '+=1').add(pose('shrug', .3)).add(() => cackle()).add(() => { if(curScene === 'lab' && !flow) hammerLoop(); }, '+=1.4');
+  }
+
+  // ---- start ----
+  function startActor(){
+    if(!hasG || reduced){ document.documentElement.classList.add('no-actor'); return false; }
+    sizeFx(); sizeLab(); addEventListener('resize', () => { sizeFx(); sizeLab(); });
+    actor.style.visibility = 'visible';
+    pose('idle', 0);
+    G.ticker.add(() => { place(); placePortals(); drawFx(); drawLab(); });
+    ORDER.forEach((name, i) => { if(!i) return;
+      ScrollTrigger.create({ trigger: ANC[name], start: 'top 90%', onEnter: () => request(name), onLeaveBack: () => request(ORDER[i - 1]) }); });
+    return true;
+  }
 
   /* ================= IT'S ALIVE: plays by itself ================= */
   function botAlive(){ $$('#botEyes rect').forEach(r => r.setAttribute('fill', '#ff3b5c')); $('#antTip').setAttribute('fill', '#ff3b5c'); $('#botScreen').setAttribute('stroke', '#a3ff4f'); $('#podLed').setAttribute('fill', '#a3ff4f'); $('#botEyes').style.filter = 'drop-shadow(0 0 8px #ff3b5c)'; }
   function finalState(){
-    botAlive(); charge = .15;
+    botAlive(); charge = .15; introDone = true;
     if(hasG){ G.set(['#brand', '#sub', '#cta'], { opacity: 1 }); G.set('#cracks', { strokeDashoffset: 0 }); G.set('#lever', { rotation: 160, svgOrigin: '60 120' }); }
     else ['#brand', '#sub', '#cta'].forEach(s => $(s).style.opacity = 1);
   }
   function story(){
-    if(!hasG || reduced){ finalState(); return; }
+    if(!hasG || reduced || !actorOn){ finalState(); return; }
     const crackLen = 260;
     G.set('#cracks', { strokeDasharray: crackLen, strokeDashoffset: crackLen });
     G.set('#lever', { rotation: -25, svgOrigin: '60 120' });
     const tl = G.timeline({ delay: .4 });
     tl.add(() => { bolt(HW * .5, false); sfx(t => thunder(t, .5))(); }, .2)
-      .add(browRaise, 1)
-      .to('#doc', { rotation: -3, duration: .4, ease: 'power2.inOut' }, 1.3)
-      .add(cackle, 1.4)
+      .add(() => { standLoop(1); browRaise(); }, .9)
+      .add(() => { stopLoop(); pose('belly', .25); cackle(); }, 1.4)
+      .add(() => pose('idle', .3), 2.6)
       // he throws the switch
-      .to('#doc', { rotation: 4, x: -14, duration: .3, ease: 'power3.in' }, 3)
-      .to('#lever', { rotation: 160, svgOrigin: '60 120', duration: .35, ease: 'back.in(1.4)' }, 3.05)
+      .add(pose('reach', .25, 'back.out(2)'), 2.95)
+      .to('#acBody', { y: -16, svgOrigin: '150 596', duration: .22, ease: 'power2.out' }, 2.95)
+      .add(pose('pull', .28, 'power3.in'), 3.2)
+      .to('#acBody', { y: 8, scaleY: .93, svgOrigin: '150 596', duration: .28, ease: 'power3.in' }, 3.2)
+      .to('#acBody', { y: 0, scaleY: 1, svgOrigin: '150 596', duration: .5, ease: 'elastic.out(1,.4)' }, 3.5)
+      .to('#lever', { rotation: 160, svgOrigin: '60 120', duration: .3, ease: 'power3.in' }, 3.22)
       .add(sfx(t => hum(t, 1.6)), 3.2)
       .to(window, { duration: 1.6, ease: 'power2.in', onUpdate(){ charge = this.progress() * 1.2; } }, 3.3)
       .to('#liquid', { attr: { fill: 'rgba(163,255,79,.3)' }, duration: 1.6 }, 3.3)
@@ -756,7 +1186,8 @@ Before you give this file to a real agent with a real wallet:
       .fromTo('#bot', { y: 0 }, { y: -8, duration: .2, yoyo: true, repeat: 1, ease: 'power2.out' }, 5.3)
       .fromTo('#alive', { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .45, ease: 'back.out(2)' }, 5.1)
       .to(window, { duration: .8, onUpdate(){ charge = 1.2 * (1 - this.progress()) + .15; } }, 5.4)
-      .add(cackle, 5.6)
+      .add(() => { pose('belly', .25); cackle(); }, 5.6)
+      .add(() => pose('idle', .4), 7.2)
       // the agent immediately buys something
       .to('#armR', { rotation: -168, svgOrigin: '182 186', duration: .3, ease: 'back.out(2)' }, 6.3)
       .fromTo('#bubble', { opacity: 0, y: 10, scale: .6 }, { opacity: 1, y: 0, scale: 1, duration: .35, ease: 'back.out(2.5)' }, 6.4)
@@ -767,7 +1198,7 @@ Before you give this file to a real agent with a real wallet:
       .fromTo('#cta', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .8, ease: 'expo.out' }, 8.2)
       .to('#armR', { rotation: 0, duration: .5, ease: 'power2.inOut' }, 8.4)
       .to('#bubble', { opacity: 0, duration: .4 }, 9.5)
-      .add(idle, 9.6);
+      .add(() => { idle(); introDone = true; standLoop(1); go(); }, 9.6);
     window.__alive = tl;
   }
   function idle(){
@@ -780,11 +1211,7 @@ Before you give this file to a real agent with a real wallet:
       G.delayedCall(rand(3.5, 6), talk);
     };
     G.delayedCall(1.5, talk);
-    const doc = () => { if(scrollY < HH) (Math.random() < .5 ? cackle : browRaise)(); G.delayedCall(rand(6, 11), doc); };
-    G.delayedCall(5, doc);
     G.to('#bot', { y: -5, duration: 2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
-    G.to('#doc', { rotation: 0, x: 0, duration: 1, ease: 'power2.out' });
-    G.to('#esBody', { scaleY: 1.012, svgOrigin: '210 560', duration: 1.8, ease: 'sine.inOut', yoyo: true, repeat: -1 });
     const scr = () => { $('#botScreen').setAttribute('points', Array.from({ length: 6 }, (_, i) => `${78 + i * 12.8},${rand(192, 224) | 0}`).join(' ')); };
     setInterval(() => { if(scrollY < HH) scr(); }, 600);
   }
@@ -801,7 +1228,7 @@ Before you give this file to a real agent with a real wallet:
   const STOP_REPLIES = ['No.', 'I can’t hear you over the leverage.', 'Stopping is for paperhands.', 'Request logged. Ignored.'];
   let pers = 'degen', run = null;
   const fmt = v => '$' + Math.max(0, v).toLocaleString('en-US', { maximumFractionDigits: v < 10 ? 2 : 0, minimumFractionDigits: v < 10 ? 2 : 0 });
-  $$('.chip').forEach(c => c.addEventListener('click', () => { pers = c.dataset.p; $$('.chip').forEach(x => x.setAttribute('aria-pressed', x === c)); }));
+  $$('[data-p]').forEach(c => c.addEventListener('click', () => { pers = c.dataset.p; $$('[data-p]').forEach(x => x.setAttribute('aria-pressed', x === c)); }));
   const riskWord = v => v < 3 ? 'Careful' : v < 6 ? 'Spicy' : v < 9 ? 'Unhinged' : 'Full Elonstein';
   $('#aRisk').addEventListener('input', e => $('#riskTxt').textContent = riskWord(+e.target.value));
   const feed = $('#feed');
@@ -870,12 +1297,49 @@ Before you give this file to a real agent with a real wallet:
     setTimeout(() => $('#notif').classList.remove('on'), 4200);
     drawCard(r); $('#result').classList.add('on');
     if(hasG && !reduced) G.from('#result', { opacity: 0, y: 30, duration: .8, ease: 'expo.out' });
-    run = null;
+    run = null; onBroke();
   }
-  $('#labForm').addEventListener('submit', startRun);
+  let mode = 'paper';
+  $$('[data-mode]').forEach(c => c.addEventListener('click', () => { mode = c.dataset.mode; $$('[data-mode]').forEach(x => x.setAttribute('aria-pressed', x === c)); }));
+  const num = (sel, d, lo, hi) => { const v = parseFloat($(sel).value); return isFinite(v) ? Math.min(hi, Math.max(lo, v)) : d; };
+  function buildConfig(){
+    const ca = $('#ca').textContent.trim();
+    return {
+      name: ($('#aName').value.trim() || 'AGENT-01').toUpperCase().slice(0, 18), personality: pers, risk: +$('#aRisk').value, mode,
+      budgetSol: num('#cBudget', .5, .01, 1e6), maxTradePct: num('#cMax', 20, 1, 100), takeProfitPct: num('#cTp', 60, 1, 1e4), stopLossPct: num('#cSl', 30, 1, 100),
+      intervalSec: +$('#cInt').value, maxTradesPerDay: num('#cDay', 30, 1, 1e4), source: $('#cSrc').value,
+      elonsteinMint: /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(ca) ? ca : '', minLiquidityUsd: num('#cLiq', 10000, 0, 1e12), minAgeMinutes: 15, slippageBps: 300,
+      rpcUrl: 'https://api.mainnet-beta.solana.com'
+    };
+  }
+  function personalMd(c){
+    return `# ${c.name}\n\n> Built in Dr. Elonstein's Agent Lab. Give this file to your own AI agent, or just run the agent program with your config.\n\n` +
+      `| Setting | Value |\n|---|---|\n| Personality | ${c.personality} |\n| Risk | ${c.risk}/10 |\n| Mode | ${c.mode.toUpperCase()} |\n| Budget | ${c.budgetSol} SOL |\n| Max per trade | ${c.maxTradePct} % |\n| Take profit | ${c.takeProfitPct} % |\n| Stop loss | ${c.stopLossPct} % |\n| Token source | ${c.source} |\n| Check every | ${c.intervalSec} s |\n| Max trades / day | ${c.maxTradesPerDay} |\n\n---\n\n` + $('#mdPreview').textContent;
+  }
+  function saveFile(text, name, type){
+    const blob = new Blob([text], { type }), a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  }
+  let cfgNow = null;
+  function showKit(c){
+    cfgNow = c; $('#kitMdName').textContent = c.name;
+    $('#kitSteps').innerHTML = `<b># 1. put the 4 files in one folder, then:</b>\nnpm install\nnpm start              <b># paper mode first</b>\n\n` +
+      (c.mode === 'live' ? `<b># 2. live: it prints its own wallet address.</b>\n<b>#    fund only that address with ≤ ${c.budgetSol} SOL, then:</b>\nLIVE_CONFIRM="I accept that this agent can lose the entire budget." npm start\n\n` : `<b># 2. ready for real? set "mode": "live" in the config</b>\n\n`) +
+      `<b># optional: Telegram, so it can call you when it's broke</b>\nTELEGRAM_BOT_TOKEN=... TELEGRAM_CHAT_ID=... npm start` +
+      ((c.personality === 'maxi' || c.source === 'elonstein-only') && !c.elonsteinMint ? `\n\n<b># heads-up: a Maximalist only buys $ELONSTEIN.</b>\n<b># put the contract address in "elonsteinMint" once the coin is live.</b>` : '');
+    $('#kit').classList.add('on');
+    if(hasG && !reduced) G.from('#kit', { opacity: 0, y: 30, duration: .8, ease: 'expo.out' });
+  }
+  $('#dlCfg').addEventListener('click', () => cfgNow && saveFile(JSON.stringify(cfgNow, null, 2), 'elonstein-agent.config.json', 'application/json'));
+  $('#dlMd').addEventListener('click', () => cfgNow && saveFile(personalMd(cfgNow), cfgNow.name + '.md', 'text/markdown'));
+  $('#labForm').addEventListener('submit', e => {
+    e.preventDefault(); if(run) return;
+    const c = buildConfig(); $('#start').disabled = true;
+    bringToLife(() => { startRun(); showKit(c); });
+  });
   $('#askBtn').addEventListener('click', () => { if(!run) return; line('me', 'what are you doing?'); setTimeout(() => line('bot', pick(ASK_REPLIES)), 500); });
   $('#stopBtn').addEventListener('click', () => { if(!run) return; line('me', 'stop. please stop.'); setTimeout(() => line('bot', pick(STOP_REPLIES)), 500); });
-  $('#again').addEventListener('click', () => { startRun(); });
+  $('#again').addEventListener('click', () => { if(run) return; $('#start').disabled = true; bringToLife(() => startRun()); });
 
   // 1200x630 result card
   const card = $('#card'), kx = card.getContext('2d');
@@ -946,6 +1410,7 @@ Before you give this file to a real agent with a real wallet:
   /* ================= boot ================= */
   size(); addEventListener('resize', size);
   initSite();
+  const actorOn = startActor();
   (document.fonts ? Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1500))]) : Promise.resolve()).then(story);
 })();
 </script>
