@@ -411,20 +411,23 @@ footer p{max-width:62ch}
     broken.remove();
     document.body.classList.remove('locked');
     $('#site').classList.add('on');
-    if(actx){ drone(); $('#mute').hidden = false; }
+    try{ if(actx){ drone(); $('#mute').hidden = false; } }catch(e){}
     try{ sessionStorage.setItem('salemSeen','1'); }catch(e){}
   }
   function scare(){
-    audio();
-    const live = () => screech(actx, master, actx.currentTime + SCARE_DELAY);
-    if(screamReady){ scream.currentTime = 0; scream.play().catch(live); } else live();
+    // sound must never block the visuals (sandboxed previews, odd browsers)
+    try{
+      audio();
+      const live = () => { try{ screech(actx, master, actx.currentTime + SCARE_DELAY); }catch(e){} };
+      if(screamReady){ scream.currentTime = 0; scream.play().catch(live); } else live();
+    }catch(e){}
     // everything vanishes at once — a split second of pure black, then BAMM
     cancelAnimationFrame(vraf);
     broken.innerHTML = '';
     setTimeout(()=>{
       const s = $('#scare'); s.classList.add('on'); if(!reduced) s.classList.add('flash');
       staticLoop();
-      if(navigator.vibrate) navigator.vibrate([200,60,300]);
+      try{ navigator.vibrate && navigator.vibrate([200,60,300]); }catch(e){}
       setTimeout(reveal, 1900);
     }, SCARE_DELAY*1000);
   }
