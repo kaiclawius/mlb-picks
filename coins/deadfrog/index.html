@@ -76,8 +76,8 @@ img{max-width:100%}
 .static-frog .hole{display:block}
 .arms{position:absolute;left:-30%;right:0;top:-80%;bottom:0;overflow:hidden;z-index:3;pointer-events:none}
 .arm{position:absolute;bottom:0;width:calc(21% / 1.3);aspect-ratio:140/380;overflow:visible;transform-origin:50% 80%}
-#armL{left:calc(30% / 1.3 - 6% / 1.3)}
-#armR{left:calc(30% / 1.3 + 19% / 1.3)}
+#armL{left:calc(30% / 1.3 - 16% / 1.3)}
+#armR{left:calc(30% / 1.3 + 31% / 1.3)}
 .static-frog .arms{display:none}
 .tomb{position:absolute;left:32%;bottom:6%;width:50%;transform-origin:10% 100%;z-index:2;filter:drop-shadow(0 20px 30px rgba(0,0,0,.6))}
 .tomb svg{width:100%;height:auto;display:block;overflow:visible}
@@ -94,7 +94,7 @@ img{max-width:100%}
 .hero.is-back .cta{display:flex}
 .flash{position:absolute;inset:0;z-index:9;background:var(--slime);opacity:0;pointer-events:none;mix-blend-mode:screen}
 @media (max-width:640px){
-  .cluster{height:min(48svh,70vw);bottom:15svh}
+  .cluster{left:50%;height:min(46svh,64vw);bottom:15svh}
   .ground{height:calc(15svh + 30px)}
   .back{white-space:normal;font-size:clamp(58px,19vw,120px);line-height:.82}
   .tree{opacity:.5}
@@ -544,7 +544,7 @@ html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor se
     const cr = cl.getBoundingClientRect(), br = box.getBoundingClientRect();
     const frogH = cl.clientHeight * .82; pxScale = frogH / IH;
     // feet sit on the bottom of the grave, which is the bottom of the cluster
-    origin = { x: cr.left - br.left + cl.clientWidth * .2, y: cr.top - br.top + cl.clientHeight * .99 };
+    origin = { x: cr.left - br.left + cl.clientWidth * .125, y: cr.top - br.top + cl.clientHeight * .99 };
     maskY = origin.y;
     maskG.clear().beginFill(0xffffff).drawRect(0, 0, bw, maskY).endFill();
   }
@@ -722,7 +722,7 @@ html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor se
   function climb(){
     const title = SplitText.create('#backTitle', { type: 'words,chars' });
     stickDirt();
-    G.set([armR, armL], { yPercent: 110 }); G.set(armR, { rotation: 4 }); G.set(armL, { rotation: -6 });
+    G.set([armR, armL], { yPercent: 110 }); G.set(armR, { rotation: 6 }); G.set(armL, { rotation: -6 });
     const tl = G.timeline({ onComplete: finish });
     window.__climb = tl;
     tl.from('#over', { opacity: 0, letterSpacing: '1em', duration: 1.2, ease: 'expo.out' }, .2)
@@ -738,7 +738,7 @@ html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor se
       .to(armR, { rotation: 'random(-4,6)', duration: .06, repeat: 7, yoyo: true, ease: 'none' }, 2.35)
       .add(curl(armR), 2.6).add(open(armR), 2.8).add(curl(armR), 3.0).add(open(armR), 3.2)
       // 3. it slams onto the tombstone and grips it
-      .to(armR, { rotation: 32, yPercent: 8, duration: .2, ease: 'power3.in' }, 3.45)
+      .to(armR, { rotation: -10, yPercent: -12, duration: .2, ease: 'power3.in' }, 3.45)
       .add(curl(armR, .12), 3.62)
       .add(() => spray(14, 5, at(armR)), 3.65).add(sfx(t => dirtHit(t, .5)), 3.65)
       .to('#tomb', { rotation: 2.5, duration: .08, yoyo: true, repeat: 1 }, 3.65)
@@ -746,7 +746,7 @@ html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor se
       .to(armL, { yPercent: 0, duration: .3, ease: 'back.out(1.6)' }, 3.85)
       .add(() => spray(36, 10, at(armL)), 3.85).add(sfx(t => dirtHit(t, .7)), 3.85)
       .add(spread(armL), 3.9)
-      .to(armL, { rotation: -44, yPercent: 14, duration: .22, ease: 'power3.in' }, 4.25)
+      .to(armL, { rotation: -28, yPercent: 22, duration: .22, ease: 'power3.in' }, 4.25)
       .add(curl(armL, .12), 4.45)
       .add(() => spray(16, 5, at(armL)), 4.47).add(sfx(t => dirtHit(t, .5)), 4.47)
       // 5. the head comes up, he looks around
@@ -766,7 +766,7 @@ html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor se
       .addLabel('out', 7.4)
       .to(rig, { y: -.14, sy: 1.14, sx: .92, duration: .38, ease: 'power3.out' }, 'out')
       .to([armR, armL], { yPercent: 120, duration: .25, ease: 'power2.in' }, 'out')
-      .add(() => { hero.classList.add('is-out'); spray(170, 17); shake(); }, 'out')
+      .add(() => { hero.classList.add('is-out', 'is-back'); spray(170, 17); shake(); }, 'out')
       .add(sfx(t => { dirtHit(t, 1.4); stab(t + .05); }), 'out')
       .fromTo('#flash', { opacity: .5 }, { opacity: 0, duration: .6, ease: 'power2.out', immediateRender: false }, 'out')
       .to('.crack', { strokeDashoffset: 0, duration: .25, ease: 'power2.in' }, 'out')
