@@ -133,7 +133,6 @@ html.motion #site.on .flyer-in{animation:swoop 2.6s cubic-bezier(.16,1,.3,1) .5s
 @keyframes swoop{from{transform:translate(-110vw,40svh) rotate(-24deg) scale(.6)}}
 .salem-art .cat-squash{filter:drop-shadow(0 0 1.2px rgba(198,255,61,.7))}
 .salem-art .eye-glow{filter:drop-shadow(0 0 3px #c6ff3d) drop-shadow(0 0 9px rgba(198,255,61,.8))}
-.flyer .salem-art{pointer-events:auto;cursor:pointer}
 .clouds{position:absolute;left:-5%;width:110%;pointer-events:none;will-change:transform}
 .clouds.c1{bottom:-2px;height:22svh;z-index:4}
 .clouds.c2{bottom:6svh;height:20svh;z-index:2;opacity:.9}
@@ -303,7 +302,7 @@ html.has-cursor #site,html.has-cursor #site a,html.has-cursor #site button{curso
     <canvas id="trail" aria-hidden="true"></canvas>
     <div class="flyer" id="flyer"><div id="flyerExit"><div id="flyerBob">
       <div class="flyer-in">
-        <svg class="salem-art" data-cursor="flip" viewBox="0 0 600 360" role="img" aria-label="Salem, a black cat in a witch hat, riding a broom">
+        <svg class="salem-art" viewBox="0 0 600 360" role="img" aria-label="Salem, a black cat in a witch hat, riding a broom">
          <g id="salemArt">
           <g class="broom">
             <path d="M108 252 C 80 246 40 234 -2 236 C 4 258 6 282 -6 306 C 34 296 74 280 112 268 Z" fill="url(#sStraw)"/>
@@ -663,15 +662,6 @@ html.has-cursor #site,html.has-cursor #site a,html.has-cursor #site button{curso
     tx.globalAlpha = 1; tx.globalCompositeOperation = 'source-over';
   }
 
-  // a burst of sparks under an element (Salem's paws when he lands a flip)
-  function burst(el, n){
-    const hr = hero.getBoundingClientRect(), r = el.getBoundingClientRect();
-    const ox = r.left + r.width / 2 - hr.left, oy = r.bottom - hr.top - r.height * .12;
-    for(let k = 0; k < n; k++){
-      const a = Math.random() * 6.283, v = 1.5 + Math.random() * 4.5;
-      sparks.push({ x: ox + (Math.random() - .5) * r.width * .5, y: oy, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1.6, life: 1, r: Math.random() * 2.6 + .6, g: Math.random() < .6 });
-    }
-  }
   // static copy of Salem for the chapter progress line (taken before any animation touches him)
   $('#mini').innerHTML = $('#salemArt').outerHTML.replace(/ id="[^"]*"/g, '');
 
@@ -737,10 +727,8 @@ html.has-cursor #site,html.has-cursor #site a,html.has-cursor #site button{curso
       pL.setAttribute('cx', 407 + dx * 4); pR.setAttribute('cx', 451 + dx * 4);
       pL.setAttribute('cy', 150 + dy * 2); pR.setAttribute('cy', 150 + dy * 2);
     });
-    /* Salem: idle life (breathing head, blinks, ear twitches, tail + scarf) and a backflip */
+    /* Salem: idle life (breathing head, blinks, ear twitches, tail + scarf) */
     const art = $('#salemArt'), q = c => art.querySelector(c);
-    const jump = q('.cat-jump'), spin = q('.cat-spin'), squash = q('.cat-squash'), broom = q('.broom');
-    G.set(squash, { svgOrigin: '372 240' }); G.set(spin, { svgOrigin: '400 170' }); G.set(broom, { svgOrigin: '360 238' });
     if(!reduced){
       if(window.MorphSVGPlugin){
         G.to(q('.tail'), { morphSVG: 'M302 238 C 266 242 232 226 222 196 C 214 168 236 150 252 162 C 264 172 256 188 244 184', duration: 1.3, ease: 'sine.inOut', yoyo: true, repeat: -1 });
@@ -758,30 +746,6 @@ html.has-cursor #site,html.has-cursor #site a,html.has-cursor #site button{curso
       };
       G.delayedCall(1.5, blink); G.delayedCall(3, twitch);
     }
-    let flipping = false;
-    function backflip(){
-      if(flipping || reduced) return; flipping = true;
-      G.timeline({ onComplete: () => { flipping = false; } })
-        .to(squash, { scaleY: .78, scaleX: 1.12, duration: .18, ease: 'power2.in' })            // crouch
-        .addLabel('up')
-        .to(squash, { scaleY: 1.12, scaleX: .9, duration: .16, ease: 'power2.out' }, 'up')      // stretch on take-off
-        .to(squash, { scaleY: 1, scaleX: 1, duration: .3, ease: 'power2.out' }, 'up+=.16')
-        .to(broom, { y: 12, rotation: 2.5, duration: .16, ease: 'power2.out' }, 'up')         // broom kicks down
-        .to(broom, { y: 0, rotation: 0, duration: .55, ease: 'elastic.out(1,.35)' }, 'up+=.16')
-        .to(jump, { y: -190, duration: .46, ease: 'power2.out' }, 'up')
-        .to(spin, { rotation: -360, duration: .82, ease: 'power2.inOut' }, 'up+=.04')        // the backflip
-        .to(jump, { y: 0, duration: .4, ease: 'power2.in' }, 'up+=.46')
-        .addLabel('land', 'up+=.86')
-        .add(() => burst(squash, 46), 'land')
-        .to(squash, { scaleY: .8, scaleX: 1.12, duration: .09, ease: 'power2.out' }, 'land')   // land squash
-        .to(squash, { scaleY: 1, scaleX: 1, duration: .7, ease: 'elastic.out(1,.4)' }, 'land+=.09')
-        .to(broom, { y: 16, rotation: 3, duration: .1, ease: 'power2.out' }, 'land')
-        .to(broom, { y: 0, rotation: 0, duration: 1, ease: 'elastic.out(1,.3)' }, 'land+=.1')
-        .set(spin, { rotation: 0 });
-    }
-    const autoFlip = () => { if(scrollY < HH * .5) backflip(); G.delayedCall(7 + Math.random() * 2, autoFlip); };
-    G.delayedCall(3.4, autoFlip);
-    $('.flyer .salem-art').addEventListener('click', backflip);
 
     G.timeline({ scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 1 } })
       .to('#flyerExit', { xPercent: 90, yPercent: -160, rotation: -16, scale: .65, ease: 'power1.in' }, 0)
@@ -859,7 +823,7 @@ html.has-cursor #site,html.has-cursor #site a,html.has-cursor #site button{curso
       const rx = G.quickTo(ring, 'x', { duration: .55, ease: 'power3' }), ry = G.quickTo(ring, 'y', { duration: .55, ease: 'power3' });
       const dx = G.quickTo(dot, 'x', { duration: .08 }), dy = G.quickTo(dot, 'y', { duration: .08 });
       addEventListener('pointermove', e => { rx(e.clientX); ry(e.clientY); dx(e.clientX); dy(e.clientY); });
-      document.querySelectorAll('#site a, #site button, .flyer .salem-art').forEach(el => {
+      document.querySelectorAll('#site a, #site button').forEach(el => {
         el.addEventListener('pointerenter', () => { ring.classList.add('big'); ring.textContent = el.dataset.cursor || ''; });
         el.addEventListener('pointerleave', () => { ring.classList.remove('big'); ring.textContent = ''; });
       });
