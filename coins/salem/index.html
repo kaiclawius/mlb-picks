@@ -26,17 +26,8 @@ a{color:inherit}
   animation:grain 1s steps(6) infinite}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-5%,3%)}40%{transform:translate(4%,-6%)}60%{transform:translate(-3%,5%)}80%{transform:translate(6%,2%)}100%{transform:translate(0,0)}}
 
-/* ---------- STAGE 1: fake broken page ---------- */
-#broken{position:fixed;inset:0;z-index:50;background:#fff;color:#202124;font-family:Arial,Helvetica,sans-serif;
-  display:flex;align-items:center;justify-content:center;padding:16px;transition:background .15s}
-#broken .box{max-width:560px;width:100%}
-#broken .ico{width:56px;height:56px;margin-bottom:28px;opacity:.55}
-#broken h1{font-size:24px;font-weight:400;margin-bottom:14px}
-#broken p{font-size:15px;color:#5f6368;line-height:1.55;margin-bottom:6px}
-#broken code{font-family:monospace;font-size:12px;color:#5f6368;display:block;margin:18px 0 26px;letter-spacing:.02em}
-#broken button{background:#1a73e8;color:#fff;border:0;border-radius:4px;padding:10px 24px;font-size:14px;cursor:pointer}
-#broken button:hover{background:#1765cc}
-#broken .flick{animation:none}
+/* ---------- STAGE 1: black screen ---------- */
+#broken{position:fixed;inset:0;z-index:50;background:#000}
 
 /* ---------- STAGE 2: jumpscare ---------- */
 #scare{position:fixed;inset:0;z-index:60;background:#000;display:none;align-items:center;justify-content:center;overflow:hidden}
@@ -132,17 +123,8 @@ footer p{max-width:62ch}
 <div class="grain"></div>
 <div class="cursor" id="cur"></div>
 
-<!-- STAGE 1 — looks like a dead page -->
-<div id="broken" role="dialog" aria-label="Page error">
-  <div class="box">
-    <svg class="ico" viewBox="0 0 24 24" fill="#5f6368" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-    <h1 id="errTitle">This site can’t be reached</h1>
-    <p id="errLine"><b>salem.fun</b> took too long to respond.</p>
-    <p>Try checking the connection, the proxy and the firewall.</p>
-    <code id="errCode">ERR_CONNECTION_TIMED_OUT</code>
-    <button id="reload">Reload</button>
-  </div>
-</div>
+<!-- STAGE 1 — nothing. just black. -->
+<div id="broken"></div>
 
 <!-- STAGE 2 — jumpscare -->
 <div id="scare" aria-hidden="true">
@@ -291,6 +273,7 @@ footer p{max-width:62ch}
 
   /* ---------- stage 1: a perfectly normal dead page ---------- */
   const broken = $('#broken');
+  const IDLE_MS = 6000;
   const GESTURES = ['pointerdown','touchend','keydown','click'];
   let fired = false;
   function trigger(){
@@ -298,12 +281,12 @@ footer p{max-width:62ch}
     GESTURES.forEach(ev=>removeEventListener(ev, trigger, true));
     scare();
   }
-  // any tap, click or key — not just "Reload" — springs it
+  // any tap, click or key springs it
   GESTURES.forEach(ev=>addEventListener(ev, trigger, true));
   // browsers that already allow sound (media engagement) get it with zero interaction
   setTimeout(()=>{ audio(); if(actx.state === 'running') trigger(); }, 4000);
-  // nobody gets stuck on the "dead" page: silent scare after 10s, sound unlocks on first tap
-  setTimeout(trigger, 10000);
+  // nobody leaves staring at black: silent scare after IDLE_MS, sound unlocks on first tap
+  setTimeout(trigger, IDLE_MS);
 
   /* ---------- static canvas ---------- */
   const cv = $('#static'), cx = cv.getContext('2d'); let raf;
@@ -326,8 +309,7 @@ footer p{max-width:62ch}
   }
   function scare(){
     audio();
-    broken.style.background = '#000'; broken.innerHTML = '';
-    // half a second of dead silence & black — the "it really broke" beat
+        // half a second of dead silence & black — the "it really broke" beat
     setTimeout(()=>{
       const s = $('#scare'); s.classList.add('on'); if(!reduced) s.classList.add('flash');
       staticLoop(); if(actx.state === 'running') screech();
