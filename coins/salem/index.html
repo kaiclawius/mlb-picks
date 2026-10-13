@@ -16,6 +16,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);overflow-x:hidden}
 body.locked{overflow:hidden;height:100vh}
+body.locked .grain,body.locked .cursor{display:none}
 a{color:inherit}
 ::selection{background:var(--eye);color:#000}
 
@@ -36,11 +37,6 @@ a{color:inherit}
 #broken button{background:#1a73e8;color:#fff;border:0;border-radius:4px;padding:10px 24px;font-size:14px;cursor:pointer}
 #broken button:hover{background:#1765cc}
 #broken .flick{animation:none}
-#broken.creepy{animation:wrongflick 2.4s steps(1) infinite}
-@keyframes wrongflick{0%,93%,100%{filter:none}94%{filter:invert(1)}95%{filter:none}97%{filter:invert(1) hue-rotate(90deg)}98%{filter:none}}
-#broken .hidden-eyes{position:absolute;right:6vw;bottom:8vh;opacity:0;transition:opacity 2s}
-#broken.creepy .hidden-eyes{opacity:.9}
-#broken .skip{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);font-size:11px;color:#bbb;background:none;border:0;padding:4px;cursor:pointer}
 
 /* ---------- STAGE 2: jumpscare ---------- */
 #scare{position:fixed;inset:0;z-index:60;background:#000;display:none;align-items:center;justify-content:center;overflow:hidden}
@@ -50,7 +46,7 @@ a{color:inherit}
 #scare.on .face{animation:lunge .55s cubic-bezier(.2,1.6,.3,1) forwards, shake .08s linear .1s 14}
 @keyframes lunge{0%{transform:scale(.15);opacity:0}30%{opacity:1}100%{transform:scale(1.15);opacity:1}}
 @keyframes shake{0%{translate:0 0}25%{translate:-14px 9px}50%{translate:11px -12px}75%{translate:-8px -6px}100%{translate:0 0}}
-#scare.flash{animation:redflash .1s steps(1) 6}
+#scare.flash{animation:redflash .36s steps(1) 3}
 @keyframes redflash{0%{background:#000}50%{background:var(--blood)}}
 
 /* ---------- STAGE 3: site ---------- */
@@ -146,11 +142,6 @@ footer p{max-width:62ch}
     <code id="errCode">ERR_CONNECTION_TIMED_OUT</code>
     <button id="reload">Reload</button>
   </div>
-  <svg class="hidden-eyes" width="70" height="20" viewBox="0 0 70 20" aria-hidden="true">
-    <ellipse cx="12" cy="10" rx="9" ry="7" fill="#c6ff3d" class="blink"/><ellipse cx="58" cy="10" rx="9" ry="7" fill="#c6ff3d" class="blink"/>
-    <rect x="10.5" y="3" width="3" height="14" rx="1.5"/><rect x="56.5" y="3" width="3" height="14" rx="1.5"/>
-  </svg>
-  <button class="skip" id="skip">skip intro (no scare)</button>
 </div>
 
 <!-- STAGE 2 — jumpscare -->
@@ -262,6 +253,7 @@ footer p{max-width:62ch}
     if(actx) return;
     actx = new (window.AudioContext || window.webkitAudioContext)();
     master = actx.createGain(); master.gain.value = .9; master.connect(actx.destination);
+    GESTURES.forEach(ev=>addEventListener(ev, ()=>actx.resume(), true));
   }
   function noiseBuf(sec){
     const b = actx.createBuffer(1, actx.sampleRate*sec, actx.sampleRate), d = b.getChannelData(0);
@@ -297,10 +289,21 @@ footer p{max-width:62ch}
     lp.connect(g).connect(master);
   }
 
-  /* ---------- stage 1: creepy escalation ---------- */
+  /* ---------- stage 1: a perfectly normal dead page ---------- */
   const broken = $('#broken');
-  setTimeout(()=>{ if(!$('#errCode')) return; broken.classList.add('creepy'); $('#errCode').textContent = 'ERR_CAT_IS_WATCHING'; }, 3200);
-  setTimeout(()=>{ if(!$('#errTitle')) return; $('#errTitle').textContent = 'This site can’t be reached'.split('').map((c,i)=>i%5===2?'̷'+c:c).join(''); }, 5200);
+  const GESTURES = ['pointerdown','touchend','keydown','click'];
+  let fired = false;
+  function trigger(){
+    if(fired) return; fired = true;
+    GESTURES.forEach(ev=>removeEventListener(ev, trigger, true));
+    scare();
+  }
+  // any tap, click or key — not just "Reload" — springs it
+  GESTURES.forEach(ev=>addEventListener(ev, trigger, true));
+  // browsers that already allow sound (media engagement) get it with zero interaction
+  setTimeout(()=>{ audio(); if(actx.state === 'running') trigger(); }, 4000);
+  // nobody gets stuck on the "dead" page: silent scare after 10s, sound unlocks on first tap
+  setTimeout(trigger, 10000);
 
   /* ---------- static canvas ---------- */
   const cv = $('#static'), cx = cv.getContext('2d'); let raf;
@@ -327,14 +330,12 @@ footer p{max-width:62ch}
     // half a second of dead silence & black — the "it really broke" beat
     setTimeout(()=>{
       const s = $('#scare'); s.classList.add('on'); if(!reduced) s.classList.add('flash');
-      staticLoop(); screech();
+      staticLoop(); if(actx.state === 'running') screech();
       if(navigator.vibrate) navigator.vibrate([200,60,300]);
       setTimeout(reveal, 1900);
     }, 650);
   }
-  $('#reload').addEventListener('click', scare);
-  $('#skip').addEventListener('click', reveal);
-  try{ if(sessionStorage.getItem('salemSeen')) reveal(); }catch(e){}
+  try{ if(sessionStorage.getItem('salemSeen')){ fired = true; reveal(); } }catch(e){}
 
   $('#mute').addEventListener('click', e=>{
     muted = !muted; master.gain.value = muted ? 0 : .9;
