@@ -70,12 +70,19 @@ a{color:inherit}
 #scare{position:fixed;inset:0;z-index:60;background:#000;display:none;align-items:center;justify-content:center;overflow:hidden}
 #scare.on{display:flex}
 #scare canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
-#scare .face{position:relative;width:min(140vw,140vh);transform:scale(.2);opacity:0}
-#scare.on .face{animation:lunge .55s cubic-bezier(.2,1.6,.3,1) forwards, shake .08s linear .1s 14}
-@keyframes lunge{0%{transform:scale(.15);opacity:0}30%{opacity:1}100%{transform:scale(1.15);opacity:1}}
-@keyframes shake{0%{translate:0 0}25%{translate:-14px 9px}50%{translate:11px -12px}75%{translate:-8px -6px}100%{translate:0 0}}
-#scare.flash{animation:redflash .36s steps(1) 3}
-@keyframes redflash{0%{background:#000}50%{background:var(--blood)}}
+#scare .face{position:relative;width:min(100vh,165vw);flex:none;opacity:0;transform:scale(.85);
+  filter:drop-shadow(8px 0 0 rgba(255,0,40,.65)) drop-shadow(-8px 0 0 rgba(0,255,220,.5))}
+#scare.on .face{opacity:1;animation:lunge .3s cubic-bezier(.1,.9,.2,1) forwards,shake .06s linear 24,rgbsplit .12s steps(2) 14}
+@keyframes lunge{from{transform:scale(.85)}to{transform:scale(1.12)}}
+@keyframes shake{0%{translate:0 0}25%{translate:-24px 15px}50%{translate:19px -19px}75%{translate:-13px -11px}100%{translate:0 0}}
+@keyframes rgbsplit{0%{filter:drop-shadow(12px 0 0 rgba(255,0,40,.7)) drop-shadow(-12px 0 0 rgba(0,255,220,.55))}50%{filter:drop-shadow(-5px 4px 0 rgba(255,0,40,.7)) drop-shadow(6px -3px 0 rgba(0,255,220,.55))}}
+#scare .d-jaw{transform-origin:50% 62%;transform-box:view-box}
+#scare.on .d-jaw{animation:jaw .24s cubic-bezier(.2,1.8,.4,1) both}
+@keyframes jaw{from{transform:scaleY(.3)}}
+#scare .d-eyes{filter:drop-shadow(0 0 8px #c6ff3d) drop-shadow(0 0 22px #c6ff3d)}
+/* three hits in ~1.1s (red, negative, red): stays within the 3-flashes-per-second limit */
+#scare.flash{animation:hit 1.1s steps(1) 1}
+@keyframes hit{0%{background:var(--blood)}9%{background:#000}36%{filter:invert(1)}45%{filter:none}72%{background:var(--blood)}81%{background:#000}100%{background:#000}}
 
 
 /* ---------- STAGE 3: the site ---------- */
@@ -307,20 +314,43 @@ html.has-cursor #site,html.has-cursor #site a,html.has-cursor #site button{curso
 <!-- STAGE 2 — jumpscare -->
 <div id="scare" aria-hidden="true">
   <canvas id="static"></canvas>
-  <svg class="face" viewBox="0 0 400 300">
+  <svg class="face" viewBox="0 0 400 400">
     <defs>
-      <radialGradient id="iris" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#f4ff9a"/><stop offset=".55" stop-color="#c6ff3d"/><stop offset="1" stop-color="#3d6600"/></radialGradient>
+      <radialGradient id="dIris" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fbffd0"/><stop offset=".35" stop-color="#c6ff3d"/><stop offset=".8" stop-color="#3f6b00"/><stop offset="1" stop-color="#132000"/></radialGradient>
+      <radialGradient id="dSclera" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="#f4f0d8"/><stop offset=".7" stop-color="#d9c79a"/><stop offset="1" stop-color="#7a2a1a"/></radialGradient>
+      <radialGradient id="dMaw" cx="50%" cy="35%" r="70%"><stop offset="0" stop-color="#000"/><stop offset=".55" stop-color="#2a0000"/><stop offset="1" stop-color="#7a0a0a"/></radialGradient>
+      <radialGradient id="dFur" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#1c1c22"/><stop offset="1" stop-color="#020203"/></radialGradient>
     </defs>
-    <path d="M40 300 C 20 180 30 120 60 40 L 120 110 Q 200 90 280 110 L 340 40 C 370 120 380 180 360 300 Z" fill="#000" stroke="#111" stroke-width="2"/>
-    <g class="eye-glow">
-      <path d="M95 160 Q 140 105 185 160 Q 140 200 95 160Z" fill="url(#iris)"/>
-      <path d="M215 160 Q 260 105 305 160 Q 260 200 215 160Z" fill="url(#iris)"/>
+    <!-- bristled head, ears pinned back -->
+    <path d="M200 26 L216 52 L236 30 L246 60 L272 44 L274 76 L300 66 L296 96 L356 52 L344 120 L372 120 L350 150 L384 166 L352 186 L380 214 L346 226 L370 260 L334 264 L352 300 L312 298 L320 340 L282 326 L278 370 L246 344 L232 384 L210 352 L200 392 L190 352 L168 384 L154 344 L122 370 L118 326 L80 340 L88 298 L48 300 L66 264 L30 260 L54 226 L20 214 L48 186 L16 166 L50 150 L28 120 L56 120 L44 52 L104 96 L100 66 L126 76 L128 44 L154 60 L164 30 L184 52 Z" fill="url(#dFur)"/>
+    <!-- snarl wrinkles -->
+    <path d="M168 196 Q 182 186 192 196 M208 196 Q 218 186 232 196 M172 206 Q 186 198 196 206 M204 206 Q 214 198 228 206" stroke="#2c2c34" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- brows -->
+    <path d="M86 120 L 186 158 L 180 168 L 84 136 Z M314 120 L 214 158 L 220 168 L 316 136 Z" fill="#000"/>
+    <!-- eyes: bloodshot, pin-prick pupils -->
+    <g class="d-eyes">
+      <path d="M92 142 L 180 168 Q 150 204 108 190 Q 88 176 92 142 Z" fill="url(#dSclera)"/>
+      <path d="M308 142 L 220 168 Q 250 204 292 190 Q 312 176 308 142 Z" fill="url(#dSclera)"/>
+      <path d="M100 160 L 116 168 L 122 162 M104 180 L 118 176 L 126 182 M172 172 L 160 176 M296 160 L 284 168 L 278 162 M296 180 L 282 176 L 274 182 M228 172 L 240 176" stroke="#b3150c" stroke-width="1.6" fill="none"/>
+      <circle cx="138" cy="174" r="21" fill="url(#dIris)"/>
+      <circle cx="262" cy="174" r="21" fill="url(#dIris)"/>
+      <circle cx="138" cy="174" r="3.2" fill="#000"/>
+      <circle cx="262" cy="174" r="3.2" fill="#000"/>
     </g>
-    <path d="M138 122 Q 132 160 138 196 Q 144 160 138 122Z" fill="#000"/>
-    <path d="M262 122 Q 256 160 262 196 Q 268 160 262 122Z" fill="#000"/>
-    <path d="M110 225 Q 200 300 290 225 Q 200 250 110 225Z" fill="#3a0000"/>
-    <path d="M118 228 L132 262 L146 234 Z M254 234 L268 262 L282 228 Z" fill="#efe9dc"/>
-    <path d="M188 208 L212 208 L200 222Z" fill="#ff2a1f"/>
+    <!-- nose -->
+    <path d="M186 214 L 214 214 L 200 230 Z" fill="#3a0d14"/>
+    <!-- maw -->
+    <g class="d-jaw">
+      <path d="M96 246 Q 200 222 304 246 Q 300 336 200 372 Q 100 336 96 246 Z" fill="url(#dMaw)"/>
+      <!-- tongue -->
+      <path d="M150 340 Q 200 300 250 340 Q 200 366 150 340 Z" fill="#8c1a22"/>
+      <!-- upper teeth -->
+      <path d="M100 248 L 112 270 L 122 250 L 134 276 L 146 247 L 156 300 L 168 245 L 178 272 L 190 244 L 200 266 L 210 244 L 222 272 L 232 245 L 244 300 L 254 247 L 266 276 L 278 250 L 288 270 L 300 248 Z" fill="#eee6cf"/>
+      <!-- lower teeth -->
+      <path d="M116 330 L 126 312 L 136 338 L 148 316 L 158 346 L 170 322 L 182 352 L 192 330 L 200 356 L 208 330 L 218 352 L 230 322 L 242 346 L 252 316 L 264 338 L 274 312 L 284 330 Q 240 366 200 372 Q 160 366 116 330 Z" fill="#ddd3b6"/>
+      <!-- saliva -->
+      <path d="M146 262 Q 148 296 152 318 M244 262 Q 250 290 246 318 M196 270 Q 198 300 194 330" stroke="rgba(230,240,220,.55)" stroke-width="1.4" fill="none"/>
+    </g>
   </svg>
 </div>
 
@@ -557,7 +587,7 @@ html.has-cursor #site,html.has-cursor #site a,html.has-cursor #site button{curso
     // iOS: 'playback' keeps sound on even when the ringer switch is on silent
     try{ if(navigator.audioSession) navigator.audioSession.type = 'playback'; }catch(e){}
     actx = new (window.AudioContext || window.webkitAudioContext)();
-    master = actx.createGain(); master.gain.value = .9; master.connect(actx.destination);
+    master = actx.createGain(); master.gain.value = 1; master.connect(actx.destination);
     actx.resume();
   }
   function noiseBuf(ctx, sec){
@@ -565,26 +595,51 @@ html.has-cursor #site,html.has-cursor #site a,html.has-cursor #site button{curso
     for(let i=0;i<d.length;i++) d[i] = Math.random()*2-1;
     return b;
   }
-  // ctx/out can be the live context or an OfflineAudioContext; t = start time
+  // ctx/out can be the live context or an OfflineAudioContext; t = start time.
+  // Everything runs through drive -> hard compressor -> makeup gain, so it sits right at full scale.
+  const SCREAM_LEN = 1.9;
+  function softClip(k){ const n = 2048, c = new Float32Array(n); for(let i = 0; i < n; i++){ const x = i * 2 / n - 1; c[i] = (1 + k) * x / (1 + k * Math.abs(x)); } return c; }
+  function env(ctx, peak, t, hold, end){
+    const g = ctx.createGain(); g.gain.setValueAtTime(peak, t);
+    g.gain.setValueAtTime(peak, t + hold); g.gain.exponentialRampToValueAtTime(.001, t + end); return g;
+  }
   function screech(ctx, out, t){
-    // white-noise hiss
-    const n = ctx.createBufferSource(); n.buffer = noiseBuf(ctx, 1.6);
-    const bp = ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.setValueAtTime(3000,t); bp.frequency.exponentialRampToValueAtTime(900,t+1.4); bp.Q.value=.8;
-    const ng = ctx.createGain(); ng.gain.setValueAtTime(0,t); ng.gain.linearRampToValueAtTime(.9,t+.02); ng.gain.exponentialRampToValueAtTime(.001,t+1.5);
-    n.connect(bp).connect(ng).connect(out); n.start(t);
-    // cat yowl: detuned saws gliding
-    [0,13,-17,700].forEach((det,i)=>{
-      const o = ctx.createOscillator(); o.type = i===3 ? 'square' : 'sawtooth'; o.detune.value = det;
-      o.frequency.setValueAtTime(420,t); o.frequency.exponentialRampToValueAtTime(1400,t+.18); o.frequency.exponentialRampToValueAtTime(260,t+1.3);
-      const lfo = ctx.createOscillator(), lg = ctx.createGain(); lfo.frequency.value = 23; lg.gain.value = 60; lfo.connect(lg).connect(o.frequency); lfo.start(t); lfo.stop(t+1.5);
-      const g = ctx.createGain(); g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(i===3?.08:.22,t+.03); g.gain.exponentialRampToValueAtTime(.001,t+1.4);
-      o.connect(g).connect(out); o.start(t); o.stop(t+1.5);
+    const D = SCREAM_LEN;
+    const bus = ctx.createGain(), drive = ctx.createWaveShaper(), comp = ctx.createDynamicsCompressor(), mk = ctx.createGain();
+    drive.curve = softClip(40); drive.oversample = '4x';
+    comp.threshold.value = -28; comp.knee.value = 4; comp.ratio.value = 18; comp.attack.value = .001; comp.release.value = .1;
+    mk.gain.value = 1.8;
+    bus.connect(drive).connect(comp).connect(mk).connect(out);
+    // 1. the slam: full-band noise hit with zero attack
+    const n = ctx.createBufferSource(); n.buffer = noiseBuf(ctx, D);
+    const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 300;
+    const ng = env(ctx, 1, t, .05, D); ng.gain.setValueAtTime(1, t); ng.gain.exponentialRampToValueAtTime(.35, t + .3);
+    n.connect(hp).connect(ng).connect(bus); n.start(t); n.stop(t + D);
+    // 2. the screech: detuned saws shooting up, then sliding down with a nasty vibrato
+    [0, 17, -23, 9].forEach((det, i) => {
+      const o = ctx.createOscillator(); o.type = i === 3 ? 'square' : 'sawtooth'; o.detune.value = det;
+      o.frequency.setValueAtTime(900, t); o.frequency.exponentialRampToValueAtTime(2600, t + .12); o.frequency.exponentialRampToValueAtTime(620, t + D * .9);
+      const lfo = ctx.createOscillator(), lg = ctx.createGain(); lfo.frequency.value = 27; lg.gain.value = 140;
+      lfo.connect(lg).connect(o.frequency); lfo.start(t); lfo.stop(t + D);
+      const g = env(ctx, i === 3 ? .18 : .4, t, .35, D * .95);
+      o.connect(g).connect(bus); o.start(t); o.stop(t + D);
     });
-    // sub thump
-    const k = ctx.createOscillator(), kg = ctx.createGain();
-    k.frequency.setValueAtTime(120,t); k.frequency.exponentialRampToValueAtTime(30,t+.4);
-    kg.gain.setValueAtTime(1,t); kg.gain.exponentialRampToValueAtTime(.001,t+.5);
-    k.connect(kg).connect(out); k.start(t); k.stop(t+.5);
+    // 3. the roar underneath
+    [[95, 44, 'sawtooth'], [63, 36, 'square']].forEach(([a, b, type]) => {
+      const o = ctx.createOscillator(); o.type = type;
+      o.frequency.setValueAtTime(a, t); o.frequency.exponentialRampToValueAtTime(b, t + D);
+      const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 900;
+      const g = env(ctx, .7, t, .5, D); o.connect(lp).connect(g).connect(bus); o.start(t); o.stop(t + D);
+    });
+    // 4. a thin shriek on top, two sines beating against each other
+    [3300, 3370].forEach(f => {
+      const o = ctx.createOscillator(); o.type = 'sine';
+      o.frequency.setValueAtTime(f, t); o.frequency.exponentialRampToValueAtTime(f * .42, t + D);
+      const g = env(ctx, .22, t, .2, D * .8); o.connect(g).connect(bus); o.start(t); o.stop(t + D);
+    });
+    // 5. sub punch
+    const k = ctx.createOscillator(); k.frequency.setValueAtTime(150, t); k.frequency.exponentialRampToValueAtTime(30, t + .45);
+    const kg = env(ctx, 1.4, t, 0, .55); k.connect(kg).connect(bus); k.start(t); k.stop(t + .6);
   }
   // Pre-render the scream into a WAV for an <audio> element: plain media playback
   // is the most reliable path on phones (incl. iOS silent switch). The black
@@ -600,13 +655,15 @@ html.has-cursor #site,html.has-cursor #site a,html.has-cursor #site button{curso
     v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,1,true);
     v.setUint32(24,buf.sampleRate,true); v.setUint32(28,buf.sampleRate*2,true); v.setUint16(32,2,true); v.setUint16(34,16,true);
     str(36,'data'); v.setUint32(40, n*2, true);
-    for(let k=0;k<n;k++) v.setInt16(44+k*2, Math.max(-1, Math.min(1, d[k]))*32767, true);
+    let peak = 0; for(let k=0;k<n;k++) peak = Math.max(peak, Math.abs(d[k]));
+    const norm = peak ? .98 / peak : 1;
+    for(let k=0;k<n;k++) v.setInt16(44+k*2, Math.max(-1, Math.min(1, d[k]*norm))*32767, true);
     return new Blob([v], {type:'audio/wav'});
   }
   (async () => {
     try{
-      const sr = 44100, oc = new OfflineAudioContext(1, Math.ceil(sr*(SCARE_DELAY+1.6)), sr);
-      const g = oc.createGain(); g.gain.value = .9; g.connect(oc.destination);
+      const sr = 44100, oc = new OfflineAudioContext(1, Math.ceil(sr*(SCARE_DELAY+SCREAM_LEN+.1)), sr);
+      const g = oc.createGain(); g.gain.value = 1; g.connect(oc.destination);
       screech(oc, g, SCARE_DELAY);
       scream.src = URL.createObjectURL(wav(await oc.startRendering()));
       scream.load(); screamReady = true;
@@ -708,8 +765,8 @@ html.has-cursor #site,html.has-cursor #site a,html.has-cursor #site button{curso
     setTimeout(()=>{
       const s = $('#scare'); s.classList.add('on'); if(!reduced) s.classList.add('flash');
       staticLoop();
-      try{ navigator.vibrate && navigator.vibrate([200,60,300]); }catch(e){}
-      setTimeout(reveal, 1900);
+      try{ navigator.vibrate && navigator.vibrate([400,60,400,60,700]); }catch(e){}
+      setTimeout(reveal, 2100);
     }, SCARE_DELAY*1000);
   }
 
