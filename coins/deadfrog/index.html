@@ -80,7 +80,8 @@ body.locked #nav{opacity:0;pointer-events:none}
 .hero.is-back .crack{stroke-dashoffset:0}
 .mound{position:absolute;left:-28%;right:-28%;bottom:-2%;height:30%;z-index:4}
 .mound svg{width:100%;height:100%;display:block}
-.ground{position:absolute;left:0;right:0;bottom:0;height:12svh;z-index:5;background:linear-gradient(transparent,var(--soil) 70%)}
+.ground{position:absolute;left:0;right:0;bottom:0;height:calc(9svh + 36px);z-index:5;
+  background:linear-gradient(transparent 55%,rgba(11,14,10,.85)),radial-gradient(150% 100% at 50% 100%,#2b2218 0 64%,#231b13 66%,transparent 67.5%)}
 #dirt{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:7}
 .glow{position:absolute;left:0;right:0;margin-inline:auto;bottom:4svh;width:min(96vw,980px);height:46svh;border-radius:50%;z-index:2;pointer-events:none;opacity:.35;
   background:radial-gradient(ellipse at center,rgba(134,210,74,.34),rgba(134,210,74,.08) 45%,transparent 68%)}
@@ -89,6 +90,7 @@ body.locked #nav{opacity:0;pointer-events:none}
 .flash{position:absolute;inset:0;z-index:9;background:var(--slime);opacity:0;pointer-events:none;mix-blend-mode:screen}
 @media (max-width:640px){
   .cluster{height:min(48svh,70vw);bottom:15svh}
+  .ground{height:calc(15svh + 30px)}
   .back{white-space:normal;font-size:clamp(58px,19vw,120px);line-height:.82}
   .tree{opacity:.5}
 }
@@ -193,8 +195,15 @@ html.has-cursor .cur-ring{display:grid}
   transition:width .45s cubic-bezier(.16,1,.3,1),height .45s cubic-bezier(.16,1,.3,1),margin .45s cubic-bezier(.16,1,.3,1),background .4s,border-color .4s}
 .cur-ring.big{width:88px;height:88px;margin:-44px 0 0 -44px;background:var(--fomo);border-color:var(--fomo)}
 html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor select{cursor:none}
-#mute{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));right:16px;z-index:41;font-family:var(--mono);font-size:10px;letter-spacing:.16em;background:rgba(11,14,10,.7);backdrop-filter:blur(6px);border:1px solid var(--line);color:var(--dim);padding:9px 12px;cursor:pointer}
-@media (max-width:640px){#mute{bottom:auto;right:auto;left:50%;translate:-50% 0;top:calc(22px + env(safe-area-inset-top,0px))}}
+.snd{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 12px;background:rgba(11,14,10,.55);border:2px solid var(--line);color:var(--dim);
+  font-family:var(--mono);font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:color .3s,border-color .3s}
+.snd svg{width:20px;height:20px}
+.snd .w1,.snd .w2{display:none}
+.snd.on{color:var(--slime);border-color:rgba(134,210,74,.5)}
+.snd.on .w1,.snd.on .w2{display:inline}
+.snd.on .x{display:none}
+.snd:hover{color:var(--fomo);border-color:var(--fomo)}
+@media (max-width:640px){.snd span{display:none}.snd{width:44px;justify-content:center;padding:0}}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
@@ -209,6 +218,10 @@ html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor se
   <div class="links">
     <a href="#deaths">Deaths</a>
     <a href="#tombstone">Tombstone</a>
+    <button id="mute" class="snd" type="button" aria-label="Turn sound on" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path class="w1" d="M16 9.5a3.5 3.5 0 0 1 0 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="w2" d="M18.5 7a7 7 0 0 1 0 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="x" d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>Sound</span>
+    </button>
     <a href="#buy" class="btn solid">Buy $DEAD</a>
   </div>
 </nav>
@@ -391,7 +404,6 @@ html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor se
   </footer>
 </main>
 
-<button id="mute" type="button">TAP FOR SOUND</button>
 <div class="progress" aria-hidden="true"><i id="prog"></i></div>
 <div class="cur-ring" id="ring"></div><div class="cur-dot" id="dot"></div>
 
@@ -456,9 +468,10 @@ html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor se
     [49, 49.3, 73.5].forEach(f => { const o = actx.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f; o.connect(lp); o.start(); });
     lp.connect(g).connect(master);
   }
-  $('#mute').addEventListener('click', e => {
-    if(!actx || actx.state !== 'running' || !droneOn){ muted = false; enableSound(); return; }
-    muted = !muted; master.gain.value = muted ? 0 : .8; e.currentTarget.textContent = muted ? 'SOUND OFF' : 'SOUND ON';
+  const showSound = () => { const on = !!(actx && actx.state === 'running' && !muted); const b = $('#mute'); b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); b.setAttribute('aria-label', on ? 'Turn sound off' : 'Turn sound on'); };
+  $('#mute').addEventListener('click', () => {
+    if(!actx || actx.state !== 'running' || !droneOn || performance.now() - enabledAt < 600){ muted = false; enableSound(); setTimeout(showSound, 60); return; }
+    muted = !muted; master.gain.value = muted ? 0 : .8; showSound();
   });
 
   /* ================= fog + fireflies ================= */
@@ -569,10 +582,12 @@ html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor se
       .add(resurrect, 2.4);
   }
   // sound: browsers only allow it after a tap, click or key press
+  let enabledAt = 0;
   function enableSound(){
+    enabledAt = performance.now();
     try{ audio(); actx.resume(); }catch(e){ return; }
     if(state === 'back' && !droneOn){ drone(); droneOn = true; try{ groan(actx.currentTime + .05); }catch(e){} }
-    $('#mute').textContent = muted ? 'SOUND OFF' : 'SOUND ON';
+    setTimeout(showSound, 60);
   }
   let droneOn = false;
   ['pointerdown', 'keydown', 'touchend'].forEach(ev => addEventListener(ev, enableSound, { once: true, capture: true }));
@@ -688,7 +703,7 @@ html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor se
 
   function initSite(){
     if(siteReady) return; siteReady = true;
-    if(soundOK() && !droneOn){ drone(); droneOn = true; $('#mute').textContent = 'SOUND ON'; }
+    if(soundOK() && !droneOn){ drone(); droneOn = true; } showSound();
     if(!hasG) return;
     G.registerPlugin(ScrollTrigger, SplitText);
     heroLife();
@@ -707,8 +722,8 @@ html.has-cursor body,html.has-cursor a,html.has-cursor button,html.has-cursor se
     // leaving the hero: the frog sinks back into his grave, the sky drops away
     G.timeline({ scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 1 } })
       .to('.headline', { yPercent: -70, opacity: 0, ease: 'none' }, 0)
-      .to('.hole', { yPercent: 40, ease: 'power1.in' }, 0)
-      .to('#tomb', { yPercent: 10, rotation: 8, ease: 'none' }, 0)
+      .to('#frog', { yPercent: 70, ease: 'power1.in' }, 0)
+      .to('#tomb', { yPercent: 4, ease: 'none' }, 0)
       .to('.tree', { yPercent: 14, ease: 'none' }, 0)
       .to('.far', { yPercent: 20, ease: 'none' }, 0)
       .to('#cta', { opacity: 0, y: 40, ease: 'none' }, 0);
