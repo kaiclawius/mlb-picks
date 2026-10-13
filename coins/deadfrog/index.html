@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DEADFROG</title>
+<meta name="description" content="DEADFROG ($DEAD): the coin that refuses to die. Fair launch on pump.fun.">
+<meta property="og:title" content="Here lies DEADFROG">
+<meta property="og:description" content="Press F to pay respects.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Wet+Paint&family=Anton&family=Archivo:ital,wght@0,400;0,500;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: a night graveyard you dig up yourself; the hero is the grave, the page below is the wake. */
+:root{
+  color-scheme:dark;
+  --soil:#0b0e0a; --night:#0e1411; --bone:#efe6cf; --dim:#8f8b78; --slime:#86d24a; --fomo:#eab33a; --rot:#b5482f; --stone:#6b7068; --line:rgba(239,230,207,.12);
+  --drip:'Rubik Wet Paint','Anton',Impact,sans-serif;
+  --heavy:'Anton',Impact,'Arial Narrow',sans-serif;
+  --body:'Archivo',system-ui,-apple-system,sans-serif;
+  --mono:'Space Mono',ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--soil);color:var(--bone);font-family:var(--body);overflow-x:clip}
+html.lenis,html.lenis body{height:auto}
+body.locked{overflow:hidden;height:100vh;height:100svh}
+a{color:inherit}
+::selection{background:var(--fomo);color:#000}
+:focus-visible{outline:2px solid var(--fomo);outline-offset:4px}
+img{max-width:100%}
+
+.grain{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;z-index:90;opacity:.08;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 1s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-5%,3%)}40%{transform:translate(4%,-6%)}60%{transform:translate(-3%,5%)}80%{transform:translate(6%,2%)}100%{transform:translate(0,0)}}
+
+/* ---------- nav ---------- */
+#nav{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:center;
+  padding:calc(16px + env(safe-area-inset-top,0px)) clamp(16px,4vw,48px) 16px;transition:transform .7s cubic-bezier(.16,1,.3,1),opacity .6s}
+body.locked #nav{opacity:0;pointer-events:none}
+#nav.hide{transform:translateY(-110%)}
+.logo{font-family:var(--heavy);font-size:26px;letter-spacing:.02em;text-decoration:none}
+.logo span{color:var(--slime)}
+.links{display:flex;gap:clamp(14px,3vw,30px);align-items:center;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.links a{text-decoration:none}
+.links a:not(.btn):hover{color:var(--fomo)}
+@media (max-width:640px){.links a:not(.btn){display:none}}
+
+.btn{position:relative;display:inline-flex;align-items:center;gap:10px;overflow:hidden;isolation:isolate;font-family:var(--mono);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  padding:15px 22px;border:2px solid var(--bone);background:none;color:var(--bone);cursor:pointer;text-decoration:none;transition:color .4s,border-color .4s,transform .5s cubic-bezier(.16,1,.3,1)}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--fomo);transform:translateY(101%);transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.btn:hover,.btn:focus-visible{color:#141008;border-color:var(--fomo)}
+.btn:hover::before,.btn:focus-visible::before{transform:none}
+.btn.solid{background:var(--fomo);border-color:var(--fomo);color:#141008}
+.btn.solid::before{background:var(--slime)}
+.btn.solid:hover{border-color:var(--slime)}
+
+/* ---------- hero: the grave ---------- */
+.hero{position:relative;height:100vh;height:100svh;min-height:600px;overflow:hidden;
+  background:radial-gradient(ellipse 80% 55% at 50% 100%,rgba(134,210,74,.16),transparent 60%),linear-gradient(#060908 0%,#0d1612 55%,#12201a 100%)}
+#fog{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.far{position:absolute;left:0;right:0;bottom:16svh;width:100%;height:30svh;pointer-events:none}
+.tree{position:absolute;left:max(-40px,2vw);bottom:14svh;height:62svh;pointer-events:none;opacity:.9}
+.headline{position:absolute;left:0;right:0;top:calc(76px + env(safe-area-inset-top,0px));text-align:center;z-index:6;padding-inline:16px;pointer-events:none}
+.over{font-family:var(--mono);font-size:clamp(13px,1.5vw,16px);letter-spacing:.4em;text-transform:lowercase;color:var(--dim)}
+.back{font-family:var(--drip);font-weight:400;font-size:clamp(58px,11.5vw,190px);line-height:.86;color:var(--slime);text-shadow:0 6px 0 #1b2a12,0 0 60px rgba(134,210,74,.35);display:none;white-space:nowrap}
+.sub{margin-top:14px;font-family:var(--mono);font-size:clamp(11px,1.3vw,14px);letter-spacing:.24em;text-transform:uppercase;color:var(--bone);display:none}
+.hero.is-back .over{display:none}
+.hero.is-back .back,.hero.is-back .sub{display:block}
+.cluster{position:absolute;left:53%;bottom:9svh;translate:-50% 0;height:min(56svh,540px);aspect-ratio:1.3;z-index:3}
+.cluster-in{position:absolute;inset:0}
+.hole{position:absolute;left:0;bottom:4%;width:41%;height:120%;overflow:hidden}
+.frog{position:absolute;left:0;bottom:0;height:70%;width:auto;max-width:none;filter:drop-shadow(0 0 24px rgba(134,210,74,.25))}
+.hero:not(.is-back) .frog{visibility:hidden}
+.tomb{position:absolute;left:35%;bottom:6%;width:50%;transform-origin:10% 100%;z-index:2;filter:drop-shadow(0 20px 30px rgba(0,0,0,.6))}
+.tomb svg{width:100%;height:auto;display:block;overflow:visible}
+.crack{stroke-dasharray:420;stroke-dashoffset:420}
+.hero.is-back .crack{stroke-dashoffset:0}
+.mound{position:absolute;left:-28%;right:-28%;bottom:-2%;height:30%;z-index:4}
+.mound svg{width:100%;height:100%;display:block}
+.ground{position:absolute;left:0;right:0;bottom:0;height:12svh;z-index:5;background:linear-gradient(transparent,var(--soil) 70%)}
+#dirt{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:7}
+.press{position:absolute;left:0;right:0;bottom:calc(30px + env(safe-area-inset-bottom,0px));z-index:8;display:flex;flex-direction:column;align-items:center;gap:14px}
+.press p{font-family:var(--mono);font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
+#fkey{width:74px;height:74px;font-family:var(--heavy);font-size:34px;color:var(--bone);cursor:pointer;
+  background:linear-gradient(#2b302a,#171a16);border:2px solid #4d5249;border-bottom-width:7px;border-radius:12px;box-shadow:0 0 0 0 rgba(234,179,58,.5);
+  animation:pulse 2.2s ease-out infinite;transition:transform .1s,border-bottom-width .1s}
+#fkey:hover{color:var(--fomo);border-color:var(--fomo)}
+#fkey:active{transform:translateY(4px);border-bottom-width:3px}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(234,179,58,.45)}70%{box-shadow:0 0 0 22px rgba(234,179,58,0)}100%{box-shadow:0 0 0 0 rgba(234,179,58,0)}}
+.hero.is-back .press{display:none}
+.cta{position:absolute;left:0;right:0;bottom:calc(26px + env(safe-area-inset-bottom,0px));z-index:8;display:none;justify-content:center;gap:10px;flex-wrap:wrap;padding-inline:16px}
+.hero.is-back .cta{display:flex}
+.flash{position:absolute;inset:0;z-index:9;background:var(--slime);opacity:0;pointer-events:none;mix-blend-mode:screen}
+@media (max-width:640px){
+  .cluster{height:min(48svh,70vw);bottom:15svh}
+  .back{white-space:normal;font-size:clamp(58px,19vw,120px);line-height:.82}
+  .tree{opacity:.5}
+}
+
+/* ---------- sections ---------- */
+section{position:relative;padding-block:clamp(100px,14vw,200px);padding-inline:clamp(16px,6vw,96px)}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--fomo);display:flex;gap:14px;align-items:center}
+.kicker::before{content:"";width:34px;height:2px;background:currentColor}
+.h2{font-family:var(--heavy);font-weight:400;font-size:clamp(52px,9vw,150px);line-height:.9;letter-spacing:.005em;text-transform:uppercase;margin-top:26px;text-wrap:balance}
+.h2 em{font-style:normal;font-family:var(--drip);color:var(--slime);text-transform:none;letter-spacing:0}
+.sw-mask{padding-bottom:.1em;margin-bottom:-.1em}
+.lede{color:var(--dim);font-size:clamp(16px,1.3vw,19px);line-height:1.6;max-width:52ch;margin-top:26px}
+
+/* deaths ledger */
+.tally{display:flex;gap:clamp(24px,5vw,80px);flex-wrap:wrap;margin-top:44px;font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.tally b{display:block;font-family:var(--heavy);font-weight:400;font-size:clamp(54px,7vw,100px);color:var(--bone);letter-spacing:0;line-height:1}
+.tally .zero b{color:var(--slime)}
+.deaths{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:18px;margin-top:clamp(48px,7vw,90px)}
+.cert{position:relative;background:linear-gradient(#efe6cf,#ddd1b2);color:#1d1a12;padding:28px 26px 30px;min-height:230px;display:flex;flex-direction:column;gap:12px;overflow:hidden;
+  box-shadow:0 18px 40px rgba(0,0,0,.45);transform:rotate(var(--r,0deg))}
+.cert::after{content:"";position:absolute;inset:8px;border:1px solid rgba(29,26,18,.25);pointer-events:none}
+.cert .no{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#6d6650}
+.cert h3{font-family:var(--heavy);font-weight:400;font-size:28px;line-height:1;text-transform:uppercase}
+.cert p{font-size:15px;line-height:1.5;color:#3c3727}
+.cert .cause{font-family:var(--mono);font-size:12px;color:#6d6650}
+.stamp{position:absolute;right:14px;bottom:16px;font-family:var(--heavy);font-size:24px;letter-spacing:.06em;color:#2f7d1c;border:3px solid #2f7d1c;padding:4px 10px;transform:rotate(-12deg);opacity:.85;mix-blend-mode:multiply}
+
+/* tombstone generator */
+.gen{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(36px,6vw,100px);align-items:start;margin-top:clamp(48px,7vw,90px)}
+.form{display:flex;flex-direction:column;gap:22px}
+.field{display:flex;flex-direction:column;gap:8px}
+.field label{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+.field input,.field select{font-family:var(--heavy);font-size:clamp(24px,2.4vw,34px);text-transform:uppercase;color:var(--bone);background:transparent;border:0;border-bottom:2px solid rgba(239,230,207,.22);padding:6px 0 10px;outline:none;border-radius:0;width:100%;transition:border-color .3s}
+.field select{font-family:var(--body);font-size:18px;text-transform:none;appearance:none;cursor:pointer;background:linear-gradient(45deg,transparent 50%,var(--dim) 50%) right 6px center/8px 8px no-repeat}
+.field select option{background:#151a15;color:var(--bone)}
+.field input:focus,.field select:focus{border-color:var(--fomo)}
+.field input::placeholder{color:rgba(239,230,207,.22)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.gen .actions{display:flex;gap:10px;flex-wrap:wrap}
+.canvas-wrap{position:relative;border:2px solid var(--line);background:#0a0d0a}
+#tombCanvas{display:block;width:100%;height:auto;aspect-ratio:1}
+.note{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.06em;line-height:1.6}
+@media (max-width:860px){.gen{grid-template-columns:1fr}.gen .preview{order:-1}}
+
+/* tokenomics + buy */
+.tok{display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--line);border-left:2px solid var(--line);margin-top:clamp(48px,7vw,90px)}
+.tok div{padding:clamp(26px,3.5vw,48px) clamp(18px,2.4vw,32px);border-right:2px solid var(--line);border-bottom:2px solid var(--line);min-width:0}
+.tok b{display:block;font-family:var(--heavy);font-weight:400;font-size:clamp(46px,6vw,96px);line-height:.95;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.tok span{display:block;margin-top:14px;font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.tok .wide{grid-column:1/-1}
+@media (max-width:860px){.tok{grid-template-columns:1fr 1fr}}
+.buy{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(36px,6vw,110px);align-items:start}
+.buy .left{position:sticky;top:110px;display:flex;flex-direction:column;gap:26px}
+.ca{display:flex;flex-direction:column;gap:12px}
+.ca code{font-family:var(--mono);font-size:14px;padding:16px 18px;border:2px dashed rgba(239,230,207,.25);word-break:break-all;user-select:all}
+.ca .r{display:flex;gap:10px;flex-wrap:wrap}
+.steps{list-style:none}
+.steps li{display:grid;grid-template-columns:64px 1fr;gap:14px;padding:32px 0;border-bottom:2px solid var(--line);align-items:baseline}
+.steps .n{font-family:var(--heavy);font-size:30px;color:var(--fomo)}
+.steps h4{font-family:var(--heavy);font-weight:400;font-size:clamp(26px,2.6vw,38px);text-transform:uppercase;line-height:1}
+.steps p{color:var(--dim);margin-top:10px;line-height:1.6;max-width:46ch}
+@media (max-width:860px){.buy{grid-template-columns:1fr}.buy .left{position:static}}
+
+/* outro marquee */
+.outro{padding-inline:0;overflow:hidden}
+.mq{white-space:nowrap;font-family:var(--heavy);font-size:clamp(70px,13vw,220px);line-height:1;text-transform:uppercase;will-change:transform}
+.mq span{padding-right:.3em}
+.mq .g{font-family:var(--drip);color:var(--slime);text-transform:none}
+.mq.r2{color:transparent;-webkit-text-stroke:2px rgba(239,230,207,.35)}
+.outro .cta2{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:clamp(50px,7vw,90px);padding-inline:16px}
+
+footer{padding-block:48px calc(40px + env(safe-area-inset-bottom,0px));padding-inline:clamp(16px,6vw,96px);border-top:2px solid var(--line);display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;color:var(--dim);font-size:12px;line-height:1.7;font-family:var(--mono)}
+footer p{max-width:70ch}
+
+#mute{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));right:16px;z-index:41;font-family:var(--mono);font-size:10px;letter-spacing:.16em;background:rgba(11,14,10,.7);backdrop-filter:blur(6px);border:1px solid var(--line);color:var(--dim);padding:9px 12px;cursor:pointer}
+@media (max-width:640px){#mute{bottom:auto;right:auto;left:50%;translate:-50% 0;top:calc(22px + env(safe-area-inset-top,0px))}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body class="locked">
+<div class="grain"></div>
+
+<nav id="nav">
+  <a class="logo" href="#top">DEAD<span>FROG</span></a>
+  <div class="links">
+    <a href="#deaths">Deaths</a>
+    <a href="#tombstone">Tombstone</a>
+    <a href="#buy" class="btn solid">Buy $DEAD</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <canvas id="fog" aria-hidden="true"></canvas>
+  <svg class="far" viewBox="0 0 1440 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <path fill="#0a120e" d="M0 300 L0 210 C 200 180 380 230 560 205 C 760 178 960 226 1160 200 C 1280 186 1380 196 1440 190 L1440 300Z"/>
+    <g fill="#101a15">
+      <path d="M140 220 v-40 q0 -22 20 -22 q20 0 20 22 v40z"/><path d="M300 214 v-26 h-10 v-10 h10 v-12 h10 v12 h10 v10 h-10 v26z"/>
+      <path d="M470 212 v-34 q0 -18 16 -18 q16 0 16 18 v34z"/><path d="M880 214 v-48 q0 -26 24 -26 q24 0 24 26 v48z"/>
+      <path d="M1040 208 v-28 h-12 v-12 h12 v-14 h12 v14 h12 v12 h-12 v28z"/><path d="M1240 204 v-36 q0 -20 18 -20 q18 0 18 20 v36z"/>
+    </g>
+  </svg>
+  <svg class="tree" viewBox="0 0 300 500" aria-hidden="true"><path fill="#070c09" d="M140 500 C 150 420 146 360 136 300 C 110 280 70 270 30 240 C 70 255 100 262 128 270 C 120 230 100 200 70 170 C 104 190 124 214 136 246 C 140 200 132 150 110 100 C 140 140 152 190 150 250 C 166 210 196 180 240 160 C 206 190 178 222 164 270 C 196 262 230 250 270 226 C 236 258 200 280 160 300 C 154 360 160 430 176 500 Z"/></svg>
+
+  <div class="headline">
+    <p class="over" id="over">it’s so over.</p>
+    <h1 class="back" id="backTitle" aria-label="We're so back">WE’RE SO BACK</h1>
+    <p class="sub" id="sub">DEADFROG · the coin that refuses to die · $DEAD</p>
+  </div>
+
+  <div class="cluster"><div class="cluster-in" id="cluster">
+    <div class="hole"><img class="frog" id="frog" src="img/frog.png" alt="DEADFROG, a zombie frog in a torn FOMO shirt, climbing out of his grave"></div>
+    <div class="tomb" id="tomb">
+      <svg viewBox="0 0 300 400" aria-label="Tombstone: R.I.P. DEADFROG, 2024 to 2024, it's so over">
+        <defs>
+          <linearGradient id="stoneG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b9087"/><stop offset=".55" stop-color="#62675f"/><stop offset="1" stop-color="#3f433c"/></linearGradient>
+          <linearGradient id="stoneSide" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2c2f2a"/><stop offset="1" stop-color="#1c1e1a"/></linearGradient>
+        </defs>
+        <path d="M268 396 L268 140 Q268 34 158 26 L174 30 Q284 42 284 146 L284 390 Z" fill="url(#stoneSide)"/>
+        <path d="M16 400 L16 142 Q16 26 142 26 Q268 26 268 142 L268 400 Z" fill="url(#stoneG)"/>
+        <path d="M30 392 L30 146 Q30 42 142 42 Q254 42 254 146 L254 392" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="3"/>
+        <ellipse cx="54" cy="372" rx="44" ry="20" fill="#3d5a2a" opacity=".85"/><ellipse cx="236" cy="384" rx="36" ry="14" fill="#3d5a2a" opacity=".7"/>
+        <ellipse cx="200" cy="60" rx="26" ry="9" fill="#4a6b31" opacity=".6"/>
+        <g font-family="Anton, Impact, sans-serif" text-anchor="middle">
+          <text x="142" y="120" font-size="44" fill="#9ea398" opacity=".5">R.I.P.</text><text x="142" y="118" font-size="44" fill="#2a2d28">R.I.P.</text>
+          <text x="142" y="186" font-size="40" fill="#9ea398" opacity=".5">DEADFROG</text><text x="142" y="184" font-size="40" fill="#2a2d28">DEADFROG</text>
+          <text x="142" y="230" font-size="22" fill="#2a2d28" font-family="Space Mono, monospace">2024 – 2024</text>
+          <text x="142" y="290" font-size="20" fill="#2a2d28" font-family="Archivo, sans-serif" font-style="italic">“it’s so over”</text>
+        </g>
+        <path class="crack" d="M150 28 L138 70 L156 96 L132 150 L150 178 L126 236 L146 262 L120 330 L134 400" fill="none" stroke="#1a1c18" stroke-width="3.5" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="mound" aria-hidden="true">
+      <svg viewBox="0 0 600 160" preserveAspectRatio="none">
+        <path d="M0 160 C 90 120 150 52 230 40 C 290 32 330 30 380 38 C 460 50 520 120 600 160 Z" fill="#1f1912"/>
+        <path d="M30 160 C 120 120 190 76 280 70 C 370 64 440 100 570 160 Z" fill="#2b2218"/>
+        <g fill="#3a2e20"><circle cx="200" cy="56" r="6"/><circle cx="262" cy="44" r="4"/><circle cx="330" cy="40" r="7"/><circle cx="398" cy="50" r="5"/><circle cx="452" cy="72" r="4"/></g>
+        <g fill="#2f4a22"><path d="M110 128 l6 -18 l4 18z M150 100 l5 -16 l4 16z M470 104 l6 -18 l4 18z M520 132 l5 -14 l4 14z"/></g>
+      </svg>
+    </div>
+  </div></div>
+  <div class="ground" aria-hidden="true"></div>
+  <canvas id="dirt" aria-hidden="true"></canvas>
+
+  <div class="press" id="press">
+    <p>Press F to pay respects</p>
+    <button id="fkey" type="button" aria-label="Press F to pay respects">F</button>
+  </div>
+  <div class="cta" id="cta">
+    <a class="btn solid" href="#buy">Buy $DEAD</a>
+    <a class="btn" href="#tombstone">Make a tombstone</a>
+  </div>
+  <div class="flash" id="flash"></div>
+</header>
+
+<main id="site">
+  <section id="deaths">
+    <p class="kicker" data-reveal>Medical history</p>
+    <h2 class="h2 split">Declared dead. <em>Again.</em></h2>
+    <p class="lede" data-reveal>Every cycle someone writes the obituary. Every cycle the frog climbs back out, a little greener and a lot smellier.</p>
+    <div class="tally" data-reveal>
+      <div>Times declared dead<b data-count="6">6</b></div>
+      <div class="zero">Times stayed dead<b>0</b></div>
+    </div>
+    <ul class="deaths">
+      <li class="cert" style="--r:-1.2deg"><span class="no">Certificate No. 001</span><h3>Dev went to sleep</h3><p>Nine hours without a tweet. The group chat held a funeral.</p><span class="cause">Back: the dev woke up.</span><span class="stamp">RESURRECTED</span></li>
+      <li class="cert" style="--r:.8deg"><span class="no">Certificate No. 002</span><h3>“It’s over”</h3><p>Somebody typed it in the chat. Two people agreed. Panic followed.</p><span class="cause">Back: somebody typed “we’re so back”.</span><span class="stamp">RESURRECTED</span></li>
+      <li class="cert" style="--r:-.5deg"><span class="no">Certificate No. 003</span><h3>Sideways chart</h3><p>Twenty minutes of a flat line. Doctors called it.</p><span class="cause">Back: it went sideways the other way.</span><span class="stamp">RESURRECTED</span></li>
+      <li class="cert" style="--r:1.4deg"><span class="no">Certificate No. 004</span><h3>Mom asked</h3><p>“What is a memecoin?” at Sunday dinner. Nobody could answer.</p><span class="cause">Back: she bought some.</span><span class="stamp">RESURRECTED</span></li>
+      <li class="cert" style="--r:-1deg"><span class="no">Certificate No. 005</span><h3>Bear market</h3><p>Frogs hibernate in winter. Everybody assumed the worst.</p><span class="cause">Back: he was only napping.</span><span class="stamp">RESURRECTED</span></li>
+      <li class="cert" style="--r:.6deg"><span class="no">Certificate No. 006</span><h3>The FUD thread</h3><p>A 47-part thread explained why the frog was finished.</p><span class="cause">Back: nobody read past part 3.</span><span class="stamp">RESURRECTED</span></li>
+    </ul>
+  </section>
+
+  <section id="tombstone">
+    <p class="kicker" data-reveal>Tombstone generator</p>
+    <h2 class="h2 split">Bury your <em>worst trade</em></h2>
+    <p class="lede" data-reveal>Every bag deserves a proper funeral. Engrave it, save it, post it. Maybe it comes back too.</p>
+    <div class="gen">
+      <form class="form" id="genForm" novalidate data-reveal>
+        <div class="field"><label for="gWhat">Here lies</label><input id="gWhat" maxlength="28" autocomplete="off" placeholder="My $LUNA bag" value="My $LUNA bag"></div>
+        <div class="row2">
+          <div class="field"><label for="gBorn">Bought</label><input id="gBorn" maxlength="10" autocomplete="off" placeholder="2022" value="2022"></div>
+          <div class="field"><label for="gDied">Died</label><input id="gDied" maxlength="10" autocomplete="off" placeholder="2022" value="2022"></div>
+        </div>
+        <div class="field"><label for="gEpi">Last words</label>
+          <select id="gEpi">
+            <option>It was a 100x, I swear</option>
+            <option>Bought the top. Held the bottom.</option>
+            <option>Diamond hands, paper brain</option>
+            <option>Should have sold</option>
+            <option>Gone but not forgotten (it is forgotten)</option>
+            <option>Rugged in its prime</option>
+            <option>Zoomed out. Still dead.</option>
+            <option>Not financial advice. Clearly.</option>
+            <option value="custom">Write my own…</option>
+          </select>
+        </div>
+        <div class="field" id="customWrap" hidden><label for="gCustom">Your last words</label><input id="gCustom" maxlength="48" autocomplete="off" placeholder="wen moon"></div>
+        <div class="actions">
+          <button class="btn" type="button" id="gRandom">Random</button>
+          <button class="btn solid" type="button" id="gSave">Save image</button>
+          <a class="btn" id="gX" href="#" target="_blank" rel="noopener">Post on X</a>
+        </div>
+        <p class="note">Square 1080×1080 image, made in your browser. Nothing is uploaded.</p>
+      </form>
+      <div class="preview" data-reveal><div class="canvas-wrap"><canvas id="tombCanvas" width="1080" height="1080" role="img" aria-label="Preview of your tombstone"></canvas></div></div>
+    </div>
+  </section>
+
+  <section id="tokenomics">
+    <p class="kicker" data-reveal>Tokenomics</p>
+    <h2 class="h2 split">Six feet under. <em>Zero tax.</em></h2>
+    <div class="tok">
+      <div class="wide" data-reveal><b data-count="1000000000">1,000,000,000</b><span>Total supply · $DEAD</span></div>
+      <div data-reveal><b>0%</b><span>Buy &amp; sell tax</span></div>
+      <div data-reveal><b><i data-count="100" style="font-style:normal">100</i>%</b><span>Fair launch on pump.fun</span></div>
+      <div data-reveal><b>0</b><span>Team tokens</span></div>
+      <div data-reveal><b>∞</b><span>Resurrections</span></div>
+    </div>
+  </section>
+
+  <section id="buy">
+    <div class="buy">
+      <div class="left">
+        <p class="kicker" data-reveal>How to buy</p>
+        <h2 class="h2 split">Dig in</h2>
+        <div class="ca" data-reveal>
+          <span class="note">Contract address</span>
+          <code id="ca">Not live yet. Check back soon.</code>
+          <div class="r">
+            <button class="btn" type="button" id="copyCa">Copy address</button>
+            <a class="btn solid" href="https://pump.fun" target="_blank" rel="noopener">Open pump.fun ↗</a>
+          </div>
+        </div>
+      </div>
+      <ol class="steps">
+        <li data-reveal><span class="n">01</span><div><h4>Get a Solana wallet</h4><p>Phantom, Solflare or Backpack. Keep the seed phrase on paper. Dead men tell no tales and neither should you.</p></div></li>
+        <li data-reveal><span class="n">02</span><div><h4>Load some SOL</h4><p>Buy SOL on an exchange and send it to your wallet.</p></div></li>
+        <li data-reveal><span class="n">03</span><div><h4>Open pump.fun</h4><p>Paste the contract address from this page. Check it twice, graveyards are full of fakes.</p></div></li>
+        <li data-reveal><span class="n">04</span><div><h4>Swap for $DEAD</h4><p>Only spend what you are fine burying.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="outro" aria-label="It's so over, we're so back">
+    <div class="mq" id="mq1" aria-hidden="true"></div>
+    <div class="mq r2" id="mq2" aria-hidden="true"></div>
+    <div class="cta2">
+      <a class="btn solid" href="#buy">Buy $DEAD</a>
+      <a class="btn" href="#tombstone">Bury a bag</a>
+    </div>
+  </section>
+
+  <footer>
+    <div>DEADFROG · $DEAD © 2026</div>
+    <p>$DEAD is a memecoin with no intrinsic value and no expectation of financial return. Not financial advice. Pepe the Frog is a character created by Matt Furie; this project is not affiliated with or endorsed by him.</p>
+  </footer>
+</main>
+
+<button id="mute" type="button" hidden>SOUND ON</button>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="vendor/SplitText.min.js"></script>
+<script src="vendor/lenis.min.js"></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const G = window.gsap, hasG = !!(G && window.ScrollTrigger && window.SplitText);
+  const hero = $('.hero');
+  let state = 'dead', lenis = null;
+
+  /* ================= sound (synthesised on the click) ================= */
+  let actx, master, muted = false;
+  function audio(){
+    if(actx) return;
+    try{ if(navigator.audioSession) navigator.audioSession.type = 'playback'; }catch(e){}
+    actx = new (window.AudioContext || window.webkitAudioContext)();
+    master = actx.createGain(); master.gain.value = .8; master.connect(actx.destination);
+    actx.resume();
+  }
+  function noise(sec){ const b = actx.createBuffer(1, actx.sampleRate * sec, actx.sampleRate), d = b.getChannelData(0); for(let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; return b; }
+  function env(peak, t, a, end){ const g = actx.createGain(); g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(.0001, t + end); return g; }
+  function rumble(t, dur){
+    const n = actx.createBufferSource(); n.buffer = noise(dur);
+    const lp = actx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(80, t); lp.frequency.linearRampToValueAtTime(260, t + dur);
+    const g = env(.9, t, dur * .9, dur + .05); n.connect(lp).connect(g).connect(master); n.start(t);
+  }
+  function crack(t){
+    const n = actx.createBufferSource(); n.buffer = noise(.25);
+    const hp = actx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 1800;
+    n.connect(hp).connect(env(.7, t, .002, .22)).connect(master); n.start(t);
+  }
+  function boom(t){
+    const o = actx.createOscillator(); o.frequency.setValueAtTime(130, t); o.frequency.exponentialRampToValueAtTime(32, t + .6);
+    o.connect(env(1, t, .005, .8)).connect(master); o.start(t); o.stop(t + .9);
+    const n = actx.createBufferSource(); n.buffer = noise(.8);
+    const lp = actx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 900;
+    n.connect(lp).connect(env(.7, t, .003, .7)).connect(master); n.start(t);
+  }
+  function groan(t){ // a zombie "uuurgh" through two vowel formants
+    const o = actx.createOscillator(); o.type = 'sawtooth';
+    o.frequency.setValueAtTime(110, t); o.frequency.linearRampToValueAtTime(92, t + 1.1);
+    const v = actx.createOscillator(), vg = actx.createGain(); v.frequency.value = 6; vg.gain.value = 4; v.connect(vg).connect(o.frequency); v.start(t); v.stop(t + 1.3);
+    const out = env(.5, t, .12, 1.25);
+    [[520, 6], [1100, 9]].forEach(([f, q]) => { const bp = actx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = f; bp.Q.value = q; o.connect(bp).connect(out); });
+    out.connect(master); o.start(t); o.stop(t + 1.3);
+  }
+  function stab(t){ // the "we're so back" chord
+    [196, 246.94, 293.66, 392].forEach(f => {
+      const o = actx.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f;
+      const lp = actx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(400, t); lp.frequency.exponentialRampToValueAtTime(3200, t + .25);
+      o.connect(lp).connect(env(.12, t, .01, 1.4)).connect(master); o.start(t); o.stop(t + 1.5);
+    });
+  }
+  function drone(){
+    const t = actx.currentTime, g = actx.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.04, t + 5);
+    const lp = actx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 300;
+    [49, 49.3, 73.5].forEach(f => { const o = actx.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f; o.connect(lp); o.start(); });
+    lp.connect(g).connect(master);
+  }
+  $('#mute').addEventListener('click', e => { muted = !muted; if(master) master.gain.value = muted ? 0 : .8; e.currentTarget.textContent = muted ? 'SOUND OFF' : 'SOUND ON'; });
+
+  /* ================= fog + fireflies ================= */
+  const fog = $('#fog'), fx = fog.getContext('2d');
+  let FW = 0, FH = 0, blobs = [], flies = [];
+  function sizeFog(){
+    const dpr = Math.min(devicePixelRatio || 1, 2); FW = hero.clientWidth; FH = hero.clientHeight;
+    fog.width = FW * dpr; fog.height = FH * dpr; fx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    dirt.width = FW * dpr; dirt.height = FH * dpr; dx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    blobs = Array.from({ length: 9 }, (_, i) => ({ x: Math.random() * FW, y: FH * (.55 + Math.random() * .4), r: 160 + Math.random() * 260, v: (.15 + Math.random() * .35) * (i % 2 ? 1 : -1) }));
+    flies = Array.from({ length: Math.round(FW / 40) }, () => ({ x: Math.random() * FW, y: FH * (.3 + Math.random() * .6), p: Math.random() * 6.28, s: .5 + Math.random() }));
+  }
+  function drawFog(t){
+    fx.clearRect(0, 0, FW, FH);
+    for(const b of blobs){
+      if(!reduced) b.x += b.v; if(b.x > FW + b.r) b.x = -b.r; if(b.x < -b.r) b.x = FW + b.r;
+      const g = fx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
+      g.addColorStop(0, 'rgba(190,220,180,.07)'); g.addColorStop(1, 'rgba(190,220,180,0)');
+      fx.fillStyle = g; fx.fillRect(b.x - b.r, b.y - b.r, b.r * 2, b.r * 2);
+    }
+    for(const f of flies){
+      const a = Math.max(0, Math.sin(f.p + t * f.s * 1.3));
+      const x = f.x + Math.sin(t * .4 * f.s + f.p) * 30, y = f.y + Math.cos(t * .5 * f.s + f.p) * 18;
+      fx.globalAlpha = reduced ? .5 : a; fx.fillStyle = '#c8ff7a'; fx.shadowColor = '#86d24a'; fx.shadowBlur = 12;
+      fx.beginPath(); fx.arc(x, y, 1.8, 0, 6.283); fx.fill();
+    }
+    fx.globalAlpha = 1; fx.shadowBlur = 0;
+  }
+
+  /* ================= dirt particles ================= */
+  const dirt = $('#dirt'), dx = dirt.getContext('2d'), clods = [];
+  function spray(n, power){
+    const hr = hero.getBoundingClientRect(), r = $('.hole').getBoundingClientRect();
+    const ox = r.left - hr.left + r.width * .45, oy = r.bottom - hr.top - r.height * .02;
+    for(let k = 0; k < n; k++){
+      const a = -Math.PI / 2 + (Math.random() - .5) * 1.9, v = power * (.4 + Math.random());
+      clods.push({ x: ox + (Math.random() - .5) * r.width * .6, y: oy, vx: Math.cos(a) * v, vy: Math.sin(a) * v, r: 1.5 + Math.random() * 5, life: 1, c: Math.random() < .2 ? '#3d5a2a' : (Math.random() < .5 ? '#3a2e20' : '#2b2218'), rot: Math.random() * 6 });
+    }
+  }
+  function drawDirt(){
+    dx.clearRect(0, 0, FW, FH);
+    for(let i = clods.length - 1; i >= 0; i--){
+      const c = clods[i]; c.x += c.vx; c.y += c.vy; c.vy += .45; c.vx *= .99; c.life -= .008; c.rot += .1;
+      if(c.life <= 0 || c.y > FH + 20){ clods.splice(i, 1); continue; }
+      dx.save(); dx.translate(c.x, c.y); dx.rotate(c.rot); dx.globalAlpha = Math.min(1, c.life * 2);
+      dx.fillStyle = c.c; dx.fillRect(-c.r, -c.r * .7, c.r * 2, c.r * 1.4); dx.restore();
+    }
+  }
+  let heroRAF;
+  function heroLoop(now){
+    if(scrollY < FH){ drawFog(now / 1000); drawDirt(); }
+    heroRAF = requestAnimationFrame(heroLoop);
+  }
+
+  /* ================= the resurrection ================= */
+  function unlock(){
+    document.body.classList.remove('locked');
+    try{ sessionStorage.setItem('deadfrogBack', '1'); }catch(e){}
+    initSite();
+  }
+  function resurrect(){
+    if(state !== 'dead') return; state = 'rising';
+    try{ audio(); const t = actx.currentTime; rumble(t, 1.15); crack(t + .9); crack(t + 1.02); boom(t + 1.15); groan(t + 1.3); stab(t + 1.25); }catch(e){}
+    try{ navigator.vibrate && navigator.vibrate([60, 40, 60, 40, 80, 40, 400]); }catch(e){}
+    if(!hasG || reduced){ hero.classList.add('is-back'); spray(80, 14); state = 'back'; unlock(); return; }
+    const title = SplitText.create('#backTitle', { type: 'words,chars' });
+    const tl = G.timeline({ onComplete: () => { state = 'back'; unlock(); } });
+    tl.to('#press', { opacity: 0, y: 20, duration: .3 })
+      // the ground starts shaking, harder and harder
+      .to('#cluster', { x: 'random(-6,6)', y: 'random(-3,3)', duration: .05, repeat: 17, yoyo: true, ease: 'none' }, 0)
+      .add(() => spray(18, 7), .3).add(() => spray(24, 9), .65)
+      .to('.crack', { strokeDashoffset: 0, duration: .3, ease: 'power2.in' }, .88)
+      .to('#tomb', { rotation: 5, duration: .25, ease: 'power3.out' }, 1.1)
+      // BURST
+      .add(() => { hero.classList.add('is-back'); spray(150, 16); }, 1.15)
+      .fromTo('#frog', { yPercent: 105 }, { yPercent: 0, duration: 1, ease: 'back.out(1.4)' }, 1.15)
+      .fromTo('#flash', { opacity: .55 }, { opacity: 0, duration: .6, ease: 'power2.out' }, 1.15)
+      .to('#cluster', { x: 'random(-14,14)', y: 'random(-8,8)', duration: .045, repeat: 11, yoyo: true, ease: 'none' }, 1.15)
+      .set('#cluster', { x: 0, y: 0 }, 1.7)
+      .from(title.chars, { scale: 3, opacity: 0, yPercent: -40, rotation: 'random(-25,25)', duration: .55, ease: 'back.out(2.2)', stagger: .04 }, 1.2)
+      .from('#sub', { opacity: 0, y: 14, duration: .6 }, 1.9)
+      .from('#cta > *', { opacity: 0, y: 24, duration: .7, ease: 'expo.out', stagger: .08 }, 2)
+      .to('#tomb', { rotation: 3, duration: 1.2, ease: 'elastic.out(1,.3)' }, 1.4);
+  }
+  $('#fkey').addEventListener('click', resurrect);
+  addEventListener('keydown', e => { if((e.key === 'f' || e.key === 'F') && state === 'dead' && !e.target.closest('input,select,textarea')) resurrect(); });
+
+  /* ================= tombstone generator ================= */
+  const tc = $('#tombCanvas'), tg = tc.getContext('2d'), frogImg = new Image();
+  frogImg.src = 'img/frog.png'; frogImg.onload = () => drawTomb();
+  const EPIS = $$('#gEpi option').filter(o => o.value !== 'custom').map(o => o.textContent);
+  const RAND = [['My $LUNA bag', '2022', '2022'], ['My leverage', 'Monday', 'Monday'], ['The 100x I sold at 2x', '2024', '2024'], ['My last paycheck', '1st', '2nd'], ['A dog coin', '9:00', '9:14'], ['My trading account', '2021', '2025'], ['My sleep schedule', 'Bull run', 'Bull run']];
+  const fields = () => {
+    const custom = $('#gEpi').value === 'custom';
+    return { what: ($('#gWhat').value.trim() || 'My worst trade'), born: $('#gBorn').value.trim() || '????', died: $('#gDied').value.trim() || '????',
+             epi: custom ? ($('#gCustom').value.trim() || 'wen moon') : $('#gEpi').value };
+  };
+  function wrap(text, font, max){
+    tg.font = font; const words = text.split(' '), lines = []; let line = '';
+    words.forEach(w => { const t = line ? line + ' ' + w : w; if(tg.measureText(t).width > max && line){ lines.push(line); line = w; } else line = t; });
+    lines.push(line); return lines;
+  }
+  function engrave(text, x, y){ tg.fillStyle = 'rgba(190,196,185,.45)'; tg.fillText(text, x, y + 3); tg.fillStyle = '#272a25'; tg.fillText(text, x, y); }
+  function drawTomb(){
+    const W = 1080, f = fields();
+    // night
+    const sky = tg.createLinearGradient(0, 0, 0, W); sky.addColorStop(0, '#060908'); sky.addColorStop(.7, '#12201a'); sky.addColorStop(1, '#1a2c20');
+    tg.fillStyle = sky; tg.fillRect(0, 0, W, W);
+    const glow = tg.createRadialGradient(540, 1080, 0, 540, 1080, 700); glow.addColorStop(0, 'rgba(134,210,74,.25)'); glow.addColorStop(1, 'rgba(134,210,74,0)');
+    tg.fillStyle = glow; tg.fillRect(0, 0, W, W);
+    let s = 7; const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+    for(let i = 0; i < 90; i++){ tg.globalAlpha = rnd() * .6 + .1; tg.fillStyle = '#efe6cf'; tg.fillRect(rnd() * W, rnd() * 600, 2, 2); }
+    tg.globalAlpha = 1;
+    // the frog peeks from behind the stone
+    if(frogImg.complete && frogImg.naturalWidth){ const h = 620, w = h * frogImg.naturalWidth / frogImg.naturalHeight; tg.drawImage(frogImg, 300 - w * .88, 1000 - h, w, h); }
+    // stone
+    const L = 300, R = 820, top = 150, bot = 1000, mid = (L + R) / 2;
+    tg.fillStyle = '#23261f'; tg.beginPath(); tg.moveTo(R, bot); tg.lineTo(R, 400); tg.quadraticCurveTo(R, top, mid + 30, top - 4); tg.lineTo(mid + 60, top + 4); tg.quadraticCurveTo(R + 34, top + 30, R + 34, 410); tg.lineTo(R + 34, bot); tg.closePath(); tg.fill();
+    const sg = tg.createLinearGradient(L, top, R, bot); sg.addColorStop(0, '#8d9289'); sg.addColorStop(.55, '#666b63'); sg.addColorStop(1, '#43473f');
+    tg.fillStyle = sg; tg.beginPath(); tg.moveTo(L, bot); tg.lineTo(L, 400); tg.quadraticCurveTo(L, top, mid, top); tg.quadraticCurveTo(R, top, R, 400); tg.lineTo(R, bot); tg.closePath(); tg.fill();
+    for(let i = 0; i < 900; i++){ tg.fillStyle = rnd() < .5 ? 'rgba(0,0,0,.08)' : 'rgba(255,255,255,.05)'; tg.fillRect(L + rnd() * (R - L), top + 40 + rnd() * (bot - top - 40), 3, 3); }
+    tg.strokeStyle = 'rgba(0,0,0,.25)'; tg.lineWidth = 5; tg.beginPath(); tg.moveTo(L + 26, bot); tg.lineTo(L + 26, 405); tg.quadraticCurveTo(L + 26, top + 28, mid, top + 28); tg.quadraticCurveTo(R - 26, top + 28, R - 26, 405); tg.lineTo(R - 26, bot); tg.stroke();
+    tg.fillStyle = 'rgba(61,90,42,.85)'; tg.beginPath(); tg.ellipse(L + 50, bot - 40, 80, 32, 0, 0, 6.283); tg.fill();
+    tg.beginPath(); tg.ellipse(R - 70, top + 70, 46, 14, -.3, 0, 6.283); tg.fill();
+    // engraving
+    tg.textAlign = 'center'; tg.textBaseline = 'alphabetic';
+    tg.font = '84px Anton, Impact, sans-serif'; engrave('R.I.P.', mid, 330);
+    const whatLines = wrap(f.what.toUpperCase(), '78px Anton, Impact, sans-serif', 420).slice(0, 3);
+    let size = 78; while(size > 46 && whatLines.some(l => { tg.font = size + 'px Anton, Impact, sans-serif'; return tg.measureText(l).width > 430; })) size -= 4;
+    tg.font = size + 'px Anton, Impact, sans-serif';
+    let y = 440; whatLines.forEach(l => { engrave(l, mid, y); y += size * 1.05; });
+    tg.font = '700 36px "Space Mono", monospace'; engrave(f.born + ' – ' + f.died, mid, y + 26);
+    tg.fillStyle = 'rgba(39,42,37,.6)'; tg.fillRect(mid - 120, y + 62, 240, 4);
+    const epi = wrap('“' + f.epi + '”', 'italic 40px Archivo, sans-serif', 420).slice(0, 3);
+    tg.font = 'italic 40px Archivo, sans-serif'; let ey = y + 130; epi.forEach(l => { engrave(l, mid, ey); ey += 50; });
+    // dirt + grass in front
+    tg.fillStyle = '#1f1912'; tg.beginPath(); tg.moveTo(0, W); tg.lineTo(0, 980); tg.quadraticCurveTo(540, 900, 1080, 980); tg.lineTo(1080, W); tg.fill();
+    tg.fillStyle = '#2b2218'; tg.beginPath(); tg.moveTo(0, W); tg.lineTo(0, 1010); tg.quadraticCurveTo(540, 950, 1080, 1010); tg.lineTo(1080, W); tg.fill();
+    tg.fillStyle = '#2f4a22'; for(let i = 0; i < 40; i++){ const gx = rnd() * W, gy = 960 + rnd() * 40; tg.beginPath(); tg.moveTo(gx, gy + 30); tg.lineTo(gx + 5, gy); tg.lineTo(gx + 10, gy + 30); tg.fill(); }
+    // brand
+    tg.textAlign = 'left'; tg.font = '700 26px "Space Mono", monospace'; tg.fillStyle = '#efe6cf'; tg.fillText('$DEAD', 50, 1050);
+    tg.textAlign = 'right'; tg.fillStyle = '#86d24a'; tg.font = '40px "Rubik Wet Paint", Anton, sans-serif'; tg.fillText('we’re so back', 1035, 80);
+    // share text
+    $('#gX').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(`Here lies ${f.what} (${f.born} – ${f.died}). “${f.epi}” 🪦 It’s so over… or is it? $DEAD`) + '&url=' + encodeURIComponent(location.origin + location.pathname);
+  }
+  ['#gWhat', '#gBorn', '#gDied', '#gCustom'].forEach(s => $(s).addEventListener('input', drawTomb));
+  $('#gEpi').addEventListener('change', () => { $('#customWrap').hidden = $('#gEpi').value !== 'custom'; drawTomb(); });
+  $('#gRandom').addEventListener('click', () => {
+    const r = RAND[Math.floor(Math.random() * RAND.length)];
+    $('#gWhat').value = r[0]; $('#gBorn').value = r[1]; $('#gDied').value = r[2];
+    $('#gEpi').value = EPIS[Math.floor(Math.random() * EPIS.length)]; $('#customWrap').hidden = true; drawTomb();
+  });
+  $('#gSave').addEventListener('click', () => {
+    drawTomb();
+    tc.toBlob(async blob => {
+      if(!blob) return;
+      const file = new File([blob], 'deadfrog-tombstone.png', { type: 'image/png' });
+      if(navigator.canShare && navigator.canShare({ files: [file] })){ try{ await navigator.share({ files: [file] }); return; }catch(e){} }
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'deadfrog-tombstone.png';
+      document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    }, 'image/png');
+  });
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(drawTomb);
+  drawTomb();
+
+  /* ================= copy CA ================= */
+  $('#copyCa').addEventListener('click', e => {
+    const btn = e.currentTarget, code = $('#ca');
+    const pick = () => { const r = document.createRange(); r.selectNodeContents(code); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+    try{ navigator.clipboard.writeText(code.textContent).then(() => { btn.textContent = 'Copied'; setTimeout(() => btn.textContent = 'Copy address', 1500); }, pick); }catch(err){ pick(); }
+  });
+
+  /* ================= marquee ================= */
+  $('#mq1').innerHTML = '<span>It’s so over</span><span class="g">we’re so back</span>'.repeat(4);
+  $('#mq2').innerHTML = '<span>Refuses to die</span><span>Six feet under</span>'.repeat(4);
+
+  /* ================= the page after the grave ================= */
+  let siteReady = false;
+  function initSite(){
+    if(siteReady) return; siteReady = true;
+    try{ if(actx){ drone(); $('#mute').hidden = false; } }catch(e){}
+    if(!hasG) return;
+    G.registerPlugin(ScrollTrigger, SplitText);
+    if(!reduced && window.Lenis){
+      lenis = new Lenis({ lerp: .09 });
+      lenis.on('scroll', ScrollTrigger.update);
+      G.ticker.add(t => lenis.raf(t * 1000)); G.ticker.lagSmoothing(0);
+    }
+    $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href')); if(!t) return;
+      e.preventDefault(); lenis ? lenis.scrollTo(t, { duration: 1.6 }) : t.scrollIntoView();
+    }));
+    // nav hides on the way down
+    ScrollTrigger.create({ start: 300, end: 'max', onUpdate: s => $('#nav').classList.toggle('hide', s.direction === 1), onLeaveBack: () => $('#nav').classList.remove('hide') });
+    // hero parallax as you leave the grave
+    G.timeline({ scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 1 } })
+      .to('.headline', { yPercent: -60, opacity: 0, ease: 'none' }, 0)
+      .to('#cluster', { yPercent: 18, ease: 'none' }, 0)
+      .to('.tree', { yPercent: 10, ease: 'none' }, 0)
+      .to('.far', { yPercent: 14, ease: 'none' }, 0);
+    if(reduced) return;
+    // headlines
+    $$('.split').forEach(el => {
+      const s = SplitText.create(el, { type: 'words', mask: 'words', wordsClass: 'sw' });
+      G.from(s.words, { yPercent: 110, duration: 1.1, ease: 'expo.out', stagger: .06, scrollTrigger: { trigger: el, start: 'top 85%' } });
+    });
+    G.set('[data-reveal]', { y: 40, opacity: 0 });
+    ScrollTrigger.batch('[data-reveal]', { start: 'top 88%', once: true, onEnter: els => G.to(els, { y: 0, opacity: 1, duration: 1.1, ease: 'expo.out', stagger: .08 }) });
+    // death certificates drop in, then get stamped
+    G.set('.cert', { y: 80, opacity: 0 }); G.set('.stamp', { scale: 2.6, opacity: 0 });
+    ScrollTrigger.batch('.cert', { start: 'top 85%', once: true, onEnter: els => {
+      G.to(els, { y: 0, opacity: 1, duration: 1, ease: 'expo.out', stagger: .12 });
+      els.forEach((el, i) => G.to(el.querySelector('.stamp'), { scale: 1, opacity: .85, duration: .35, ease: 'back.out(3)', delay: .55 + i * .12,
+        onStart: () => G.fromTo(el, { x: -4 }, { x: 0, duration: .3, ease: 'elastic.out(1,.3)', delay: .3 }) }));
+    } });
+    // counters
+    $$('[data-count]').forEach(el => {
+      const to = +el.dataset.count, o = { v: 0 };
+      G.to(o, { v: to, duration: 2, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 88%' }, onUpdate: () => el.textContent = Math.round(o.v).toLocaleString('en-US') });
+    });
+    // marquee follows scroll speed and direction
+    const rows = [$('#mq1'), $('#mq2')], pos = [0, 0]; let dir = 1;
+    G.ticker.add(() => {
+      const v = lenis ? lenis.velocity : 0; if(Math.abs(v) > .1) dir = v > 0 ? 1 : -1;
+      const sp = .8 + Math.min(Math.abs(v) * .5, 18);
+      rows.forEach((el, i) => { const half = el.scrollWidth / 2; pos[i] = G.utils.wrap(-half, 0, pos[i] - sp * dir * (i ? -1 : 1)); G.set(el, { x: pos[i], skewX: G.utils.clamp(-8, 8, -v * .2) }); });
+    });
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => ScrollTrigger.refresh());
+  }
+
+  /* ================= boot ================= */
+  sizeFog(); addEventListener('resize', sizeFog);
+  if(hasG && !reduced) G.set('#frog', { yPercent: 105 });
+  heroRAF = requestAnimationFrame(heroLoop);
+  try{ if(sessionStorage.getItem('deadfrogBack')){ hero.classList.add('is-back'); state = 'back'; unlock(); } }catch(e){}
+})();
+</script>
+</body>
+</html>
