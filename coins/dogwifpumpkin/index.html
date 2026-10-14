@@ -95,6 +95,27 @@ section{position:relative;padding:clamp(80px,10vw,150px) clamp(16px,5vw,80px)}
 footer{background:var(--ink);color:#ffe9d2;padding:22px clamp(16px,5vw,80px) calc(26px + env(safe-area-inset-bottom,0px));display:flex;flex-wrap:wrap;gap:12px 30px;justify-content:space-between;font-size:14px;line-height:1.6;font-weight:700}
 footer p{max-width:70ch;opacity:.8}
 .progress{position:fixed;top:0;left:0;right:0;height:5px;z-index:45;background:var(--pump);transform-origin:0 50%;transform:scaleX(0);pointer-events:none}
+
+/* motion layer */
+.hero{position:relative;overflow:hidden}
+.hero>div,.hero>figure{position:relative;z-index:1}
+#leaves{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.photo{perspective:900px}
+.photo .frame{position:relative;transform-style:preserve-3d;will-change:transform}
+.photo .glare{position:absolute;inset:0;border-radius:10px;pointer-events:none;background:radial-gradient(circle at var(--gx,30%) var(--gy,20%),rgba(255,255,255,.45),transparent 45%);mix-blend-mode:soft-light;opacity:0;transition:opacity .3s}
+.photo:hover .glare{opacity:1}
+.hero h1 .ch{display:inline-block;will-change:transform}
+.band{position:relative;z-index:2;overflow:hidden;background:var(--ink);color:var(--cream);padding:16px 0;transform:rotate(-2deg);margin:-14px -2vw;width:104vw;border-top:3px solid var(--pump);border-bottom:3px solid var(--pump)}
+.band.b2{transform:rotate(1.6deg);background:var(--pump);color:#fff;border-color:var(--ink)}
+.band .track{display:flex;width:max-content;will-change:transform}
+.band span{font-family:var(--round);font-weight:700;font-size:clamp(22px,2.6vw,38px);white-space:nowrap;padding:0 26px;display:flex;align-items:center;gap:52px}
+.band span::after{content:"🎃";font-size:.8em}
+.lore .w{display:inline-block;opacity:.14}
+.step,.chat,#cardCv{transition:transform .25s cubic-bezier(.2,.9,.3,1.4),box-shadow .25s}
+.step:hover{transform:translateY(-6px) rotate(-.6deg);box-shadow:0 12px 0 var(--ink)}
+.step:hover i{animation:spin .6s cubic-bezier(.2,.9,.3,1.3)}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.facts span{display:inline-block}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
 /* ask the pumpkin (oracle) */
@@ -124,8 +145,8 @@ footer p{max-width:70ch;opacity:.8}
 #end{overflow:hidden;text-align:center;padding-bottom:0;background:linear-gradient(180deg,var(--cream),#ffd9a8)}
 #end .h2{max-width:14ch;margin:0 auto}
 #end .cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:28px}
-.peek{position:relative;width:min(70vw,460px);margin:clamp(40px,6vw,80px) auto 0;height:clamp(250px,31vw,330px);overflow:hidden}
-.peek img{position:absolute;left:0;right:0;top:0;width:100%;border-radius:46% 46% 0 0}
+.peek{position:relative;width:min(70vw,440px);margin:clamp(40px,6vw,80px) auto 0;aspect-ratio:1200/1160;overflow:hidden}
+.peek img{position:absolute;left:0;right:0;top:0;width:100%;height:100%;object-fit:cover;border-radius:28px 28px 0 0}
 </style>
 </head>
 <body>
@@ -142,6 +163,7 @@ footer p{max-width:70ch;opacity:.8}
 </nav>
 
 <header class="hero" id="top">
+  <canvas id="leaves" aria-hidden="true"></canvas>
   <div>
     <h1><span>dog</span><span>wif</span><span class="o">pumpkin.</span></h1>
     <p class="sub">it’s a dog. wif a pumpkin. that’s the whole thing.</p>
@@ -149,12 +171,13 @@ footer p{max-width:70ch;opacity:.8}
   </div>
   <figure class="photo" id="photo">
     <span class="tape" aria-hidden="true"></span>
-    <div class="frame"><img src="img/dog.webp" alt="A small dog wearing a knitted pumpkin hat" width="1200" height="1160" fetchpriority="high"></div>
+    <div class="frame"><span class="glare"></span><img src="img/dog.webp" alt="A small dog wearing a knitted pumpkin hat" width="1200" height="1160" fetchpriority="high"></div>
     <figcaption class="cap" id="cap">he didn’t ask for this.</figcaption>
   </figure>
 </header>
 
 <main>
+  <div class="band b1" aria-hidden="true"><div class="track"><span>dog wif pumpkin</span><span>he didn’t ask for this</span><span>$WIFP</span><span>the hat stays on</span><span>bork</span><span>pumpkin season never ends</span></div></div>
   <section id="ask">
     <h2 class="h2">ask the <span class="o">pumpkin.</span></h2>
     <p class="sub" style="color:var(--soft);font-weight:700;font-size:clamp(18px,1.4vw,21px);margin-top:14px;max-width:46ch">he knows nothing. he answers anyway. ask him about your bags, your ex, the moon. then post his answer.</p>
@@ -181,6 +204,7 @@ footer p{max-width:70ch;opacity:.8}
     </div>
   </section>
 
+  <div class="band b2" aria-hidden="true"><div class="track"><span>once upon a time</span><span>a dog</span><span>a pumpkin</span><span>no complaints</span><span>$WIFP</span><span>wif</span><span>the end</span></div></div>
   <section id="buy">
     <h2 class="h2">get <span class="o">$WIFP.</span></h2>
     <div class="steps">
@@ -190,7 +214,6 @@ footer p{max-width:70ch;opacity:.8}
     </div>
     <div class="ca"><code id="ca">coming soon. very soon.</code><button class="btn white sm" type="button" id="copyCa">copy</button><a class="btn sm" href="https://pump.fun" target="_blank" rel="noopener">pump.fun ↗</a></div>
     <div class="facts"><span>1,000,000,000 supply</span><span>0% tax</span><span>fair launch</span><span>no team bags</span></div>
-    <p class="nfa">only use money you can lose. it’s a dog wif a pumpkin. this is not financial advice.</p>
   </section>
 
   <section id="end">
@@ -202,7 +225,6 @@ footer p{max-width:70ch;opacity:.8}
 
 <footer>
   <span>dogwifpumpkin · $WIFP · 2026</span>
-  <p>a memecoin for fun. $WIFP has no intrinsic value and no expectation of financial return. his answers are jokes, not financial advice.</p>
 </footer>
 
 <div class="progress" id="prog" aria-hidden="true"></div>
@@ -211,6 +233,8 @@ footer p{max-width:70ch;opacity:.8}
 <script>window.gsap||document.write('<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"><\/script>')</script>
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script>window.ScrollTrigger||document.write('<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"><\/script>')</script>
+<script src="vendor/SplitText.min.js"></script>
+<script>window.SplitText||document.write('<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"><\/script>')</script>
 <script src="vendor/lenis.min.js"></script>
 <script>window.Lenis||document.write('<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"><\/script>')</script>
 <script>
@@ -221,7 +245,7 @@ const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const rnd=(a,b)=>a+Math.random()*(b-a);
 const pick=a=>a[Math.random()*a.length|0];
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger,SplitText);
 
 /* ===== launch config ===== */
 const CA='';     // $WIFP contract address
@@ -260,7 +284,10 @@ gsap.to('#prog',{scaleX:1,ease:'none',scrollTrigger:{trigger:document.documentEl
 /* ===== hero: the confused head tilt + rotating captions ===== */
 const CAPS=['he didn’t ask for this.','he is thinking about it.','he does not know what a blockchain is.','he would like a treat now.','he is not mad. just disappointed.','he has seen your portfolio.'];
 if(!RM){
-  gsap.from('.hero h1 span',{yPercent:100,opacity:0,stagger:.1,duration:.9,ease:'back.out(1.7)'});
+  const hs=new SplitText('.hero h1 span',{type:'chars',charsClass:'ch'});
+  gsap.from(hs.chars,{yPercent:120,rotation:()=>rnd(-25,25),opacity:0,stagger:.035,duration:1,ease:'elastic.out(1,.55)'});
+  // letters bounce when you touch them
+  hs.chars.forEach(c=>c.addEventListener('pointerenter',()=>{if(gsap.isTweening(c))return;gsap.fromTo(c,{y:0},{y:-22,rotation:rnd(-12,12),duration:.18,ease:'power2.out',yoyo:true,repeat:1,onComplete:()=>gsap.to(c,{rotation:0,duration:.3})})}));
   gsap.from('.photo',{rotation:-12,scale:.85,opacity:0,duration:1.1,ease:'back.out(1.4)'});
   gsap.from('.hero .sub,.hero .cta',{y:20,opacity:0,stagger:.1,duration:.7,delay:.4,ease:'power3.out'});
   (function tilt(){gsap.timeline({delay:rnd(2.5,4.5),onComplete:tilt})
@@ -376,13 +403,58 @@ $('#copyImg').addEventListener('click',async()=>{try{if(!window.ClipboardItem||!
 
 /* ===== reveals ===== */
 if(!RM){
-  $$('.h2').forEach(h=>gsap.from(h,{y:40,opacity:0,duration:.8,ease:'back.out(1.6)',scrollTrigger:{trigger:h,start:'top 88%'}}));
-  $$('.lore p').forEach((p,i)=>gsap.from(p,{x:i%2?60:-60,opacity:0,rotation:i%2?2:-2,duration:.9,ease:'back.out(1.5)',scrollTrigger:{trigger:p,start:'top 85%'}}));
-  gsap.from('.step',{y:50,opacity:0,stagger:.1,duration:.8,ease:'back.out(1.6)',scrollTrigger:{trigger:'.steps',start:'top 85%'}});
+  // headings: letters hop in
+  $$('.h2').forEach(h=>{const sp=new SplitText(h,{type:'chars,words',wordsClass:'w2'});gsap.from(sp.chars,{yPercent:110,opacity:0,rotation:()=>rnd(-14,14),stagger:.02,duration:.8,ease:'back.out(2)',scrollTrigger:{trigger:h,start:'top 88%'}})});
+  // the lore reads itself as you scroll: words light up one by one
+  $$('.lore p').forEach((p,i)=>{const sp=new SplitText(p,{type:'words',wordsClass:'w'});
+    gsap.to(sp.words,{opacity:1,stagger:.1,ease:'none',scrollTrigger:{trigger:p,start:'top 85%',end:'top 45%',scrub:.5}});
+    gsap.from(p,{x:i%2?80:-80,rotation:i%2?2.5:-2.5,ease:'none',scrollTrigger:{trigger:p,start:'top 95%',end:'top 55%',scrub:.6}})});
+  gsap.from('.step',{y:70,opacity:0,rotation:i=>[-4,2,-2][i],stagger:.12,duration:.9,ease:'back.out(1.7)',scrollTrigger:{trigger:'.steps',start:'top 85%'}});
+  gsap.from('.facts span',{scale:0,rotation:()=>rnd(-20,20),stagger:.07,duration:.6,ease:'back.out(2.5)',scrollTrigger:{trigger:'.facts',start:'top 92%'}});
+  gsap.from('.ca',{y:30,opacity:0,duration:.7,ease:'power3.out',scrollTrigger:{trigger:'.ca',start:'top 92%'}});
+  gsap.from('.chat',{y:60,rotation:-2,opacity:0,duration:1,ease:'back.out(1.5)',scrollTrigger:{trigger:'.ask',start:'top 85%'}});
+  gsap.from('.card',{y:80,rotation:3,opacity:0,duration:1,delay:.1,ease:'back.out(1.5)',scrollTrigger:{trigger:'.ask',start:'top 85%'}});
+  gsap.to('#cardCv',{y:-8,rotation:.6,duration:2.6,yoyo:true,repeat:-1,ease:'sine.inOut'});
+  // marquee bands: drift on their own and speed up with your scroll
+  $$('.band').forEach((b,i)=>{const tr=b.querySelector('.track');tr.innerHTML+=tr.innerHTML;const dir=i%2?1:-1;
+    const loop=gsap.fromTo(tr,{xPercent:dir<0?0:-50},{xPercent:dir<0?-50:0,duration:28,ease:'none',repeat:-1});
+    ScrollTrigger.create({trigger:b,start:'top bottom',end:'bottom top',onUpdate:st=>{const v=Math.min(4,1+Math.abs(st.getVelocity())/600);gsap.to(loop,{timeScale:v,duration:.25,overwrite:true,onComplete:()=>gsap.to(loop,{timeScale:1,duration:1.2})})}})});
+  // the polaroid follows your pointer in 3D, with a little shine
+  if(matchMedia('(pointer:fine)').matches){
+    const ph=$('#photo'),fr=ph.querySelector('.frame'),gl=ph.querySelector('.glare');
+    const rx=gsap.quickTo(fr,'rotationX',{duration:.5,ease:'power3'}),ry=gsap.quickTo(fr,'rotationY',{duration:.5,ease:'power3'});
+    ph.addEventListener('pointermove',e=>{const r=ph.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;ry((x-.5)*16);rx((.5-y)*14);gl.style.setProperty('--gx',x*100+'%');gl.style.setProperty('--gy',y*100+'%')});
+    ph.addEventListener('pointerleave',()=>{rx(0);ry(0)});
+    // magnetic buttons
+    $$('.btn').forEach(bn=>{const qx=gsap.quickTo(bn,'x',{duration:.4,ease:'power3'}),qy=gsap.quickTo(bn,'y',{duration:.4,ease:'power3'});
+      bn.addEventListener('pointermove',e=>{const r=bn.getBoundingClientRect();qx((e.clientX-r.left-r.width/2)*.25);qy((e.clientY-r.top-r.height/2)*.35)});
+      bn.addEventListener('pointerleave',()=>{qx(0);qy(0)})});
+  }
+  // hero drifts apart a little as you scroll away
+  gsap.to('.hero>div',{yPercent:-12,opacity:.3,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+  gsap.to('#photo',{yPercent:10,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
   // the end: he slowly peeks up from the bottom of the page
-  gsap.fromTo('.peek img',{yPercent:100},{yPercent:0,ease:'none',scrollTrigger:{trigger:'#end',start:'top 70%',end:'bottom bottom',scrub:.8}});
+  gsap.fromTo('.peek img',{yPercent:100},{yPercent:0,ease:'none',scrollTrigger:{trigger:'.peek',start:'top bottom',end:'bottom bottom',scrub:.8}});
   ScrollTrigger.create({trigger:'.peek',start:'top 60%',once:true,onEnter:()=>bork(2)});
 }else gsap.set('.peek img',{yPercent:0});
+
+/* ===== autumn leaves drifting through the hero ===== */
+(function leaves(){
+  if(RM)return;
+  const cv=$('#leaves'),x=cv.getContext('2d');let W,H,dpr,L=[];
+  const COL=['#ff7a12','#c94f00','#ffc94a','#e2611a','#9c3d0b'];
+  function size(){dpr=Math.min(2,devicePixelRatio||1);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);
+    L=Array.from({length:matchMedia('(max-width:760px)').matches?10:18},()=>mk(true))}
+  function mk(any){return{x:rnd(0,W),y:any?rnd(-H,H):rnd(-80,-20),s:rnd(10,22),r:rnd(0,6.3),vr:rnd(-1,1),vy:rnd(22,48),sw:rnd(.6,1.6),p:rnd(0,6.3),c:COL[Math.random()*COL.length|0],o:rnd(.45,.85)}}
+  function leaf(l){x.save();x.translate(l.x,l.y);x.rotate(l.r);x.scale(l.s/20,l.s/20*Math.cos(l.p*1.3)*.5+.6);x.globalAlpha=l.o;x.fillStyle=l.c;
+    x.beginPath();x.moveTo(0,-20);x.bezierCurveTo(6,-14,8,-14,12,-16);x.bezierCurveTo(10,-10,12,-6,18,-4);x.bezierCurveTo(12,0,12,4,14,10);x.bezierCurveTo(8,8,4,8,1,14);x.lineTo(0,22);x.lineTo(-1,14);x.bezierCurveTo(-4,8,-8,8,-14,10);x.bezierCurveTo(-12,4,-12,0,-18,-4);x.bezierCurveTo(-12,-6,-10,-10,-12,-16);x.bezierCurveTo(-8,-14,-6,-14,0,-20);x.fill();
+    x.strokeStyle='rgba(60,25,5,.35)';x.lineWidth=1.2;x.beginPath();x.moveTo(0,-14);x.lineTo(0,18);x.stroke();x.restore()}
+  let vis=true;ScrollTrigger.create({trigger:'.hero',start:'top bottom',end:'bottom top',onToggle:s=>vis=s.isActive});
+  size();addEventListener('resize',size);
+  let last=performance.now();
+  gsap.ticker.add(()=>{const now=performance.now(),dt=Math.min(.05,(now-last)/1000);last=now;if(!vis)return;x.clearRect(0,0,W,H);
+    for(const l of L){l.p+=dt*l.sw;l.y+=l.vy*dt;l.x+=Math.sin(l.p)*30*dt;l.r+=l.vr*dt;if(l.y>H+40)Object.assign(l,mk(false));leaf(l)}});
+})();
 
 /* ===== contract address ===== */
 $('#ca').textContent=CA||'coming soon. very soon.';
