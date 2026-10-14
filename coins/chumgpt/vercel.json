@@ -1,0 +1,11 @@
+{
+  "functions": {
+    "api/chat.js": { "maxDuration": 60 },
+    "api/post.js": { "maxDuration": 120 },
+    "api/replies.js": { "maxDuration": 300 }
+  },
+  "crons": [
+    { "path": "/api/post", "schedule": "7 15 * * *" },
+    { "path": "/api/replies", "schedule": "23 20 * * *" }
+  ]
+}
