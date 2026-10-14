@@ -126,6 +126,20 @@ section{position:relative;padding:clamp(90px,11vw,170px) clamp(16px,5vw,80px)}
 .tile:hover .f img{transform:scale(1.04)}.tile .f img{transition:transform .6s}
 @media (max-width:720px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.meme{font-size:clamp(15px,4.6vw,22px)}}
 
+/* ---------- said it first: reaction clip wall ---------- */
+#said{background:var(--ink)}
+.wallc{columns:4 260px;column-gap:clamp(10px,1.2vw,18px);margin-top:clamp(36px,5vw,64px)}
+.clip{break-inside:avoid;margin-bottom:clamp(10px,1.2vw,18px);background:#fff;color:#0f0f12;border-radius:14px;overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,.35);display:block}
+.clip .hd{padding:12px 14px 10px;font-weight:700;font-size:15px;line-height:1.3}
+.clip .hd b{font-weight:800}
+.clip video{display:block;width:100%;height:auto;background:#000}
+.clip .ft{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;font-size:12px;color:#6b6676}
+.clip .ft a{font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:11px;text-decoration:none;color:#0f0f12}
+.clip .ft a:hover{color:var(--purple)}
+.more{display:flex;justify-content:center;margin-top:26px}
+.wallc .clip.hidden{display:none}
+@media (max-width:720px){.wallc{columns:2;column-gap:10px}.clip{border-radius:10px;margin-bottom:10px}.clip .hd{font-size:12.5px;padding:9px 10px 8px}.clip .ft{padding:6px 10px}.clip .ft span{display:none}}
+
 /* ---------- runway ---------- */
 #runway{padding:0;height:100vh;height:100svh;min-height:640px;overflow:hidden;background:radial-gradient(ellipse 30% 55% at 50% 0%,rgba(255,240,220,.18),transparent 70%),#08070a}
 #runway .rw-title{position:absolute;left:clamp(16px,5vw,80px);top:clamp(80px,10vh,120px);z-index:6}
@@ -166,7 +180,7 @@ section{position:relative;padding:clamp(90px,11vw,170px) clamp(16px,5vw,80px)}
 .mm canvas{width:100%;height:auto;aspect-ratio:1080/1350;display:block;background:#000;box-shadow:0 30px 70px rgba(0,0,0,.5)}
 .ctrl{display:flex;flex-direction:column;gap:18px}
 .lab{font-size:11px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:var(--mute)}
-.thumbs{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px;margin-top:10px}
+.thumbs{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:6px;margin-top:10px}
 .thumbs button{aspect-ratio:4/5;border:2px solid transparent;padding:0;background:#000;cursor:pointer;overflow:hidden;opacity:.6;transition:opacity .2s,border-color .2s,transform .2s}
 .thumbs button img{width:100%;height:100%;object-fit:cover}
 .thumbs button:hover{opacity:1;transform:translateY(-2px)}
@@ -177,7 +191,7 @@ section{position:relative;padding:clamp(90px,11vw,170px) clamp(16px,5vw,80px)}
 .row{display:flex;flex-wrap:wrap;gap:10px}
 .dice{font-size:13px}
 #mmState{font-size:13px;color:var(--mute);min-height:1.4em}
-@media (max-width:900px){.mm{grid-template-columns:1fr}.thumbs{grid-template-columns:repeat(8,minmax(0,1fr))}}
+@media (max-width:900px){.mm{grid-template-columns:1fr}.thumbs{grid-template-columns:repeat(7,minmax(0,1fr))}}
 
 /* ---------- get the look (how to buy) ---------- */
 #look{background:var(--paper);color:var(--ink)}
@@ -219,6 +233,7 @@ section{position:relative;padding:clamp(90px,11vw,170px) clamp(16px,5vw,80px)}
   <a class="logo" href="#top"><b>Salem</b><small>THE FIT ISSUE</small></a>
   <div class="links">
     <a href="#archive">Archive</a>
+    <a href="#said">Clips</a>
     <a href="#runway">Runway</a>
     <a href="#machine">Meme machine</a>
     <a href="#look">Get the look</a>
@@ -245,6 +260,12 @@ section{position:relative;padding:clamp(90px,11vw,170px) clamp(16px,5vw,80px)}
     <div class="grid" id="grid"></div>
   </section>
 
+  <section id="said">
+    <div class="sec-head"><span class="no">02</span><h2>Salem said it <em>first.</em></h2><p>He was posting reaction GIFs before the internet had a word for it. Twenty-five of his finest moments, now about your bags.</p></div>
+    <div class="wallc" id="wall"></div>
+    <div class="more"><button class="btn" type="button" id="moreBtn">Show more Salem <span class="arr">↓</span></button></div>
+  </section>
+
   <section id="runway" aria-label="Runway show">
     <div class="rw-title"><p class="kicker">Live from the catwalk</p><h2>The <em>runway</em><br>show.</h2></div>
     <div class="wall" aria-hidden="true"><span>Salem</span><i class="door"></i></div>
@@ -258,7 +279,7 @@ section{position:relative;padding:clamp(90px,11vw,170px) clamp(16px,5vw,80px)}
   </section>
 
   <section id="machine">
-    <div class="sec-head"><span class="no">02</span><h2>The meme <em>machine.</em></h2><p>Pick a fit, write the caption, post it. Salem has been a meme since before memes. Your job is to keep it that way.</p></div>
+    <div class="sec-head"><span class="no">03</span><h2>The meme <em>machine.</em></h2><p>Pick a fit, write the caption, post it. Salem has been a meme since before memes. Your job is to keep it that way.</p></div>
     <div class="mm">
       <canvas id="mmc" width="1080" height="1350" role="img" aria-label="Your Salem meme"></canvas>
       <div class="ctrl">
@@ -278,7 +299,7 @@ section{position:relative;padding:clamp(90px,11vw,170px) clamp(16px,5vw,80px)}
   </section>
 
   <section id="look">
-    <div class="sec-head"><span class="no">03</span><h2>Get the <em>look.</em></h2><p>Three pieces. That’s the whole outfit. Salem would tell you to buy it all at once and never check the chart again. Salem is a cat.</p></div>
+    <div class="sec-head"><span class="no">04</span><h2>Get the <em>look.</em></h2><p>Three pieces. That’s the whole outfit. Salem would tell you to buy it all at once and never check the chart again. Salem is a cat.</p></div>
     <div class="shop">
       <div class="item"><span class="tag"><span>Free</span></span><p class="num">i.</p><h3>The Wallet</h3><p>Phantom, Solflare or Backpack. A classic that goes with everything. Write the seed phrase on paper and show it to nobody, not even the cat.</p></div>
       <div class="item"><span class="tag"><span>Any size</span></span><p class="num">ii.</p><h3>The SOL</h3><p>Buy SOL on an exchange and send it to your wallet. Keep a little extra for fees. Accessories matter.</p></div>
@@ -298,7 +319,7 @@ section{position:relative;padding:clamp(90px,11vw,170px) clamp(16px,5vw,80px)}
     </div>
     <div class="fine">
       <span>$SALEM · The Fit Issue © 2026</span>
-      <p>A fan tribute and parody. Not affiliated with, endorsed by or connected to Paramount, Archie Comics, the makers of <i>Sabrina the Teenage Witch</i> or any of its cast or crew. Show stills belong to their respective owners and are used for commentary and parody. $SALEM is a memecoin with no intrinsic value and no expectation of financial return. Not financial advice.</p>
+      <p>A fan tribute and parody. Not affiliated with, endorsed by or connected to Paramount, Archie Comics, the makers of <i>Sabrina the Teenage Witch</i> or any of its cast or crew. Show stills and clips belong to their respective owners and are used for commentary and parody. $SALEM is a memecoin with no intrinsic value and no expectation of financial return. Not financial advice.</p>
     </div>
   </footer>
 </main>
@@ -345,6 +366,46 @@ const LOOKS=[
   {n:'The Angel',            t:'Never sold.',                b:'Not once. Promise.',            note:'Halo, wings, white robe. Totally innocent. Check the wallet anyway.'}
 ];
 const IMG=i=>`img/${String(i+1).padStart(2,'0')}.webp`;
+const EXTRA=[
+  {f:'x01',n:'The Cauldron',t:'Me cooking up',b:'the next 100x'},
+  {f:'x02',n:'The Analyst',t:'Reading the whitepaper',b:'there is no whitepaper'},
+  {f:'x03',n:'The Stare',t:'When someone says',b:'cats can’t trade'},
+  {f:'x05',n:'The Treasure',t:'Me guarding my bags',b:'from the paper hands'},
+  {f:'x06',n:'Story Time',t:'Romance novels?',b:'No. Chart patterns.'},
+  {f:'x07',n:'The Pianist',t:'Playing a sad song',b:'for the shorts'},
+  {f:'x08',n:'The Whale',t:'I’m not fat',b:'I’m a whale'},
+  {f:'x09',n:'Senior Analyst',t:'Senior analyst',b:'says buy'},
+  {f:'x11',n:'The Brewer',t:'Brewing alpha',b:'since 1996'},
+  {f:'x13',n:'Back In My Day',t:'Back in my day',b:'we had real memecoins'}
+];
+const TPL=[...LOOKS.map((L,i)=>({src:IMG(i),n:L.n,t:L.t,b:L.b})),...EXTRA.map(x=>({src:`img/${x.f}.webp`,n:x.n,t:x.t,b:x.b}))];
+const CLIPS=[
+  ['$SALEM to every other memecoin','I urge you to accept me as your ruler.'],
+  ['$SALEM when the timeline scrolls past','I will not be ignored!'],
+  ['The first green candle of the day','Money, bay-bay.'],
+  ['Me when I see a dip','I have no self-control.'],
+  ['Me after aping my 20th memecoin today','Sorry, 20 waffles is my limit.'],
+  ['Me before my first 100x leverage trade','How hard could it be?'],
+  ['Refreshing the chart 3 seconds after buying','Did it work?'],
+  ['When the dev wallet moves','Uh-oh spaghetti-o’s.'],
+  ['Holders after one 2x','So what if I’m a cat? This car says I’ve got it going on!'],
+  ['Replying to FUD in the comments','Leave the sarcasm to the professionals.'],
+  ['Picking a PFP for the bull run','What am I going to wear?'],
+  ['Diamond paws during a 50% dip','Just be a queen, honey!'],
+  ['When $SALEM pumps','When I’m happy I eat!'],
+  ['When $SALEM dumps','When I’m upset I eat!'],
+  ['Sold the bottom. Again.','*sobbing*'],
+  ['The bear market walks in','And let’s give a big warm welcome to sadness.'],
+  ['World domination plan: on schedule','[manic laughter]'],
+  ['My reply to the paper hands','Quoth the raven, “Bite me.”'],
+  ['Touch my bags one more time','I’ll cut ya, man.'],
+  ['When the copycat tokens launch','Great. A fake talking cat. Just what we need around here.'],
+  ['Bitcoin Pizza Day energy','Delivery. I want a pizza as fast as possible.'],
+  ['The chart bounces 2%','I’m not relieved.'],
+  ['Me after opening my portfolio','Maybe it’s time to start exploring the option of running away from home.'],
+  ['When the community draws fan art','She makes me want to be a better cat.'],
+  ['When we finish the bonding curve','I promised myself I wasn’t gonna cry.']
+];
 const COVERLINES=[
   ['16 looks','<i>zero regrets</i>'],['Why I’m still a cat','an interview'],['The only bag','he holds: $SALEM'],['Summer’s hottest accessory','a clothespin'],
   ['Exclusive','“I was a warlock, now I’m a whale”'],['100 years as a cat','still no thumbs'],['How to dress','for a rug pull'],['World domination','<i>the comeback tour</i>'],
@@ -467,6 +528,22 @@ gsap.from(tiles,{y:60,opacity:0,rotation:()=>rnd(-4,4),duration:.9,ease:'power3.
   }
 })();
 
+/* ============ said it first: clip wall ============ */
+const wall=$('#wall'),SHOW=8;
+const site=()=>location.origin+location.pathname;
+const clipEls=CLIPS.map(([ctx,quote],i)=>{
+  const n=String(i+1).padStart(2,'0');const a=document.createElement('article');a.className='clip'+(i>=SHOW?' hidden':'');
+  a.innerHTML=`<p class="hd"></p><video muted loop playsinline preload="none" poster="clips/w${n}.webp" aria-label=""><source src="clips/w${n}.mp4" type="video/mp4"></video><div class="ft"><span>Reaction #${n}</span><a target="_blank" rel="noopener">Post ↗</a></div>`;
+  a.querySelector('.hd').textContent=ctx+':';a.querySelector('video').setAttribute('aria-label',`Salem: “${quote}”`);
+  a.querySelector('a').href='https://x.com/intent/post?text='+encodeURIComponent(`${ctx}:\n\n“${quote}”\n\n$SALEM 🐈‍⬛`)+'&url='+encodeURIComponent(site());
+  wall.appendChild(a);return a});
+const vio=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting&&!RM){v.play().catch(()=>{})}else v.pause()}),{threshold:.35});
+clipEls.forEach(c=>vio.observe(c.querySelector('video')));
+$('#moreBtn').addEventListener('click',e=>{const hid=clipEls.filter(c=>c.classList.contains('hidden'));hid.slice(0,8).forEach(c=>c.classList.remove('hidden'));
+  if(!RM)gsap.from(hid.slice(0,8),{y:40,opacity:0,stagger:.06,duration:.7,ease:'power3.out'});
+  if(hid.length<=8)e.currentTarget.parentElement.remove();ScrollTrigger.refresh();S.pop()});
+if(!RM)gsap.from(clipEls.slice(0,SHOW),{y:60,opacity:0,rotation:()=>rnd(-3,3),stagger:.07,duration:.9,ease:'power3.out',scrollTrigger:{trigger:wall,start:'top 85%'}});
+
 /* ============ runway show ============ */
 const rw=$('#runway'),model=$('#model'),modelImg=$('#modelImg');
 let rwVis=false;
@@ -530,9 +607,9 @@ gsap.from('#runway .rw-title > *',{y:40,opacity:0,stagger:.12,duration:1,ease:'p
 /* ============ meme machine ============ */
 const mm=$('#mmc'),mx=mm.getContext('2d'),mTop=$('#mTop'),mBot=$('#mBot'),mmState=$('#mmState');
 let sel=0;const imgs=[];
-function loadImg(i){return imgs[i]||(imgs[i]=new Promise(r=>{const im=new Image();im.onload=()=>r(im);im.onerror=()=>r(null);im.src=IMG(i)}))}
+function loadImg(i){return imgs[i]||(imgs[i]=new Promise(r=>{const im=new Image();im.onload=()=>r(im);im.onerror=()=>r(null);im.src=TPL[i].src}))}
 const thumbs=$('#thumbs');
-LOOKS.forEach((L,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',L.n);b.setAttribute('aria-pressed',String(i===0));b.innerHTML=`<img src="${IMG(i)}" alt="" loading="lazy" decoding="async">`;
+TPL.forEach((L,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',L.n);b.setAttribute('aria-pressed',String(i===0));b.innerHTML=`<img src="${L.src}" alt="" loading="lazy" decoding="async">`;
   b.addEventListener('click',()=>{sel=i;$$('#thumbs button').forEach((x,k)=>x.setAttribute('aria-pressed',String(k===i)));mTop.value=L.t;mBot.value=L.b;S.pop();draw()});thumbs.appendChild(b)});
 mTop.value=LOOKS[0].t;mBot.value=LOOKS[0].b;
 let fontReady=null;
@@ -550,14 +627,15 @@ let drawTok=0;
 async function draw(){
   const tok=++drawTok;await fonts();const im=await loadImg(sel);if(tok!==drawTok)return;
   const c=mx,W=1080,H=1350;c.fillStyle='#000';c.fillRect(0,0,W,H);
-  if(im){const s=Math.max(W/im.width,H/im.height),w=im.width*s,h=im.height*s;c.drawImage(im,(W-w)/2,(H-h)*.35,w,h)}
+  if(im&&im.width/im.height>.95){const h=W*im.height/im.width;c.save();c.filter='blur(30px) brightness(.35)';const s2=H/im.height;c.drawImage(im,(W-im.width*s2)/2,0,im.width*s2,H);c.restore();c.drawImage(im,0,(H-h)/2,W,h)}
+  else if(im){const s=Math.max(W/im.width,H/im.height),w=im.width*s,h=im.height*s;c.drawImage(im,(W-w)/2,(H-h)*.35,w,h)}
   const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'rgba(0,0,0,.25)');g.addColorStop(.25,'rgba(0,0,0,0)');g.addColorStop(.75,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.3)');c.fillStyle=g;c.fillRect(0,0,W,H);
   memeText(c,mTop.value,W,H,true);memeText(c,mBot.value,W,H,false);
   c.textBaseline='alphabetic';c.textAlign='right';c.font='italic 900 34px "Bodoni Moda", Georgia, serif';c.fillStyle='rgba(255,255,255,.85)';c.shadowColor='rgba(0,0,0,.6)';c.shadowBlur=8;c.fillText('$SALEM',W-30,H-22);c.shadowBlur=0;
   updateX();
 }
 let dt=null;[mTop,mBot].forEach(el=>el.addEventListener('input',()=>{clearTimeout(dt);dt=setTimeout(draw,60)}));
-$('#mRand').addEventListener('click',()=>{const r=pick(RANDOM);sel=Math.random()*LOOKS.length|0;$$('#thumbs button').forEach((x,k)=>x.setAttribute('aria-pressed',String(k===sel)));mTop.value=r[0];mBot.value=r[1];S.meow();draw();
+$('#mRand').addEventListener('click',()=>{const r=pick(RANDOM);sel=Math.random()*TPL.length|0;$$('#thumbs button').forEach((x,k)=>x.setAttribute('aria-pressed',String(k===sel)));mTop.value=r[0];mBot.value=r[1];S.meow();draw();
   gsap.fromTo(mm,{scale:.97,rotation:-1},{scale:1,rotation:0,duration:.5,ease:'back.out(2.5)'})});
 function blob(){return new Promise(r=>mm.toBlob(b=>r(b),'image/png'))}
 $('#mSave').addEventListener('click',async()=>{
