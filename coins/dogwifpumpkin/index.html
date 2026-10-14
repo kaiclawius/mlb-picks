@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
-/* Layout: a dumb, happy page where knitted pumpkin hats keep raining down and landing on everything. Hero with the dog, the lore, things that are better wif pumpkin, how to buy, and the pile at the bottom where every hat ends up. */
+/* Layout: a dumb, happy page about a dog wif a pumpkin. Hero with the polaroid, an oracle you can ask anything (he answers like a dog would), the lore, how to buy, and the dog peeking up at the end. */
 :root{
   --cream:#fff3e3; --paper:#fffaf2; --ink:#2b1608; --soft:#7a5a44; --pump:#ff7a12; --deep:#c94f00; --leaf:#3f6b2b; --sun:#ffc94a; --line:rgba(43,22,8,.12);
   --round:'Fredoka','Baloo 2',ui-rounded,'Arial Rounded MT Bold',system-ui,sans-serif;
@@ -27,7 +27,6 @@ a{color:inherit}
 img{display:block;max-width:100%;height:auto}
 ::selection{background:var(--pump);color:#fff}
 :focus-visible{outline:3px solid var(--leaf);outline-offset:3px}
-#rain{position:fixed;inset:0;width:100vw;height:100vh;z-index:30;pointer-events:none}
 
 /* buttons: squishy stickers */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--round);font-weight:700;font-size:19px;text-decoration:none;cursor:pointer;
@@ -79,17 +78,6 @@ section{position:relative;padding:clamp(80px,10vw,150px) clamp(16px,5vw,80px)}
 .lore p:nth-child(2){align-self:flex-end;text-align:right}
 .lore p:nth-child(3){align-self:center;text-align:center;color:var(--pump)}
 
-/* wif grid */
-.wif{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,2vw,24px);margin-top:clamp(36px,5vw,60px)}
-.thing{position:relative;background:var(--paper);border:3px solid var(--ink);border-radius:26px;box-shadow:0 6px 0 var(--ink);padding:56px 12px 18px;text-align:center;cursor:pointer;user-select:none;transition:transform .15s}
-.thing:hover{transform:translateY(-3px) rotate(-1deg)}
-.thing .em{font-size:clamp(64px,7vw,96px);line-height:1;display:inline-block;position:relative}
-.thing .em img{position:absolute;left:50%;top:-.5em;width:1.15em;translate:-50% 0;rotate:-8deg;transform-origin:50% 100%;pointer-events:none}
-.thing b{display:block;margin-top:14px;font-family:var(--round);font-weight:700;font-size:20px}
-.thing small{display:block;color:var(--soft);font-weight:700;font-size:14px;margin-top:2px}
-.thing.bare .em img{opacity:0}
-@media (max-width:820px){.wif{grid-template-columns:repeat(2,minmax(0,1fr))}}
-
 /* how to buy */
 #buy{background:var(--paper)}
 .steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,26px);margin-top:clamp(36px,5vw,60px)}
@@ -104,86 +92,117 @@ section{position:relative;padding:clamp(80px,10vw,150px) clamp(16px,5vw,80px)}
 .nfa{margin-top:18px;color:var(--soft);font-weight:700;font-size:15px}
 @media (max-width:820px){.steps{grid-template-columns:1fr}}
 
-/* the pile */
-#pile{min-height:90vh;min-height:90svh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;background:linear-gradient(180deg,var(--cream),#ffd9a8);padding-bottom:0}
-#pile .count{font-family:var(--round);font-weight:700;font-size:clamp(60px,10vw,160px);line-height:.9;color:var(--pump);margin-top:12px}
-#pile p{font-family:var(--round);font-weight:600;font-size:clamp(20px,2vw,28px);margin-top:8px}
-#pile .cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:24px}
-.ground{position:relative;margin-top:auto;width:100%;height:22px;background:var(--ink)}
 footer{background:var(--ink);color:#ffe9d2;padding:22px clamp(16px,5vw,80px) calc(26px + env(safe-area-inset-bottom,0px));display:flex;flex-wrap:wrap;gap:12px 30px;justify-content:space-between;font-size:14px;line-height:1.6;font-weight:700}
 footer p{max-width:70ch;opacity:.8}
 .progress{position:fixed;top:0;left:0;right:0;height:5px;z-index:45;background:var(--pump);transform-origin:0 50%;transform:scaleX(0);pointer-events:none}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ask the pumpkin (oracle) */
+#ask{background:var(--cream)}
+.ask{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(20px,3vw,48px);margin-top:clamp(30px,4vw,56px);align-items:start}
+.chat{background:var(--paper);border:3px solid var(--ink);border-radius:30px;box-shadow:0 7px 0 var(--ink);padding:clamp(16px,2vw,26px);display:flex;flex-direction:column;gap:14px;min-height:440px;max-height:560px;overflow:hidden;position:relative}
+.chat .log{display:flex;flex-direction:column;gap:12px;overflow-y:auto;flex:1;padding-right:4px;scrollbar-width:thin}
+.msg{display:flex;gap:10px;align-items:flex-end;max-width:88%}
+.msg.you{align-self:flex-end;flex-direction:row-reverse}
+.msg img{width:42px;height:42px;border-radius:50%;flex:none;border:2px solid var(--ink)}
+.msg .b{font-family:var(--round);font-weight:600;font-size:clamp(17px,1.4vw,20px);line-height:1.3;padding:12px 16px;border-radius:20px 20px 20px 6px;background:var(--sun);border:2px solid var(--ink)}
+.msg.you .b{background:#fff;border-radius:20px 20px 6px 20px}
+.msg .b.dots{letter-spacing:.2em}
+.askform{display:flex;gap:10px}
+.askform input{flex:1;min-width:0;font-family:var(--round);font-weight:600;font-size:18px;color:var(--ink);background:#fff;border:3px solid var(--ink);border-radius:999px;padding:12px 18px}
+.askform input:focus{outline:none;box-shadow:0 0 0 4px rgba(255,122,18,.35)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{font-family:var(--round);font-weight:600;font-size:14px;background:var(--cream);border:2px solid var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer}
+.chips button:hover{background:var(--sun)}
+.card{display:flex;flex-direction:column;gap:14px}
+#cardCv{width:100%;height:auto;aspect-ratio:1080/1350;border:3px solid var(--ink);border-radius:22px;box-shadow:0 7px 0 var(--ink);background:#fff}
+.card .row{display:flex;flex-wrap:wrap;gap:10px}
+.card p.tip{color:var(--soft);font-weight:700;font-size:15px}
+@media (max-width:900px){.ask{grid-template-columns:1fr}.chat{min-height:380px;max-height:470px}}
+
+/* the end: he peeks up */
+#end{overflow:hidden;text-align:center;padding-bottom:0;background:linear-gradient(180deg,var(--cream),#ffd9a8)}
+#end .h2{max-width:14ch;margin:0 auto}
+#end .cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:28px}
+.peek{position:relative;width:min(70vw,460px);margin:clamp(40px,6vw,80px) auto 0;height:clamp(250px,31vw,330px);overflow:hidden}
+.peek img{position:absolute;left:0;right:0;top:0;width:100%;border-radius:46% 46% 0 0}
 </style>
 </head>
 <body>
 
-<canvas id="rain" aria-hidden="true"></canvas>
-
 <nav id="nav">
-  <a class="logo" href="#top"><img src="img/hat-sm.png" alt=""><span class="t">dogwifpumpkin</span><span class="pill">$WIFP</span></a>
+  <a class="logo" href="#top"><img src="img/face.png" alt=""><span class="t">dogwifpumpkin</span><span class="pill">$WIFP</span></a>
   <div class="links">
+    <a href="#ask">ask him</a>
     <a href="#lore">lore</a>
-    <a href="#wif">wif</a>
     <a href="#buy">buy</a>
     <button id="mute" class="snd" type="button" aria-label="Turn sound on" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path class="w1" d="M16 9.5a3.5 3.5 0 0 1 0 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="w2" d="M18.5 7a7 7 0 0 1 0 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="x" d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-    <a href="#buy" class="btn sm" data-solid>buy $WIFP</a>
+    <a href="#buy" class="btn sm">buy $WIFP</a>
   </div>
 </nav>
 
 <header class="hero" id="top">
   <div>
-    <h1 data-solid><span>dog</span><span>wif</span><span class="o">pumpkin.</span></h1>
-    <p class="sub" data-solid>it’s a dog. wif a pumpkin. that’s the whole thing.</p>
-    <div class="cta"><a class="btn" href="#buy" data-solid>buy $WIFP</a><button class="btn white rainBtn" type="button" data-solid>🎃 make it rain</button></div>
-    <p class="hint">psst. grab a pumpkin. throw it.</p>
+    <h1><span>dog</span><span>wif</span><span class="o">pumpkin.</span></h1>
+    <p class="sub">it’s a dog. wif a pumpkin. that’s the whole thing.</p>
+    <div class="cta"><a class="btn" href="#buy">buy $WIFP</a><a class="btn white" href="#ask">🎃 ask him anything</a></div>
   </div>
-  <figure class="photo" data-solid>
+  <figure class="photo" id="photo">
     <span class="tape" aria-hidden="true"></span>
     <div class="frame"><img src="img/dog.webp" alt="A small dog wearing a knitted pumpkin hat" width="1200" height="1160" fetchpriority="high"></div>
-    <figcaption class="cap">he didn’t ask for this.</figcaption>
+    <figcaption class="cap" id="cap">he didn’t ask for this.</figcaption>
   </figure>
 </header>
 
 <main>
-  <section id="lore">
-    <h2 class="h2" data-solid>the <span class="o">lore.</span></h2>
-    <div class="lore">
-      <p data-solid>once upon a time there was a dog.</p>
-      <p data-solid>someone put a pumpkin on it.</p>
-      <p data-solid>the dog did not complain. the end.</p>
+  <section id="ask">
+    <h2 class="h2">ask the <span class="o">pumpkin.</span></h2>
+    <p class="sub" style="color:var(--soft);font-weight:700;font-size:clamp(18px,1.4vw,21px);margin-top:14px;max-width:46ch">he knows nothing. he answers anyway. ask him about your bags, your ex, the moon. then post his answer.</p>
+    <div class="ask">
+      <div class="chat">
+        <div class="log" id="log" aria-live="polite"></div>
+        <div class="chips" id="chips"></div>
+        <form class="askform" id="askForm" autocomplete="off"><label class="sr" for="q" style="position:absolute;left:-9999px">your question</label><input id="q" maxlength="90" placeholder="ask him anything…"><button class="btn sm" type="submit">ask</button></form>
+      </div>
+      <div class="card">
+        <canvas id="cardCv" width="1080" height="1350" role="img" aria-label="Shareable card with your question and his answer"></canvas>
+        <div class="row"><button class="btn sm" type="button" id="save">download</button><button class="btn white sm" type="button" id="copyImg">copy image</button><a class="btn green sm" id="post" href="#" target="_blank" rel="noopener">post on X</a></div>
+        <p class="tip" id="tip">ask him something and the card updates.</p>
+      </div>
     </div>
   </section>
 
-  <section id="wif">
-    <h2 class="h2" data-solid>everything is better <span class="o">wif pumpkin.</span></h2>
-    <div class="wif" id="things"></div>
+  <section id="lore">
+    <h2 class="h2">the <span class="o">lore.</span></h2>
+    <div class="lore">
+      <p>once upon a time there was a dog.</p>
+      <p>someone put a pumpkin on it.</p>
+      <p>the dog did not complain. the end.</p>
+    </div>
   </section>
 
   <section id="buy">
-    <h2 class="h2" data-solid>get <span class="o">$WIFP.</span></h2>
+    <h2 class="h2">get <span class="o">$WIFP.</span></h2>
     <div class="steps">
-      <div class="step" data-solid><i>1</i><b>get a wallet</b><p>phantom, solflare or backpack. write the seed phrase down. don’t show the dog.</p></div>
-      <div class="step" data-solid><i>2</i><b>get sol</b><p>buy sol on an exchange and send it to your wallet. keep a little for fees.</p></div>
-      <div class="step" data-solid><i>3</i><b>swap for $WIFP</b><p>open pump.fun, paste the address below, check every letter, swap. welcome to the patch.</p></div>
+      <div class="step"><i>1</i><b>get a wallet</b><p>phantom, solflare or backpack. write the seed phrase down. don’t show the dog.</p></div>
+      <div class="step"><i>2</i><b>get sol</b><p>buy sol on an exchange and send it to your wallet. keep a little for fees.</p></div>
+      <div class="step"><i>3</i><b>swap for $WIFP</b><p>open pump.fun, paste the address below, check every letter, swap. welcome to the patch.</p></div>
     </div>
     <div class="ca"><code id="ca">coming soon. very soon.</code><button class="btn white sm" type="button" id="copyCa">copy</button><a class="btn sm" href="https://pump.fun" target="_blank" rel="noopener">pump.fun ↗</a></div>
     <div class="facts"><span>1,000,000,000 supply</span><span>0% tax</span><span>fair launch</span><span>no team bags</span></div>
     <p class="nfa">only use money you can lose. it’s a dog wif a pumpkin. this is not financial advice.</p>
   </section>
 
-  <section id="pile">
-    <h2 class="h2" data-solid>the <span class="o">pile.</span></h2>
-    <p class="count" id="count">0</p>
-    <p>pumpkins fell off this website so far.</p>
-    <div class="cta"><button class="btn rainBtn" type="button" data-solid>🎃 more pumpkins</button><a class="btn white" id="xLink" href="#top" target="_blank" rel="noopener" data-solid>join the patch</a></div>
-    <div class="ground" id="ground"></div>
+  <section id="end">
+    <h2 class="h2">it’s a dog. <span class="o">wif a pumpkin.</span></h2>
+    <div class="cta"><a class="btn" href="#buy">buy $WIFP</a><a class="btn white" id="xLink" href="#top" target="_blank" rel="noopener">join the patch</a></div>
+    <div class="peek" id="peek" aria-hidden="true"><img src="img/dog.webp" alt="" width="1200" height="1160" loading="lazy"></div>
   </section>
 </main>
 
 <footer>
   <span>dogwifpumpkin · $WIFP · 2026</span>
-  <p>a memecoin for fun. $WIFP has no intrinsic value and no expectation of financial return. not financial advice.</p>
+  <p>a memecoin for fun. $WIFP has no intrinsic value and no expectation of financial return. his answers are jokes, not financial advice.</p>
 </footer>
 
 <div class="progress" id="prog" aria-hidden="true"></div>
@@ -194,14 +213,14 @@ footer p{max-width:70ch;opacity:.8}
 <script>window.ScrollTrigger||document.write('<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"><\/script>')</script>
 <script src="vendor/lenis.min.js"></script>
 <script>window.Lenis||document.write('<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"><\/script>')</script>
-<script src="vendor/matter.min.js"></script>
-<script>window.Matter||document.write('<script src="https://cdn.jsdelivr.net/npm/matter-js@0.20.0/build/matter.min.js"><\/script>')</script>
 <script>
 (()=>{
 'use strict';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const rnd=(a,b)=>a+Math.random()*(b-a);
+const pick=a=>a[Math.random()*a.length|0];
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 gsap.registerPlugin(ScrollTrigger);
 
 /* ===== launch config ===== */
@@ -209,8 +228,8 @@ const CA='';     // $WIFP contract address
 const X_URL='';  // community link
 if(X_URL)$('#xLink').href=X_URL;else{$('#xLink').removeAttribute('target');$('#xLink').href='#buy'}
 
-/* ===== sound: soft plushy plops ===== */
-let AC=null,OUT=null,soundOn=false,userMuted=false,lastPlop=0;
+/* ===== sound: a small bork ===== */
+let AC=null,OUT=null,soundOn=false,userMuted=false;
 function audio(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)();OUT=AC.createGain();OUT.gain.value=.7;OUT.connect(AC.destination)}catch(e){AC=null}}if(AC&&AC.state==='suspended')AC.resume().catch(()=>{});return AC}
 const live=()=>soundOn&&!userMuted&&AC;
 const muteBtn=$('#mute');
@@ -219,14 +238,16 @@ try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
 const UNLOCK=['pointerdown','keydown','touchend'];
 function unlock(e){if(e&&e.target&&e.target.closest&&e.target.closest('#mute'))return;audio();if(!userMuted){soundOn=true;showSound()}UNLOCK.forEach(t=>removeEventListener(t,unlock,true))}
 UNLOCK.forEach(t=>addEventListener(t,unlock,true));
-muteBtn.addEventListener('click',()=>{audio();if(soundOn&&!userMuted)userMuted=true;else{userMuted=false;soundOn=true}showSound()});
-function plop(v=1){
-  if(!live())return;const now=performance.now();if(now-lastPlop<70)return;lastPlop=now;
-  const a=AC,t=a.currentTime,o=a.createOscillator(),g=a.createGain();o.type='sine';
-  const f=rnd(150,240);o.frequency.setValueAtTime(f*1.6,t);o.frequency.exponentialRampToValueAtTime(f*.6,t+.12);
-  g.gain.setValueAtTime(Math.min(.22,.06+v*.03),t);g.gain.exponentialRampToValueAtTime(.001,t+.16);o.connect(g);g.connect(OUT);o.start(t);o.stop(t+.18);
+muteBtn.addEventListener('click',()=>{audio();if(soundOn&&!userMuted)userMuted=true;else{userMuted=false;soundOn=true;bork()}showSound()});
+function bork(n=1){
+  if(!live())return;const a=AC;
+  for(let i=0;i<n;i++){const t=a.currentTime+i*.22,o=a.createOscillator(),f=a.createBiquadFilter(),g=a.createGain();
+    o.type='sawtooth';o.frequency.setValueAtTime(rnd(420,520),t);o.frequency.exponentialRampToValueAtTime(rnd(200,260),t+.13);
+    f.type='bandpass';f.frequency.setValueAtTime(1300,t);f.frequency.exponentialRampToValueAtTime(700,t+.13);f.Q.value=2.2;
+    g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.24,t+.012);g.gain.exponentialRampToValueAtTime(.001,t+.17);
+    o.connect(f);f.connect(g);g.connect(OUT);o.start(t);o.stop(t+.19)}
 }
-function whoosh(){if(!live())return;const a=AC,t=a.currentTime,o=a.createOscillator(),g=a.createGain();o.type='triangle';o.frequency.setValueAtTime(900,t);o.frequency.exponentialRampToValueAtTime(260,t+.35);g.gain.setValueAtTime(.08,t);g.gain.exponentialRampToValueAtTime(.001,t+.4);o.connect(g);g.connect(OUT);o.start(t);o.stop(t+.42)}
+function blip(){if(!live())return;const a=AC,t=a.currentTime,o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(880,t);o.frequency.exponentialRampToValueAtTime(1320,t+.06);g.gain.setValueAtTime(.06,t);g.gain.exponentialRampToValueAtTime(.001,t+.1);o.connect(g);g.connect(OUT);o.start(t);o.stop(t+.12)}
 
 /* ===== smooth scroll + chrome ===== */
 const lenis=RM?null:new Lenis({lerp:.1,smoothWheel:true});
@@ -236,114 +257,138 @@ $$('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttri
 (function nav(){const n=$('#nav');let ly=0;addEventListener('scroll',()=>{const y=scrollY;n.classList.toggle('solid',y>30);n.classList.toggle('hide',y>ly&&y>300);ly=y},{passive:true})})();
 gsap.to('#prog',{scaleX:1,ease:'none',scrollTrigger:{trigger:document.documentElement,start:'top top',end:'bottom bottom',scrub:.3}});
 
-/* ===== things that are better wif pumpkin ===== */
-const THINGS=[['🌕','the moon','finally dressed'],['🐈‍⬛','a cat','did not consent'],['📈','the chart','up only now'],['🗿','moai','unbothered'],['🐸','a frog','pumpkin frog'],['🍔','a burger','seasonal menu'],['👻','a ghost','boo wif hat'],['🦖','a dino','extinct, but cozy']];
-const thingsEl=$('#things');
-THINGS.forEach(([e,n,s])=>{const d=document.createElement('button');d.type='button';d.className='thing';d.setAttribute('data-solid','');
-  d.innerHTML=`<span class="em">${e}<img src="img/hat.webp" alt=""></span><b>${n} wif pumpkin</b><small>${s}</small>`;thingsEl.appendChild(d)});
-
-/* ===== the rain ===== */
-const {Engine,Bodies,Body,Composite,Query,Constraint,Events,Sleeping}=Matter;
-const cv=$('#rain'),cx=cv.getContext('2d');
-const hatImg=new Image();hatImg.src='img/hat.webp';
-const small=matchMedia('(max-width:760px)').matches;
-const MAX=small?70:150,BASE=small?78:118;
-const engine=Engine.create({enableSleeping:true});engine.gravity.y=1.1;
-const world=engine.world;
-let statics=[],hats=[],fallen=0,dpr=1;
-function size(){dpr=Math.min(2,devicePixelRatio||1);cv.width=innerWidth*dpr;cv.height=innerHeight*dpr;cx.setTransform(dpr,0,0,dpr,0,0)}
-function docRect(el){const r=el.getBoundingClientRect();return{x:r.left+scrollX,y:r.top+scrollY,w:r.width,h:r.height}}
-function buildStatics(){
-  statics.forEach(b=>Composite.remove(world,b));statics=[];
-  const docW=document.documentElement.scrollWidth,docH=document.documentElement.scrollHeight;
-  const add=(x,y,w,h,label)=>{if(w<4||h<4)return;const b=Bodies.rectangle(x+w/2,y+h/2,w,h,{isStatic:true,friction:.8,label:label||'solid'});statics.push(b)};
-  $$('[data-solid]').forEach(el=>{if(el.closest('#nav'))return;const r=docRect(el);
-    // big text blocks: one collider per rendered line so hats sit on the words, not in the gaps
-    if(el.matches('h1,h2,p')){const rng=document.createRange();rng.selectNodeContents(el);const rects=[...rng.getClientRects()];
-      const lines=[];rects.forEach(rc=>{if(rc.width<6)return;const l=lines.find(L=>Math.abs(L.top-rc.top)<rc.height*.5);if(l){l.left=Math.min(l.left,rc.left);l.right=Math.max(l.right,rc.right);l.bottom=Math.max(l.bottom,rc.bottom)}else lines.push({top:rc.top,bottom:rc.bottom,left:rc.left,right:rc.right})});
-      lines.forEach(L=>{const pad=(L.bottom-L.top)*.18;add(L.left+scrollX,L.top+scrollY+pad,L.right-L.left,L.bottom-L.top-pad*1.6)});return}
-    add(r.x,r.y,r.w,r.h)});
-  const g=docRect($('#ground'));add(-200,g.y,docW+400,400,'ground');
-  add(-60,-2000,60,docH+4000,'wall');add(docW,-2000,60,docH+4000,'wall');
-  Composite.add(world,statics);
-  hats.forEach(h=>Sleeping.set(h,false));
-}
-function spawn(x,y,vx=0,vy=0){
-  if(hats.length>=MAX){const old=hats.shift();Composite.remove(world,old)}
-  const w=BASE*rnd(.6,1.15),h=w*321/360;
-  const b=Bodies.rectangle(x,y,w*.82,h*.46,{chamfer:{radius:w*.12},restitution:.15,friction:.9,frictionAir:.012,density:.0015,label:'hat'});
-  b.plugin={w,h};Body.setAngle(b,rnd(-.6,.6));Body.setVelocity(b,{x:vx||rnd(-1.5,1.5),y:vy});Body.setAngularVelocity(b,rnd(-.08,.08));
-  hats.push(b);Composite.add(world,b);return b;
-}
-function rainBurst(n,spread=1){
-  const top=scrollY-120;
-  for(let i=0;i<n;i++)setTimeout(()=>spawn(rnd(innerWidth*.05,innerWidth*.95),top-rnd(0,260*spread)),i*rnd(50,120));
-  whoosh();
-}
-Events.on(engine,'collisionStart',e=>{for(const p of e.pairs){const hat=p.bodyA.label==='hat'?p.bodyA:p.bodyB.label==='hat'?p.bodyB:null;if(!hat)continue;const sp=Math.hypot(hat.velocity.x,hat.velocity.y);if(sp>3){const y=hat.position.y-scrollY;if(y>0&&y<innerHeight)plop(sp/4)}}});
-// grab and throw
-let drag=null,lastP=null;
-function docPoint(e){return{x:e.clientX+scrollX,y:e.clientY+scrollY}}
-addEventListener('pointerdown',e=>{
-  if(e.button>0)return;const p=docPoint(e);const hit=Query.point(hats,p)[0];
-  if(hit){e.preventDefault();Sleeping.set(hit,false);drag=Constraint.create({pointA:p,bodyB:hit,pointB:{x:p.x-hit.position.x,y:p.y-hit.position.y},stiffness:.12,damping:.08,length:0});Composite.add(world,drag);lastP=p;document.body.style.cursor='grabbing';return}
-  // tap on empty page: a pumpkin drops from just above your finger
-  if(!e.target.closest('a,button,input,code,.ca')&&!RM){spawn(p.x,p.y-80,0,2)}
-},{passive:false});
-addEventListener('touchstart',e=>{const t=e.touches[0];if(!t)return;const p={x:t.clientX+scrollX,y:t.clientY+scrollY};if(Query.point(hats,p)[0])e.preventDefault()},{passive:false});
-addEventListener('pointermove',e=>{if(!drag)return;const p=docPoint(e);drag.pointA=p;lastP=p});
-const endDrag=()=>{if(!drag)return;const b=drag.bodyB;Composite.remove(world,drag);drag=null;document.body.style.cursor='';Body.setVelocity(b,{x:Math.max(-40,Math.min(40,b.velocity.x*1.4)),y:Math.max(-40,Math.min(40,b.velocity.y*1.4))});whoosh()};
-addEventListener('pointerup',endDrag);addEventListener('pointercancel',endDrag);
-// simulate + draw
-let acc=0,lastT=performance.now();
-function frame(){
-  const now=performance.now();let dt=Math.min(50,now-lastT);lastT=now;
-  if(!document.hidden){acc+=dt;while(acc>=1000/60){Engine.update(engine,1000/60);acc-=1000/60}}
-  cx.clearRect(0,0,innerWidth,innerHeight);
-  if(hatImg.complete)for(const b of hats){const y=b.position.y-scrollY,x=b.position.x-scrollX,{w,h}=b.plugin;if(y<-h||y>innerHeight+h)continue;
-    cx.save();cx.translate(x,y);cx.rotate(b.angle);cx.drawImage(hatImg,-w/2,-h*.36,w,h);cx.restore()}
-  // anything that slips past the floor counts as fallen
-  for(let i=hats.length-1;i>=0;i--){if(hats[i].position.y>document.documentElement.scrollHeight+400){Composite.remove(world,hats[i]);hats.splice(i,1)}}
-}
-gsap.ticker.add(frame);
-size();addEventListener('resize',()=>{size();clearTimeout(window.__rb);window.__rb=setTimeout(buildStatics,200)});
-const ready=()=>{buildStatics();ScrollTrigger.refresh()};
-if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>setTimeout(ready,50));
-addEventListener('load',()=>setTimeout(ready,80));
-ready();
-// counter: hats resting in the pile section
-const countEl=$('#count');let shown=0;
-setInterval(()=>{const pileTop=docRect($('#pile')).y;const n=hats.filter(h=>h.position.y>pileTop).length+fallen;if(n!==shown){shown=n;countEl.textContent=n.toLocaleString('en-US')}},500);
-// self-playing weather: a downpour at the start, then a drizzle that follows you down the page
+/* ===== hero: the confused head tilt + rotating captions ===== */
+const CAPS=['he didn’t ask for this.','he is thinking about it.','he does not know what a blockchain is.','he would like a treat now.','he is not mad. just disappointed.','he has seen your portfolio.'];
 if(!RM){
-  setTimeout(()=>rainBurst(small?18:34,1.6),600);
-  (function drizzle(){setTimeout(()=>{if(!document.hidden&&!drag)spawn(rnd(innerWidth*.05,innerWidth*.95),scrollY-100);drizzle()},rnd(1400,2600))})();
-  // the further you scroll, the more it rains on the pile
-  ScrollTrigger.create({trigger:'#pile',start:'top 70%',onEnter:()=>rainBurst(small?14:26,1)});
-}else{
-  // calm version: a few hats placed on the headline
-  setTimeout(()=>{for(let i=0;i<6;i++)spawn(rnd(innerWidth*.1,innerWidth*.6),scrollY+120)},300);
+  gsap.from('.hero h1 span',{yPercent:100,opacity:0,stagger:.1,duration:.9,ease:'back.out(1.7)'});
+  gsap.from('.photo',{rotation:-12,scale:.85,opacity:0,duration:1.1,ease:'back.out(1.4)'});
+  gsap.from('.hero .sub,.hero .cta',{y:20,opacity:0,stagger:.1,duration:.7,delay:.4,ease:'power3.out'});
+  (function tilt(){gsap.timeline({delay:rnd(2.5,4.5),onComplete:tilt})
+    .to('#photo',{rotation:rnd(-9,-5)*(Math.random()<.5?-1:1),duration:.35,ease:'back.out(2)'})
+    .to('#photo',{rotation:2.5,duration:.6,ease:'elastic.out(1,.5)',delay:1.1})})();
+  let ci=0;setInterval(()=>{ci=(ci+1)%CAPS.length;gsap.to('#cap',{opacity:0,y:6,duration:.2,onComplete:()=>{$('#cap').textContent=CAPS[ci];gsap.to('#cap',{opacity:1,y:0,duration:.3})}})},4200);
 }
-$$('.rainBtn').forEach(b=>b.addEventListener('click',()=>rainBurst(small?14:26,1.2)));
-// tapping a thing knocks its pumpkin off into the rain
-$$('.thing').forEach(t=>t.addEventListener('click',()=>{
-  if(t.classList.contains('bare'))return;const img=t.querySelector('.em img');const r=img.getBoundingClientRect();
-  t.classList.add('bare');spawn(r.left+r.width/2+scrollX,r.top+r.height/2+scrollY,rnd(-6,6),-14);plop(2);
-  setTimeout(()=>{t.classList.remove('bare');gsap.from(img,{y:-120,opacity:0,duration:.6,ease:'bounce.out'})},2600);
-}));
-if(!RM)gsap.to('.thing .em img',{rotation:8,duration:1.2,yoyo:true,repeat:-1,ease:'sine.inOut',stagger:{each:.15,from:'random'}});
 
-/* ===== intro + reveals ===== */
-if(!RM){
-  gsap.from('.hero h1 span',{yPercent:100,opacity:0,stagger:.1,duration:.9,ease:'back.out(1.7)',onComplete:buildStatics});
-  gsap.from('.photo',{rotation:-12,scale:.85,opacity:0,duration:1.1,ease:'back.out(1.4)',onComplete:buildStatics});
-  gsap.from('.hero .sub,.hero .cta,.hint',{y:20,opacity:0,stagger:.1,duration:.7,delay:.4,ease:'power3.out'});
+/* ===== the oracle ===== */
+const POOLS=[
+  [/\b(buy|ape|enter|get in|invest)\b/,['yes. but wif pumpkin.','buy? i can’t even open doors.','the pumpkin says yes. i say bork.','only if you put a hat on first.','i already did. with my paws. it was hard.']],
+  [/\b(sell|dump|exit|take profit|tp)\b/,['sell? in this hat?','no. hold the pumpkin.','you sell, i cry. look at my eyes.','absolutely not. sit. stay.','sell and i’ll chew your shoes.']],
+  [/\b(moon|wen|pump|100x|1000x|ath|price)\b/,['soon. after my nap.','wen moon? wen treat?','the moon is wearing a pumpkin too. so yes.','i bark at the moon. that’s all i know about the moon.','my paws are too short for charts.']],
+  [/\b(rug|scam|dev|team|safe|legit)\b/,['the only rug here is the one i sleep on.','i don’t even have thumbs.','the dev is a dog. i am the dog. i am the dev.','legit? i’m wearing a pumpkin. what do you think.']],
+  [/\b(love|girlfriend|boyfriend|ex|crush|date|marry|wife|husband)\b/,['they love you. they love the pumpkin more.','send them a picture of me. works every time.','no. but i do.','your ex? bork. that’s a no in dog.']],
+  [/\b(who|what) are you\b|\byour name\b/,['i’m a dog. wif a pumpkin. next question.','nobody told me either.','a good boy in a bad hat.']],
+  [/\b(rich|money|lambo|millionaire|retire)\b/,['you will be rich in treats.','lambo? i can’t reach the pedals.','retire? i never worked. i’m a dog.']],
+  [/\b(why).*(hat|pumpkin)\b/,['i don’t know. i woke up like this.','ask the human. i want answers too.']],
+  [/\b(financial advice|nfa|advice)\b/,['this is not financial advice. this is a dog.','my advice: nap more.']]
+];
+const ANY=['bork.','absolutely not.','yes. no. maybe. i’m a dog.','ask me again after dinner.','the pumpkin knows. the pumpkin isn’t telling.','outlook good. hat itchy.','signs point to treats.','*stares in pumpkin*','100%. trust me, i’m wearing a hat.','no comment. talk to my lawyer. he’s a cat.','that’s above my pay grade. i’m paid in treats.','i heard “walk”. was that you?','yes, if you scratch behind the ears first.','big if true. bork if false.'];
+function answer(q){
+  const s=q.toLowerCase().trim();
+  if(!s)return'you didn’t ask anything. that’s fine. i didn’t ask for this hat.';
+  for(const[re,list]of POOLS)if(re.test(s))return pick(list);
+  return pick(ANY);
 }
+const DEMO=['should i buy $WIFP?','wen moon?','is this financial advice?','does she love me?','why the hat?','should i sell?','are you the dev?','will i be rich?'];
+const CHIPS=['should i buy?','wen moon?','should i sell?','is the dev safe?','does my ex miss me?','why the hat?'];
+const log=$('#log'),qIn=$('#q');
+let demoOn=!RM,busy=false,lastQA=null;
+function bubble(who,text){
+  const m=document.createElement('div');m.className='msg '+who;
+  m.innerHTML=who==='dog'?'<img src="img/face.png" alt=""><div class="b"></div>':'<div class="b"></div>';
+  m.querySelector('.b').textContent=text;log.appendChild(m);log.scrollTop=log.scrollHeight;
+  gsap.from(m,{y:16,opacity:0,scale:.92,transformOrigin:who==='dog'?'0% 100%':'100% 100%',duration:.35,ease:'back.out(2)'});
+  while(log.children.length>14)log.firstChild.remove();
+  return m;
+}
+async function ask(q,fromUser){
+  if(busy)return;busy=true;
+  bubble('you',q||'…');blip();
+  const think=bubble('dog','• • •');think.querySelector('.b').classList.add('dots');
+  gsap.to('#photo',{rotation:-7,duration:.3,ease:'back.out(2)'});
+  await sleep(fromUser?rnd(900,1500):rnd(1100,1700));
+  const a=answer(q);
+  think.querySelector('.b').classList.remove('dots');think.querySelector('.b').textContent=a;log.scrollTop=log.scrollHeight;
+  gsap.fromTo(think.querySelector('.b'),{scale:.9},{scale:1,duration:.3,ease:'back.out(3)'});
+  gsap.to('#photo',{rotation:2.5,duration:.6,ease:'elastic.out(1,.5)'});
+  if(/bork/.test(a))bork(2);else bork(1);
+  lastQA={q:q||'…',a};
+  if(fromUser)drawCard(lastQA);
+  busy=false;
+}
+$('#askForm').addEventListener('submit',e=>{e.preventDefault();const q=qIn.value.trim().slice(0,90);demoOn=false;audio();if(!userMuted){soundOn=true;showSound()}ask(q,true);qIn.value=''});
+qIn.addEventListener('focus',()=>{demoOn=false});
+CHIPS.forEach(c=>{const b=document.createElement('button');b.type='button';b.textContent=c;b.addEventListener('click',()=>{demoOn=false;audio();if(!userMuted){soundOn=true;showSound()}ask(c,true)});$('#chips').appendChild(b)});
+// demo: people keep asking him things until you take over
+let chatVis=false;ScrollTrigger.create({trigger:'.chat',start:'top 90%',end:'bottom 10%',onToggle:s=>chatVis=s.isActive});
+(async function demo(){
+  let i=0;
+  await sleep(600);
+  bubble('dog','hi. i’m a dog. ask me anything.');
+  for(;;){
+    await sleep(2600);
+    if(!demoOn)return;
+    if(!chatVis||document.hidden)continue;
+    await ask(DEMO[i++%DEMO.length],false);
+  }
+})();
+
+/* ===== share card ===== */
+const cv=$('#cardCv'),c=cv.getContext('2d');
+const photo=new Image();photo.src='img/dog.webp';
+const face=new Image();face.src='img/face.png';
+function wrap(t,x,y,maxW,lh,draw=true){const words=t.split(' ');let line='',lines=[];for(const w of words){const tt=line?line+' '+w:w;if(c.measureText(tt).width>maxW&&line){lines.push(line);line=w}else line=tt}if(line)lines.push(line);if(draw)lines.forEach((l,i)=>c.fillText(l,x,y+i*lh));return lines.length}
+function rrect(x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+async function drawCard(qa){
+  qa=qa||{q:'should i buy $WIFP?',a:'yes. but wif pumpkin.'};
+  try{await Promise.race([document.fonts.load('700 60px Fredoka'),sleep(1200)])}catch(e){}
+  if(!photo.complete)await new Promise(r=>{photo.onload=r;photo.onerror=r});
+  if(!face.complete)await new Promise(r=>{face.onload=r;face.onerror=r});
+  const W=1080,H=1350;
+  c.fillStyle='#fff3e3';c.fillRect(0,0,W,H);
+  // polaroid
+  c.save();c.translate(540,360);c.rotate(.035);c.fillStyle='#fff';c.shadowColor='rgba(90,40,0,.25)';c.shadowBlur=40;c.shadowOffsetY=16;c.fillRect(-300,-300,600,640);c.shadowColor='transparent';
+  const ph=560*photo.height/photo.width;c.drawImage(photo,-280,-280,560,Math.min(560,ph));
+  c.fillStyle='rgba(255,201,74,.8)';c.save();c.rotate(-.07);c.fillRect(-80,-320,160,40);c.restore();
+  c.restore();
+  // question bubble
+  c.font='600 40px Fredoka, "Arial Rounded MT Bold", sans-serif';
+  const qLines=wrap(qa.q,0,0,620,50,false);const qh=qLines*50+44;
+  const qy=740;rrect(1080-80-700,qy,700,qh,34);c.fillStyle='#fff';c.fill();c.lineWidth=5;c.strokeStyle='#2b1608';c.stroke();
+  c.fillStyle='#2b1608';c.textBaseline='top';wrap(qa.q,1080-80-700+40,qy+22,620,50);
+  // answer bubble with his face
+  c.font='700 50px Fredoka, "Arial Rounded MT Bold", sans-serif';
+  const aLines=wrap(qa.a,0,0,640,60,false);const ah=aLines*60+54;
+  const ay=qy+qh+36;rrect(200,ay,760,ah,38);c.fillStyle='#ffc94a';c.fill();c.lineWidth=5;c.stroke();
+  c.fillStyle='#2b1608';wrap(qa.a,240,ay+27,680,60);
+  c.save();c.beginPath();c.arc(130,ay+ah-60,62,0,7);c.closePath();c.fillStyle='#2b1608';c.fill();c.beginPath();c.arc(130,ay+ah-60,56,0,7);c.clip();c.drawImage(face,74,ay+ah-116,112,112);c.restore();
+  // footer
+  c.textBaseline='alphabetic';c.font='700 46px Fredoka, sans-serif';c.fillStyle='#ff7a12';c.textAlign='left';c.fillText('dogwifpumpkin',80,1290);
+  c.textAlign='right';c.fillStyle='#2b1608';c.font='700 40px Fredoka, sans-serif';c.fillText('$WIFP',1000,1290);c.textAlign='left';
+  $('#post').href='https://x.com/intent/post?text='+encodeURIComponent(`me: ${qa.q}\ndogwifpumpkin: ${qa.a}\n\n$WIFP 🎃`)+'&url='+encodeURIComponent(location.origin+location.pathname);
+  $('#tip').textContent='your card is ready. download it or copy it, then post it.';
+}
+drawCard();
+function blob(){return new Promise(r=>cv.toBlob(b=>r(b),'image/png'))}
+$('#save').addEventListener('click',async()=>{try{const b=await blob();const f=new File([b],'dogwifpumpkin.png',{type:'image/png'});
+  if(matchMedia('(pointer:coarse)').matches&&navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],text:'$WIFP'}).catch(()=>{});return}
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=f.name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}catch(e){$('#tip').textContent='could not save here. long-press the card to save it.'}});
+$('#copyImg').addEventListener('click',async()=>{try{if(!window.ClipboardItem||!navigator.clipboard)throw 0;await navigator.clipboard.write([new ClipboardItem({'image/png':blob()})]);$('#tip').textContent='copied. paste it into your post.'}catch(e){$('#tip').textContent='your browser can’t copy images. use download.'}});
+
+/* ===== reveals ===== */
+if(!RM){
+  $$('.h2').forEach(h=>gsap.from(h,{y:40,opacity:0,duration:.8,ease:'back.out(1.6)',scrollTrigger:{trigger:h,start:'top 88%'}}));
+  $$('.lore p').forEach((p,i)=>gsap.from(p,{x:i%2?60:-60,opacity:0,rotation:i%2?2:-2,duration:.9,ease:'back.out(1.5)',scrollTrigger:{trigger:p,start:'top 85%'}}));
+  gsap.from('.step',{y:50,opacity:0,stagger:.1,duration:.8,ease:'back.out(1.6)',scrollTrigger:{trigger:'.steps',start:'top 85%'}});
+  // the end: he slowly peeks up from the bottom of the page
+  gsap.fromTo('.peek img',{yPercent:100},{yPercent:0,ease:'none',scrollTrigger:{trigger:'#end',start:'top 70%',end:'bottom bottom',scrub:.8}});
+  ScrollTrigger.create({trigger:'.peek',start:'top 60%',once:true,onEnter:()=>bork(2)});
+}else gsap.set('.peek img',{yPercent:0});
 
 /* ===== contract address ===== */
 $('#ca').textContent=CA||'coming soon. very soon.';
 $('#copyCa').addEventListener('click',e=>{const b=e.currentTarget,o=b.textContent;if(CA&&navigator.clipboard)navigator.clipboard.writeText(CA).then(()=>{b.textContent='copied';setTimeout(()=>b.textContent=o,1200)});else{b.textContent='soon';setTimeout(()=>b.textContent=o,1200)}});
 })();
+
 </script>
 </body>
 </html>
