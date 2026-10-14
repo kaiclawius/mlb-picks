@@ -42,10 +42,11 @@ export async function postTweet(text, replyTo) {
 
 export async function getMentions(userId, sinceIso) {
   const url = `https://api.x.com/2/users/${userId}/mentions`;
-  const query = { max_results: "20", start_time: sinceIso, "tweet.fields": "author_id,created_at,conversation_id" };
+  const query = { max_results: "20", start_time: sinceIso, "tweet.fields": "author_id,created_at,conversation_id", expansions: "author_id", "user.fields": "username" };
   const qs = Object.entries(query).map(([k, v]) => `${enc(k)}=${enc(v)}`).join("&");
   const res = await fetch(`${url}?${qs}`, { headers: { Authorization: authHeader("GET", url, query) } });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(`X mentions failed ${res.status}: ${JSON.stringify(data)}`);
-  return data.data || [];
+  const names = Object.fromEntries((data.includes?.users || []).map((u) => [u.id, u.username]));
+  return (data.data || []).map((t) => ({ ...t, username: names[t.author_id] || null }));
 }

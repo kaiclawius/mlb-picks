@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import Anthropic from "@anthropic-ai/sdk";
 import { MODEL, PERSONA } from "./_persona.js";
 
@@ -17,6 +18,17 @@ export async function generate(instruction, userText) {
   if (msg.stop_reason === "refusal") return null;
   const text = msg.content.filter((b) => b.type === "text").map((b) => b.text).join("").trim();
   return text.replace(/^["“]|["”]$/g, "").trim() || null;
+}
+
+export { unsafeForX } from "./_guard.js";
+
+// The reply desk (admin.html) sends "Authorization: Bearer <ADMIN_TOKEN>".
+export function adminAuthorized(req) {
+  const token = process.env.ADMIN_TOKEN;
+  const given = String(req.headers.authorization || "");
+  if (!token || token.length < 16) return false;
+  const a = Buffer.from(given), b = Buffer.from(`Bearer ${token}`);
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
 export function cronAuthorized(req) {

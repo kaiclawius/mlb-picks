@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>ChumGPT reply desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* The reply desk: ChumGPT drafts replies to his mentions, a human edits and approves each one. Nothing posts without a click here. */
+:root{color-scheme:dark;--deep:#061a1d;--card:#0d2f33;--phos:#7dff8a;--amber:#ffc24a;--red:#e0362c;--bone:#e9f3ee;--mute:#8fb3ad;--line:rgba(125,255,138,.18);--term:'VT323',ui-monospace,monospace;--body:'Space Grotesk',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{background:var(--deep);color:var(--bone);font-family:var(--body);padding:calc(20px + env(safe-area-inset-top,0px)) 16px calc(40px + env(safe-area-inset-bottom,0px));min-height:100vh}
+main{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+h1{font-family:var(--term);font-weight:400;font-size:42px;color:var(--phos);text-shadow:0 0 12px rgba(125,255,138,.5)}
+h2{font-family:var(--term);font-weight:400;font-size:28px;color:var(--amber)}
+p.note{color:var(--mute);line-height:1.5;font-size:15px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+input,textarea{font:inherit;color:var(--bone);background:#001006;border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+textarea{font-family:var(--term);font-size:22px;line-height:1.2;color:var(--phos);min-height:96px;resize:vertical}
+input:focus,textarea:focus{outline:2px solid var(--amber);outline-offset:1px}
+button{font:600 15px var(--body);cursor:pointer;border-radius:10px;padding:10px 16px;border:2px solid #000;background:var(--red);color:#fff;box-shadow:0 3px 0 #000}
+button.ghost{background:none;border:1px solid var(--line);color:var(--mute);box-shadow:none}
+button.term{background:#001a07;color:var(--phos);border-color:var(--phos)}
+button:disabled{opacity:.5;cursor:wait}
+.chip{font-family:var(--term);font-size:20px;padding:2px 10px;border-radius:8px;border:1px solid var(--line);color:var(--mute)}
+.chip.ok{color:var(--phos);border-color:var(--phos)}.chip.no{color:var(--red);border-color:var(--red)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.card .who{display:flex;justify-content:space-between;gap:10px;font-size:14px;color:var(--mute)}
+.card .who a{color:var(--amber)}
+.card blockquote{font-size:17px;line-height:1.45;border-left:3px solid var(--line);padding-left:12px;overflow-wrap:anywhere}
+.count{font-family:var(--term);font-size:20px;color:var(--mute);margin-left:auto}
+.count.bad,.warn{color:var(--red)}
+.warn{font-size:14px}
+.done{opacity:.55}
+.done .warn{color:var(--phos)}
+.done textarea,.done .acts{display:none}
+#msg{min-height:1.4em;font-size:14px;color:var(--amber)}
+</style>
+</head>
+<body>
+<main>
+  <h1>&gt; reply desk</h1>
+  <p class="note">ChumGPT drafts, you decide. Edit any draft, then post it, or skip it. Nothing goes out on X without a click here. Keep this page private.</p>
+
+  <section class="card" id="login">
+    <label for="tok">Admin token (the ADMIN_TOKEN value from Vercel)</label>
+    <div class="row"><input id="tok" type="password" autocomplete="off" style="flex:1;min-width:0"><button id="save" type="button">unlock</button></div>
+  </section>
+
+  <div class="row" id="status"></div>
+  <p id="msg" aria-live="polite"></p>
+
+  <section id="desk" hidden>
+    <div class="row"><h2>mentions</h2><button class="term" id="load" type="button">load mentions + drafts</button><button class="ghost" id="reset" type="button">show skipped again</button></div>
+    <div id="list" style="display:flex;flex-direction:column;gap:12px;margin-top:12px"></div>
+
+    <div class="row" style="margin-top:30px"><h2>extra post</h2><button class="term" id="idea" type="button">draft an idea</button></div>
+    <div class="card" id="ideaCard" hidden style="margin-top:12px">
+      <p class="note" id="ideaTopic"></p>
+      <textarea id="ideaText" maxlength="280"></textarea>
+      <div class="row acts"><button id="ideaPost" type="button">post</button><span class="count" id="ideaCount"></span></div>
+    </div>
+  </section>
+</main>
+<script>
+(()=>{
+'use strict';
+const $=s=>document.querySelector(s);
+const store={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let token='';try{token=sessionStorage.getItem('chum-admin')||''}catch(e){}
+const handled=new Set(store.get('chum-handled',[]));
+const remember=id=>{handled.add(id);store.set('chum-handled',[...handled].slice(-500))};
+const say=t=>{$('#msg').textContent=t};
+
+async function api(action,body){
+  const r=await fetch('/api/admin?action='+action,{method:body?'POST':'GET',headers:{Authorization:'Bearer '+token,...(body?{'Content-Type':'application/json'}:{})},body:body?JSON.stringify(body):undefined});
+  const data=await r.json().catch(()=>({error:'no answer from the server ('+r.status+')'}));
+  if(!r.ok)throw new Error(data.error||('error '+r.status));
+  return data;
+}
+function counter(ta,el){const f=()=>{const n=ta.value.length;el.textContent=n+'/280';el.classList.toggle('bad',n>280)};ta.addEventListener('input',f);f()}
+
+async function unlock(){
+  try{
+    const s=await api('status');
+    try{sessionStorage.setItem('chum-admin',token)}catch(e){}
+    $('#login').hidden=true;$('#desk').hidden=false;
+    $('#status').innerHTML='';
+    [['Claude',s.claude],['X keys',s.x],['X_USER_ID',s.userId]].forEach(([n,ok])=>{const c=document.createElement('span');c.className='chip '+(ok?'ok':'no');c.textContent=n+(ok?' ✓':' missing');$('#status').appendChild(c)});
+    say('');
+  }catch(e){say(e.message);$('#login').hidden=false}
+}
+$('#save').addEventListener('click',()=>{token=$('#tok').value.trim();unlock()});
+$('#tok').addEventListener('keydown',e=>{if(e.key==='Enter'){token=$('#tok').value.trim();unlock()}});
+if(token)unlock();
+
+function card(item){
+  const el=document.createElement('article');el.className='card';
+  el.innerHTML=`<div class="who"><span></span><a target="_blank" rel="noopener">open on X ↗</a></div><blockquote></blockquote><textarea maxlength="280" aria-label="Reply draft"></textarea><p class="warn"></p><div class="row acts"><button type="button" data-a="post">post reply</button><button type="button" class="term" data-a="again">new draft</button><button type="button" class="ghost" data-a="skip">skip</button><span class="count"></span></div>`;
+  el.querySelector('.who span').textContent='@'+(item.username||'someone')+(item.created_at?' · '+new Date(item.created_at).toLocaleString():'');
+  el.querySelector('.who a').href='https://x.com/i/web/status/'+item.id;
+  el.querySelector('blockquote').textContent=item.text;
+  const ta=el.querySelector('textarea'),warn=el.querySelector('.warn');
+  ta.value=item.draft||'';counter(ta,el.querySelector('.count'));
+  warn.textContent=item.skip?'ChumGPT would skip this one (spam, unsafe, or nothing funny to add).':(item.problem?'Check this: '+item.problem:'');
+  el.addEventListener('click',async e=>{
+    const b=e.target.closest('button');if(!b)return;
+    const all=el.querySelectorAll('button');all.forEach(x=>x.disabled=true);
+    try{
+      if(b.dataset.a==='skip'){remember(item.id);el.classList.add('done');warn.textContent='skipped'}
+      if(b.dataset.a==='again'){const d=await api('draft',{text:item.text});ta.value=d.draft;ta.dispatchEvent(new Event('input'));warn.textContent=d.skip?'ChumGPT would skip this one.':(d.problem?'Check this: '+d.problem:'')}
+      if(b.dataset.a==='post'){await api('send',{text:ta.value,replyTo:item.id});remember(item.id);el.classList.add('done');warn.textContent='posted ✓'}
+    }catch(err){warn.textContent=err.message}
+    all.forEach(x=>x.disabled=false);
+  });
+  return el;
+}
+$('#load').addEventListener('click',async e=>{
+  const b=e.currentTarget;b.disabled=true;say('reading mentions and drafting replies…');$('#list').innerHTML='';
+  try{
+    const{items}=await api('mentions');
+    const open=items.filter(i=>!handled.has(i.id));
+    open.forEach(i=>$('#list').appendChild(card(i)));
+    say(open.length?open.length+' mentions waiting.':(items.length?'all mentions handled.':'no new mentions.'));
+  }catch(err){say(err.message)}
+  b.disabled=false;
+});
+$('#reset').addEventListener('click',()=>{handled.clear();store.set('chum-handled',[]);say('skipped and posted mentions will show again on the next load.')});
+
+counter($('#ideaText'),$('#ideaCount'));
+$('#idea').addEventListener('click',async e=>{
+  const b=e.currentTarget;b.disabled=true;
+  try{const d=await api('idea',{});$('#ideaCard').hidden=false;$('#ideaTopic').textContent='topic: '+d.topic+(d.problem?' · check this: '+d.problem:'');$('#ideaText').value=d.draft;$('#ideaText').dispatchEvent(new Event('input'))}catch(err){say(err.message)}
+  b.disabled=false;
+});
+$('#ideaPost').addEventListener('click',async e=>{
+  const b=e.currentTarget;b.disabled=true;
+  try{await api('send',{text:$('#ideaText').value});say('posted ✓');$('#ideaCard').hidden=true}catch(err){say(err.message)}
+  b.disabled=false;
+});
+})();
+</script>
+</body>
+</html>

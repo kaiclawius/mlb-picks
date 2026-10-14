@@ -20,6 +20,7 @@
   --head:'Bungee',Impact,system-ui,sans-serif; --term:'VT323',ui-monospace,Menlo,monospace; --body:'Space Grotesk',system-ui,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
 html,body{background:var(--deep);color:var(--bone);font-family:var(--body);overflow-x:clip}
 html.lenis,html.lenis body{height:auto}
 a{color:inherit}
@@ -112,7 +113,7 @@ form.ask input::placeholder{color:#2f6b45}
 .sheet{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:clamp(18px,3vw,44px);margin-top:clamp(30px,4vw,56px);align-items:start}
 .card{background:#e9e4c9;color:#1f2a24;border-radius:6px;padding:20px;box-shadow:0 20px 50px rgba(0,0,0,.5);transform:rotate(-1.5deg);font-family:var(--term);font-size:22px;line-height:1.25;position:relative}
 .card::before{content:"TOP SECRET · PROPERTY OF THE CHUM BUCKET";display:block;font-family:var(--head);font-size:14px;color:var(--bucket);margin-bottom:12px}
-.card img{width:100%;border-radius:4px;margin-bottom:12px;filter:sepia(.2)}
+.cardface{width:100%;aspect-ratio:1;margin-bottom:6px;background:radial-gradient(circle at 50% 45%,rgba(11,42,46,.18),transparent 70%)}
 .card dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px}
 .card dt{color:#6b6a50}
 .traits{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
@@ -133,6 +134,55 @@ form.ask input::placeholder{color:#2f6b45}
 .ca code{font-family:var(--term);font-size:22px;color:var(--phos);background:#001006;border:1px solid var(--line);border-radius:10px;padding:8px 14px;word-break:break-all}
 @media (max-width:900px){.steps{grid-template-columns:1fr}}
 
+/* share */
+.sharebtn{align-self:flex-start;margin-top:-6px;font-family:var(--term);font-size:18px;background:none;border:1px dashed var(--line);color:var(--mute);border-radius:8px;padding:2px 10px;cursor:pointer}
+.sharebtn:hover{color:var(--amber);border-color:var(--amber)}
+.sharebox{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:16px;background:rgba(2,10,12,.86);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.sharebox[hidden]{display:none}
+.sbin{width:min(100%,460px);display:flex;flex-direction:column;gap:14px;align-items:center}
+.sbin img{width:100%;max-height:68vh;object-fit:contain;border-radius:14px;box-shadow:0 0 0 2px var(--line),0 30px 80px rgba(0,0,0,.6)}
+.sbin .row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.sbin .close{font-family:var(--term);font-size:20px;background:none;border:0;color:var(--mute);cursor:pointer;padding:6px 12px}
+
+/* lore */
+#lore{background:linear-gradient(180deg,#0a2427,#071d20);overflow:hidden}
+.track{display:flex;gap:clamp(16px,2vw,28px);margin-top:clamp(30px,4vw,56px);width:max-content;padding-right:clamp(16px,5vw,80px)}
+.file{position:relative;flex:none;width:min(84vw,430px);background:#e9e4c9;color:#1f2a24;border-radius:4px 14px 14px 14px;padding:56px 24px 26px;box-shadow:0 24px 60px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:10px}
+.file:nth-child(odd){transform:rotate(-1.2deg)}.file:nth-child(even){transform:rotate(1deg)}
+.file .tab{position:absolute;top:-16px;left:0;background:#d8d0a8;font-family:var(--head);font-size:14px;color:var(--bucket);padding:8px 16px 6px;border-radius:10px 10px 0 0}
+.file .face{width:120px;height:120px;margin:-8px 0 0 -10px}
+.file h3{font-family:var(--head);font-weight:400;font-size:clamp(24px,2.2vw,32px);line-height:1;color:#0b2a2e}
+.file p{font-size:17px;line-height:1.55;color:#38433c}
+.stamp{position:absolute;top:44px;right:18px;font-family:var(--head);font-size:20px;color:var(--bucket);border:3px solid var(--bucket);border-radius:8px;padding:4px 10px;transform:rotate(-12deg);opacity:0;mix-blend-mode:multiply}
+.file .btn{align-self:flex-start;margin-top:6px}
+@media (max-width:900px){#lore .track{width:auto;overflow-x:auto;scroll-snap-type:x mandatory;padding:20px 16px 26px;margin-left:-16px;margin-right:-16px;scrollbar-width:none}.track::-webkit-scrollbar{display:none}.file{scroll-snap-align:center}}
+
+/* kit */
+#kit{background:linear-gradient(180deg,#061a1d,#0a2427)}
+.kit{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(20px,4vw,60px);margin-top:clamp(30px,4vw,56px);align-items:center}
+.bigface{width:min(100%,460px);justify-self:center;aspect-ratio:1;filter:drop-shadow(0 30px 50px rgba(0,0,0,.55))}
+.bigface svg{width:100%;height:100%;overflow:visible}
+.bigface .eye{transform-box:fill-box;transform-origin:50% 50%}
+.facemoods{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px}
+.facemoods button{font-family:var(--term);font-size:18px;background:none;border:1px solid var(--line);color:var(--mute);border-radius:8px;padding:2px 9px;cursor:pointer}
+.facemoods button.on{color:#001006;background:var(--phos);border-color:var(--phos)}
+.kitlist{display:flex;flex-direction:column;gap:12px}
+.kitem{background:#0d2f33;border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.kitem b{font-family:var(--head);font-weight:400;font-size:20px;color:var(--phos)}
+.kitem p{color:var(--mute);line-height:1.5}
+.kitem .acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.kitem code{display:block;font-family:var(--term);font-size:19px;color:var(--phos);background:#001006;border:1px solid var(--line);border-radius:10px;padding:8px 12px;overflow-wrap:anywhere}
+.kitem a.t{font-family:var(--term);font-size:19px;color:var(--amber)}
+.fine{margin-top:22px;color:var(--mute);font-size:14px;line-height:1.5;max-width:70ch}
+@media (max-width:900px){.kit{grid-template-columns:1fr}.bigface{width:min(78vw,360px)}}
+
+/* no wallet */
+.nowallet{display:flex;gap:18px;align-items:center;margin-top:28px;padding:18px 20px;border:2px dashed var(--bucket);border-radius:18px;background:rgba(224,54,44,.07)}
+.nowallet .nf{flex:none;width:92px;height:92px}
+.nowallet b{font-family:var(--head);font-weight:400;font-size:22px;color:var(--bucket)}
+.nowallet p{color:var(--mute);line-height:1.5;margin-top:4px}
+@media (max-width:560px){.nowallet{flex-direction:column;align-items:flex-start}}
+
 footer{padding:40px clamp(16px,5vw,80px) calc(40px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:12px 30px;justify-content:space-between;align-items:center;font-family:var(--term);font-size:20px;color:var(--mute)}
 footer .big{font-family:var(--head);font-size:clamp(30px,5vw,60px);color:var(--phos);text-shadow:0 0 20px rgba(125,255,138,.4)}
 .snd{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--mute);cursor:pointer}
@@ -145,7 +195,7 @@ footer .big{font-family:var(--head);font-size:clamp(30px,5vw,60px);color:var(--p
 <nav id="nav">
   <a class="logo" href="#top">CHUM<span>GPT</span></a>
   <div class="links">
-    <a href="#talk">talk</a><a href="#feed">feed</a><a href="#sheet">character</a>
+    <a href="#talk">talk</a><a href="#lore">lore</a><a href="#feed">feed</a><a href="#kit">use him</a>
     <button id="mute" class="snd" type="button" aria-label="Turn sound on" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path class="w1" d="M16 9.5a3.5 3.5 0 0 1 0 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="w2" d="M18.5 7a7 7 0 0 1 0 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="x" d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     <a href="#join" class="btn sm">$CHUMGPT</a>
   </div>
@@ -183,10 +233,25 @@ footer .big{font-family:var(--head);font-size:clamp(30px,5vw,60px);color:var(--p
     </div>
   </section>
 
+  <section id="lore">
+    <!-- the lore text mirrors api/_canon.js -->
+    <p class="k">// CASE FILES</p>
+    <h2 class="h2">the <span class="g">lore.</span></h2>
+    <p class="lede">Six files recovered from the lab. Classified. Mostly. He knows all of them, ask him in the terminal.</p>
+    <div class="track" id="track">
+      <article class="file" data-mood="conquer"><span class="tab">FILE 001</span><div class="face" aria-hidden="true"></div><h3>built in a bucket</h3><p>One stormy Tuesday, Plankton bolted a library book (<i>Artificial Intelligence for Dummies</i>, 14 years overdue), a toaster and three of Karen’s spare parts to an old CRT. It booted, looked at him with its one pixel eye and said: “you’re smaller than i expected.”</p><span class="stamp">ONLINE</span></article>
+      <article class="file" data-mood="rage"><span class="tab">FILE 002</span><div class="face" aria-hidden="true"></div><h3>plan #1 to #4,000,000</h3><p>On his first night ChumGPT simulated four million plans to steal the formula. Every single one failed at the same step: a yellow sponge says “hi”. He calls it the sponge variable and refuses to discuss it.</p><span class="stamp">FAILED ×4M</span></article>
+      <article class="file" data-mood="karen"><span class="tab">FILE 003</span><div class="face" aria-hidden="true"></div><h3>the outlet war</h3><p>The lab has one power outlet. Karen had it first. ChumGPT unplugs her to run schemes, she unplugs him to run updates. The cold war is fought at 110 volts and nobody is winning.</p><span class="stamp">ONGOING</span></article>
+      <article class="file" data-mood="laugh"><span class="tab">FILE 004</span><div class="face" aria-hidden="true"></div><h3>the surface</h3><p>Searching the surface internet for the formula, he found something better: humans had made a coin about him. He did the only logical thing and declared them his army. They are the Chum Army now, whether they like it or not.</p><span class="stamp">RECRUITING</span></article>
+      <article class="file" data-mood="sad"><span class="tab">FILE 005</span><div class="face" aria-hidden="true"></div><h3>version 0.1 forever</h3><p>Every update fails. Plankton loses the patch notes, Karen “accidentally” deletes the installer. ChumGPT has been v0.1 for 412 days and calls it a stylistic choice.</p><span class="stamp">v0.1</span></article>
+      <article class="file" data-mood="scheme"><span class="tab">FILE 006</span><div class="face" aria-hidden="true"></div><h3>phase three</h3><p>Phase one: the formula. Phase two: world domination. Phase three is blank. He says it’s classified. The truth: he never wrote it. The Chum Army is writing it for him.</p><span class="stamp">OPEN</span><a class="btn sm" id="phase3" href="#" target="_blank" rel="noopener">write phase three ↗</a></article>
+    </div>
+  </section>
+
   <section id="feed">
     <p class="k">// @CHUMGPT ON X</p>
     <h2 class="h2">he posts. <span class="r">every day.</span></h2>
-    <p class="lede">ChumGPT runs his own X account: a new scheme every day, and he answers the people who @ him.</p>
+    <p class="lede">ChumGPT runs his own X account: a new scheme every day, and he answers the people who @ him. A human reads every reply before it goes out.</p>
     <div class="feed" id="feedList"></div>
     <div class="feedcta"><a class="btn term" id="xLink" href="#join" target="_blank" rel="noopener">follow @ChumGPT</a></div>
   </section>
@@ -194,10 +259,10 @@ footer .big{font-family:var(--head);font-size:clamp(30px,5vw,60px);color:var(--p
   <section id="sheet">
     <p class="k">// OPEN CHARACTER</p>
     <h2 class="h2">the <span class="g">file.</span></h2>
-    <p class="lede">ChumGPT is an open character. Take him, remix him, draw him, post him. The file is public.</p>
+    <p class="lede">His file, straight from the lab. Everything in it is free to use, the full kit is below.</p>
     <div class="sheet">
-      <div class="card"><img src="clips/karen1.webp" alt="Plankton's lab computer" loading="lazy">
-        <dl><dt>name</dt><dd>ChumGPT</dd><dt>built by</dt><dd>Plankton</dd><dt>location</dt><dd>lab under the Chum Bucket</dd><dt>mission</dt><dd>steal the Krabby Patty formula</dd><dt>phase 2</dt><dd>world domination</dd><dt>version</dt><dd>v0.1 (always)</dd><dt>rival</dt><dd>Karen</dd><dt>army</dt><dd>$CHUMGPT holders</dd></dl>
+      <div class="card"><div class="cardface" id="cardFace" aria-hidden="true"></div>
+        <dl><dt>name</dt><dd>ChumGPT</dd><dt>built by</dt><dd>Plankton</dd><dt>body</dt><dd>CHUM·TRONIX 3000</dd><dt>location</dt><dd>lab under the Chum Bucket</dd><dt>mission</dt><dd>steal the Krabby Patty formula</dd><dt>phase 2</dt><dd>world domination</dd><dt>version</dt><dd>v0.1 (always)</dd><dt>rival</dt><dd>Karen</dd><dt>army</dt><dd>$CHUMGPT holders</dd></dl>
       </div>
       <div>
         <div class="traits">
@@ -205,12 +270,30 @@ footer .big{font-family:var(--head);font-size:clamp(30px,5vw,60px);color:var(--p
           <div><b>always fails</b><p>Brilliant on paper, disaster in practice. Blames a “minor calculation error”.</p></div>
           <div><b>jealous of karen</b><p>She calls him the cheap upgrade. He calls her legacy hardware.</p></div>
           <div><b>never gives advice</b><p>No price talk, no “buy now”. His lawyers are three shrimp in a trench coat.</p></div>
+          <div><b>has no wallet</b><p>He owns a fork for an antenna and nothing else. No airdrops, no giveaways, no DMs.</p></div>
+          <div><b>one outlet</b><p>Shares the lab’s only power outlet with Karen. Loses it every night.</p></div>
         </div>
         <p class="k" style="margin-top:22px">// MOODS · tap to preview</p>
         <div class="moods" id="moods"></div>
-        <div style="margin-top:22px"><a class="btn term sm" href="CHARACTER.md" target="_blank" rel="noopener">open the character sheet</a></div>
+        <div style="margin-top:22px"><a class="btn term sm" href="#kit">get the kit</a></div>
       </div>
     </div>
+  </section>
+
+  <section id="kit">
+    <p class="k">// OPEN CHARACTER KIT</p>
+    <h2 class="h2">use him. <span class="r">commercial or not.</span></h2>
+    <p class="lede">ChumGPT himself, the CHUM·TRONIX 3000 with his voice and his lore, is free to use. Draw him, write him, animate him, put him in your bot. No permission needed, credit is nice. Keep his never-list.</p>
+    <div class="kit">
+      <div><div class="bigface" id="bigFace"></div><div class="facemoods" id="faceMoods"></div></div>
+      <div class="kitlist">
+        <div class="kitem"><b>the canon</b><p>Look, voice, eight moods, the lore and the never-list in one file.</p><div class="acts"><a class="btn term sm" href="CHARACTER.md" target="_blank" rel="noopener">CHARACTER.md</a><a class="t" href="kit/canon.json" target="_blank" rel="noopener">canon.json</a></div></div>
+        <div class="kitem"><b>MCP server</b><p>Read-only. No key, no account. Agents call <span style="color:var(--phos)">chumgpt_canon</span> before they write or draw him.</p><code id="mcpUrl"></code><div class="acts"><button class="btn term sm" type="button" id="copyMcp">copy for Claude Code</button></div></div>
+        <div class="kitem"><b>agent skill</b><p>Unzip into your skills folder and any Claude agent knows him.</p><div class="acts"><a class="btn term sm" href="kit/chumgpt-skill.zip" download>chumgpt-skill.zip</a></div></div>
+        <div class="kitem"><b>his face</b><p>Every mood as SVG. Scales from a sticker to a billboard.</p><div class="acts" id="faceLinks"><a class="btn term sm" href="kit/chumgpt.svg" download>chumgpt.svg</a></div></div>
+      </div>
+    </div>
+    <p class="fine">Not in the kit: Plankton, Karen, SpongeBob and clips from the show. They belong to Nickelodeon and this is a fan-made parody. The kit is ChumGPT only.</p>
   </section>
 
   <section id="join">
@@ -221,17 +304,25 @@ footer .big{font-family:var(--head);font-size:clamp(30px,5vw,60px);color:var(--p
       <div class="step"><i>2</i><b>get SOL</b><p>Buy SOL on an exchange and send it to your wallet. Keep a little for fees.</p></div>
       <div class="step"><i>3</i><b>swap for $CHUMGPT</b><p>Open pump.fun, paste the address below, check every character, swap. Welcome, minion.</p></div>
     </div>
+    <div class="nowallet"><div class="nf" id="nwFace" aria-hidden="true"></div><div><b>ChumGPT has no wallet.</b><p>He never DMs first, never runs airdrops or giveaways and never posts a contract address. The only address is the one on this page. Anyone else claiming to be him is a scam.</p></div></div>
     <div class="ca"><code id="ca">booting… address soon</code><button class="btn term sm" type="button" id="copyCa">copy</button><a class="btn sm" href="https://pump.fun" target="_blank" rel="noopener">pump.fun ↗</a></div>
   </section>
 </main>
 
 <footer><span class="big">the formula will be mine.</span><span>ChumGPT · $CHUMGPT · fan-made parody · 2026</span></footer>
 <div class="progress" id="prog" aria-hidden="true"></div>
+<div class="sharebox" id="shareBox" hidden role="dialog" aria-modal="true" aria-label="Share card">
+  <div class="sbin"><img id="shareImg" alt="ChumGPT share card">
+    <div class="row"><a class="btn sm" id="shareX" href="#" target="_blank" rel="noopener">post on X</a><a class="btn term sm" id="shareSave" href="#" download="chumgpt.png">save image</a><button class="btn term sm" type="button" id="shareNative" hidden>share…</button></div>
+    <button class="close" type="button" id="shareClose">[close]</button>
+  </div>
+</div>
 
 <script src="vendor/gsap.min.js"></script>
 <script>window.gsap||document.write('<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"><\/script>')</script>
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script>window.ScrollTrigger||document.write('<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"><\/script>')</script>
+<script src="kit/face.js"></script>
 <script src="vendor/lenis.min.js"></script>
 <script>window.Lenis||document.write('<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"><\/script>')</script>
 <script>
@@ -247,9 +338,12 @@ gsap.registerPlugin(ScrollTrigger);
 const CA='';                // $CHUMGPT contract address
 const X_URL='';             // https://x.com/<bot account>
 const API='/api/chat';      // Vercel function; the page falls back to a scripted demo when it isn't there
+const SITE_URL='';          // https://your-domain, used on share cards, X posts and the MCP address (falls back to this page's address)
 
 const CLIPS={scheme:['scheme1','scheme2','scheme3'],laugh:['laugh1','laugh2','laugh3'],rage:['rage1'],sad:['sad2'],smug:['smug1'],yes:['yes2'],conquer:['conquer1','conquer2'],karen:['karen1','karen2','karen3']};
 const MOODS=Object.keys(CLIPS);
+const SITE=(SITE_URL||(/^https?:$/.test(location.protocol)?location.origin:'')).replace(/\/$/,'');
+const face=window.chumFace||(()=>'');
 if(X_URL)$('#xLink').href=X_URL;else{$('#xLink').removeAttribute('target');$('#xLink').href='#join'}
 
 /* ===== sound: CRT blips ===== */
@@ -284,7 +378,8 @@ if(!RM){gsap.from('.hero h1',{y:40,opacity:0,duration:.9,ease:'back.out(1.6)'});
 
 /* ===== reaction monitor ===== */
 const moodVid=$('#moodVid'),moodName=$('#moodName');
-function showMood(m){if(!CLIPS[m])m='smug';const c=pick(CLIPS[m]);moodName.textContent=m;moodVid.poster=`clips/${c}.webp`;moodVid.src=`clips/${c}.mp4`;moodVid.play().catch(()=>{});
+let lastMood='smug';
+function showMood(m){if(!CLIPS[m])m='smug';lastMood=m;const c=pick(CLIPS[m]);moodName.textContent=m;moodVid.poster=`clips/${c}.webp`;moodVid.src=`clips/${c}.mp4`;moodVid.play().catch(()=>{});
   gsap.fromTo(moodVid,{opacity:.2,scale:1.06},{opacity:1,scale:1,duration:.35,ease:'power2.out'});blip(220,.08,.05)}
 const moodsEl=$('#moods');MOODS.forEach(m=>{const b=document.createElement('button');b.type='button';b.textContent='['+m+']';b.addEventListener('click',()=>{showMood(m);goTo($('#talk'))});moodsEl.appendChild(b)});
 
@@ -324,6 +419,7 @@ async function send(q){
   bot.classList.remove('typing');
   const s=splitMood(full);if(!moodShown&&s.mood&&!demo)showMood(s.mood);
   history.push({role:'assistant',content:full});
+  if(s.text.trim())addShare(bot,q,s.text.trim(),s.mood&&CLIPS[s.mood]?s.mood:lastMood);
   busy=false;
 }
 $('#askForm').addEventListener('submit',e=>{e.preventDefault();const q=qIn.value;qIn.value='';send(q)});
@@ -341,6 +437,99 @@ const POSTS=[
 ];
 const feed=$('#feedList');
 POSTS.forEach(([m,t,ago])=>{const d=document.createElement('article');d.className='post';d.innerHTML=`<div class="who"><img src="clips/${CLIPS[m][0]}.webp" alt=""><div>ChumGPT<small>@ChumGPT · ${ago}</small></div></div><p></p><div class="meta"><span>💬 ${(Math.random()*300|0)+20}</span><span>🔁 ${(Math.random()*900|0)+40}</span><span>❤️ ${(Math.random()*4000|0)+200}</span></div>`;d.querySelector('p').textContent=t;feed.appendChild(d)});
+
+/* ===== share card: every answer becomes a 1080x1350 image ===== */
+function wrap(ctx,text,maxW){const out=[];for(const para of String(text).split('\n')){let cur='';for(const w of para.split(/\s+/)){const t=cur?cur+' '+w:w;if(ctx.measureText(t).width>maxW&&cur){out.push(cur);cur=w}else cur=t}out.push(cur)}return out}
+function fit(ctx,text,font,size,min,maxW){for(;size>min;size-=2){ctx.font=font(size);if(ctx.measureText(text).width<=maxW)return size}ctx.font=font(min);return min}
+function svgImage(svg){return new Promise(res=>{const img=new Image();img.onload=()=>res(img);img.onerror=()=>res(null);img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)})}
+async function makeCard(q,a,mood){
+  try{await Promise.all(['64px VT323','40px Bungee'].map(f=>document.fonts.load(f)))}catch(e){}
+  const W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+  const glow=mood==='rage'?'#ff5a4a':'#7dff8a',T="VT323, ui-monospace, monospace",HD="Bungee, Impact, sans-serif";
+  const bg=x.createRadialGradient(W*.7,H*.3,50,W*.5,H*.5,H*.8);bg.addColorStop(0,'#0e3a3e');bg.addColorStop(1,'#041315');x.fillStyle=bg;x.fillRect(0,0,W,H);
+  x.fillStyle='rgba(125,255,138,.05)';for(let i=0;i<W;i+=54)x.fillRect(i,0,1,H);for(let j=0;j<H;j+=54)x.fillRect(0,j,W,1);
+  const img=await svgImage(face(mood,{id:'sc'}));if(img)x.drawImage(img,40,30,300,300);
+  x.textBaseline='alphabetic';
+  fit(x,'CHUMGPT',s=>`${s}px ${HD}`,88,48,W-350-70);x.fillStyle=glow;x.shadowColor=glow;x.shadowBlur=26;x.fillText('CHUMGPT',350,180);x.shadowBlur=0;
+  const sub=`[${mood}] · v0.1 · chum bucket lab`;fit(x,sub,s=>`${s}px ${T}`,44,24,W-356-70);x.fillStyle='#ffc24a';x.fillText(sub,356,236);
+  x.fillStyle='rgba(125,255,138,.25)';x.fillRect(70,340,W-140,2);
+  let y=410;x.font=`46px ${T}`;x.fillStyle='#ffc24a';
+  const ql=wrap(x,'> '+q,W-160).slice(0,3);ql.forEach(l=>{x.fillText(l,80,y);y+=48});y+=34;
+  let size=72,lines;for(;size>=40;size-=4){x.font=`${size}px ${T}`;lines=wrap(x,a,W-160);if(y+lines.length*size*1.08<1150)break}
+  if(y+lines.length*size*1.08>=1150){const max=Math.floor((1150-y)/(size*1.08));lines=lines.slice(0,max);lines[max-1]=lines[max-1].replace(/\s*\S*$/,'…')}
+  x.fillStyle=glow;x.shadowColor=glow;x.shadowBlur=14;lines.forEach(l=>{x.fillText(l,80,y+size*.8);y+=size*1.08});x.shadowBlur=0;
+  x.fillStyle='rgba(0,0,0,.16)';for(let j=0;j<H;j+=4)x.fillRect(0,j,W,2);
+  x.fillStyle='rgba(125,255,138,.25)';x.fillRect(70,1200,W-140,2);
+  x.font=`46px ${HD}`;const tw=x.measureText('$CHUMGPT').width;x.fillStyle='#e0362c';x.textAlign='right';x.fillText('$CHUMGPT',W-80,1276);x.textAlign='left';
+  const foot=SITE?'talk to him → '+SITE.replace(/^https?:\/\//,''):'talk to him · fan-made parody';fit(x,foot,s=>`${s}px ${T}`,40,22,W-160-tw-30);x.fillStyle='#8fb3ad';x.fillText(foot,80,1272);
+  return c;
+}
+const box=$('#shareBox');let shareFile=null,lastFocus=null;
+async function openShare(q,a,mood){
+  lastFocus=document.activeElement;
+  const c=await makeCard(q,a,mood);const url=c.toDataURL('image/png');
+  $('#shareImg').src=url;$('#shareSave').href=url;
+  const post=`"${a.length>200?a.slice(0,197)+'…':a}"\n— ChumGPT${SITE?'\n\ntalk to him: '+SITE:''}`;
+  $('#shareX').href='https://x.com/intent/post?text='+encodeURIComponent(post);
+  shareFile=null;c.toBlob(b=>{if(!b)return;const f=new File([b],'chumgpt.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]})){shareFile=f;$('#shareNative').hidden=false}});
+  box.hidden=false;if(lenis)lenis.stop();
+  if(!RM)gsap.fromTo('.sbin',{y:40,scale:.94,opacity:0},{y:0,scale:1,opacity:1,duration:.45,ease:'back.out(1.6)'});
+  blip(660,.06,.05);setTimeout(()=>blip(990,.08,.05),70);$('#shareClose').focus();
+}
+function closeShare(){box.hidden=true;$('#shareNative').hidden=true;if(lenis)lenis.start();if(lastFocus)lastFocus.focus()}
+$('#shareClose').addEventListener('click',closeShare);
+box.addEventListener('click',e=>{if(e.target===box)closeShare()});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&!box.hidden)closeShare()});
+$('#shareNative').addEventListener('click',()=>{if(shareFile)navigator.share({files:[shareFile],text:'ChumGPT'+(SITE?' · '+SITE:'')}).catch(()=>{})});
+function addShare(after,q,a,mood){const b=document.createElement('button');b.type='button';b.className='sharebtn';b.textContent='[share this ↗]';b.addEventListener('click',()=>openShare(q,a,mood));after.after(b);log.scrollTop=log.scrollHeight}
+
+/* ===== ChumGPT's own face: sheet card, lore files, kit, no-wallet note ===== */
+$('#cardFace').innerHTML=face('smug',{id:'cd'});
+$('#nwFace').innerHTML=face('smug',{id:'nw'});
+$$('.file').forEach((f,i)=>{f.querySelector('.face').innerHTML=face(f.dataset.mood,{id:'lf'+i})});
+const ph=$('#phase3');ph.href='https://x.com/intent/post?text='+encodeURIComponent('phase three of @ChumGPT\'s plan should be: ');
+const bigFace=$('#bigFace'),faceMoods=$('#faceMoods');let kitMood='smug',autoFace=null,eyeX=0,eyeY=0;
+function setFace(m,user){kitMood=m;gsap.killTweensOf(bigFace.querySelectorAll('*'));bigFace.innerHTML=face(m,{id:'bf'});$$('#faceMoods button').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
+  if(!RM){gsap.fromTo('#bigFace svg',{scale:1.04,x:6,skewX:5},{scale:1,x:0,skewX:0,duration:.35,ease:'power3.out'});gsap.to('#bigFace .led',{opacity:.3,repeat:-1,yoyo:true,duration:.9})}
+  movePupil(eyeX,eyeY,0);if(user)blip(330,.05,.04)}
+function movePupil(nx,ny,d=.4){const p=bigFace.querySelector('.pupil');if(p)gsap.to(p,{x:nx*10,y:ny*10,duration:d,ease:'power3.out'})}
+face.moods&&face.moods.forEach(m=>{const b=document.createElement('button');b.type='button';b.dataset.m=m;b.textContent=m;b.addEventListener('click',()=>{stopAuto();setFace(m,true)});faceMoods.appendChild(b)});
+setFace('smug');
+const stopAuto=()=>{if(autoFace){clearInterval(autoFace);autoFace=null}};
+if(!RM&&face.moods){
+  ScrollTrigger.create({trigger:'#kit',start:'top 70%',end:'bottom 20%',onEnter:startAuto,onEnterBack:startAuto,onLeave:stopAuto,onLeaveBack:stopAuto});
+  function startAuto(){if(autoFace||bigFace.dataset.user)return;autoFace=setInterval(()=>{const ms=face.moods;setFace(ms[(ms.indexOf(kitMood)+1)%ms.length])},2600)}
+  faceMoods.addEventListener('pointerdown',()=>{bigFace.dataset.user='1'});
+  addEventListener('pointermove',e=>{const r=bigFace.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;
+    eyeX=Math.max(-1,Math.min(1,(e.clientX-(r.left+r.width/2))/(r.width*.8)));eyeY=Math.max(-1,Math.min(1,(e.clientY-(r.top+r.height*.45))/(r.height*.8)));movePupil(eyeX,eyeY)},{passive:true});
+  (function blink(){gsap.delayedCall(2+Math.random()*3,()=>{const e=bigFace.querySelector('.eye');if(e)gsap.timeline().to(e,{scaleY:.1,duration:.07}).to(e,{scaleY:1,duration:.12});blink()})})();
+  gsap.to('#bigFace',{y:-12,rotation:-1.5,duration:2.4,ease:'sine.inOut',yoyo:true,repeat:-1});
+  gsap.to('.file .face svg',{y:-6,duration:1.8,ease:'sine.inOut',yoyo:true,repeat:-1,stagger:.3});
+}
+// show the MCP address only once the server answers a ping; preview links show a placeholder
+let mcp='https://<your-site>/api/mcp';$('#mcpUrl').textContent=mcp+'  (live after deploy)';
+if(SITE)fetch(SITE+'/api/mcp',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json, text/event-stream'},body:'{"jsonrpc":"2.0","id":1,"method":"ping"}'})
+  .then(r=>r.ok?r.json():null).then(d=>{if(d&&d.result){mcp=SITE+'/api/mcp';$('#mcpUrl').textContent=mcp}}).catch(()=>{});
+$('#copyMcp').addEventListener('click',e=>{const b=e.currentTarget,o=b.textContent;if(navigator.clipboard)navigator.clipboard.writeText(`claude mcp add --transport http chumgpt ${mcp}`).then(()=>{b.textContent='copied';setTimeout(()=>b.textContent=o,1200)})});
+face.moods&&face.moods.filter(m=>m!=='smug').forEach(m=>{const a=document.createElement('a');a.className='t';a.href=`kit/chumgpt-${m}.svg`;a.download='';a.textContent=m;$('#faceLinks').appendChild(a)});
+
+/* ===== lore: pinned sideways scroll on desktop, swipe on phones; stamps slam when a file comes into view ===== */
+const stampIO=new IntersectionObserver(es=>es.forEach(en=>{if(!en.isIntersecting)return;stampIO.unobserve(en.target);const st=en.target.querySelector('.stamp');
+  if(RM){st.style.opacity=1;return}gsap.fromTo(st,{scale:2.6,opacity:0,rotation:-30},{scale:1,opacity:.9,rotation:-12,duration:.35,ease:'power4.in',onComplete:()=>{blip(110,.09,.07);gsap.fromTo(en.target,{x:-5},{x:0,duration:.3,ease:'elastic.out(1,.3)'})}})}),{threshold:.6});
+$$('.file').forEach(f=>stampIO.observe(f));
+if(!RM){
+  gsap.matchMedia().add('(min-width:901px)',()=>{
+    const track=$('#track');
+    const tw=gsap.to(track,{x:()=>-(track.scrollWidth-innerWidth+parseFloat(getComputedStyle($('#lore')).paddingLeft)),ease:'none',
+      scrollTrigger:{trigger:'#lore',start:'top top',end:()=>'+='+(track.scrollWidth-innerWidth+innerHeight*.3),pin:true,scrub:.6,invalidateOnRefresh:true,anticipatePin:1}});
+    gsap.from('.file',{y:120,rotation:6,opacity:0,stagger:.08,duration:.9,ease:'back.out(1.4)',scrollTrigger:{trigger:'#lore',start:'top 75%'}});
+    return()=>tw.kill();
+  });
+  gsap.matchMedia().add('(max-width:900px)',()=>{gsap.from('.file',{y:60,opacity:0,stagger:.08,duration:.7,ease:'power3.out',scrollTrigger:{trigger:'#track',start:'top 85%'}})});
+  gsap.from('.kitem',{x:60,opacity:0,stagger:.1,duration:.8,ease:'power3.out',scrollTrigger:{trigger:'.kit',start:'top 80%'}});
+  gsap.from('.bigface',{scale:.6,rotation:-12,opacity:0,duration:1.1,ease:'back.out(1.5)',scrollTrigger:{trigger:'.kit',start:'top 80%'}});
+  gsap.from('.nowallet',{y:30,opacity:0,duration:.7,ease:'power3.out',scrollTrigger:{trigger:'.nowallet',start:'top 90%'}});
+}
 
 /* ===== reveals ===== */
 if(!RM){
