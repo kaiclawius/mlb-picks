@@ -13,6 +13,11 @@
     open: [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [0, 1], [5, 1], [1, 2], [2, 2], [3, 2], [4, 2]],
     grin: [[0, 0], [5, 0], [0, 1], [1, 1], [2, 1], [3, 1], [4, 1], [5, 1]]
   };
+  var TALK = [
+    [[1, 0], [2, 0], [3, 0], [4, 0]],
+    [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [1, 1], [2, 1], [3, 1], [4, 1]],
+    MOUTH.open
+  ];
   var MOOD = {
     scheme: { mouth: 'smirk', lid: 18, pupil: [-12, 4] },
     laugh: { mouth: 'open', eye: 'happy' },
@@ -41,7 +46,9 @@
     if (m.tear) extra += cells([[0, 0], [0, 1]], 236, 206, 8, '#8fd3ff');
     if (m.sweat) extra += cells([[1, 0], [0, 1], [1, 1], [2, 1], [1, 2]], 250, 140, 6, '#8fd3ff');
     if (m.crown) extra += cells([[0, 0], [2, 0], [4, 0], [0, 1], [1, 1], [2, 1], [3, 1], [4, 1]], 175, 128, 10, AMBER);
-    var mouth = cells(MOUTH[m.mouth], 170, 232, 10, glow);
+    var mouth = '<g class="mouth">' + cells(MOUTH[m.mouth], 170, 232, 10, glow) + '</g>';
+    // opt.talk adds three hidden mouth frames (closed, half, wide) that a speaking scene can flip through
+    if (opt.talk) mouth += '<g class="talk" style="display:none">' + TALK.map(function (f, i) { return '<g class="t' + i + '" style="display:none">' + cells(f, 170, 232, 10, glow) + '</g>'; }).join('') + '</g>';
 
     return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="ChumGPT, ' + (mood || 'smug') + '">' +
       '<defs>' +
@@ -58,10 +65,10 @@
       '<rect x="224" y="0" width="4" height="22" fill="#b9bfc2"/><rect x="231" y="0" width="4" height="22" fill="#b9bfc2"/><rect x="238" y="0" width="4" height="22" fill="#b9bfc2"/><rect x="244" y="0" width="4" height="22" fill="#b9bfc2"/>' +
       '<rect x="222" y="68" width="28" height="14" fill="rgba(240,226,180,.85)"/></g>' +
       '<rect x="56" y="88" width="288" height="236" rx="24" fill="url(#' + id + 'b)" stroke="#2a2f2c" stroke-width="4"/>' +
-      '<rect x="56" y="88" width="288" height="236" rx="24" fill="#000" filter="url(#' + id + 'n)" opacity=".9"/>' +
+      (opt.lite ? '' : '<rect x="56" y="88" width="288" height="236" rx="24" fill="#000" filter="url(#' + id + 'n)" opacity=".9"/>') +
       '<rect x="84" y="112" width="232" height="176" rx="20" fill="#232a27"/>' +
       '<rect x="96" y="124" width="208" height="152" rx="16" fill="url(#' + id + 's)"/>' +
-      '<g class="face" filter="url(#' + id + 'g)">' + '<g class="eye">' + eye + '</g>' + extra + mouth + '</g>' +
+      '<g class="face"' + (opt.lite ? '' : ' filter="url(#' + id + 'g)"') + '>' + '<g class="eye">' + eye + '</g>' + extra + mouth + '</g>' +
       '<rect x="96" y="124" width="208" height="152" rx="16" fill="url(#' + id + 'l)"/>' +
       '<path d="M112 136 Q 150 128 186 134" stroke="rgba(255,255,255,.12)" stroke-width="6" fill="none" stroke-linecap="round"/>' +
       '<text x="200" y="309" text-anchor="middle" font-family="VT323, ui-monospace, monospace" font-size="15" letter-spacing="3" fill="#3d433f">CHUM·TRONIX 3000</text>' +

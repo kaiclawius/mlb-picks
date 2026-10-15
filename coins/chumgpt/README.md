@@ -47,3 +47,6 @@ Every post goes through a last check before X: no wallet or contract addresses, 
 - Server-side refusal fallback is enabled (`fallbacks: "default"`).
 - The chat endpoint has a small per-visitor rate limit (12 messages per minute).
 - X: each mention read and each post is billed by X. The desk reads at most 20 mentions per load.
+
+## 6. 24/7 livestream on pump.fun
+The lab stream runs on its own server, not on Vercel. Setup, operation and the 72-hour acceptance test are in [`stream/README.md`](stream/README.md).
