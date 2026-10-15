@@ -41,6 +41,8 @@ Lokal getestet mit absichtlich ausgelösten Ausfällen. Fünf Runden, die letzte
 | Aufpasser selbst stürzt ab | 4 s | kurzer Verbindungsabbruch |
 
 Jede Aufnahme wurde Bild für Bild auf weiße Blitze geprüft: In der letzten Runde gab es keinen einzigen.
+Danach lief der Stream 30 Minuten ohne Eingriff: 0 Fehler, 0 Neustarts, Encoder-Geschwindigkeit nie unter 1,0 und der Speicher blieb flach (Browser 238→239 MB).
+Der Ton liegt bei etwa -20 LUFS, laut genug für einen Stream, ohne zu übersteuern.
 
 ## Server
 

@@ -243,7 +243,7 @@ const ffmpeg = new Service("ffmpeg", {
     const out = CFG.output || "-";
     return [
       "-hide_banner", "-loglevel", "warning", "-nostats", "-progress", "pipe:1",
-      "-thread_queue_size", "1024", "-f", "x11grab", "-draw_mouse", "0", "-framerate", String(CFG.fps), "-video_size", `${CFG.width}x${CFG.height}`, "-i", `${CFG.display}.0+0,0`,
+      "-thread_queue_size", "128", "-f", "x11grab", "-draw_mouse", "0", "-framerate", String(CFG.fps), "-video_size", `${CFG.width}x${CFG.height}`, "-i", `${CFG.display}.0+0,0`,
       "-thread_queue_size", "1024", "-f", "pulse", "-i", "chum.monitor",
       "-map", "0:v", "-map", "1:a",
       "-c:v", "libx264", "-preset", CFG.preset, "-tune", "zerolatency", "-profile:v", "main", "-pix_fmt", "yuv420p",

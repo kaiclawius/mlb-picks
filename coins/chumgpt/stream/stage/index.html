@@ -126,7 +126,11 @@ let AC = null, OUT = null;
 function audio() {
   if (AC) return AC;
   try {
-    AC = new AudioContext(); OUT = AC.createGain(); OUT.gain.value = 1.0; OUT.connect(AC.destination);
+    AC = new AudioContext(); OUT = AC.createGain(); OUT.gain.value = 1.0;
+    // a compressor plus make-up gain keeps the voice at stream loudness without clipping
+    const comp = AC.createDynamicsCompressor(); comp.threshold.value = -26; comp.knee.value = 8; comp.ratio.value = 4; comp.attack.value = 0.004; comp.release.value = 0.2;
+    const makeup = AC.createGain(); makeup.gain.value = 2.2;
+    OUT.connect(comp); comp.connect(makeup); makeup.connect(AC.destination);
     // room tone: a soft CRT hum plus filtered noise, always on so the stream never has dead air
     const hum = AC.createOscillator(), hg = AC.createGain(); hum.frequency.value = 60; hg.gain.value = 0.02; hum.connect(hg); hg.connect(OUT); hum.start();
     const n = AC.createBufferSource(); n.buffer = noiseBuf(2); n.loop = true;
