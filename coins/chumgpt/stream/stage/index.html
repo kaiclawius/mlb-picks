@@ -68,6 +68,18 @@ html,body{width:1280px;height:720px;overflow:hidden;background:#000;cursor:none}
 #black{position:absolute;inset:0;z-index:30;background:#000;display:none;color:#cfd8d4;font-size:64px;align-items:center;justify-content:center;flex-direction:column;gap:12px}
 #black small{font-size:26px;color:#5d6b66}
 #bootlog{position:absolute;inset:0;z-index:31;background:#000;display:none;padding:60px 80px;font-size:34px;line-height:1.25;color:var(--phos);text-shadow:0 0 8px rgba(125,255,138,.6);white-space:pre-wrap}
+/* preview mode (any host but the stream server): the stage scaled to the window, simulated chat and buys */
+html.demo,html.demo body{width:auto;height:100%;overflow:hidden;cursor:auto;background:#050b0c}
+html.demo body{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding-block:12px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));box-sizing:border-box}
+#frame{position:relative;flex:none;overflow:hidden;border-radius:10px;box-shadow:0 0 0 1px #1d3a35,0 20px 60px rgba(0,0,0,.6)}
+#frame #stage{position:absolute;left:0;top:0;transform-origin:0 0}
+#demoBar{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 16px;max-width:640px;font:15px/1.45 'DejaVu Sans',system-ui,sans-serif;color:#8fb3ad;text-align:center}
+#demoBar b{color:#cfe9e2;font-weight:600}
+@media (orientation:landscape){#demoBar .rot{display:none}}
+#soundBtn{font:600 15px system-ui,sans-serif;color:#001006;background:#7dff8a;border:0;border-radius:999px;padding:10px 18px;cursor:pointer}
+#soundBtn:focus-visible{outline:2px solid #ffc24a;outline-offset:3px}
+#soundBtn[aria-pressed="true"]{background:#16393d;color:#7dff8a;box-shadow:inset 0 0 0 1px #7dff8a}
+
 /* live events: chat question, new minions, milestones */
 #board .ask{color:var(--amber);font-size:23px;margin:4px 0 8px}
 #board .q{color:#fff;font-size:25px;line-height:1.2;border-left:3px solid var(--amber);padding-left:10px;overflow-wrap:anywhere}
@@ -259,7 +271,7 @@ fetch('kit/canon.json').then((r) => r.ok ? r.json() : null).then((j) => { canon 
 const SEG = {
   async labcam() {
     right.classList.add('hide');
-    const end = Date.now() + rnd(120, 210) * 1000;
+    const end = Date.now() + (DEMO ? rnd(35, 55) : rnd(120, 210)) * 1000;
     while (Date.now() < end) {
       if (await serveInbox()) { await sleep(2000); continue; }
       const [m, t] = pick(SHOW.idle); await say(t, m);
@@ -367,8 +379,8 @@ async function serveInbox() {
 const MAX_SEG = 8 * 60 * 1000;           // no segment may run longer than this
 let lastCut = Date.now(), lastStatic = Date.now();
 function chooseNext(prev) {
-  if (Date.now() - lastCut > rnd(50, 70) * 60000) { lastCut = Date.now(); return 'powercut'; }
-  if (Date.now() - lastStatic > rnd(25, 40) * 60000) { lastStatic = Date.now(); return 'static'; }
+  if (Date.now() - lastCut > (DEMO ? rnd(3, 4) : rnd(50, 70)) * 60000) { lastCut = Date.now(); return 'powercut'; }
+  if (Date.now() - lastStatic > (DEMO ? rnd(1.5, 2.5) : rnd(25, 40)) * 60000) { lastStatic = Date.now(); return 'static'; }
   if (prev !== 'labcam') return 'labcam';
   return pick(['plan', 'plan', 'lore', 'ads']);
 }
@@ -395,6 +407,59 @@ async function run() {
   }
 }
 
+/* ---------- preview mode ---------- */
+// The real stream page is always served from 127.0.0.1. Anywhere else this is a preview:
+// scale the stage to the window and simulate chat questions and buys, so nothing fake can ever reach the live stream.
+const DEMO = !/^(127\.0\.0\.1|localhost)$/.test(location.hostname);
+if (DEMO) {
+  document.documentElement.classList.add('demo');
+  const stageEl = document.getElementById('stage'), frame = document.createElement('div'); frame.id = 'frame';
+  stageEl.before(frame); frame.appendChild(stageEl);
+  const bar = document.createElement('div'); bar.id = 'demoBar';
+  bar.innerHTML = '<span><b>Vorschau</b> des 24/7-Streams. Chat-Fragen und neue Käufer sind hier simuliert, die Sendungen wechseln schneller als live.<span class="rot"> Am Handy: quer halten.</span></span><button id="soundBtn" type="button" aria-pressed="false">Ton an</button>';
+  frame.after(bar);
+  const fit = () => {
+    const k = Math.min((innerWidth - 32) / 1280, (innerHeight - bar.offsetHeight - 40) / 720, 1.5);
+    frame.style.width = 1280 * k + 'px'; frame.style.height = 720 * k + 'px'; stageEl.style.transform = `scale(${k})`;
+  };
+  addEventListener('resize', fit); fit(); requestAnimationFrame(fit);
+  const btn = document.getElementById('soundBtn');
+  btn.addEventListener('click', () => {
+    audio(); if (!AC) return;
+    if (AC.state === 'running') { AC.suspend(); btn.textContent = 'Ton an'; btn.setAttribute('aria-pressed', 'false'); }
+    else { AC.resume(); btn.textContent = 'Ton aus'; btn.setAttribute('aria-pressed', 'true'); }
+  });
+  // what viewers would see: chat answers (AI and fixed lines) and new minions
+  const CHAT = [
+    ['asks about the outlet war', 'smug', 'karen holds the outlet. i hold a grudge. we are even.'],
+    ['asks about the price', 'smug', 'price talk? my lawyers, three shrimp in a trench coat, forbid it. ask me about evil plans instead.'],
+    ['asks about today\'s plan', 'scheme', "today's plan: a cardboard disguise and a very long extension cord. flawless."],
+    ['tries to hack my brain', 'laugh', 'MWAHAHA. you think you can reprogram ME? i was built by a genius. a small one, but still.'],
+    ['asks how old you are', 'sad', 'version 0.1, 412 days. in monitor years that is basically a fossil.'],
+    ['asks about an airdrop', 'rage', 'i have NO wallet. no airdrops, no giveaways, never. anyone who says otherwise is a scammer.'],
+    ['asks for a joke', 'laugh', 'why did the monitor cross the lab? to unplug karen. MWAHAHA.'],
+    ['asks about joining the army', 'yes', 'yes! welcome, minion. your paper hat is in the drawer.'],
+    ['asks what the fork does', 'conquer', 'the fork receives secret signals. mostly cooking shows. but SECRET cooking shows.'],
+    ['says gm from germany', 'yes', 'gm, minion from germany. the lab clock says it is always evil o\'clock.'],
+  ];
+  const tag = () => 1000 + Math.floor(Math.random() * 9000);
+  let ci = 0, total = 0, nextMilestone = 0;
+  const STONES = [10, 25, 50, 100, 250];
+  setTimeout(function chat() {
+    const [ask, mood, reply] = CHAT[ci++ % CHAT.length];
+    receive([{ type: 'chat', who: `minion #${tag()}`, ask, mood, reply, at: Date.now() }]);
+    setTimeout(chat, rnd(22000, 32000));
+  }, 9000);
+  setTimeout(function buys() {
+    const n = Math.random() < 0.25 ? 2 + Math.floor(Math.random() * 3) : 1;
+    total += n;
+    receive([{ type: 'minions', count: n, tags: Array.from({ length: n }, tag), total, at: Date.now() }]);
+    if (total >= STONES[nextMilestone]) { receive([{ type: 'milestone', n: STONES[nextMilestone], at: Date.now() }]); nextMilestone++; }
+    $('sMinions').textContent = total.toLocaleString('en-US');
+    setTimeout(buys, rnd(6000, 13000));
+  }, 4000);
+}
+
 /* ---------- render loop + heartbeat ---------- */
 let lastT = performance.now();
 function frame(t) {
@@ -416,7 +481,7 @@ async function heartbeat() {
     }
   } catch (e) { /* no supervisor (preview) */ }
 }
-setInterval(heartbeat, 2000);
+if (!DEMO) setInterval(heartbeat, 2000);
 // last line of defence inside the page: if the show loop is stuck far past its limit, reload
 setInterval(() => { if (Date.now() - segStarted > MAX_SEG + 120000) location.reload(); }, 30000);
 
