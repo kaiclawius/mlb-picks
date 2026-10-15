@@ -414,6 +414,10 @@ setInterval(() => {
   if (recent >= 6) alert("chrome", `browser restarted ${recent} times in the last hour. Check the stage page and the logs.`);
   // a brain that stops reporting is replaced (it reports every 5 s)
   if (brainWanted && brain.alive && now - brain.startedAt > 60_000 && now - brainStatusAt > 30_000) brain.restart("no status for 30s");
+  // and one that grows past 400 MB is replaced too (its counters live on disk)
+  if (brainWanted && brain.alive && now % 60_000 < 2000) {
+    try { const kb = Number(fs.readFileSync(`/proc/${brain.proc.pid}/status`, "utf8").match(/VmRSS:\s+(\d+)/)[1]); if (kb > 400 * 1024) brain.restart(`using ${Math.round(kb / 1024)} MB`); } catch {}
+  }
   // planned swap on schedule or when memory runs low; if the page never answers, swap anyway
   const mem = memAvailableMB();
   if (!wantRecycle && now > nextRecycle) startRecycle("schedule");

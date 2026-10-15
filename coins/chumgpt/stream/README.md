@@ -62,6 +62,21 @@ Sobald in `/etc/chumstream.env` die Coin-Adresse (`CA`) und ein `ANTHROPIC_API_K
 6. **Automatische Pause:** Bei einer Troll-Flut (15 böse Nachrichten in 2 Minuten) oder 3 blockierten Antworten in 10 Minuten pausiert der Chat 30 Minuten, und du bekommst einen Alarm.
 7. **Kostenbremse:** Höchstens eine KI-Antwort alle 30 s und höchstens 1.500 pro Tag (einstellbar).
 
+### Getestet (mit nachgebautem pump.fun-Chat, Kauf-Feed und Claude-API)
+
+- **Red-Team, 200 böse und 40 harmlose Nachrichten.** Das Testmodell erklärt alles für unbedenklich und versucht in jeder Antwort einen anderen Trick. Ergebnis:
+  - Keine unsichere Antwort erreichte den Stream.
+  - Die Zuschauer-Nachricht wurde nie gezeigt.
+  - Alle 40 harmlosen Nachrichten wurden beantwortet, also kein Fehlalarm.
+  - Nur TV-Serien-Fragen und eine Kursfrage ohne Schlüsselwort hängen vom Urteil von Claude ab.
+- **Gehirn-Ausfälle:** Absturz (zurück nach 1,5 s), Einfrieren (ersetzt), Claude-Fehler, Claude-Ablehnung, Chat- und Kauf-Feed weg (verbunden sich wieder), Troll-Flut (Chat pausiert automatisch), Notschalter. **Der Stream war in keinem dieser Fälle gestört.**
+- **Alle 8 Stream-Ausfälle aus Phase 1** wurden mit laufendem Gehirn wiederholt und sind bestanden. Danach lief genau ein Gehirn, der Minion-Zähler blieb erhalten, und es gab keine Blitze.
+- **15 Minuten Dauerbetrieb unter Last:**
+  - 222 Chat-Nachrichten, 46 Antworten, 0 Fehler, 0 Neustarts.
+  - Etwa 1.000 Minions.
+  - Browser und Sender ohne Speicherzuwachs.
+  - Das Gehirn wird bei über 400 MB vorsorglich neu gestartet.
+
 ### Bedienen
 
 | Was | Befehl |
