@@ -44,6 +44,7 @@ function killLeftovers() { // processes from a supervisor that crashed without c
     if (Number(id) === process.pid) continue;
     let cmd = ""; try { cmd = fs.readFileSync(`/proc/${id}/cmdline`, "utf8"); } catch { continue; }
     const exe = path.basename(cmd.split("\0")[0] || "");
+    if (/^node(js)?$/.test(exe) && cmd.includes(path.join(HERE, "brain", "brain.mjs"))) { try { process.kill(Number(id), "SIGKILL"); log(`killed leftover brain (${id})`); } catch {} continue; }
     if (!/^(Xvfb|ffmpeg|pulseaudio|chrome|google-chrome|chromium|chromium-browser|chrome_crashpad_handler)$/.test(exe)) continue; // only our own kind of programs
     if (exe === "ffmpeg" && !cmd.includes("-progress\0pipe:1")) continue; // our sender, not someone's manual ffmpeg
     if (marks.some((m) => cmd.includes(m))) { try { process.kill(Number(id), "SIGKILL"); log(`killed leftover ${cmd.split("\0")[0]} (${id})`); } catch {} }
@@ -264,6 +265,25 @@ const ffmpeg = new Service("ffmpeg", {
   },
 });
 
+/* ---------------- 5. the brain (chat + minions), optional ---------------- */
+// Its own process: whatever happens to it, the picture and the scripted show go on.
+const BRAIN = path.join(HERE, "brain", "brain.mjs");
+const brainWanted = fs.existsSync(BRAIN) && (!!process.env.CA || process.env.BRAIN_DEV === "1");
+const brain = new Service("brain", {
+  cmd: process.execPath, args: [BRAIN],
+  env: { SUPERVISOR_URL: `http://127.0.0.1:${CFG.port}`, STATE_DIR: env("STATE_DIR", path.join(CFG.runDir, "state")) },
+  maxDelay: 30_000,
+  killSignal: "SIGKILL", // a hung brain must go at once; its state file is written as it goes
+  onLine: (line) => { if (/ALERT|error|blocked|paused|brain on/i.test(line)) log(`brain: ${line}`); },
+});
+let brainStatus = null, brainStatusAt = 0;
+const events = []; // finished events from the brain, waiting for the stage
+function pushEvent(e) {
+  if (!e || typeof e.type !== "string") return;
+  events.push({ ...e, at: Date.now() });
+  while (events.length > 8) events.shift();
+}
+
 /* ---------------- stage server + heartbeat ---------------- */
 // RECYCLE_HOURS=0 turns the scheduled swap off
 const recycleMs = () => (CFG.recycleHours > 0 ? CFG.recycleHours * 3_600_000 : Infinity);
@@ -289,6 +309,8 @@ function health() {
     uptimeMin: Math.round((now - t0) / 60000),
     ffmpeg: { frame: prog.frame, fps: prog.fps, speed: prog.speed, lastFrameAgoS: Math.round((now - prog.frameAt) / 1000), restarts: ffmpeg.restarts },
     page: { placed: hb.placed, size: hb.size, seg: hb.seg, lastBeatAgoS: hb.at ? Math.round((now - hb.at) / 1000) : null, errors: hb.errors, audio: hb.audio, restarts: chrome.restarts },
+    brain: brainWanted ? { running: brain.alive, restarts: brain.restarts, lastStatusAgoS: brainStatusAt ? Math.round((now - brainStatusAt) / 1000) : null, ...(brainStatus || {}) } : "off (no CA set)",
+    eventsWaiting: events.length,
     xvfbRestarts: xvfb.restarts, pulseRestarts: pulse.restarts,
     memAvailableMB: memAvailableMB(), load1: os.loadavg()[0].toFixed(2),
     nextRecycleMin: Number.isFinite(nextRecycle) ? Math.round((nextRecycle - now) / 60000) : null,
@@ -309,12 +331,30 @@ const server = http.createServer(async (req, res) => {
     hb.smallCount = (Number(j.vw) && Number(j.vh) && (j.vw < CFG.width - 2 || j.vh < CFG.height - 2)) ? hb.smallCount + 1 : 0;
     if (!hb.placed && hb.count >= 1) placeWindow();
     res.writeHead(200, { "Content-Type": "application/json" });
-    return res.end(JSON.stringify(wantRecycle ? { cmd: "powercut" } : {}));
+    const out = { ...(wantRecycle ? { cmd: "powercut" } : {}), stats: { minions: brainStatus?.minions ?? null } };
+    // hand over events only to a page that is on air; drop ones the stage never got to within 3 minutes
+    while (events.length && now - events[0].at > 180_000) events.shift();
+    if (hb.placed && events.length && Number(j.room) > 0) out.events = events.splice(0, Math.min(events.length, Number(j.room)));
+    return res.end(JSON.stringify(out));
   }
   if (req.method === "POST" && url.pathname === "/ready") {
     res.writeHead(204); res.end();
     if (wantRecycle) { log("page went dark for the planned power cut, swapping the browser"); finishRecycle(); }
     return;
+  }
+  if (req.method === "POST" && url.pathname === "/events") {
+    let j = {}; try { j = JSON.parse(await readBody(req)); } catch {}
+    pushEvent(j); res.writeHead(200, { "Content-Type": "application/json" }); return res.end(JSON.stringify({ size: events.length }));
+  }
+  if (url.pathname === "/events/size") { res.writeHead(200, { "Content-Type": "application/json" }); return res.end(JSON.stringify({ size: events.length })); }
+  if (req.method === "POST" && url.pathname === "/brain/status") {
+    try { brainStatus = JSON.parse(await readBody(req)); brainStatusAt = Date.now(); } catch {}
+    res.writeHead(204); return res.end();
+  }
+  if (req.method === "POST" && url.pathname === "/control/chat") { // kill switch, forwarded to the brain
+    const on = url.searchParams.get("on") === "1" ? "1" : "0";
+    const r = await fetch(`http://127.0.0.1:${env("BRAIN_PORT", "8091")}/control/chat?on=${on}`, { method: "POST" }).then((x) => x.json()).catch(() => null);
+    res.writeHead(r ? 200 : 503, { "Content-Type": "application/json" }); return res.end(JSON.stringify(r || { error: "brain not running" }));
   }
   if (req.method === "POST" && url.pathname === "/control/recycle") {
     startRecycle("requested by operator"); res.writeHead(202); return res.end("ok, the next power cut swaps the browser\n");
@@ -372,6 +412,8 @@ setInterval(() => {
   }
   const recent = (chromeRestartTimes = chromeRestartTimes.filter((t) => now - t < 3_600_000)).length;
   if (recent >= 6) alert("chrome", `browser restarted ${recent} times in the last hour. Check the stage page and the logs.`);
+  // a brain that stops reporting is replaced (it reports every 5 s)
+  if (brainWanted && brain.alive && now - brain.startedAt > 60_000 && now - brainStatusAt > 30_000) brain.restart("no status for 30s");
   // planned swap on schedule or when memory runs low; if the page never answers, swap anyway
   const mem = memAvailableMB();
   if (!wantRecycle && now > nextRecycle) startRecycle("schedule");
@@ -396,13 +438,14 @@ async function main() {
   await pulse.start();
   await ffmpeg.start(); // the sender goes first: from now on the stream is on air, showing the standby card
   await chrome.start();
+  if (brainWanted) await brain.start();
   log(`on air (new browsers ${canPlace ? "warm up off-picture and slide in when ready" : "start directly in the picture: install xdotool to hide their loading"})`);
 }
 let shuttingDown = false;
 function shutdown(sig) {
   if (shuttingDown) return; shuttingDown = true;
   log(`${sig}: shutting down`);
-  for (const s of [chrome, ffmpeg, pulse, xvfb]) s.stop();
+  for (const s of [brain, chrome, ffmpeg, pulse, xvfb]) s.stop();
   setTimeout(() => process.exit(0), 6000).unref();
 }
 process.on("SIGTERM", () => shutdown("SIGTERM"));

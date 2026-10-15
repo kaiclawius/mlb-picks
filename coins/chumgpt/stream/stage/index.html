@@ -68,6 +68,15 @@ html,body{width:1280px;height:720px;overflow:hidden;background:#000;cursor:none}
 #black{position:absolute;inset:0;z-index:30;background:#000;display:none;color:#cfd8d4;font-size:64px;align-items:center;justify-content:center;flex-direction:column;gap:12px}
 #black small{font-size:26px;color:#5d6b66}
 #bootlog{position:absolute;inset:0;z-index:31;background:#000;display:none;padding:60px 80px;font-size:34px;line-height:1.25;color:var(--phos);text-shadow:0 0 8px rgba(125,255,138,.6);white-space:pre-wrap}
+/* live events: chat question, new minions, milestones */
+#board .ask{color:var(--amber);font-size:23px;margin:4px 0 8px}
+#board .q{color:#fff;font-size:25px;line-height:1.2;border-left:3px solid var(--amber);padding-left:10px;overflow-wrap:anywhere}
+#toast{position:absolute;left:50%;top:62px;z-index:25;transform:translate(-50%,-140%);background:var(--amber);color:#1a1200;font-family:var(--head);font-size:22px;padding:10px 22px;border:3px solid #000;border-radius:12px;box-shadow:0 6px 0 #000;transition:transform .45s cubic-bezier(.2,1.4,.4,1);white-space:nowrap;max-width:760px;overflow:hidden;text-overflow:ellipsis}
+#toast.in{transform:translate(-50%,0)}
+#banner{position:absolute;inset:0;z-index:26;display:none;align-items:center;justify-content:center;flex-direction:column;gap:6px;background:radial-gradient(circle,rgba(0,40,12,.92),rgba(0,8,3,.96))}
+#banner b{font-family:var(--head);font-weight:400;font-size:120px;color:var(--phos);text-shadow:0 0 30px rgba(125,255,138,.7),6px 6px 0 #003d12;animation:pop .6s cubic-bezier(.2,1.6,.4,1)}
+#banner span{font-family:var(--head);font-size:34px;color:var(--amber)}
+@keyframes pop{from{transform:scale(.3);opacity:0}}
 .scan{position:absolute;inset:0;z-index:40;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px),radial-gradient(ellipse at 50% 50%,transparent 62%,rgba(0,0,0,.5))}
 #stage.red .glow{background:radial-gradient(circle,rgba(255,90,74,.22),transparent 65%)}
 #stage.shake{animation:shake .12s linear infinite}
@@ -92,7 +101,8 @@ html,body{width:1280px;height:720px;overflow:hidden;background:#000;cursor:none}
       plans failed: <b id="sFailed">0</b><br>
       days at v0.1: <b id="sDays">0</b><br>
       outlet owner: <b>karen</b><br>
-      wallet: <b>none. never.</b>
+      wallet: <b>none. never.</b><br>
+      minions: <b id="sMinions">recruiting…</b>
     </div>
   </div>
   <div class="panel hide" id="right"><div id="board"></div><span class="stamp" id="stamp">FAILED</span></div>
@@ -100,6 +110,8 @@ html,body{width:1280px;height:720px;overflow:hidden;background:#000;cursor:none}
   <div id="cap" data-who="CHUMGPT"><span id="capText"></span></div>
   <div class="ticker"><span class="tag">LAB NEWS</span><span id="crawl"></span></div>
 
+  <div id="toast"></div>
+  <div id="banner"><b id="bannerN"></b><span>MINIONS IN THE CHUM ARMY</span></div>
   <canvas id="snow" width="320" height="180"></canvas>
   <div id="black"><span>NO SIGNAL</span><small>CHUM·TRONIX 3000 · karen pulled the plug</small></div>
   <div id="bootlog"></div>
@@ -248,7 +260,13 @@ const SEG = {
   async labcam() {
     right.classList.add('hide');
     const end = Date.now() + rnd(120, 210) * 1000;
-    while (Date.now() < end) { const [m, t] = pick(SHOW.idle); await say(t, m); await sleep(rnd(3000, 9000)); }
+    while (Date.now() < end) {
+      if (await serveInbox()) { await sleep(2000); continue; }
+      const [m, t] = pick(SHOW.idle); await say(t, m);
+      // wait for the next line, but jump in early when the chat or new minions need an answer
+      const until = Date.now() + rnd(3000, 9000);
+      while (Date.now() < until && !inbox.length) await sleep(250);
+    }
   },
   async plan() {
     const P = SHOW.plan; planNo++;
@@ -297,6 +315,54 @@ const SEG = {
   }
 };
 
+/* ---------- live events from the brain (chat answers, new minions, milestones) ---------- */
+const inbox = [];                 // events waiting for a calm moment
+const INBOX_MAX = 4;
+let lastMinionLine = 0;
+function minionToast(e) {
+  const t = $('toast');
+  const tags = (e.tags || []).slice(0, 3).map((n) => '#' + n).join(' ');
+  t.textContent = e.count > 1 ? `+${e.count} NEW MINIONS JOINED THE CHUM ARMY  ${tags}` : `NEW MINION ${tags} JOINED THE CHUM ARMY`;
+  t.classList.add('in'); [523, 659, 784, 1046].forEach((f, i) => setTimeout(() => tone(f, 0.12, 0.06, 'square'), i * 90));
+  clearTimeout(minionToast.t); minionToast.t = setTimeout(() => t.classList.remove('in'), 5200);
+}
+function milestoneBanner(e) {
+  $('bannerN').textContent = Number(e.n).toLocaleString('en-US'); $('banner').style.display = 'flex';
+  [392, 523, 659, 784, 1046, 1318].forEach((f, i) => setTimeout(() => tone(f, 0.18, 0.07, 'square'), i * 120));
+  setTimeout(() => { $('banner').style.display = 'none'; }, 6500);
+}
+function receive(list) {
+  for (const e of list || []) {
+    if (!e || typeof e.type !== 'string') continue;
+    if (e.type === 'minions') minionToast(e);
+    if (e.type === 'milestone') milestoneBanner(e);
+    if (inbox.length < INBOX_MAX) inbox.push(e);
+  }
+}
+const fill = (tpl, e) => tpl.replace('{n}', Number(e.n || 0).toLocaleString('en-US'));
+// played at calm moments: between idle lines and between shows
+async function serveInbox() {
+  let served = 0;
+  while (inbox.length && served < 3) {
+    const e = inbox.shift(); served++;
+    if (Date.now() - (e.at || Date.now()) > 240000) continue;
+    try {
+      if (e.type === 'chat' && e.reply) {
+        boardReset('LIVE CHAT');
+        if (e.ask) { const a = document.createElement('div'); a.className = 'ask'; a.textContent = `${e.who || 'a minion'}`; const q = document.createElement('div'); q.className = 'q'; q.textContent = e.ask; board.append(a, q); }
+        await sleep(900);
+        await say(String(e.reply), e.mood || 'smug');
+        right.classList.add('hide');
+      } else if (e.type === 'minions' && Date.now() - lastMinionLine > 20000) {
+        lastMinionLine = Date.now(); const [m, t] = pick(SHOW.minion || [['yes', 'new minion detected. welcome to the lab.']]); await say(t, m);
+      } else if (e.type === 'milestone') {
+        const [m, t] = pick(SHOW.milestone || [['conquer', '{n} minions!']]); await say(fill(t, e), m);
+      }
+    } catch (err) { errors++; }
+  }
+  return served;
+}
+
 /* ---------- run of show ---------- */
 const MAX_SEG = 8 * 60 * 1000;           // no segment may run longer than this
 let lastCut = Date.now(), lastStatic = Date.now();
@@ -316,6 +382,7 @@ async function run() {
     if (pendingCmd === 'powercut') { pendingCmd = null; seg = 'restart'; }
     next = chooseNext(seg === 'restart' ? 'powercut' : seg);
     guide(seg === 'restart' ? 'powercut' : seg, next);
+    if (inbox.length) { segName = 'chat'; segStarted = Date.now(); await serveInbox().catch(() => {}); }
     segName = seg; segStarted = Date.now();
     const shown = seg === 'restart' ? 'powercut' : seg, chNo = ['labcam', 'plan', 'lore', 'ads'].indexOf(shown) + 1;
     $('chan').textContent = `CH ${chNo ? '0' + chNo : '??'} · ${NAMES[shown] || ''}`;
@@ -340,8 +407,13 @@ function frame(t) {
 requestAnimationFrame(frame);
 async function heartbeat() {
   try {
-    const r = await fetch(HB, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ frames, seg: segName, segAge: Date.now() - segStarted, errors, audio: AC ? AC.state : 'none', vw: innerWidth, vh: innerHeight, gen: Number(new URLSearchParams(location.search).get('gen')) }) });
-    if (r.ok) { const j = await r.json(); if (j && j.cmd === 'powercut') pendingCmd = 'powercut'; }
+    const r = await fetch(HB, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ frames, seg: segName, segAge: Date.now() - segStarted, errors, audio: AC ? AC.state : 'none', vw: innerWidth, vh: innerHeight, gen: Number(new URLSearchParams(location.search).get('gen')), room: INBOX_MAX - inbox.length }) });
+    if (r.ok) {
+      const j = await r.json();
+      if (j && j.cmd === 'powercut') pendingCmd = 'powercut';
+      if (j && j.events) receive(j.events);
+      if (j && j.stats && Number.isFinite(j.stats.minions)) $('sMinions').textContent = j.stats.minions.toLocaleString('en-US');
+    }
   } catch (e) { /* no supervisor (preview) */ }
 }
 setInterval(heartbeat, 2000);

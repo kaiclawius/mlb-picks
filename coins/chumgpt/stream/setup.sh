@@ -12,7 +12,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 echo "== packages"
 apt-get update -qq
-apt-get install -y -qq xvfb xdotool pulseaudio hsetroot ffmpeg nodejs fonts-dejavu-core ca-certificates curl unattended-upgrades >/dev/null
+apt-get install -y -qq xvfb xdotool pulseaudio hsetroot ffmpeg nodejs npm fonts-dejavu-core ca-certificates curl unattended-upgrades >/dev/null
 
 echo "== browser (Google Chrome, held at the installed version so updates never surprise the stream)"
 if ! command -v google-chrome >/dev/null; then
@@ -26,9 +26,13 @@ node -e 'const [a]=process.versions.node.split(".").map(Number); if(a<18){consol
 echo "== user and files"
 id chum >/dev/null 2>&1 || useradd --system --create-home --home-dir /var/lib/chum --shell /usr/sbin/nologin chum
 mkdir -p "$APP"
-rm -rf "$APP/stream.new" "$APP/kit.new"
-cp -r "$SRC" "$APP/stream.new"; cp -r "$SRC/../kit" "$APP/kit.new"
-rm -rf "$APP/stream" "$APP/kit"; mv "$APP/stream.new" "$APP/stream"; mv "$APP/kit.new" "$APP/kit"
+rm -rf "$APP/stream.new" "$APP/kit.new" "$APP/api.new"
+cp -r "$SRC" "$APP/stream.new"; rm -rf "$APP/stream.new/node_modules"
+cp -r "$SRC/../kit" "$APP/kit.new"
+mkdir -p "$APP/api.new"; cp "$SRC/../api/_persona.js" "$SRC/../api/_canon.js" "$SRC/../api/_guard.js" "$APP/api.new/"   # the brain shares ChumGPT's character with the website
+echo "== brain dependencies (pinned in package-lock.json)"
+(cd "$APP/stream.new" && npm ci --omit=dev --no-audit --no-fund --loglevel=error)
+rm -rf "$APP/stream" "$APP/kit" "$APP/api"; mv "$APP/stream.new" "$APP/stream"; mv "$APP/kit.new" "$APP/kit"; mv "$APP/api.new" "$APP/api"
 chown -R root:root "$APP"; chmod -R a+rX "$APP"
 
 if [ ! -f "$ENVF" ]; then

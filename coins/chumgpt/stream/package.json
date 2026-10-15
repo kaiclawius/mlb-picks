@@ -1,0 +1,12 @@
+{
+  "name": "chumstream",
+  "private": true,
+  "type": "module",
+  "description": "ChumGPT 24/7 lab stream: supervisor (zero deps) and the brain that answers chat and greets new minions",
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.134.0",
+    "obscenity": "0.4.6",
+    "ws": "8.18.3"
+  }
+}

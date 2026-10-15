@@ -87,6 +87,20 @@ window.SHOW = {
     "SPORTS: fork antenna wins staring contest against the toaster"
   ],
 
+  // spoken when new minions arrive or the army hits a milestone (never about price)
+  minion: [
+    ["yes", "new minion detected! welcome to the lab. touch nothing."],
+    ["conquer", "the chum army grows. the fork antenna is tingling."],
+    ["laugh", "MWAHAHA! another recruit. your uniform is a paper hat."],
+    ["smug", "welcome, minion. please hydrate and await evil instructions."],
+    ["conquer", "more minions. phase two is getting closer. phase three is still blank."]
+  ],
+  milestone: [
+    ["conquer", "{n} MINIONS. this is no longer a lab. this is an EMPIRE. a small one. with snacks."],
+    ["laugh", "{n} minions! karen, look! karen? she unplugged herself out of jealousy."],
+    ["yes", "{n} minions strong. i'm adding a new file to the lore. stay tuned."]
+  ],
+
   boot: [
     "CHUM·TRONIX BIOS v0.1",
     "memory check ........ 640K (enough for evil)",
