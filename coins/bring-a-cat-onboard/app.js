@@ -1,5 +1,6 @@
 // Bring a cat onboard: referral links, Jupiter swaps (solo or paired with catonboard), live board, hero graph.
 // Without a deployed API (local file, preview) the board and graph run on clearly labelled preview data.
+import { createGraph } from "./graph.js";
 const C = window.CAT_CONFIG || {};
 const $ = (s) => document.querySelector(s);
 const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -37,6 +38,7 @@ function onWallet() {
 }
 function link() { return location.origin + (myHandle ? "/@" + myHandle : "/?r=" + wallet); }
 function showLink() {
+  const meId = myHandle ? "@" + myHandle : short(wallet); hero.setMe(meId); big.setMe(meId); $("#gme").hidden = false;
   $("#linkBox").hidden = false; $("#myLink").textContent = link().replace(/^https?:\/\//, "");
   $("#shareRow").hidden = false;
   const text = myHandle ? `I’m bringing cats onboard. Use my link and get on the board 🐈` : `Bring a cat onboard 🐈`;
@@ -187,8 +189,8 @@ function renderBoard(d) {
       li.querySelector("b").textContent = f.ref; li.querySelector(".buyer").textContent = f.buyer;
       li.querySelector(".amt").textContent = fmt(f.sol) + " SOL" + (f.pair ? " · paired" : "");
       li.querySelector("time").dataset.t = f.t; ul.prepend(li);
-      if (!firstLoad) { net.join(f.ref); toast(`<b>${esc(f.ref)}</b> brought ${esc(f.buyer)} onboard`); }
-      else net.join(f.ref, true);
+      if (!firstLoad) { net.join(f); toast(`<b>${esc(f.ref)}</b> brought ${esc(f.buyer)} onboard`); }
+      else net.join(f, true);
     }
     while (ul.children.length > 20) ul.lastChild.remove();
   }
@@ -219,61 +221,52 @@ let pv = null;
 function startPreview() {
   if (pv) return;
   $("#boardTag").textContent = "preview · sample data"; $("#hudMode").textContent = "preview";
-  const names = ["@whiskers", "@solcat", "@meowfi", "@tabby", "@purrbot", "@nyan", "@kitkat", "@zoomies"];
-  const board = new Map(names.map((n, i) => [n, { name: n, cats: 12 - i, sol: (9 - i) * 1.7 + 0.3 }]));
+  const names = ["@whiskers", "@solcat", "@meowfi", "@tabby", "@purrbot", "@nyan", "@kitkat", "@zoomies", "@garfield_sol", "@mittens", "@chonk", "@void_cat", "@biscuit", "@luna", "@sushi", "@pixelpaw"];
+  const board = new Map(names.map((n, i) => [n, { name: n, cats: Math.max(1, 12 - i), sol: Math.max(0.3, (9 - i) * 1.7 + 0.3) }]));
   const rnd = () => "1Bcd23efGh45iJkL6mNo7pQr8sTu9vWx".split("").sort(() => Math.random() - 0.5).join("");
   pv = { feed: [], board, stats: { cats: 61, sol: 74.2, referrers: names.length } };
-  const tick = () => {
+  const make = (t) => {
     const ref = names[Math.floor(Math.pow(Math.random(), 1.6) * names.length)], sol = Math.round((0.05 + Math.random() * 0.9) * 100) / 100;
     const b = board.get(ref); b.cats++; b.sol += sol; pv.stats.cats++; pv.stats.sol = Math.round((pv.stats.sol + sol) * 100) / 100;
-    pv.feed.unshift({ ref, buyer: short(rnd()), sol, pair: Math.random() < 0.4, t: Date.now() }); pv.feed.length = Math.min(pv.feed.length, 20);
-    renderBoard({ top: [...board.values()].sort((x, y) => y.sol - x.sol), feed: pv.feed, stats: pv.stats });
+    return { ref, buyer: short(rnd()), sol, pair: Math.random() < 0.4, t };
   };
-  for (let i = 0; i < 6; i++) tick();
+  const render = () => renderBoard({ top: [...board.values()].sort((x, y) => y.sol - x.sol), feed: pv.feed, stats: pv.stats });
+  // seed: a network that already has some history, drawn without animation
+  for (let i = 150; i > 0; i--) { const e = make(Date.now() - i * 60000); net.join(e, true); pv.feed.unshift(e); }
+  pv.feed.length = 20; render();
+  const tick = () => { pv.feed.unshift(make(Date.now())); pv.feed.length = Math.min(pv.feed.length, 20); render(); };
   if (!RM) setInterval(() => { if (!document.hidden) tick(); }, 2400);
 }
 
-/* ---------- hero graph: wallets as nodes, referrals as edges; a new cat flies in to its referrer ---------- */
-const net = (() => {
-  const cv = $("#net"), g = cv.getContext("2d"); let W = 0, H = 0, dpr = 1, visible = true, raf = 0;
-  const hubs = new Map(), nodes = [];
-  const size = () => { const r = cv.getBoundingClientRect(); dpr = Math.min(2, devicePixelRatio || 1); W = r.width; H = r.height; cv.width = W * dpr; cv.height = H * dpr; g.setTransform(dpr, 0, 0, dpr, 0, 0); hubs.forEach(place); };
-  const center = { x: 0.5, y: 0.46 };
-  let hubN = 0;
-  function place(h) { const a = h.i * 2.399, rad = 0.12 + 0.07 * Math.sqrt(h.i); h.x = (center.x + Math.cos(a) * rad) * W; h.y = (center.y + Math.sin(a) * rad * 1.05) * H; }
-  function hub(name) { let h = hubs.get(name); if (!h) { h = { name, i: hubN++, n: 0 }; place(h); hubs.set(name, h); } return h; }
-  function join(name, instant) {
-    const h = hub(name); h.n++; const a = Math.random() * 6.283, d = 26 + Math.random() * 34 + Math.min(40, h.n * 2);
-    const n = { h, a, d, t: instant || RM ? 1 : 0, born: performance.now() }; nodes.push(n); if (nodes.length > 240) nodes.shift();
-    if (RM) draw();
-  }
-  function draw(now = performance.now()) {
-    g.clearRect(0, 0, W, H);
-    // hub to center spokes
-    g.lineWidth = 1; g.strokeStyle = "rgba(10,15,12,.12)";
-    hubs.forEach((h) => { g.beginPath(); g.moveTo(center.x * W, center.y * H); g.lineTo(h.x, h.y); g.stroke(); });
-    for (const n of nodes) {
-      if (n.t < 1) n.t = Math.min(1, (now - n.born) / 900);
-      const e = 1 - Math.pow(1 - n.t, 4), tx = n.h.x + Math.cos(n.a) * n.d, ty = n.h.y + Math.sin(n.a) * n.d;
-      const sx = n.h.x + Math.cos(n.a) * (n.d + 220), sy = n.h.y + Math.sin(n.a) * (n.d + 220);
-      const x = sx + (tx - sx) * e, y = sy + (ty - sy) * e;
-      g.strokeStyle = `rgba(0,184,108,${0.2 + 0.5 * (1 - e) })`; g.lineWidth = n.t < 1 ? 2 : 1;
-      g.beginPath(); g.moveTo(n.h.x, n.h.y); g.lineTo(x, y); g.stroke();
-      g.fillStyle = n.t < 1 ? "#00d47e" : "#7fe9bc"; g.beginPath(); g.arc(x, y, n.t < 1 ? 4.5 : 3, 0, 7); g.fill();
-      if (n.t < 1) { g.strokeStyle = `rgba(0,212,126,${1 - e})`; g.beginPath(); g.arc(tx, ty, 4 + 18 * e, 0, 7); g.stroke(); }
-    }
-    hubs.forEach((h) => { g.fillStyle = "#0a0f0c"; g.beginPath(); g.arc(h.x, h.y, 5 + Math.min(7, Math.sqrt(h.n)), 0, 7); g.fill();
-      g.fillStyle = "#5d6b63"; g.font = "500 11px 'JetBrains Mono', monospace"; g.fillText(h.name, h.x + 10, h.y - 8); });
-    g.fillStyle = "#00d47e"; g.beginPath(); g.arc(center.x * W, center.y * H, 9, 0, 7); g.fill();
-    g.strokeStyle = "rgba(0,212,126,.35)"; g.lineWidth = 6; g.beginPath(); g.arc(center.x * W, center.y * H, 14, 0, 7); g.stroke();
-  }
-  const loop = (t) => { raf = 0; if (visible && !document.hidden) draw(t); raf = requestAnimationFrame(loop); };
-  new ResizeObserver(() => { size(); draw(); }).observe(cv);
-  new IntersectionObserver(([e]) => (visible = e.isIntersecting)).observe(cv);
-  size();
-  if (!RM) raf = requestAnimationFrame(loop);
-  return { join };
-})();
+/* ---------- graphs: the hero (ambient) and the network section (full, interactive) ---------- */
+const hero = createGraph($("#net"), { mode: "ambient", max: 260 });
+const big = createGraph($("#gbig"), { mode: "full", max: 800, onSelect: showNode });
+const tierOf = (n) => (n.cats >= 25 ? "Big Cat" : n.cats >= 5 ? "Cat" : n.cats >= 1 ? "Kitten" : "referrer");
+function showNode(n) {
+  const p = $("#gpanel");
+  if (!n || n.kind === "core") { p.hidden = true; if (n) { $("#gq").value = ""; } return; }
+  const hub = n.kind === "hub" ? n : null;
+  p.hidden = false;
+  $("#gpTier").textContent = hub ? tierOf(hub) : "cat";
+  $("#gpName").textContent = hub ? n.id : n.label;
+  $("#gpCats").textContent = hub ? n.cats : big.neighbours(n.id).filter((x) => !x.startsWith("cat:")).length;
+  $("#gpSol").textContent = hub ? fmt(n.sol) : "—";
+  $("#gpCats").previousElementSibling.textContent = hub ? "cats" : "links";
+  const ul = $("#gpList"); ul.innerHTML = "";
+  (hub ? n.recent.map((b) => "brought " + b) : big.neighbours(n.id).map((x) => "via " + (x.startsWith("cat:") ? x.slice(4) : x))).slice(0, 6).forEach((t) => { const li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
+  const a = $("#gpLink"), handle = hub && /^@[a-z0-9_]{3,15}$/.test(n.id);
+  a.hidden = !handle; if (handle) a.href = "/" + n.id;
+}
+const net = { join(f, instant) { hero.add(f, !instant); big.add(f, !instant); $("#gsize").textContent = `${big.size.hubs} referrers · ${big.size.nodes - 2 - big.size.hubs} cats`; } };
+async function loadGraph() {
+  try { const r = await fetch("/api/graph", { cache: "no-store" }); if (!r.ok) throw 0; const d = await r.json(); for (const e of [...d.edges].reverse()) net.join(e, true); } catch {}
+}
+$("#gzin").addEventListener("click", () => big.zoom(1.3));
+$("#gzout").addEventListener("click", () => big.zoom(1 / 1.3));
+$("#gfit").addEventListener("click", () => big.fit());
+$("#gclose").addEventListener("click", () => big.select(null));
+$("#gq").addEventListener("input", (e) => { const id = e.target.value.length >= 2 && big.find(e.target.value); if (id) big.focus(id); });
+$("#gme").addEventListener("click", () => { if (!big.focus("@" + myHandle) && !big.focus(short(wallet))) msg($("#linkMsg"), "You’re not on the graph yet. Bring your first cat."); });
 
 /* ---------- wire up ---------- */
 $("#connect").addEventListener("click", connect);
@@ -291,6 +284,6 @@ if (REF) $("#livePill").textContent = `${refName(REF)} invited you onboard`;
 $("#ca").textContent = C.CA || "launching soon";
 if (C.CA) { $("#pumpLink").href = "https://pump.fun/coin/" + C.CA; $("#dexLink").href = "https://dexscreener.com/solana/" + C.CA; }
 $("#copyCa").addEventListener("click", (e) => { if (C.CA) navigator.clipboard?.writeText(C.CA).then(() => { e.target.textContent = "Copied"; setTimeout(() => (e.target.textContent = "Copy"), 1200); }); });
-refreshSwapBtn(); quote(); loadBoard();
+refreshSwapBtn(); quote(); loadBoard().then(() => live && loadGraph());
 setInterval(() => { if (live && !document.hidden) loadBoard(); }, 8000);
 provider()?.isConnected && provider().publicKey && ((wallet = provider().publicKey.toString()), onWallet());

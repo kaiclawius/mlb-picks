@@ -43,6 +43,7 @@ export default async function handler(req, res, deps = { rpc }) {
       ...(newBuyer ? [["ZINCRBY", "board:cats", "1", credit], ["SET", `n:${buy.buyer}`, "1"], ["INCRBYFLOAT", "stat:cats", "1"]] : []),
       ["INCRBYFLOAT", "stat:sol", String(buy.sol)],
       ["LPUSH", "feed", item], ["LTRIM", "feed", "0", "49"],
+      ["LPUSH", "edges", item], ["LTRIM", "edges", "0", "799"],
     );
     return send(res, 200, { ok: true, ref: creditHandle ? "@" + creditHandle : short(credit), sol: buy.sol, pair, newCat: newBuyer });
   } catch (e) { return send(res, 503, { error: "Could not record right now. Your buy went through anyway." }); }

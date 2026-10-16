@@ -187,6 +187,29 @@ dl{display:grid;grid-template-columns:auto 1fr;gap:10px 18px;font:500 14px var(-
 dt{color:var(--muted)}
 @media (max-width:860px){.token{grid-template-columns:1fr}}
 
+/* the network (graph.js) */
+.gview{position:relative;height:min(78vh,760px);min-height:520px;margin-top:36px;overflow:hidden;border-radius:22px;
+  background:radial-gradient(circle at 40% 45%,#fff 0,#fff 35%,transparent 75%),radial-gradient(circle,var(--line2) 1px,transparent 1.2px) 0 0/22px 22px,var(--bg2)}
+.gview canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:pan-y;cursor:grab}
+.gbar{position:absolute;left:14px;top:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;z-index:2}
+.gbar input{width:min(220px,46vw);padding:9px 12px;font-size:14px;border-radius:999px;background:rgba(255,255,255,.95)}
+.gbar button{width:38px;height:38px;border-radius:50%;border:1px solid var(--line2);background:rgba(255,255,255,.95);font:600 16px var(--mono);cursor:pointer}
+.gbar button.wide{width:auto;padding:0 14px;border-radius:999px;font-size:13px}
+.gbar button:hover{border-color:var(--ink)}
+.glegend{position:absolute;left:14px;bottom:14px;display:flex;flex-wrap:wrap;gap:6px 14px;font:500 12px var(--mono);color:var(--muted);background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:12px;padding:8px 12px;z-index:2;max-width:calc(100% - 28px)}
+.glegend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.glegend .l1{background:var(--g)}.glegend .l2{background:var(--ink)}.glegend .l3{background:var(--ink);width:7px;height:7px}.glegend .l4{background:#7fd8b0;width:6px;height:6px}
+.glegend .gsize{color:var(--ink)}
+.ghint{position:absolute;right:14px;bottom:14px;font:500 12px var(--mono);color:var(--muted);z-index:2}
+.gpanel{position:absolute;right:14px;top:14px;width:min(300px,calc(100% - 28px));background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;z-index:3;box-shadow:0 20px 50px rgba(10,15,12,.1)}
+.gpanel h4{font-size:24px;letter-spacing:-.03em;overflow-wrap:anywhere}
+.gpanel .meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.gpanel .meta div{background:var(--bg2);border-radius:10px;padding:10px}
+.gpanel .meta b{display:block;font:600 22px var(--mono);letter-spacing:-.03em}
+.gpanel ul{list-style:none;margin-top:12px;font:500 13px var(--mono);color:var(--muted);display:grid;gap:4px}
+.gpanel .x{position:absolute;right:10px;top:10px;width:30px;height:30px;border-radius:50%;border:0;background:var(--bg2);cursor:pointer;font-size:16px}
+.gpanel .row{margin-top:14px}
+@media (max-width:640px){.gview{height:70vh;min-height:460px}.ghint{display:none}.gpanel{top:auto;bottom:62px}}
 footer{border-top:1px solid var(--line);padding-block:40px calc(40px + env(safe-area-inset-bottom,0px));color:var(--muted);font-size:14px}
 footer .wrap{display:grid;gap:14px}
 footer .top{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--ink)}
@@ -198,7 +221,7 @@ footer .top{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;c
 <body>
 <nav><div class="wrap">
   <a class="logo" href="#top"><img src="img/cat.svg" alt="" width="28" height="28">bring a cat onboard</a>
-  <div class="links"><a class="m-link" href="#link">get your link</a><a class="m-link" href="#buy">buy</a><a class="m-link" href="#board">leaderboard</a><a class="m-link" href="#how">how it works</a><a class="btn sm" href="#link">Get your link</a></div>
+  <div class="links"><a class="m-link" href="#link">get your link</a><a class="m-link" href="#buy">buy</a><a class="m-link" href="#network">network</a><a class="m-link" href="#board">leaderboard</a><a class="m-link" href="#how">how it works</a><a class="btn sm" href="#link">Get your link</a></div>
 </div></nav>
 
 <header class="hero" id="top"><div class="wrap grid">
@@ -209,7 +232,7 @@ footer .top{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;c
     <div class="cta" data-m="reveal-children" data-m-delay="0.6"><a class="btn g" href="#link" data-m="magnetic">Get your link →</a><a class="btn ghost" href="#buy">Buy $BRINGACAT</a></div>
   </div>
   <div class="graph" data-m="reveal" data-m-delay="0.3" aria-label="Live referral graph: each dot is a wallet, lines show who brought whom.">
-    <canvas id="net"></canvas>
+    <canvas id="net" style="touch-action:pan-y"></canvas>
     <div class="toast" id="toast" aria-live="polite"></div>
     <div class="hud"><span id="hudCats">0 cats onboard</span><span id="hudMode">preview</span></div>
   </div>
@@ -257,8 +280,28 @@ footer .top{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;c
   </div>
 </div></section>
 
+<section id="network"><div class="wrap">
+  <p class="k" data-m="reveal"><b>02</b> · the network</p>
+  <h2 data-m="lines">Every cat, every link. Live.</h2>
+  <p class="lede" data-m="reveal">Each dot is a wallet. Hover to light up who brought whom, drag to untangle, click a referrer to open it. Paired cats also hang off catonboard.</p>
+  <div class="gview card" data-m="reveal">
+    <canvas id="gbig" aria-label="Interactive referral network. Use the search box to find a referrer."></canvas>
+    <div class="gbar"><input id="gq" placeholder="find @name" autocomplete="off" aria-label="find a referrer"><button type="button" id="gzin" aria-label="zoom in">+</button><button type="button" id="gzout" aria-label="zoom out">−</button><button type="button" class="wide" id="gfit">fit</button><button type="button" class="wide" id="gme" hidden>me</button></div>
+    <div class="glegend"><span><i class="l1"></i>$BRINGACAT</span><span><i class="l2"></i>catonboard</span><span><i class="l3"></i>referrer</span><span><i class="l4"></i>cat</span><span class="gsize" id="gsize"></span></div>
+    <p class="ghint">ctrl + scroll to zoom · drag to move</p>
+    <aside class="gpanel" id="gpanel" hidden aria-live="polite">
+      <button class="x" type="button" id="gclose" aria-label="close">×</button>
+      <span class="k" id="gpTier">referrer</span>
+      <h4 id="gpName"></h4>
+      <div class="meta"><div><span class="k">cats</span><b id="gpCats">0</b></div><div><span class="k">SOL in</span><b id="gpSol">0</b></div></div>
+      <ul id="gpList"></ul>
+      <div class="row"><a class="btn sm g" id="gpLink" href="#">Open their link</a></div>
+    </aside>
+  </div>
+</div></section>
+
 <section id="board"><div class="wrap">
-  <p class="k" data-m="reveal"><b>02</b> · leaderboard</p>
+  <p class="k" data-m="reveal"><b>03</b> · leaderboard</p>
   <h2 data-m="lines">Top cats.</h2>
   <p class="lede" data-m="reveal">Ranked by SOL brought in through each link. Every line is a real swap our server read from Solana, so you can check each one on Solscan.</p>
   <div class="board">
@@ -274,7 +317,7 @@ footer .top{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;c
 </div></section>
 
 <section id="how"><div class="wrap">
-  <p class="k" data-m="reveal"><b>03</b> · how it works</p>
+  <p class="k" data-m="reveal"><b>04</b> · how it works</p>
   <h2 data-m="lines">Three steps. One cat at a time.</h2>
   <div class="steps" data-m="reveal-children">
     <div class="card"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="12" width="36" height="22" rx="6"/><path d="M14 23h16M24 17l6 6-6 6"/></svg><h3>Make a link</h3><p>Connect a wallet, pick a name, sign once. Your link and a share card are ready in ten seconds.</p></div>
@@ -296,7 +339,7 @@ footer .top{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;c
 </div></section>
 
 <section id="token"><div class="wrap">
-  <p class="k" data-m="reveal"><b>04</b> · the coin</p>
+  <p class="k" data-m="reveal"><b>05</b> · the coin</p>
   <h2 data-m="lines">$BRINGACAT</h2>
   <div class="token">
     <div class="card" data-m="reveal">
@@ -317,7 +360,7 @@ footer .top{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;c
 
 <script>
   // launch config: our coin and the coin we pair with (both Solana mint addresses)
-  window.CAT_CONFIG = { CA: "", PAIR_CA: "", X_HANDLE: "" };
+  window.CAT_CONFIG = { CA: "", PAIR_CA: "5ubruMYpgKqw9ip5J1qrXbVGmMdn2VCsMg421B4bpump", X_HANDLE: "" };
 </script>
 <script type="module" src="app.js"></script>
 </body>

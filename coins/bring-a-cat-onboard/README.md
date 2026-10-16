@@ -14,13 +14,14 @@ Ein Referral-Board für die Referral-Saison auf pump.fun, als Spin-off von caton
    - Jede Transaktion zählt nur einmal.
    - Es gibt keine Selbst-Referrals.
    - Ein Käufer bleibt beim ersten Link, der ihn gebracht hat.
-5. **Board:** Top-Werber nach eingebrachtem SOL, dazu „Cats“ (neue Käufer), Ränge (Kitten, Cat, Big Cat, Cat on Board für die Top 3), Live-Feed und Statistik. Der Hero zeigt ein Live-Netz: Jeder neue Käufer fliegt als Punkt zu seinem Werber.
-6. **Ohne API** (lokale Datei, Vorschau) zeigt die Seite Beispieldaten und markiert sie deutlich als „preview · sample data“.
+5. **Netzwerk (wie der Graph in Obsidian):** Ein Kraft-Graph auf Canvas (`graph.js`) mit zwei Kernen, $BRINGACAT und catonboard. Werber sind Knoten, jeder Käufer ist ein Punkt an seinem Werber, gepairte Käufer hängen zusätzlich an catonboard. Hover hebt die Nachbarn hervor, Knoten lassen sich ziehen, Zoom geht mit Ctrl/Cmd + Scroll oder den Buttons, ein Klick öffnet ein Profil mit Cats, SOL und Link, dazu Suche nach @name und „me“. Neue Käufer fliegen live mit einem Puls ein. Die Daten kommen aus `/api/graph` (die letzten 800 Referrals). Läuft mit 60 fps, pausiert außerhalb des Bildschirms und ist bei „reduzierter Bewegung“ statisch.
+6. **Board:** Top-Werber nach eingebrachtem SOL, dazu „Cats“ (neue Käufer), Ränge (Kitten, Cat, Big Cat, Cat on Board für die Top 3), Live-Feed und Statistik. Der Hero zeigt ein Live-Netz: Jeder neue Käufer fliegt als Punkt zu seinem Werber.
+7. **Ohne API** (lokale Datei, Vorschau) zeigt die Seite Beispieldaten und markiert sie deutlich als „preview · sample data“.
 
 ## Launch
 
 1. **Coin auf pump.fun erstellen.**
-2. **In `index.html` unten** `window.CAT_CONFIG` ausfüllen: `CA` (unser Coin) und `PAIR_CA` (catonboard).
+2. **In `index.html` unten** `window.CAT_CONFIG` ausfüllen: `CA` (unser Coin). `PAIR_CA` ist schon gesetzt: catonboard (`$ONBOARD`, `5ubruMYpgKqw9ip5J1qrXbVGmMdn2VCsMg421B4bpump`). Jupiter routet SOL → catonboard; geprüft: Quote und gebaute Swap-Transaktion sind gültig.
 3. **Vercel:**
    - New Project → Repo `kaiclawius/mlb-picks`, **Root Directory `coins/bring-a-cat-onboard`**, Framework „Other“.
    - **Storage:** Upstash Redis aus dem Vercel Marketplace verbinden. Damit werden die Variablen `KV_REST_API_URL` und `KV_REST_API_TOKEN` automatisch gesetzt. Ohne Redis vergisst der Server das Board bei jedem Neustart.
@@ -29,7 +30,7 @@ Ein Referral-Board für die Referral-Saison auf pump.fun, als Spin-off von caton
 | Variable | Pflicht | Bedeutung |
 |---|---|---|
 | `MINT` | ja | dieselbe Adresse wie `CA` |
-| `PAIR_MINT` | für „Pair it“ | catonboard-Adresse (wie `PAIR_CA`) |
+| `PAIR_MINT` | für „Pair it“ | `5ubruMYpgKqw9ip5J1qrXbVGmMdn2VCsMg421B4bpump` (catonboard) |
 | `RPC_URL` | empfohlen | eigener Solana-RPC, z. B. Helius (der öffentliche ist stark limitiert) |
 | `MIN_SOL` | nein | Mindestkauf, Standard 0.05 |
 
