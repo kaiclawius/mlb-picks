@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Neue Aufnahme · Klipp</title>
+<link rel="icon" href="/favicon.svg"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#ff5a36">
+<link rel="stylesheet" href="/app.css">
+<style>
+main{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);gap:24px;padding:28px 0 60px;align-items:start}
+@media (max-width:900px){main{grid-template-columns:minmax(0,1fr)}}
+.stage{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,var(--sunk),color-mix(in srgb,var(--sunk) 70%,var(--accent-soft)));border:1px solid var(--line)}
+.stage .hint{position:absolute;inset:0;display:grid;place-content:center;text-align:center;gap:6px;padding:20px;color:var(--muted)}
+.stage .hint b{color:var(--ink);font-size:18px}
+.stage video.screen{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
+.bubble{position:absolute;width:20%;aspect-ratio:1;border-radius:50%;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.25),0 0 0 3px rgba(255,255,255,.9);background:#222;transition:left .25s,top .25s,right .25s,bottom .25s,width .2s,border-radius .2s;cursor:grab}
+.bubble.rounded{border-radius:22%}
+.bubble.solo{left:50%;top:50%;transform:translate(-50%,-50%);width:auto;height:84%;cursor:default}
+.bubble video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.bubble[data-corner="bl"]{left:2.5%;bottom:2.5%}.bubble[data-corner="br"]{right:2.5%;bottom:2.5%}.bubble[data-corner="tl"]{left:2.5%;top:2.5%}.bubble[data-corner="tr"]{right:2.5%;top:2.5%}
+.side{display:flex;flex-direction:column;gap:14px}
+.side .panel{padding:18px}
+.side h2{font-size:15px;margin-bottom:12px;letter-spacing:-.01em}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.modes button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;border-radius:10px;border:1.5px solid var(--line);background:var(--panel);cursor:pointer;font-size:13px;font-weight:600}
+.modes button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.modes svg{width:26px;height:26px}
+.row{display:grid;grid-template-columns:96px 1fr;align-items:center;gap:10px;margin-top:10px}
+.row label{font-size:13px;color:var(--muted)}
+.row select{width:100%}
+.meter{height:6px;border-radius:3px;background:var(--sunk);overflow:hidden;margin-top:8px}
+.meter i{display:block;height:100%;width:0;background:var(--ok);transition:width .08s}
+.go{width:100%}
+.check{display:flex;gap:9px;align-items:center;font-size:13.5px;margin-top:10px;cursor:pointer}
+.recbar{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;background:var(--ink);color:var(--bg);padding:8px 8px 8px 16px;border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.3);z-index:50}
+.recbar .t{font:600 16px var(--mono);min-width:64px}
+.recbar .live{width:10px;height:10px;border-radius:50%;background:#ff4d3a;animation:blink 1.2s infinite}
+.recbar.paused .live{animation:none;background:#999}
+@keyframes blink{50%{opacity:.25}}
+.recbar .btn{background:rgba(255,255,255,.12);border-color:transparent;color:inherit}
+.recbar .btn.stop{background:#ff4d3a;color:#fff}
+.count{position:fixed;inset:0;display:grid;place-items:center;background:rgba(10,10,12,.55);z-index:60;color:#fff;font:800 160px var(--font);letter-spacing:-.04em}
+.upl{font-size:12.5px;color:var(--muted);margin-top:8px}
+.tip{font-size:13px;color:var(--muted);line-height:1.5}
+.tip b{color:var(--ink)}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="/"><i></i>Klipp</a><span class="grow"></span>
+  <a class="btn ghost" href="/">Bibliothek</a>
+</div></header>
+
+<div class="wrap"><main>
+  <section>
+    <div class="stage" id="stage">
+      <div class="hint" id="hint"><b>Bereit, wenn du es bist</b><span>Nach dem Start wählst du Bildschirm, Fenster oder Tab.<br>Die Kamera-Bubble schwebt dann über allem, was du zeigst.</span></div>
+      <video class="screen hidden" id="screenPreview" muted playsinline></video>
+      <div class="bubble" id="bubble" data-corner="bl"><video id="camPreview" muted playsinline autoplay></video></div>
+    </div>
+    <p class="tip" style="margin-top:14px"><b>Gut zu wissen:</b> Bildschirm, Kamera und Mikro werden als getrennte Spuren in voller Qualität gespeichert. Die Bubble kannst du später noch verschieben, vergrößern oder ausblenden. Jede Sekunde landet sofort auf der Festplatte: Stürzt der Browser ab, ist die Aufnahme trotzdem da.</p>
+  </section>
+
+  <aside class="side">
+    <div class="panel">
+      <h2>Was aufnehmen?</h2>
+      <div class="modes" id="modes">
+        <button type="button" data-mode="both" aria-pressed="true"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="22" height="15" rx="2"/><circle cx="7.5" cy="14" r="3" fill="currentColor"/><path d="M9 23h8"/></svg>Bildschirm + Kamera</button>
+        <button type="button" data-mode="screen" aria-pressed="false"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="22" height="15" rx="2"/><path d="M9 23h8"/></svg>Nur Bildschirm</button>
+        <button type="button" data-mode="cam" aria-pressed="false"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="13" cy="10" r="5"/><path d="M4 23c1.5-4.5 5-6.5 9-6.5s7.5 2 9 6.5"/></svg>Nur Kamera</button>
+      </div>
+      <div class="row" id="camRow"><label for="cam">Kamera</label><select id="cam"></select></div>
+      <div class="row"><label for="mic">Mikrofon</label><select id="mic"></select></div>
+      <div class="meter" aria-hidden="true"><i id="level"></i></div>
+      <div class="row"><label for="lang">Sprache</label><select id="lang">
+        <option value="german">Deutsch</option><option value="english">English</option><option value="french">Français</option><option value="spanish">Español</option>
+        <option value="italian">Italiano</option><option value="dutch">Nederlands</option><option value="polish">Polski</option><option value="turkish">Türkçe</option><option value="portuguese">Português</option></select></div>
+      <div class="row" id="qualRow"><label for="quality">Qualität</label><select id="quality">
+        <option value="1080-30">1080p · 30 fps</option><option value="1080-60">1080p · 60 fps (flüssig)</option><option value="1440-30">1440p · 30 fps</option><option value="2160-30">4K · 30 fps (Retina)</option></select></div>
+      <div class="row" id="bubRow"><label for="bubSize">Bubble</label><select id="bubSize"><option value="0.16">Klein</option><option value="0.2" selected>Mittel</option><option value="0.27">Groß</option></select></div>
+      <label class="check"><input type="checkbox" id="countdown" checked> 3 Sekunden Countdown</label>
+      <label class="check"><input type="checkbox" id="sysAudio" checked> Systemton mit aufnehmen (wenn der Browser es anbietet)</label>
+    </div>
+    <button class="btn primary big go" id="start"><span class="dot"></span>Aufnahme starten</button>
+    <p class="upl" id="msg"></p>
+  </aside>
+</main></div>
+
+<div class="recbar hidden" id="recbar">
+  <span class="live"></span><span class="t" id="timer">0:00</span>
+  <button class="btn small" id="pause">Pause</button>
+  <button class="btn small" id="restart" title="Verwerfen und neu beginnen">Neu</button>
+  <button class="btn small stop" id="stop">Fertig</button>
+</div>
+
+<script type="module" src="/js/record.js"></script>
+</body>
+</html>

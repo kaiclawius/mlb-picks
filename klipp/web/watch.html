@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Klipp</title>
+<link rel="icon" href="/favicon.svg"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#ff5a36">
+<link rel="stylesheet" href="/app.css">
+<style>
+.title{flex:1;min-width:0;font-weight:700;font-size:16px;letter-spacing:-.01em;border:1px solid transparent;background:transparent;height:38px;border-radius:9px;padding:0 10px;text-overflow:ellipsis}
+.title:hover{border-color:var(--line)}
+.title:focus{background:var(--panel)}
+@media (max-width:700px){.top .wrap{flex-wrap:wrap;height:auto;padding-block:8px;gap:8px}.title{order:5;flex-basis:100%}#share{margin-left:auto}}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:22px;padding:22px 0 60px;align-items:start}
+@media (max-width:1000px){.layout{grid-template-columns:minmax(0,1fr)}.side{position:static;max-height:none}}
+.menu{position:relative}
+.menu .list{position:absolute;right:0;top:44px;min-width:290px;background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:6px;z-index:40}
+.menu .list button,.menu .list a{display:flex;flex-direction:column;align-items:flex-start;gap:1px;width:100%;text-align:left;border:0;background:none;padding:9px 11px;border-radius:8px;cursor:pointer;text-decoration:none;font-weight:600;font-size:14px}
+.menu .list small{font-weight:400;color:var(--muted);font-size:12.5px}
+.menu .list button:hover,.menu .list a:hover{background:var(--sunk)}
+
+/* player */
+.player{position:relative;border-radius:14px;overflow:hidden;background:#000;box-shadow:var(--shadow)}
+.player .frame{position:relative;aspect-ratio:16/9;background:#000}
+.player .main{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;cursor:pointer}
+.player .bub{position:absolute;aspect-ratio:1;border-radius:50%;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.35);pointer-events:none;transition:all .25s}
+.player .bub[data-shape="rounded"]{border-radius:22%}
+.player .bub video{width:100%;height:100%;object-fit:cover}
+.player .bub[data-corner="bl"]{left:2.5%;bottom:2.5%}.player .bub[data-corner="br"]{right:2.5%;bottom:2.5%}.player .bub[data-corner="tl"]{left:2.5%;top:2.5%}.player .bub[data-corner="tr"]{right:2.5%;top:2.5%}
+.player .caption{position:absolute;left:8%;right:8%;bottom:6%;text-align:center;pointer-events:none}
+.player .caption span{display:inline;background:rgba(0,0,0,.72);color:#fff;font:600 clamp(13px,2.1vw,22px)/1.45 var(--font);padding:.15em .5em;border-radius:6px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.player .bigplay{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:76px;height:76px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:#111;display:grid;place-items:center;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.3);transition:opacity .2s}
+.player .bigplay svg{width:30px;height:30px;margin-left:4px}
+.player.playing .bigplay{opacity:0;pointer-events:none}
+.player .bar{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#111;color:#eee}
+.player .bar button{border:0;background:none;color:inherit;cursor:pointer;display:grid;place-items:center;height:30px;min-width:30px;border-radius:7px;font:600 13px var(--font)}
+.player .bar button:hover{background:rgba(255,255,255,.1)}
+.player .bar svg{width:17px;height:17px}
+.player .bar .ccb.on{color:var(--accent)}
+.player .tm{font:500 12.5px var(--mono);white-space:nowrap;color:#bbb}
+.player .track{position:relative;flex:1;height:22px;cursor:pointer;touch-action:none}
+.player .track::before{content:"";position:absolute;left:0;right:0;top:9px;height:4px;border-radius:2px;background:rgba(255,255,255,.18)}
+.player .buf,.player .fill{position:absolute;left:0;top:9px;height:4px;border-radius:2px}
+.player .buf{background:rgba(255,255,255,.28)}.player .fill{background:var(--accent)}
+.player .cuts i{position:absolute;top:6px;height:10px;background:repeating-linear-gradient(135deg,rgba(255,255,255,.5) 0 2px,transparent 2px 5px);border-radius:2px;z-index:1}
+.player .marks i{position:absolute;top:7px;width:2px;height:8px;background:#fff;opacity:.7;z-index:2}
+.player .marks b{position:absolute;top:-11px;transform:translateX(-50%);font-size:11px;z-index:2}
+.player .knob{position:absolute;top:5px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:#fff;z-index:3}
+.player .hover{position:absolute;bottom:26px;transform:translateX(-50%);background:#000;color:#fff;font:600 12px var(--font);padding:3px 7px;border-radius:5px;white-space:nowrap;opacity:0;pointer-events:none}
+.player .track:hover .hover{opacity:1}
+.player:fullscreen{border-radius:0;display:flex;flex-direction:column}.player:fullscreen .frame{flex:1;aspect-ratio:auto}
+
+.state{margin-top:14px}
+.tabs{display:flex;gap:4px;margin-top:18px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.tabs button{border:0;background:none;padding:10px 12px;font-weight:600;font-size:14px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;display:flex;gap:6px;align-items:center}
+.tabs button[aria-selected="true"]{color:var(--ink);border-color:var(--accent)}
+.tabs svg{width:13px;height:13px;color:var(--accent)}
+.pane{padding:18px 2px}
+.pane h3{font-size:14px;margin:18px 0 8px}
+.pane h3:first-child{margin-top:0}
+.sum{font-size:16.5px;line-height:1.6}
+.pts{padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.chapters{display:flex;flex-direction:column}
+.chapters button{display:flex;gap:12px;align-items:baseline;text-align:left;border:0;background:none;padding:7px 8px;border-radius:8px;cursor:pointer;font-size:14.5px}
+.chapters button:hover{background:var(--sunk)}
+.chapters span{font:500 12.5px var(--mono);color:var(--accent);min-width:42px}
+.chapters button.now{background:var(--accent-soft)}
+.facts{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted);margin-top:16px}
+
+.transcript{font-size:16px;line-height:1.85;max-height:460px;overflow:auto;padding-right:6px}
+.transcript .w{cursor:pointer;border-radius:4px;padding:1px 0}
+.transcript .w:hover{background:var(--sunk)}
+.transcript .w.now{background:var(--accent-soft);color:var(--ink)}
+.transcript .w.cut{text-decoration:line-through;color:var(--faint)}
+.transcript .w.filler{color:var(--warn)}
+.transcript .w.hit{background:#ffe58a;color:#111}
+.transcript .ts{display:block;font:500 11.5px var(--mono);color:var(--faint);margin-top:10px;cursor:pointer}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.tools input{flex:1;min-width:160px}
+
+.chat{display:flex;flex-direction:column;gap:14px}
+.qa{display:flex;flex-direction:column;gap:6px}
+.qa .q{align-self:flex-end;background:var(--ink);color:var(--bg);padding:8px 13px;border-radius:14px 14px 4px 14px;max-width:85%}
+.qa .a{background:var(--panel);border:1px solid var(--line);padding:10px 14px;border-radius:14px 14px 14px 4px;max-width:92%;line-height:1.55}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{border:1px solid var(--line);background:var(--sunk);border-radius:99px;padding:3px 10px;font-size:12.5px;cursor:pointer}
+.chip b{font-family:var(--mono);font-weight:500;color:var(--accent);margin-right:5px}
+.ask{display:flex;gap:8px}
+.ask input{flex:1}
+
+.guide .step{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:16px 0;border-top:1px solid var(--line)}
+.guide .n{width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-weight:700;font-size:14px}
+.guide img{width:100%;border-radius:10px;border:1px solid var(--line);margin-top:10px;cursor:pointer}
+.guide h4{font-size:15.5px}
+
+.edit .strip{position:relative;height:56px;border-radius:10px;background:var(--sunk);border:1px solid var(--line);margin:8px 0 6px;overflow:hidden;cursor:pointer;touch-action:none}
+.edit .strip .wave{position:absolute;inset:0;display:flex;align-items:center;gap:1px;padding:0 1px}
+.edit .strip .wave i{flex:1;background:color-mix(in srgb,var(--ink) 30%,transparent);border-radius:1px;min-height:2px}
+.edit .strip .cz{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--bad) 35%,transparent) 0 3px,transparent 3px 7px);border-left:1px solid var(--bad);border-right:1px solid var(--bad)}
+.edit .strip .ph{position:absolute;top:0;bottom:0;width:2px;background:var(--accent)}
+.edit .strip .h{position:absolute;top:0;bottom:0;width:12px;background:var(--ink);cursor:ew-resize;border-radius:4px;opacity:.85}
+#tlang{flex:1 1 180px;min-width:0}
+.edit .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.edit .group{padding:16px 0;border-top:1px solid var(--line)}
+.edit .group:first-child{border-top:0;padding-top:0}
+.edit .stat{font-size:13px;color:var(--muted)}
+.corners{display:grid;grid-template-columns:repeat(2,34px);gap:4px}
+.corners button{height:24px;border-radius:6px;border:1px solid var(--line);background:var(--panel);cursor:pointer}
+.corners button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent)}
+.ex{display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:center;padding:10px 0;border-top:1px dashed var(--line)}
+.ex:first-of-type{border-top:0}
+.ex small{display:block;color:var(--muted);font-size:12.5px}
+.progress{height:6px;border-radius:3px;background:var(--sunk);overflow:hidden;grid-column:1/-1}
+.progress i{display:block;height:100%;background:var(--accent);transition:width .3s}
+
+/* comments */
+.side{position:sticky;top:80px;display:flex;flex-direction:column;max-height:calc(100vh - 100px)}
+.side .head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.side .head h2{font-size:15px}
+.clist{flex:1;overflow:auto;padding:6px 8px;min-height:120px}
+.c{padding:9px 8px;border-radius:9px;display:grid;grid-template-columns:30px 1fr;gap:9px}
+.c:hover{background:var(--sunk)}
+.c .av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;color:#fff}
+.c .who{font-size:13px;font-weight:650;display:flex;gap:8px;align-items:baseline}
+.c .who button{font:500 12px var(--mono);color:var(--accent);border:0;background:none;cursor:pointer;padding:0}
+.c .who .x{margin-left:auto;color:var(--faint);font-family:var(--font);opacity:0}
+.c:hover .who .x{opacity:1}
+.c p{font-size:14px;margin-top:1px;overflow-wrap:anywhere}
+.compose{border-top:1px solid var(--line);padding:12px;display:flex;flex-direction:column;gap:8px}
+.compose .emo{display:flex;gap:2px}
+.compose .emo button{border:0;background:none;font-size:19px;cursor:pointer;border-radius:8px;padding:2px 5px}
+.compose .emo button:hover{background:var(--sunk);transform:scale(1.15)}
+.compose .send{display:flex;gap:6px}
+.compose .send input{flex:1}
+.compose small{color:var(--muted);font-size:12px}
+.wait{display:flex;gap:10px;align-items:center;color:var(--muted);padding:6px 0}
+.err{color:var(--bad)}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="btn ghost small" href="/" title="Bibliothek">← <span class="logo" style="font-size:15px"><i style="width:18px;height:18px"></i>Klipp</span></a>
+  <input class="title" id="title" aria-label="Titel" placeholder="Titel">
+  <button class="btn" id="share">Link kopieren</button>
+  <div class="menu"><button class="btn primary" id="dlBtn" aria-haspopup="true">Herunterladen ▾</button>
+    <div class="list hidden" id="dlMenu">
+      <button data-ex="mp4">MP4 <small>Mit deinen Schnitten und der Bubble. Läuft überall.</small></button>
+      <button data-ex="mp4-captions">MP4 mit Untertiteln <small>Untertitel fest im Bild, für Social Media.</small></button>
+      <button data-ex="demo">Demo-Film <small>Poliert: Intro, Kapitel, Untertitel, Outro (Remotion).</small></button>
+      <a id="dlOrig" href="#">Original-Aufnahme <small>Ohne Bearbeitung, sofort.</small></a>
+      <button id="copyText">Text für Slack/E-Mail kopieren <small>Titel, Zusammenfassung, Kernpunkte und Link.</small></button>
+      <button id="del" style="color:var(--bad)">Aufnahme löschen</button>
+    </div></div>
+</div></header>
+
+<div class="wrap"><div class="layout">
+  <section>
+    <div id="player"></div>
+    <div class="state" id="state"></div>
+    <nav class="tabs" role="tablist" id="tabs">
+      <button role="tab" data-tab="overview" aria-selected="true">Überblick</button>
+      <button role="tab" data-tab="transcript" aria-selected="false">Transkript</button>
+      <button role="tab" data-tab="ask" aria-selected="false"><svg viewBox="0 0 16 16"><path d="M8 1.5l1.5 4.2 4.3 1.5-4.3 1.5L8 13l-1.5-4.3L2.2 7.2l4.3-1.5z" fill="currentColor"/></svg>Frag das Video</button>
+      <button role="tab" data-tab="guide" aria-selected="false"><svg viewBox="0 0 16 16"><path d="M8 1.5l1.5 4.2 4.3 1.5-4.3 1.5L8 13l-1.5-4.3L2.2 7.2l4.3-1.5z" fill="currentColor"/></svg>Anleitung</button>
+      <button role="tab" data-tab="edit" aria-selected="false">Bearbeiten</button>
+    </nav>
+    <div class="pane" id="pane"></div>
+  </section>
+  <aside class="panel side">
+    <div class="head"><h2>Kommentare</h2><span class="k" id="views"></span></div>
+    <div class="clist" id="clist"></div>
+    <div class="compose">
+      <div class="emo" id="emo"></div>
+      <div class="send"><input type="text" id="ctext" placeholder="Kommentar bei 0:00 …" maxlength="2000"><button class="btn primary small" id="csend">Senden</button></div>
+      <small id="cname"></small>
+    </div>
+  </aside>
+</div></div>
+<script type="module" src="/js/watch.js"></script>
+</body>
+</html>

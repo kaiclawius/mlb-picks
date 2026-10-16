@@ -1,0 +1,30 @@
+{
+  "name": "klipp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Klipp: deine eigene Loom-Alternative. Aufnehmen, teilen, bearbeiten, lokal und mit KI.",
+  "scripts": {
+    "start": "node server/index.js",
+    "e2e": "node test/e2e-record.mjs",
+    "dev": "node --watch server/index.js",
+    "test": "node --test test/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.134.0",
+    "@huggingface/transformers": "4.3.1",
+    "@remotion/bundler": "4.0.535",
+    "@remotion/renderer": "4.0.535",
+    "ffmpeg-static": "5.2.0",
+    "ffprobe-static": "3.1.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.535"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1"
+  }
+}

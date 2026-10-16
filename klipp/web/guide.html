@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Anleitung · Klipp</title>
+<link rel="icon" href="/favicon.svg"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#ff5a36">
+<link rel="stylesheet" href="/app.css">
+<style>
+main{max-width:820px;margin:0 auto;padding:40px 20px 80px}
+h1{font-size:34px;line-height:1.12;letter-spacing:-.025em}
+.intro{font-size:17.5px;color:var(--muted);margin-top:10px}
+.step{display:grid;grid-template-columns:40px 1fr;gap:14px;padding:26px 0;border-top:1px solid var(--line)}
+.n{width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-weight:700}
+h2{font-size:20px;letter-spacing:-.01em}
+.step p{margin-top:4px;font-size:16px}
+.step img{width:100%;border-radius:12px;border:1px solid var(--line);margin-top:12px;box-shadow:var(--shadow)}
+.step a{font-size:13px;color:var(--muted)}
+.tips{margin-top:20px;padding:16px 20px}
+.tools{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+@media print{.tools,.top{display:none}.step{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="logo" href="/"><i></i>Klipp</a><span class="grow"></span><a class="btn ghost" id="video" href="#">Zum Video</a></div></header>
+<main id="g"><div class="wait"><span class="spin"></span></div></main>
+<script type="module">
+import { $, api, esc, time } from "/js/lib.js";
+const id = location.pathname.split("/").pop();
+const m = await api(`/api/recordings/${id}`).catch(() => null);
+$("#video").href = `/v/${id}`;
+if (!m?.guide?.steps) $("#g").innerHTML = '<h1>Für diese Aufnahme gibt es noch keine Anleitung.</h1>';
+else {
+  const g = m.guide; document.title = `${g.title} · Klipp`;
+  $("#g").innerHTML = `<p class="k">Anleitung · ${g.steps.length} Schritte</p><h1>${esc(g.title)}</h1><p class="intro">${esc(g.intro)}</p>
+    <div class="tools"><button class="btn small" onclick="print()">Drucken / PDF</button><a class="btn small" href="/api/recordings/${id}/guide.html">HTML laden</a><a class="btn small" href="/api/recordings/${id}/guide.md">Markdown</a></div>
+    <div style="margin-top:22px">${g.steps.map((s, i) => `<div class="step"><span class="n">${i + 1}</span><div><h2>${esc(s.title)}</h2><p>${esc(s.text)}</p>${s.shot ? `<img src="/media/${id}/${s.shot}" alt="Schritt ${i + 1}">` : ""}<a href="/v/${id}?t=${Math.floor(s.t)}">Im Video ansehen (${time(s.t)})</a></div></div>`).join("")}</div>
+    ${g.tips?.length ? `<div class="panel tips"><h3>Tipps</h3><ul style="padding-left:20px;margin-top:6px">${g.tips.map((t) => `<li>${esc(t)}</li>`).join("")}</ul></div>` : ""}`;
+}
+</script>
+</body>
+</html>

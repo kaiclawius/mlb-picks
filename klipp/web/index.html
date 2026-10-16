@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Klipp</title>
+<link rel="icon" href="/favicon.svg"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#ff5a36">
+<link rel="stylesheet" href="/app.css">
+<style>
+.hero{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:20px;padding:34px 0 22px}
+.hero h1{font-size:30px;letter-spacing:-.025em;line-height:1.1}
+.hero p{color:var(--muted);margin-top:6px}
+.search{display:flex;gap:10px;align-items:center;flex:1;max-width:460px}
+.search input{flex:1;height:42px;padding-left:38px;background:var(--panel) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="%239a9da5" stroke-width="1.8" stroke-linecap="round"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>') 13px center no-repeat}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px;padding-bottom:60px}
+.card{display:flex;flex-direction:column;text-decoration:none;border-radius:var(--r);background:var(--panel);border:1px solid var(--line);overflow:hidden;transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.thumb{position:relative;aspect-ratio:16/9;background:var(--sunk)}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .len{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.7);color:#fff;font:600 12px var(--font);padding:2px 7px;border-radius:6px}
+.thumb .state{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-weight:600;font-size:13px;gap:8px}
+.card .body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px}
+.card h3{font-size:15px;line-height:1.35;letter-spacing:-.01em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .meta{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:12.5px;color:var(--muted);align-items:center}
+.card .sum{font-size:13px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.empty{padding:70px 20px;text-align:center;border:1.5px dashed var(--line);border-radius:16px;color:var(--muted)}
+.empty h2{color:var(--ink);font-size:22px;margin-bottom:6px}
+.empty .btn{margin-top:18px}
+.banner{margin-bottom:18px}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="/"><i></i>Klipp</a>
+  <span class="grow"></span>
+  <a class="btn primary" href="/record"><span class="dot"></span>Neue Aufnahme</a>
+</div></header>
+<main class="wrap">
+  <div class="hero">
+    <div><h1>Deine Aufnahmen</h1><p id="count">&nbsp;</p></div>
+    <label class="search"><input type="search" id="q" placeholder="In Titeln und allem Gesagten suchen …" aria-label="Suchen"></label>
+  </div>
+  <div class="note banner hidden" id="banner"></div>
+  <div class="grid" id="grid"></div>
+</main>
+<script type="module">
+import { $, api, live, time, ago, esc } from "/js/lib.js";
+const grid = $("#grid"); let items = []; let q = "";
+
+function badge(r) {
+  if (r.status === "recording") return '<span class="badge run"><span class="spin"></span>nimmt auf</span>';
+  if (r.status === "processing") return '<span class="badge run"><span class="spin"></span>verarbeitet</span>';
+  if (r.status === "error") return '<span class="badge bad">Fehler</span>';
+  if (r.ai?.transcript === "running") return '<span class="badge run"><span class="spin"></span>Transkript</span>';
+  if (r.ai?.summary === "running") return '<span class="badge run"><span class="spin"></span>KI</span>';
+  return "";
+}
+function render() {
+  $("#count").textContent = q ? `${items.length} Treffer für „${q}“` : items.length ? `${items.length} Aufnahme${items.length === 1 ? "" : "n"} · alles lokal auf diesem Rechner` : " ";
+  if (!items.length) {
+    grid.innerHTML = q ? `<div class="empty" style="grid-column:1/-1"><h2>Nichts gefunden</h2><p>Klipp durchsucht Titel, Zusammenfassungen, Kommentare und jedes gesprochene Wort.</p></div>`
+      : `<div class="empty" style="grid-column:1/-1"><h2>Noch keine Aufnahmen</h2><p>Bildschirm und Kamera aufnehmen, sofort teilen. Kein Zeitlimit, keine Wasserzeichen.</p><a class="btn primary big" href="/record"><span class="dot"></span>Erste Aufnahme starten</a></div>`;
+    return;
+  }
+  grid.innerHTML = items.map((r) => `<a class="card" href="/v/${r.id}">
+    <div class="thumb">${r.status === "ready" ? `<img src="/media/${r.id}/thumb.jpg?v=${encodeURIComponent(r.title)}" alt="" loading="lazy">` : `<div class="state">${badge(r)}</div>`}${r.duration ? `<span class="len">${time(r.duration)}</span>` : ""}</div>
+    <div class="body"><h3>${esc(r.title || "Neue Aufnahme")}</h3>
+      ${r.summary ? `<p class="sum">${esc(r.summary)}</p>` : ""}
+      <div class="meta"><span>${ago(r.createdAt)}</span>${r.views ? `<span>${r.views} Aufrufe</span>` : ""}${r.comments ? `<span>${r.comments} Kommentare</span>` : ""}${r.status === "ready" ? badge(r) : ""}</div></div></a>`).join("");
+}
+async function load() { items = await api("/api/recordings" + (q ? "?q=" + encodeURIComponent(q) : "")); render(); }
+let tm; $("#q").addEventListener("input", (e) => { clearTimeout(tm); tm = setTimeout(() => { q = e.target.value.trim(); load(); }, 180); });
+live((m) => { if (m.deleted) items = items.filter((x) => x.id !== m.id); else if (!q) { const i = items.findIndex((x) => x.id === m.id); const c = { ...items[i], ...m, comments: m.comments?.length || 0 }; if (i >= 0) items[i] = c; else items.unshift(c); } render(); });
+load();
+api("/api/status").then((s) => {
+  if (!s.claude) { $("#banner").classList.remove("hidden"); $("#banner").innerHTML = "<b>KI-Funktionen sind aus.</b> Transkripte laufen lokal. Für Titel, Zusammenfassungen, Kapitel, „Frag das Video“ und Anleitungen trage einen Anthropic API-Key in <code>klipp/.env</code> ein (siehe README)."; }
+});
+</script>
+</body>
+</html>
