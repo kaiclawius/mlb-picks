@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 148" role="img" aria-label="MOG crest">
-  <!-- our own parody crest: a gold shield, a jawline chevron, hunter-eye slits and MOG. Not a copy of any real crest. -->
-  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1d58a"/><stop offset="0.55" stop-color="#d8b25a"/><stop offset="1" stop-color="#9c7a2c"/></linearGradient></defs>
+  <!-- our own parody crest, monochrome: a silver shield, hunter-eye slits, a jawline chevron and MOG. Not a copy of any real crest. -->
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.55" stop-color="#cfcfcf"/><stop offset="1" stop-color="#8a8a8a"/></linearGradient></defs>
   <path d="M60 4 C82 10 102 10 114 6 L114 70 C114 106 90 128 60 144 C30 128 6 106 6 70 L6 6 C18 10 38 10 60 4 Z" fill="url(#g)"/>
-  <path d="M60 13 C80 18 96 18 105 15 L105 70 C105 100 85 119 60 133 C35 119 15 100 15 70 L15 15 C24 18 40 18 60 13 Z" fill="#0b0c0e"/>
+  <path d="M60 13 C80 18 96 18 105 15 L105 70 C105 100 85 119 60 133 C35 119 15 100 15 70 L15 15 C24 18 40 18 60 13 Z" fill="#050505"/>
   <text x="60" y="52" text-anchor="middle" font-family="Arial Black, Arial, Helvetica, sans-serif" font-weight="900" font-size="26" letter-spacing="2" fill="url(#g)">MOG</text>
-  <path d="M28 66 L52 72 L51 76 L29 71 Z M92 66 L68 72 L69 76 L91 71 Z" fill="#c6ff3d"/>
+  <path d="M28 66 L52 72 L51 76 L29 71 Z M92 66 L68 72 L69 76 L91 71 Z" fill="#ffffff"/>
   <path d="M30 90 L60 118 L90 90" fill="none" stroke="url(#g)" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
   <path d="M60 60 L60 128" stroke="url(#g)" stroke-width="1.5" opacity="0.5"/>
 </svg>
