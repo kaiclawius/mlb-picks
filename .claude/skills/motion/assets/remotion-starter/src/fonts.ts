@@ -1,7 +1,9 @@
-// Local brand fonts: holds the render until every font file is loaded, so no frame shows a fallback font.
-// Put .woff2 files in public/fonts/ and list them here. Local files beat Google Fonts at render time:
-// no network, no rate limits, identical output on every machine.
-import { continueRender, delayRender, staticFile } from "remotion";
+// Local brand fonts with @remotion/fonts: loadFont() holds the render until the file is loaded, so no frame
+// shows a fallback font. Put .woff2 files in public/fonts/ and list them here. Local files beat Google Fonts at
+// render time: no network, no rate limits, identical output on every machine. (@remotion/google-fonts is fine
+// for drafts: `import { loadFont } from "@remotion/google-fonts/Inter"`.)
+import { loadFont } from "@remotion/fonts";
+import { staticFile } from "remotion";
 
 type Face = { family: string; file: string; weight?: string; style?: string; stretch?: string };
 export const FONTS: Face[] = [
@@ -10,11 +12,10 @@ export const FONTS: Face[] = [
 
 let started = false;
 export function loadFonts() {
-  if (started || !FONTS.length || typeof document === "undefined") return;
+  if (started) return;
   started = true;
-  const handle = delayRender("Loading brand fonts");
-  Promise.all(FONTS.map(async (f) => {
-    const face = new FontFace(f.family, `url(${staticFile(f.file)}) format("woff2")`, { weight: f.weight, style: f.style, stretch: f.stretch });
-    document.fonts.add(await face.load());
-  })).then(() => continueRender(handle), (e) => { console.error("Font failed to load", e); continueRender(handle); });
+  for (const f of FONTS) {
+    loadFont({ family: f.family, url: staticFile(f.file), weight: f.weight, style: f.style, stretch: f.stretch })
+      .catch((e) => console.error(`Font ${f.family} failed to load`, e));
+  }
 }

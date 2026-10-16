@@ -313,3 +313,36 @@ export function VoiceBars({ src, at = 0, bars = 32, width, height, color, gap = 
     </div>
   );
 }
+
+/**
+ * Finishing layer: film grain, vignette and an optional light sweep. Put it last, over everything.
+ * Grain is an SVG noise reseeded every 2nd frame (alive without flicker); no blend modes (cheap to render).
+ * Check readability with the grade off: it must not be what makes text legible.
+ */
+export function Grade({ grain = 0.08, vignette = 0.12, grainColor = "0,0,0", sweep }: {
+  grain?: number; vignette?: number; grainColor?: string; sweep?: { at: number; dur?: number; opacity?: number };
+}) {
+  const f = useCurrentFrame();
+  const { width, height } = useVideoConfig();
+  const seed = Math.floor(f / 2);
+  const [r, g, b] = grainColor.split(",").map((v) => Number(v) / 255);
+  const sw = sweep ? progress(f, sweep.at, sweep.dur ?? 28, EASE.move) : 0;
+  return (
+    <AbsoluteFill style={{ pointerEvents: "none" }}>
+      {vignette > 0 && <AbsoluteFill style={{ background: `radial-gradient(ellipse 75% 70% at 50% 46%, transparent 55%, rgba(0,0,0,${vignette}) 100%)` }} />}
+      {sweep && sw > 0 && sw < 1 && (
+        <AbsoluteFill style={{ background: `linear-gradient(105deg, transparent ${sw * 160 - 50}%, rgba(255,255,255,${sweep.opacity ?? 0.1}) ${sw * 160 - 30}%, transparent ${sw * 160 - 10}%)` }} />
+      )}
+      {grain > 0 && (
+        <svg width={width} height={height} style={{ position: "absolute", inset: 0, opacity: grain }}>
+          <filter id={`grain-${seed}`} x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves={2} seed={seed} stitchTiles="stitch" />
+            {/* noise brightness -> alpha of a flat colour: speckles without mix-blend-mode */}
+            <feColorMatrix type="matrix" values={`0 0 0 0 ${r}  0 0 0 0 ${g}  0 0 0 0 ${b}  1.6 0 0 0 -0.55`} />
+          </filter>
+          <rect width="100%" height="100%" filter={`url(#grain-${seed})`} />
+        </svg>
+      )}
+    </AbsoluteFill>
+  );
+}

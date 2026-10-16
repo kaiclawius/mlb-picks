@@ -30,7 +30,7 @@ export async function renderDemo(id, { name = "demo.mp4", outro = "" } = {}, onP
   const browserExecutable = process.env.REMOTION_BROWSER || null;
   const composition = await selectComposition({ serveUrl, id: "KlippDemo", inputProps, browserExecutable });
   const out = store.file(id, name);
-  await renderMedia({ composition, serveUrl, codec: "h264", outputLocation: out, inputProps, browserExecutable, crf: 20,
+  await renderMedia({ composition, serveUrl, codec: "h264", outputLocation: out, inputProps, browserExecutable, crf: 20, colorSpace: "bt709", // tagged limited-range BT.709, not untagged yuvj420p
     concurrency: Math.max(1, Math.min(4, (await import("node:os")).cpus().length - 1)), onProgress: ({ progress }) => onProgress?.(progress) });
   return { file: name };
 }

@@ -46,6 +46,10 @@ If you cannot name the job, cut the animation. Restraint is what makes the remai
 
 60 fps only for fast UI recordings or sports-like energy; 30 fps is the norm for motion graphics; 24 fps for cinematic.
 
+**Duration grows with distance.** The tables assume a medium move (~100 px in UI, ~10 % of the frame in video). Scale by distance: 50 px ×0.8, 100 px ×1.0, 200 px ×1.3, 300 px ×1.5, 400 px ×1.6, across the whole screen ×1.8–2.0. By device: phone ×0.8 for small elements, TV/large screens ×1.3.
+
+**Reading time, exactly.** Minimum hold for a text = max(0.7 s, 0.25 s + characters ÷ 17); a hero line read cold ≈ 0.3 s per word + 1.5 s. Add up all holds in the storyboard before building: in a calm piece 40–60 % of the running time is holds; if the sum does not fit the length, cut words, not holds.
+
 ### UI (milliseconds)
 | Interaction | Duration | Easing |
 |---|---|---|
@@ -89,7 +93,7 @@ Springs feel physical and handle interruption well (UI) and give natural settle 
 | snappy | `{ damping: 13, stiffness: 160, mass: 0.6 }` | `{ type: "spring", bounce: 0.25, duration: 0.45 }` | icons, badges, buttons |
 | bouncy | `{ damping: 9, stiffness: 140, mass: 0.7 }` | `{ type: "spring", bounce: 0.45 }` | playful brands, emoji, success |
 
-Overshoot is seasoning. One bouncy element per scene, at most.
+Overshoot is seasoning. One bouncy element per scene, at most. Overshoot budget by context: errors and serious UI 0 %, feedback 2–5 %, success 5–10 %, celebration 15–25 %.
 
 ## 5. Choreography
 
@@ -101,7 +105,12 @@ Overshoot is seasoning. One bouncy element per scene, at most.
 - **Continuity**: when an element persists across states, move it rather than cutting (shared element / layout animation / View Transitions). The viewer keeps their place.
 - **Exit before enter** for text: let the old content leave (0.3 s) before the new arrives; use crossfades for images, color fields and backgrounds.
 - **Rhythm**: vary pacing. Quick, quick, hold. A steady drumbeat of identical reveals is boring; edit to beats of music if there is any.
-- **Camera**: slow push-ins (scale +2–5 % over a scene) add life to static frames. Pan to the region you are talking about, hold while it matters, move on. Never move the camera and the content in different directions at the same time.
+- **Camera**: slow push-ins (scale +2–5 % over a scene) add life to static frames. Pan to the region you are talking about, hold while it matters, move on. Never move the camera and the content in different directions at the same time. Full camera language: `camera.md`.
+- **The 1/3 rules**: no single move covers more than about a third of its container in one go, and no more than a third of the elements on screen move at the same moment.
+- **Micro-structure of one motion**: anticipation (≈ 15 %), action (≈ 35 %), reaction/settle (≈ 20 %), then 50–100 ms of stillness before the next motion starts. Anticipation in UI and motion graphics is tiny: a 2–4 px dip or a 2 % squeeze, never a wind-up.
+- **Follow-through**: children trail their parent by 1–3 frames (40–120 ms); a card's content arrives just after the card.
+- **Arcs**: things that travel far move on a slight curve (a sideways offset of 10–20 px at the midpoint), not a ruler line.
+- **Squash and stretch** keeps the volume: scaleX × scaleY ≈ 1, at most 15–20 % deformation, recovering in 8–12 frames. Only for playful brands and small elements.
 
 ## 6. Space and physics
 
@@ -110,6 +119,7 @@ Overshoot is seasoning. One bouncy element per scene, at most.
 - Rotation: 1–3° is plenty for organic feel; big rotations for playful pieces only.
 - Depth: parallax layers move at different speeds (background 0.3–0.5×). Shadows grow as things lift (y-offset and blur up, opacity down slightly).
 - Blur: a 4–8 px blur fading out on entrance can feel cinematic; don't stack it on many elements (render cost, mush).
+- Ambient motion (breathing, floating, shimmer) is background: breathing scale 0.98–1.02 over ~3 s, floating ±5–15 px over 3–5 s with layers on different periods so they never sync, a shimmer sweep of 1.5–2.5 s with 2–5 s rests. Its energy stays below ~20 % of the main motion and it pauses while text is read.
 - Mass: larger elements move slower and overshoot less than small ones.
 
 ## 7. Typography in motion
@@ -120,6 +130,8 @@ Overshoot is seasoning. One bouncy element per scene, at most.
 - Sizes for video (1080 px wide frames): headline 90–140 px, body 36–48 px, labels 22–28 px; 9:16 body text ≥ 44 px. Minimum 2.5 % of frame height for anything that must be read on a phone.
 - Line length: max ~30 characters per line in 9:16, ~45 in 16:9 headlines. Balance the lines (`text-wrap: balance`) and never leave one word alone on the last line; check the wrap in every format, it differs.
 - Highlight one key word per line with the accent color or a drawn underline, not three.
+- Composition: optical centre is slightly above the middle (45–48 % of the height); keep reading text ≥ 5 % from the edges; colour weight roughly 60 % base, 30 % secondary, 10 % accent; hero text 60–80 % of the frame width in social formats.
+- Captions for speech: ≤ 17 characters per second, each caption ≥ 0.7 s on screen.
 - Numbers: count up with ease-out and tabular figures (no jitter). Round to what people remember (2.5 h, not 2.47 h).
 
 ## 8. Tone presets

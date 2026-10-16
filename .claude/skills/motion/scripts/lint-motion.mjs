@@ -37,9 +37,11 @@ for (const f of files) {
     each(src, /Date\.now\(|new Date\(\)|performance\.now\(/g, (m, l) => add(f, l, "Fehler", "Echtzeit in einer Komposition: Animationen müssen nur von useCurrentFrame() abhängen."));
     each(src, /set(Timeout|Interval)\(|requestAnimationFrame\(/g, (m, l) => add(f, l, "Fehler", "Timer/rAF laufen beim Rendern nicht synchron zu den Frames. Leite alles aus dem Frame ab."));
     each(src, /\btransition\s*:\s*["'`][^"'`]*\d+m?s|animation\s*:\s*["'`][^"'`]*\d+m?s|\btransition:\s*[\w-]+\s+\d|@keyframes/g, (m, l) => add(f, l, "Fehler", "CSS-Transition/Animation in Remotion: wird pro Frame nicht korrekt abgebildet. Mit interpolate()/spring() animieren."));
-    each(src, /\bstartFrom=|\bendAt=/g, (m, l) => add(f, l, "Hinweis", "startFrom/endAt sind veraltet: trimBefore/trimAfter verwenden."));
-    each(src, /fonts\.googleapis\.com|@import\s+url\(\s*["']?https?:/g, (m, l) => add(f, l, "Warnung", "Schrift aus dem Netz: Render hängt am Internet. Lokal einbinden (public/fonts + FontFace, delayRender)."));
-    each(src, /<video\b|<img\b/g, (m, l) => add(f, l, "Warnung", "Natives <video>/<img>: nimm <OffthreadVideo>/<Img> aus 'remotion', damit Frames vor dem Screenshot geladen sind."));
+    each(src, /\bstartFrom=|\bendAt=|\btrimAfter=/g, (m, l) => add(f, l, "Hinweis", "startFrom/endAt/trimAfter sind veraltet: trimBefore + durationInFrames (und from) verwenden."));
+    each(src, /import\s*\{[^}]*\b(Audio|Video)\b[^}]*\}\s*from\s*["']remotion["']/g, (m, l) => add(f, l, "Hinweis", "Audio/Video aus 'remotion' sind veraltet (Html5Audio/Html5Video): import { Audio, Video } from '@remotion/media'."));
+    each(src, /\b(animate|transition)-[a-z0-9[]/g, (m, l) => /className=/.test(src.split("\n")[l - 1] || "") && add(f, l, "Fehler", "Tailwind animate-*/transition-* läuft auf der Uhr, nicht auf Frames: in Remotion nicht verwenden."));
+    each(src, /fonts\.googleapis\.com|@import\s+url\(\s*["']?https?:/g, (m, l) => add(f, l, "Warnung", "Schrift aus dem Netz: Render hängt am Internet. Für finale Renders lokal einbinden (public/fonts + loadFont aus @remotion/fonts)."));
+    each(src, /<video\b|<img\b/g, (m, l) => add(f, l, "Warnung", "Natives <video>/<img>: nimm <Video> aus '@remotion/media' bzw. <Img> aus 'remotion', damit Frames vor dem Screenshot geladen sind."));
     each(src, /interpolate\(([^()]|\([^()]*\))*\)/g, (m, l) => {
       if (!/extrapolate(Left|Right)/.test(m[0]) && /\[\s*0\s*,\s*1\s*\]\s*\)?\s*$|,\s*\[[^\]]+\]\s*\)$/.test(m[0])) add(f, l, "Hinweis", "interpolate() ohne extrapolateLeft/Right: 'clamp' prüfen, sonst läuft der Wert über das Ziel hinaus.");
     });
