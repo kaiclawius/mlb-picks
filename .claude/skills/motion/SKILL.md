@@ -36,6 +36,7 @@ UI: list the interactions and states (enter, hover, press, loading, success, exi
 ### 3. Build on the system, not by hand
 - **Video**: start from `assets/remotion-starter/` (copy it into the project, `npm install`). It has the motion tokens (`src/motion/tokens.ts`), primitives (Reveal, Stagger, KineticText, Counter, Underline, Pop, Camera, BrowserFrame, ScreenShot, Cursor, Captions, VoiceBars, DriftBackground, Scene) and two finished example films to learn from. Put brand values in `src/brand.ts`. Every duration, easing and spring comes from the tokens, so the film feels like one piece and can be retuned in one place. If the repo already has a Remotion project (e.g. `studio/` here), build there and reuse its patterns.
 - **UI**: define motion tokens as CSS custom properties (durations, easings) first, then use them everywhere. Prefer CSS for simple state changes; use Motion for React or GSAP when you need sequencing, layout animation, gestures or scroll choreography.
+- **Websites that should feel award-level**: start from `assets/web-motion-kit/` (HTML attributes for split text, wordmarks, scroll-highlight, image reveals, pinned stories, stamps, counters, marquee, loader, smooth scroll, plus WebGL gradient, curved gallery and 3D product with fallbacks). Read `references/web-kit.md`.
 
 ### 4. Look at it (non-negotiable)
 Motion cannot be judged from code. Before you call anything done, look at frames:
@@ -91,6 +92,7 @@ Audit first (frames, `audit-ui.mjs`, `lint-motion.mjs`), then report findings in
 - `references/camera.md`: camera energy dial, shot sizes, moves with numbers, rules (cause before move, hold, log-space zoom), cuts and continuity, camera and music.
 - `references/sound.md`: one timeline for picture and sound, voice-over first, sound effects in code, music and beat grids, mix and master, honest audio checks.
 - `references/review.md`: the review loop, automatic fails, scorecard for video and UI, symptom → fix table, anti-default check.
+- `references/web-kit.md`: the web motion kit: setup, every module and option, the WebGL layer (fallbacks, performance guard, posters), rules, verification, licences.
 - `references/award-sites.md`: measured award-winning and product sites (engines, timing, curves, travel), their signature techniques and how to build each one; read it for websites that should feel award-level.
 - `scripts/frames.mjs`: contact sheets from a Remotion composition (fast stills) or a rendered video.
 - `scripts/captions.mjs`: word-timed captions (local Whisper) in the `@remotion/captions` format; `--script` aligns your exact text to the heard timings.
@@ -101,4 +103,5 @@ Audit first (frames, `audit-ui.mjs`, `lint-motion.mjs`), then report findings in
 - `scripts/study-site.mjs`: measures the motion of a live website (engines, durations, fitted curves, stagger, travel, smooth-scroll inertia, intro length) to learn from references; never to copy them.
 - `scripts/lint-motion.mjs`: static checks for Remotion and UI motion code.
 - `scripts/audit-ui.mjs`: records and measures real UI motion in a browser, with and without reduced motion.
+- `assets/web-motion-kit/`: award-level website motion without a build step (GSAP 3.15 + ScrollTrigger + SplitText, Lenis, raw-WebGL scenes, three.js on demand) with a demo page using every module.
 - `assets/remotion-starter/`: Remotion project with the motion system, primitives (incl. `ScreenShot` for real screenshots, `Captions`, `VoiceBars`, `Grade` for grain/vignette) and two example films (launch film in 16:9/9:16/1:1, vertical social stat clip).

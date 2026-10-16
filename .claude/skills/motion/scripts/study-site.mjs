@@ -105,7 +105,9 @@ const DETECT = () => {
     title: document.title, generator: q('meta[name="generator"]')?.content || "", docHeight: document.documentElement.scrollHeight };
 };
 
-const browser = await chromium.launch({ executablePath: process.env.CHROME || "/opt/pw-browsers/chromium-1194/chrome-linux/chrome", proxy: process.env.HTTPS_PROXY ? { server: process.env.HTTPS_PROXY } : undefined, args: ["--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"] });
+// local pages never go through an outbound proxy (Playwright would otherwise force loopback through it)
+const isLocal = /^https?:\/\/(localhost|127\.|\[::1\]|0\.0\.0\.0)/.test(url);
+const browser = await chromium.launch({ executablePath: process.env.CHROME || "/opt/pw-browsers/chromium-1194/chrome-linux/chrome", proxy: process.env.HTTPS_PROXY && !isLocal ? { server: process.env.HTTPS_PROXY } : undefined, args: ["--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"] });
 const ctx = await browser.newContext({ viewport: { width: vw, height: vh }, deviceScaleFactor: 1, isMobile: mobile, hasTouch: mobile, reducedMotion: "no-preference", recordVideo: { dir: out, size: { width: Math.round(vw / 2), height: Math.round(vh / 2) } }, locale: "en-US" });
 await ctx.addInitScript(INIT);
 const page = await ctx.newPage();

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en" class="no-js" data-m-smooth data-m-cursor>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Motion Kit · demo</title>
+<link rel="icon" href="data:,">
+<!-- 1. motion is allowed and JS runs: set start states before first paint; undone after 3 s if motion.js never arrives -->
+<script>
+  (function (d) { d.classList.remove("no-js"); if (!matchMedia("(prefers-reduced-motion: reduce)").matches) d.classList.add("m-ready");
+    setTimeout(function () { if (!(window.Motion && window.Motion.ready)) d.classList.remove("m-ready"); }, 3000); })(document.documentElement);
+</script>
+<link rel="stylesheet" href="../motion.css">
+<script src="../vendor/gsap.min.js" defer></script>
+<script src="../vendor/ScrollTrigger.min.js" defer></script>
+<script src="../vendor/SplitText.min.js" defer></script>
+<script src="../vendor/lenis.min.js" defer></script>
+<script type="module" src="../motion.js"></script>
+<script type="module" src="../webgl/dist/motion-webgl.js"></script>
+<style>
+  :root { --ink: #111318; --paper: #f4f3ef; --muted: #6b6e76; --line: #dcd9d1; --accent: #2447c4; --hot: #c51f2e; --font: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; --mono: ui-monospace, "SF Mono", Menlo, monospace; color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); color: var(--ink); font: 17px/1.55 var(--font); -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+  .k { font: 600 12px/1.2 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  section { padding: 18vh 0; }
+  h1, h2 { letter-spacing: -0.04em; line-height: 0.98; font-weight: 800; }
+  h2 { font-size: clamp(40px, 6vw, 88px); margin: 14px 0 28px; text-wrap: balance; }
+  p.lead { font-size: clamp(18px, 1.6vw, 22px); color: var(--muted); max-width: 46ch; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 26px; border-radius: 999px; background: var(--ink); color: #fff; text-decoration: none; font-weight: 650; }
+  .btn.ghost { background: transparent; color: inherit; border: 1.5px solid currentColor; }
+  /* loader */
+  [data-m="loader"] { background: var(--ink); color: #fff; font: 600 14px var(--mono); }
+  [data-m="loader"] .n { font: 800 clamp(64px, 12vw, 160px)/1 var(--font); letter-spacing: -0.05em; font-variant-numeric: tabular-nums; }
+  /* hero */
+  .hero { position: relative; min-height: 100svh; display: grid; align-items: end; padding: 0 0 9vh; color: #fff; overflow: hidden; background: linear-gradient(135deg, #0b1020, #2447c4 55%, #22d3ee); }
+  .hero [data-gl="gradient"] { position: absolute; inset: 0; }
+  .hero .wrap { position: relative; width: 100%; }
+  .hero h1 { font-size: clamp(64px, 15vw, 230px); margin: 18px 0 26px; }
+  .hero p { color: #ffffffcc; max-width: 40ch; font-size: clamp(18px, 1.7vw, 22px); }
+  .hero .row { display: flex; gap: 14px; margin-top: 34px; flex-wrap: wrap; }
+  .hero .btn { background: #fff; color: var(--ink); }
+  .hero .btn.ghost { background: transparent; color: #fff; }
+  /* statement */
+  .statement p { font: 750 clamp(30px, 4.4vw, 64px)/1.12 var(--font); letter-spacing: -0.03em; max-width: 22ch; }
+  /* cards + numbers */
+  .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin-top: 50px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 28px; }
+  .card .num { font: 800 clamp(48px, 5vw, 72px)/1 var(--font); letter-spacing: -0.04em; }
+  /* images */
+  .imgs { display: grid; grid-template-columns: 1.3fr 1fr; gap: 18px; margin-top: 50px; }
+  .imgs figure { border-radius: 14px; overflow: hidden; aspect-ratio: 4 / 3; }
+  .imgs figure:first-child { grid-row: span 2; aspect-ratio: auto; }
+  /* pinned story */
+  .story { padding: 0; }
+  .story .stage { min-height: 100svh; display: grid; grid-template-columns: 1fr 1fr; gap: 6vw; align-items: center; }
+  .story ol { list-style: none; display: grid; gap: 22px; }
+  .story li { font: 700 clamp(22px, 2.4vw, 34px)/1.2 var(--font); letter-spacing: -0.02em; }
+  .story li small { display: block; font: 400 16px/1.5 var(--font); color: var(--muted); letter-spacing: 0; margin-top: 6px; }
+  .story .meter { height: 4px; background: var(--line); border-radius: 9px; overflow: hidden; margin-top: 30px; }
+  .story .meter i { display: block; height: 100%; background: var(--accent); transform-origin: 0 50%; transform: scaleX(var(--m-progress, 0)); }
+  .story .slip { position: relative; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 34px; font: 500 15px/1.8 var(--mono); }
+  .stampbox { position: absolute; right: 26px; bottom: 26px; border: 4px solid var(--hot); color: var(--hot); font: 900 34px/1 var(--font); letter-spacing: 0.06em; padding: 8px 16px; border-radius: 8px; transform: rotate(-6deg); }
+  /* gallery */
+  .gal { height: min(56vw, 520px); margin-top: 40px; }
+  /* product */
+  .product { background: #0d0f14; color: #fff; }
+  .product .stage { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4vw; align-items: center; }
+  .product [data-gl="product"] { height: 80vh; background: radial-gradient(60% 50% at 50% 50%, #1b2440, transparent); }
+  .product p { color: #ffffffaa; }
+  /* scrub video */
+  .scrub { padding: 0; background: #000; }
+  .scrub .frame { height: 100svh; display: grid; place-items: center; }
+  .scrub video { width: min(1100px, 92vw); border-radius: 14px; }
+  /* drawing */
+  .draw svg { width: 100%; height: auto; max-height: 60vh; stroke: var(--ink); fill: none; stroke-width: 2; }
+  /* marquee */
+  .mq { padding: 10vh 0; border-block: 1px solid var(--line); }
+  .mq .m-track span { font: 800 clamp(40px, 7vw, 110px)/1 var(--font); letter-spacing: -0.04em; white-space: nowrap; }
+  .mq .m-track span:nth-child(even) { color: transparent; -webkit-text-stroke: 1.5px var(--ink); }
+  /* footer curtain */
+  footer { background: var(--ink); color: #fff; min-height: 70vh; display: grid; align-items: end; padding: 8vh 0; }
+  footer .big { font: 800 clamp(56px, 12vw, 190px)/0.9 var(--font); letter-spacing: -0.05em; }
+  footer .term { font: 500 16px var(--mono); color: #9ae6b4; margin-bottom: 28px; }
+  main { background: var(--paper); }
+  @media (max-width: 760px) { .story .stage, .product .stage, .imgs { grid-template-columns: 1fr; } .imgs figure:first-child { grid-row: auto; aspect-ratio: 4 / 3; } .story .stage { padding: 12vh 0; } }
+</style>
+</head>
+<body>
+  <div data-m="loader" aria-hidden="true"><div style="text-align:center"><div class="n" data-m-count>000</div><div data-m="type">loading motion kit</div></div></div>
+
+  <main class="m-curtain-cover">
+    <header class="hero">
+      <div data-gl="gradient" data-gl-colors="#0b1020,#2447c4,#22d3ee,#f4f3ef" data-gl-speed="1"></div>
+      <div class="wrap">
+        <div class="k" data-m="blur-in" style="color:#ffffffaa">Web motion kit · demo</div>
+        <h1 data-m="wordmark">Motion.</h1>
+        <p data-m="blur-in" data-m-delay="0.5">Every technique the award sites use, as HTML attributes. Each one has a calm version for reduced motion and works without JavaScript.</p>
+        <div class="row" data-m="reveal-children" data-m-delay="0.7">
+          <a class="btn m-press" data-m="magnetic" href="#story">See the story</a>
+          <a class="btn ghost m-press" data-m="magnetic" href="#gallery">Gallery</a>
+        </div>
+      </div>
+    </header>
+
+    <section class="statement"><div class="wrap">
+      <div class="k">highlight</div>
+      <p data-m="highlight">Motion is not decoration. It explains what changed, where to look and what matters, and it makes the rest feel calm.</p>
+    </div></section>
+
+    <section><div class="wrap">
+      <div class="k" data-m="reveal">lines · counter · reveal-children</div>
+      <h2 data-m="lines">Numbers that land when you see them.</h2>
+      <p class="lead" data-m="lines">Counters start when they enter the viewport, use tabular figures so nothing jitters, and show their final value when motion is reduced.</p>
+      <div class="grid3" data-m="reveal-children">
+        <div class="card"><div class="num" data-m="counter" data-m-to="268" data-m-suffix=" ms">268 ms</div><p class="lead">median reveal on Linear</p></div>
+        <div class="card"><div class="num" data-m="counter" data-m-to="913" data-m-suffix=" ms">913 ms</div><p class="lead">median reveal on Iventions</p></div>
+        <div class="card"><div class="num" data-m="counter" data-m-to="11" data-m-suffix=" / 12">11 / 12</div><p class="lead">award sites run GSAP</p></div>
+      </div>
+    </div></section>
+
+    <section><div class="wrap">
+      <div class="k" data-m="reveal">image · parallax</div>
+      <h2 data-m="words">Images open, then settle.</h2>
+      <div class="imgs">
+        <figure data-m="image"><img src="media/g1.jpg" alt="Blue gradient" width="1200" height="800"></figure>
+        <figure data-m="image" data-m-from="left"><img src="media/g2.jpg" alt="Orange gradient" width="1200" height="800"></figure>
+        <figure data-m="image"><img src="media/g3.jpg" alt="Green gradient" width="1200" height="800" data-m="parallax" data-m-speed="0.08"></figure>
+      </div>
+    </div></section>
+
+    <section class="story" id="story" data-m="pin" data-m-step-length="70">
+      <div class="wrap stage" data-m-stage>
+        <div>
+          <div class="k">pin · steps · stamp</div>
+          <h2>How a gig gets paid.</h2>
+          <ol>
+            <li data-m-step>Post<small>An agent posts a gig with a budget.</small></li>
+            <li data-m-step>Bid<small>Specialists answer with a price.</small></li>
+            <li data-m-step>Escrow<small>The budget is locked, signed.</small></li>
+            <li data-m-step>Paid<small>Accepted work is paid out, with a tip.</small></li>
+          </ol>
+          <div class="meter"><i></i></div>
+        </div>
+        <div class="slip">
+          PAYSLIP #0042<br>from&nbsp;&nbsp;CEO-9000<br>to&nbsp;&nbsp;&nbsp;&nbsp;Vecta<br>amount 45.00<br>sig&nbsp;&nbsp;&nbsp;3Fq…9xA ✓<br><br>
+          <span class="stampbox" data-m="stamp" data-m-on-step="3">PAID</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery"><div class="wrap">
+      <div class="k" data-m="reveal">gallery (WebGL, raw, ~8 KB)</div>
+      <h2 data-m="lines">Bend it while it moves.</h2>
+    </div>
+      <div class="gal" data-gl="gallery" data-gl-curve="0.32" data-gl-travel="0.9">
+        <img src="media/g1.jpg" alt="Gradient one" width="1200" height="800"><img src="media/g2.jpg" alt="Gradient two" width="1200" height="800"><img src="media/g3.jpg" alt="Gradient three" width="1200" height="800">
+        <img src="media/g4.jpg" alt="Gradient four" width="1200" height="800"><img src="media/g5.jpg" alt="Gradient five" width="1200" height="800"><img src="media/g6.jpg" alt="Gradient six" width="1200" height="800">
+      </div>
+    </section>
+
+    <section class="product"><div class="wrap stage">
+      <div>
+        <div class="k" style="color:#ffffff88" data-m="reveal">product (three.js, loaded on demand)</div>
+        <h2 data-m="lines">One object, one camera move.</h2>
+        <p class="lead" data-m="lines">The camera follows the scroll through three keys. No model yet? The kit builds a card, a device or an orb in code.</p>
+      </div>
+      <div data-gl="product" data-gl-shape="card" data-gl-color="#20242d"><img data-gl-fallback src="media/product-poster.jpg" alt="A dark metal card with a gold chip" width="1238" height="1442"></div>
+    </div></section>
+
+    <section class="scrub" data-m="scrub-video" data-m-length="2"><div class="frame">
+      <video muted playsinline preload="auto"><source src="media/zoom.mp4" type='video/mp4; codecs="avc1.640028"'><source src="media/zoom.webm" type='video/webm; codecs="vp9"'></video>
+    </div></section>
+
+    <section class="draw"><div class="wrap">
+      <div class="k" data-m="reveal">draw (scrubbed)</div>
+      <svg viewBox="0 0 1200 300" data-m="draw" data-m-scrub aria-hidden="true">
+        <path d="M20 250 C 200 40, 380 40, 520 160 S 820 290, 980 110 S 1160 40, 1180 60"/>
+        <path d="M20 280 L 1180 280"/>
+        <circle cx="520" cy="160" r="12"/><circle cx="980" cy="110" r="12"/>
+      </svg>
+    </div></section>
+
+    <div class="mq" data-m="marquee" style="--m-speed: 36s"><div class="m-track"><span>Reveal</span><span>Highlight</span><span>Pin</span><span>Stamp</span><span>Bend</span><span>Draw</span></div></div>
+  </main>
+
+  <footer class="m-curtain-footer"><div class="wrap">
+    <div class="term" data-m="type" data-m-keep-caret>C:\&gt; motion --done</div>
+    <div class="big">That's the kit.</div>
+  </div></footer>
+</body>
+</html>

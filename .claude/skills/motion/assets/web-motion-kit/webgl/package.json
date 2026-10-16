@@ -1,0 +1,8 @@
+{
+  "name": "motion-kit-webgl",
+  "private": true,
+  "type": "module",
+  "description": "Builds dist/motion-webgl.js (three.js tree-shaken + the kit's scenes). Consumers never need this: dist is committed.",
+  "scripts": { "build": "node build.mjs" },
+  "devDependencies": { "esbuild": "0.28.2", "three": "0.186.1" }
+}
