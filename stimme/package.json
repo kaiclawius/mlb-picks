@@ -1,0 +1,22 @@
+{
+  "name": "stimme",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Stimme: eigene Text-zu-Sprache-App. Fertige Stimmen (Deutsch/Englisch) und Stimmen klonen, lokal.",
+  "scripts": {
+    "start": "node server/index.js",
+    "test": "node --test test/*.test.mjs",
+    "setup-clone": "node scripts/setup-clone.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "ffmpeg-static": "5.2.0",
+    "sherpa-onnx-node": "1.13.8"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1"
+  }
+}

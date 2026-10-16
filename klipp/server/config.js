@@ -26,4 +26,7 @@ export const config = {
   hasClaude: Boolean(env.ANTHROPIC_API_KEY || env.ANTHROPIC_AUTH_TOKEN),
   transcribe: env.KLIPP_TRANSCRIBE !== "off",
   open: env.KLIPP_OPEN === "1", // open the browser on start
+  // Stimme (text to speech) for narrated agent videos: a running Stimme server, or the Stimme folder next to Klipp
+  stimmeUrl: env.STIMME_URL || "http://127.0.0.1:4848",
+  stimmeDir: resolve(env.STIMME_DIR || join(ROOT, "..", "stimme")),
 };

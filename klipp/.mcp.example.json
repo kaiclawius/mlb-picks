@@ -1,0 +1,5 @@
+{
+  "mcpServers": {
+    "klipp": { "command": "node", "args": ["/pfad/zu/mlb-picks/klipp/server/mcp.js"] }
+  }
+}

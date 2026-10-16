@@ -52,7 +52,9 @@ live(async (m) => {
 function renderState() {
   const a = meta.ai, el = $("#state");
   const parts = [];
-  if (meta.status === "processing" || meta.status === "recording") parts.push('<span class="badge run"><span class="spin"></span>Wird fertiggestellt: Dauert nur Sekunden</span>');
+  if (meta.source === "agent") parts.push(`<span class="badge">🤖 Aufgenommen von ${esc(meta.agent?.name || "einem Agent")}${meta.agent?.voice ? " · Stimme " + esc(meta.agent.voice) : ""}</span>`);
+  if (meta.status === "recording" && meta.agent?.phase) parts.push(`<span class="badge run"><span class="spin"></span>${esc(meta.agent.phase)}</span>`);
+  else if (meta.status === "processing" || meta.status === "recording") parts.push('<span class="badge run"><span class="spin"></span>Wird fertiggestellt: Dauert nur Sekunden</span>');
   if (meta.status === "error") parts.push(`<span class="badge bad">${esc(meta.error || "Fehler")}</span>`);
   if (meta.recovered) parts.push('<span class="badge ok">Nach Absturz wiederhergestellt</span>');
   if (a.transcript === "running") parts.push(`<span class="badge run"><span class="spin"></span>Transkript (lokal) ${Math.round((a.progress || 0) * 100)} %</span>`);

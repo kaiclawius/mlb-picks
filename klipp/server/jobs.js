@@ -74,7 +74,7 @@ export async function runDescribe(id) {
     await set(id, (m) => {
       if (!m.titleEdited) m.title = d.title || m.title;
       m.summary = d.summary; m.tldr = d.tldr; m.actions = d.actions;
-      m.chapters = (d.chapters || []).filter((c) => c.t >= 0 && c.t < m.duration).sort((a, b) => a.t - b.t);
+      if (!m.chaptersFixed) m.chapters = (d.chapters || []).filter((c) => c.t >= 0 && c.t < m.duration).sort((a, b) => a.t - b.t);
       m.ai.summary = "done";
     });
   } catch (e) {
@@ -140,7 +140,7 @@ export async function recover() {
     if (m.status === "recording" || m.status === "processing") {
       const any = Object.values(m.tracks).some((t) => t.raw && store.exists(m.id, t.raw));
       if (any) { await store.update(m.id, (x) => { x.status = "processing"; x.recovered = true; }); afterRecording(m.id); }
-      else await store.update(m.id, (x) => { x.status = "error"; x.error = "Die Aufnahme enthielt keine Daten."; });
+      else await store.update(m.id, (x) => { x.status = "error"; x.error = x.source === "agent" ? "Die Agent-Aufnahme wurde unterbrochen (Klipp wurde beendet)." : "Die Aufnahme enthielt keine Daten."; });
     }
   }
 }

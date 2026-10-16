@@ -1,7 +1,9 @@
 // Klipp server: serves the app, receives recordings while they happen, and runs the processing.
 //   npm start  ->  http://localhost:4747
 import { createServer } from "node:http";
-import { createReadStream, statSync } from "node:fs";
+import { createReadStream, createWriteStream, statSync } from "node:fs";
+import { pipeline } from "node:stream/promises";
+import * as media from "./media.js";
 import { appendFile, readFile, writeFile } from "node:fs/promises";
 import { join, extname, normalize } from "node:path";
 import { randomBytes } from "node:crypto";
@@ -56,7 +58,7 @@ async function searchText(m) {
   return text;
 }
 const card = (m) => ({ id: m.id, title: m.title, createdAt: m.createdAt, duration: m.duration, status: m.status, summary: m.summary,
-  chapters: m.chapters?.length || 0, comments: m.comments?.length || 0, hasCam: Boolean(m.media?.cam), ai: m.ai, views: m.views || 0 });
+  chapters: m.chapters?.length || 0, comments: m.comments?.length || 0, hasCam: Boolean(m.media?.cam), ai: m.ai, views: m.views || 0, source: m.source || "", agent: m.agent?.name || "", phase: m.agent?.phase || "" });
 
 /* ----- the upload of a running recording: ordered chunks, appended to disk as they arrive ----- */
 const expected = new Map(); // "id:track" -> next sequence number
@@ -195,6 +197,36 @@ async function route(req, res) {
     }
   }
 
+  // one frame as JPEG: lets agents "see" the video
+  if ((m = p.match(/^\/api\/recordings\/([a-z0-9]{10})\/frame$/)) && req.method === "GET") {
+    const meta = await store.get(m[1]);
+    if (meta?.status !== "ready") return bad(res, "not ready", 409);
+    const t = Math.max(0, Math.min(meta.duration - 0.05, Number(url.searchParams.get("t")) || 0));
+    const w = Math.max(320, Math.min(1920, Number(url.searchParams.get("w")) || 1280));
+    const out = store.file(m[1], `frame-${Math.round(t * 10)}-${w}.jpg`);
+    if (!store.exists(m[1], `frame-${Math.round(t * 10)}-${w}.jpg`)) await media.frame(m[1], meta.media.main, t, out, w);
+    return sendFile(req, res, out);
+  }
+
+  // a finished video file from elsewhere (an agent's own screen recording, a Loom download, a phone video)
+  if (p === "/api/recordings/import" && req.method === "POST") {
+    const q = url.searchParams;
+    const ext = /^(mp4|mov|webm|mkv|m4v)$/.test(q.get("ext") || "") ? q.get("ext") : "mp4";
+    const meta = await store.create({ tracks: { screen: { raw: `screen.raw.${ext}`, mime: "video/" + ext } }, language: String(q.get("language") || "").slice(0, 20),
+      title: String(q.get("title") || "").slice(0, 140), titleEdited: Boolean(q.get("title")), source: String(q.get("source") || "import").slice(0, 40) });
+    await pipeline(req, createWriteStream(store.file(meta.id, `screen.raw.${ext}`)));
+    await store.update(meta.id, (x) => { x.status = "processing"; });
+    jobs.afterRecording(meta.id);
+    return json(res, 201, await store.get(meta.id));
+  }
+
+  // agents record a website flow, optionally narrated with a voice from Stimme
+  if (p === "/api/agent/record" && req.method === "POST") {
+    const b = await jsonBody(req);
+    const { startAgentRecording } = await import("./agent-record.js");
+    return json(res, 202, await startAgentRecording(b));
+  }
+
   if ((m = p.match(/^\/api\/recordings\/([a-z0-9]{10})\/comments\/([a-f0-9]{8})$/)) && req.method === "DELETE") {
     await store.update(m[1], (x) => { x.comments = x.comments.filter((c) => c.id !== m[2]); });
     jobs.notify(m[1]);
@@ -239,15 +271,25 @@ function openBrowser(url) {
 const pick = (o, keys) => Object.fromEntries(keys.filter((k) => o[k] !== undefined).map((k) => [k, o[k]]));
 const slug = (s) => String(s).normalize("NFKD").replace(/[^\w\s-]/g, "").trim().replace(/\s+/g, "-").slice(0, 60) || "klipp";
 
-await store.init();
-await jobs.recover();
-createServer((req, res) => {
-  route(req, res).catch((e) => {
-    console.error(e);
-    if (!res.headersSent) bad(res, e.code === 413 ? "too large" : "Serverfehler: " + e.message, e.code === 413 ? 413 : 500);
-    else res.end();
+/** Starts Klipp. `quiet` sends the banner to stderr (stdout belongs to the MCP protocol). */
+export async function startServer({ quiet = false, port = config.port } = {}) {
+  await store.init();
+  await jobs.recover();
+  return new Promise((resolve, reject) => {
+    const srv = createServer((req, res) => {
+      route(req, res).catch((e) => {
+        if (!e.status) console.error(e);
+        if (!res.headersSent) bad(res, e.code === 413 ? "too large" : e.status ? e.message : "Serverfehler: " + e.message, e.code === 413 ? 413 : e.status || 500);
+        else res.end();
+      });
+    });
+    srv.on("error", reject);
+    srv.listen(port, config.host, () => {
+      if (config.open && !quiet) openBrowser(`http://localhost:${port}`);
+      (quiet ? console.error : console.log)(`\n  Klipp läuft:  http://localhost:${port}\n  Bibliothek:   ${config.library}\n  Claude:       ${config.hasClaude ? "an (" + config.claudeModel + ")" : "aus (ANTHROPIC_API_KEY fehlt)"}\n  Transkript:   ${config.transcribe ? "lokal mit " + config.whisperModel : "aus"}\n`);
+      resolve(srv);
+    });
   });
-}).listen(config.port, config.host, () => {
-  if (config.open) openBrowser(`http://localhost:${config.port}`);
-  console.log(`\n  Klipp läuft:  http://localhost:${config.port}\n  Bibliothek:   ${config.library}\n  Claude:       ${config.hasClaude ? "an (" + config.claudeModel + ")" : "aus (ANTHROPIC_API_KEY fehlt)"}\n  Transkript:   ${config.transcribe ? "lokal mit " + config.whisperModel : "aus"}\n`);
-});
+}
+
+if (import.meta.url === `file://${process.argv[1]}`) startServer();

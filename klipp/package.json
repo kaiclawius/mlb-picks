@@ -8,7 +8,8 @@
     "start": "node server/index.js",
     "e2e": "node test/e2e-record.mjs",
     "dev": "node --watch server/index.js",
-    "test": "node --test test/*.test.mjs"
+    "test": "node --test test/*.test.mjs",
+    "mcp": "node server/mcp.js"
   },
   "engines": {
     "node": ">=20"
@@ -16,15 +17,18 @@
   "dependencies": {
     "@anthropic-ai/sdk": "0.134.0",
     "@huggingface/transformers": "4.3.1",
+    "@modelcontextprotocol/sdk": "1.32.1",
     "@remotion/bundler": "4.0.535",
     "@remotion/renderer": "4.0.535",
     "ffmpeg-static": "5.2.0",
     "ffprobe-static": "3.1.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "remotion": "4.0.535"
-  },
-  "devDependencies": {
+    "remotion": "4.0.535",
+    "zod": "3.25.76",
     "playwright": "1.56.1"
+  },
+  "bin": {
+    "klipp": "bin/klipp.js"
   }
 }

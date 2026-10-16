@@ -47,7 +47,7 @@ import { $, api, live, time, ago, esc } from "/js/lib.js";
 const grid = $("#grid"); let items = []; let q = "";
 
 function badge(r) {
-  if (r.status === "recording") return '<span class="badge run"><span class="spin"></span>nimmt auf</span>';
+  if (r.status === "recording") return `<span class="badge run"><span class="spin"></span>${r.phase ? esc(r.phase) : "nimmt auf"}</span>`;
   if (r.status === "processing") return '<span class="badge run"><span class="spin"></span>verarbeitet</span>';
   if (r.status === "error") return '<span class="badge bad">Fehler</span>';
   if (r.ai?.transcript === "running") return '<span class="badge run"><span class="spin"></span>Transkript</span>';
@@ -65,11 +65,11 @@ function render() {
     <div class="thumb">${r.status === "ready" ? `<img src="/media/${r.id}/thumb.jpg?v=${encodeURIComponent(r.title)}" alt="" loading="lazy">` : `<div class="state">${badge(r)}</div>`}${r.duration ? `<span class="len">${time(r.duration)}</span>` : ""}</div>
     <div class="body"><h3>${esc(r.title || "Neue Aufnahme")}</h3>
       ${r.summary ? `<p class="sum">${esc(r.summary)}</p>` : ""}
-      <div class="meta"><span>${ago(r.createdAt)}</span>${r.views ? `<span>${r.views} Aufrufe</span>` : ""}${r.comments ? `<span>${r.comments} Kommentare</span>` : ""}${r.status === "ready" ? badge(r) : ""}</div></div></a>`).join("");
+      <div class="meta">${r.source === "agent" ? `<span class="badge">🤖 ${esc(r.agent || "Agent")}</span>` : ""}<span>${ago(r.createdAt)}</span>${r.views ? `<span>${r.views} Aufrufe</span>` : ""}${r.comments ? `<span>${r.comments} Kommentare</span>` : ""}${r.status === "ready" ? badge(r) : ""}</div></div></a>`).join("");
 }
 async function load() { items = await api("/api/recordings" + (q ? "?q=" + encodeURIComponent(q) : "")); render(); }
 let tm; $("#q").addEventListener("input", (e) => { clearTimeout(tm); tm = setTimeout(() => { q = e.target.value.trim(); load(); }, 180); });
-live((m) => { if (m.deleted) items = items.filter((x) => x.id !== m.id); else if (!q) { const i = items.findIndex((x) => x.id === m.id); const c = { ...items[i], ...m, comments: m.comments?.length || 0 }; if (i >= 0) items[i] = c; else items.unshift(c); } render(); });
+live((m) => { if (m.deleted) items = items.filter((x) => x.id !== m.id); else if (!q) { const i = items.findIndex((x) => x.id === m.id); const c = { ...items[i], ...m, comments: m.comments?.length || 0, agent: m.agent?.name || "", phase: m.agent?.phase || "" }; if (i >= 0) items[i] = c; else items.unshift(c); } render(); });
 load();
 api("/api/status").then((s) => {
   if (!s.claude) { $("#banner").classList.remove("hidden"); $("#banner").innerHTML = "<b>KI-Funktionen sind aus.</b> Transkripte laufen lokal. Für Titel, Zusammenfassungen, Kapitel, „Frag das Video“ und Anleitungen trage einen Anthropic API-Key in <code>klipp/.env</code> ein (siehe README)."; }

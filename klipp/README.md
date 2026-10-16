@@ -18,6 +18,16 @@ npm start                 # öffnet http://localhost:4747
 - **Erstes Transkript:** lädt einmal das Whisper-Modell herunter (etwa 150 MB). Danach läuft Klipp offline.
 - **Als App:** Klipp lässt sich in Chrome oder Edge als App installieren (Adressleiste → „App installieren“). Dann hat es ein eigenes Fenster und ein Dock-Symbol.
 
+## Für Agents (MCP) und mit Stimme
+
+Agents können Klipp ohne Mühe benutzen: Videos suchen, lesen, als Bilder ansehen, kommentieren, schneiden, exportieren und **selbst Videos aufnehmen, mit gesprochener Erklärung**. Die Stimme kommt aus [Stimme](../stimme), unserer eigenen Text-zu-Sprache-App mit deutschen und englischen Stimmen und Stimm-Klonen.
+
+```sh
+claude mcp add klipp -- node /pfad/zu/klipp/server/mcp.js
+```
+
+Alles Weitere steht in [docs/agents.md](docs/agents.md).
+
 ## Was Klipp kann
 
 **Aufnehmen**
@@ -70,6 +80,7 @@ npm start                 # öffnet http://localhost:4747
 | `KLIPP_PORT` / `KLIPP_HOST` | `4747` / `127.0.0.1` | `0.0.0.0` macht Links im ganzen WLAN erreichbar (Achtung: ohne Login) |
 | `KLIPP_OPEN` | `0` | `1` öffnet den Browser beim Start |
 | `KLIPP_TRANSCRIBE` | an | `off` schaltet Transkripte ab |
+| `STIMME_URL` / `STIMME_DIR` | `http://127.0.0.1:4848` / `../stimme` | wo Klipp die Stimme-App findet |
 | `REMOTION_BROWSER` | (leer) | eigenes Chrome für den Demo-Film. Sonst lädt Remotion beim ersten Mal sein eigenes. |
 
 ## Wie es gebaut ist
@@ -85,6 +96,9 @@ server/         Node.js, keine Web-Frameworks
   transcribe.js Whisper lokal (transformers.js / ONNX)
   ai.js         Claude: Zusammenfassung, Fragen, Anleitung, Übersetzung (strukturierte JSON-Antworten)
   demo.js       Remotion-Render des Demo-Films (remotion/Demo.jsx)
+  mcp.js        MCP-Server für Agents (startet Klipp und Stimme bei Bedarf selbst)
+  agent-record.js  Agent-Aufnahmen: Browser + sichtbarer Mauszeiger + Stimme
+  voice.js      Verbindung zu Stimme (laufender Server oder Stimme-Ordner daneben)
 ```
 
 Jede Aufnahme ist ein Ordner: `~/Klipp/<id>/` mit `main.webm` (Bildschirm und Ton), `cam.webm`, `transcript.json`, `captions.vtt`, `meta.json` und den Exporten. Du kannst ihn sichern, kopieren oder später nach Cloudflare R2 spiegeln.
@@ -95,6 +109,7 @@ Jede Aufnahme ist ein Ordner: `~/Klipp/<id>/` mit `main.webm` (Bildschirm und To
 npm test                                       # Unit-Tests (Schnitte, Zeiten, Untertitel, Whisper-Schleifen)
 npm start & npm run e2e -- speech.wav 12 both  # echte Aufnahme im Browser mit Fake-Kamera/-Bildschirm
 node test/fake-claude.mjs 4800                 # Claude-Ersatz zum Testen ohne Key und ohne Kosten
+node test/mcp-e2e.mjs http://localhost:3000/   # MCP wie ein Agent: vertonte Aufnahme, lesen, Bilder, Kommentar
 ```
 
 ## Lizenzen (wichtig, falls du Klipp verkaufst)
