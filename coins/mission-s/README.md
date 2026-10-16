@@ -17,7 +17,7 @@ Built with the motion skill's web kit (`kit/` is a copy of `.claude/skills/motio
 ## Live
 
 - **Site:** <https://mission-s.vercel.app/> (Vercel, Root Directory `coins/mission-s`, Framework "Other", no build step).
-- **Contract address:** `EZpAZJoyP4hpzuBiGgEzHm6GWspASuNpVZW1w7BBpump`. It is set in `index.html` in `const CA` and in the `#ca` box, together with the pump.fun and DexScreener links.
+- **Contract address:** `kCrcJw9oumg1M4wEgyWQRyJX3uZD6PMh25YkHd1pump`. It is set in `index.html` in `const CA` and in the `#ca` box, together with the pump.fun and DexScreener links.
 - `og:url`, `og:image` and `twitter:image` use absolute URLs on that domain. Change them together if the domain changes.
 
 ## Local preview
