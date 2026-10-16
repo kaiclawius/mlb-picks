@@ -9,15 +9,16 @@ import { speak, history, removeItem, audioPath } from "./speak.js";
 import { ensure, ready, progress } from "./models.js";
 import { PACKS, DEFAULT_VOICE } from "./catalog.js";
 import { state as cloneState, start as startClone } from "./clone.js";
+import * as guard from "./guard.js";
 
 const WEB = join(ROOT, "web");
 const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8", ".svg": "image/svg+xml", ".mp3": "audio/mpeg", ".wav": "audio/wav", ".json": "application/json" };
-const json = (res, code, data) => { res.writeHead(code, { "Content-Type": "application/json", "Cache-Control": "no-store", "Access-Control-Allow-Origin": "*" }); res.end(JSON.stringify(data)); };
+const json = (res, code, data) => { res.writeHead(code, { "Content-Type": "application/json", "Cache-Control": "no-store" }); res.end(JSON.stringify(data)); };
 async function body(req, limit) { const parts = []; let n = 0; for await (const c of req) { n += c.length; if (n > limit) throw Object.assign(new Error("Datei zu groß"), { code: 413 }); parts.push(c); } return Buffer.concat(parts); }
 
 function sendFile(req, res, path, extra = {}) {
   let st; try { st = statSync(path); } catch { return json(res, 404, { error: "not found" }); }
-  const head = { "Content-Type": TYPES[extname(path)] || "application/octet-stream", "Accept-Ranges": "bytes", "Access-Control-Allow-Origin": "*", ...extra };
+  const head = { "Content-Type": TYPES[extname(path)] || "application/octet-stream", "Accept-Ranges": "bytes", ...extra };
   const m = req.headers.range?.match(/bytes=(\d*)-(\d*)/);
   if (m) {
     const start = m[1] ? +m[1] : Math.max(0, st.size - +m[2]); const end = m[1] && m[2] ? Math.min(+m[2], st.size - 1) : st.size - 1;
@@ -31,7 +32,8 @@ function sendFile(req, res, path, extra = {}) {
 async function route(req, res) {
   const url = new URL(req.url, "http://x"), p = url.pathname;
   let m;
-  if (req.method === "OPTIONS") { res.writeHead(204, { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Content-Type", "Access-Control-Allow-Methods": "GET,POST,DELETE" }); return res.end(); }
+  const blocked = guard.check(req);
+  if (blocked) return json(res, 403, { error: blocked });
 
   if (p === "/api/status") return json(res, 200, { ok: true, defaults: DEFAULT_VOICE, clone: cloneState,
     packs: Object.fromEntries(Object.entries(PACKS).map(([k, v]) => [k, { ready: ready(k), downloading: progress[k] ?? null, size: v.size, license: v.license }])) });

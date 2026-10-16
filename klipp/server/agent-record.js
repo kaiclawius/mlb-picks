@@ -162,7 +162,12 @@ async function act(page, s, o) {
     return l;
   };
   switch (s.action) {
-    case "goto": await page.goto(new URL(s.value || s.target, page.url()).href, { waitUntil: "load", timeout: 45_000 }); break;
+    case "goto": {
+      const to = new URL(s.value || s.target, page.url());
+      if (!/^https?:$/.test(to.protocol)) throw new Error("goto erlaubt nur http(s)-Adressen"); // no file://, chrome://, javascript:
+      await page.goto(to.href, { waitUntil: "load", timeout: 45_000 });
+      break;
+    }
     case "click": { const l = await glide(); await page.waitForTimeout(180); await l.click({ timeout: 8000 }); await page.waitForLoadState("load", { timeout: 8000 }).catch(() => {}); break; }
     case "type": { const l = await glide(); await l.click({ timeout: 8000 }); await l.pressSequentially(s.value, { delay: 45 }); break; }
     case "press": await page.keyboard.press(s.value || "Enter"); break;

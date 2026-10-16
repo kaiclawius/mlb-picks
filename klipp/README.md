@@ -78,6 +78,7 @@ Alles Weitere steht in [docs/agents.md](docs/agents.md).
 | `KLIPP_LIBRARY` | `~/Klipp` | Ordner für alle Aufnahmen |
 | `KLIPP_WHISPER_MODEL` | `onnx-community/whisper-base_timestamped` | `small_…` ist genauer, `large-v3-turbo_…` am genauesten |
 | `KLIPP_PORT` / `KLIPP_HOST` | `4747` / `127.0.0.1` | `0.0.0.0` macht Links im ganzen WLAN erreichbar (Achtung: ohne Login) |
+| `KLIPP_ALLOWED_HOSTS` | (leer) | weitere Hostnamen, unter denen Klipp erreichbar sein darf (z. B. `klipp.local`) |
 | `KLIPP_OPEN` | `0` | `1` öffnet den Browser beim Start |
 | `KLIPP_TRANSCRIBE` | an | `off` schaltet Transkripte ab |
 | `STIMME_URL` / `STIMME_DIR` | `http://127.0.0.1:4848` / `../stimme` | wo Klipp die Stimme-App findet |
@@ -120,3 +121,7 @@ node test/mcp-e2e.mjs http://localhost:3000/   # MCP wie ein Agent: vertonte Auf
 - **Whisper-Modelle (MIT), transformers.js (Apache 2.0), Anthropic SDK (MIT):** unproblematisch.
 
 Mehr dazu und wie es weitergeht: [docs/besser-als-loom.md](docs/besser-als-loom.md).
+
+## Datenschutz und Sicherheit
+
+Geprüft mit REA, strace und Angriffs-Tests: Klipp und Stimme senden nichts ins Internet (außer einmaligen Modell-Downloads und, mit API-Key, Transkript-Text an Claude). Bericht mit allen Befunden: [docs/sicherheit.md](docs/sicherheit.md).

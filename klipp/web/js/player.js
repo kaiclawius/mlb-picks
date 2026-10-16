@@ -1,6 +1,6 @@
 // The player: the screen video, the camera bubble on top (kept in sync), captions, chapters, comments
 // on the timeline, and cuts that are skipped while playing. No rendering needed to watch an edit.
-import { $, time, icons, store } from "/js/lib.js";
+import { $, time, icons, store, esc } from "/js/lib.js";
 import { inCut } from "/js/cuts.js";
 
 export function parseVtt(text) {
@@ -142,8 +142,8 @@ export function createPlayer(root, meta) {
   function drawMarks() {
     const d = D(); if (!d) return;
     $(".marks", root).innerHTML =
-      P.chapters.filter((c) => c.t > 0).map((c) => `<i class="ch" style="left:${(c.t / d) * 100}%" title="${c.title.replace(/"/g, "&quot;")}"></i>`).join("") +
-      P.comments.map((c) => `<b style="left:${(c.t / d) * 100}%" title="${(c.emoji || "") + " " + c.name}">${c.emoji || ""}</b>`).join("");
+      P.chapters.filter((c) => c.t > 0).map((c) => `<i class="ch" style="left:${(c.t / d) * 100}%" title="${esc(c.title)}"></i>`).join("") +
+      P.comments.map((c) => `<b style="left:${(c.t / d) * 100}%" title="${esc((c.emoji || "") + " " + c.name)}">${esc(c.emoji || "")}</b>`).join("");
   }
   return P;
 }

@@ -13,6 +13,7 @@ import * as jobs from "./jobs.js";
 import * as ai from "./ai.js";
 import { state as whisper } from "./transcribe.js";
 import { guideHtml, guideMarkdown } from "./guide.js";
+import * as guard from "./guard.js";
 
 const WEB = join(ROOT, "web");
 const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8", ".svg": "image/svg+xml", ".png": "image/png",
@@ -67,6 +68,8 @@ async function route(req, res) {
   const url = new URL(req.url, "http://x");
   const p = url.pathname;
   let m;
+  const blocked = guard.check(req);
+  if (blocked) return bad(res, blocked, 403);
 
   if (p === "/api/status") return json(res, 200, { claude: config.hasClaude, model: config.claudeModel, whisper, library: config.library, transcribe: config.transcribe });
 

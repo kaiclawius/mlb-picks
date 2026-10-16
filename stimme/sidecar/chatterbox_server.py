@@ -4,7 +4,9 @@ Started by the Node server on demand:  python sidecar/chatterbox_server.py <port
 Keeps the model in memory and answers small JSON requests on 127.0.0.1 only.
 Every generated file carries Resemble's inaudible Perth watermark, so cloned speech stays traceable.
 """
+import hmac
 import json
+import os
 import sys
 import threading
 import time
@@ -16,6 +18,14 @@ from chatterbox.mtl_tts import ChatterboxMultilingualTTS, Conditionals
 
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 4849
 WANT = sys.argv[2] if len(sys.argv) > 2 else "auto"
+# Only the Stimme server that started us knows this token, and files are only read/written inside the Stimme folder.
+TOKEN = os.environ.get("STIMME_SIDECAR_TOKEN", "")
+HOME = os.path.realpath(os.environ.get("STIMME_HOME_DIR", os.getcwd()))
+
+
+def inside_home(path):
+    real = os.path.realpath(path)
+    return real == HOME or real.startswith(HOME + os.sep)
 
 
 def pick_device():
@@ -60,15 +70,28 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def allowed(self):
+        host = (self.headers.get("Host") or "").split(":")[0]
+        if host not in ("127.0.0.1", "localhost"):
+            return False
+        return bool(TOKEN) and hmac.compare_digest(self.headers.get("X-Stimme-Token", ""), TOKEN)
+
     def do_GET(self):
+        if not self.allowed():
+            return self.reply(403, {"error": "forbidden"})
         if self.path == "/health":
             return self.reply(200, state)
         self.reply(404, {"error": "not found"})
 
     def do_POST(self):
+        if not self.allowed():
+            return self.reply(403, {"error": "forbidden"})
         try:
             n = int(self.headers.get("Content-Length") or 0)
             req = json.loads(self.rfile.read(n) or b"{}")
+            for key in ("ref", "out", "conds"):
+                if key in req and not inside_home(str(req[key])):
+                    return self.reply(400, {"error": f"{key} must be inside the Stimme folder"})
             if not state["ready"]:
                 return self.reply(503, {"error": state["error"] or "model is still loading"})
             if self.path == "/prepare":

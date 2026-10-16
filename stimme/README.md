@@ -71,7 +71,12 @@ curl -X POST 'localhost:4848/api/voices/clone?name=Rafa&lang=de&consent=1&person
 | `STIMME_HOME` | `~/Stimme` | Modelle, geklonte Stimmen, Verlauf |
 | `STIMME_PORT` / `STIMME_HOST` | `4848` / `127.0.0.1` | Server |
 | `STIMME_DEVICE` | `auto` | Klonen auf `cuda`, `mps` oder `cpu` erzwingen |
+| `STIMME_ALLOWED_HOSTS` | (leer) | weitere erlaubte Hostnamen |
 | `STIMME_THREADS` | Kerne − 1 (max. 4) | CPU-Threads für die fertigen Stimmen |
+
+## Datenschutz
+
+Geprüft (REA, strace, Angriffs-Tests): Nach den einmaligen Modell-Downloads stellt Stimme keine einzige Verbindung ins Internet her, auch nicht beim Klonen. Fremde Websites können Stimme weder steuern noch den Verlauf lesen. Bericht: [../klipp/docs/sicherheit.md](../klipp/docs/sicherheit.md).
 
 ## Wie es gebaut ist
 
