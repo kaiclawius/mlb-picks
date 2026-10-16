@@ -33,6 +33,7 @@ Motion in products should feel instant, explain changes and never get in the way
 }
 ```
 Use only these. Exits use roughly ⅔ of the entrance duration and `--ease-exit`.
+For editorial / award-style sites add the measured curves (see `award-sites.md`): `--ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1)` for reveals of 600–1000 ms, `--ease-inout-quart: cubic-bezier(0.76, 0, 0.24, 1)` for big moves of ~1.2 s (menus, curtains, page transitions), `--ease-lux: cubic-bezier(0, 0, 0, 1)` for slow, luxurious settles.
 
 ## 2. Micro-interactions
 

@@ -9,7 +9,7 @@ Make things move the way the best studios do: with purpose, physical believabili
 
 This skill covers two media that share one set of principles:
 - **Video** (Remotion: React rendered frame by frame to MP4). Read `references/remotion.md` and `references/recipes.md`.
-- **Interfaces** (CSS, View Transitions, Motion for React, GSAP). Read `references/ui-motion.md`.
+- **Interfaces** (CSS, View Transitions, Motion for React, GSAP). Read `references/ui-motion.md`, and `references/award-sites.md` when a website should feel award-level.
 - **Both**: the principles, numbers and taste rules in `references/principles.md`. Read it on every motion task; it is the difference between "animated" and "designed".
 - **Camera** (`references/camera.md`), **sound** (`references/sound.md`) and **review** (`references/review.md`) when the piece has camera moves, audio, or when you judge a piece (always before delivery).
 
@@ -91,12 +91,14 @@ Audit first (frames, `audit-ui.mjs`, `lint-motion.mjs`), then report findings in
 - `references/camera.md`: camera energy dial, shot sizes, moves with numbers, rules (cause before move, hold, log-space zoom), cuts and continuity, camera and music.
 - `references/sound.md`: one timeline for picture and sound, voice-over first, sound effects in code, music and beat grids, mix and master, honest audio checks.
 - `references/review.md`: the review loop, automatic fails, scorecard for video and UI, symptom → fix table, anti-default check.
+- `references/award-sites.md`: measured award-winning and product sites (engines, timing, curves, travel), their signature techniques and how to build each one; read it for websites that should feel award-level.
 - `scripts/frames.mjs`: contact sheets from a Remotion composition (fast stills) or a rendered video.
 - `scripts/captions.mjs`: word-timed captions (local Whisper) in the `@remotion/captions` format; `--script` aligns your exact text to the heard timings.
 - `scripts/loudnorm.mjs`: two-pass loudness normalisation of a rendered video (−14 LUFS social, −16 voice-led) with a true-peak limiter and a re-measurement, video copied untouched.
 - `scripts/sfx.mjs`: sound effects made in code (click, tick, key, pop, blip, whoosh, riser, impact, chime, success, pad), single sounds, a kit, or a whole SFX track from a cue sheet aligned on each sound's peak.
 - `scripts/beats.mjs`: tempo, beats, downbeats, energy per bar and the drop of a music track; says whether to cut on the grid or pace by phrases.
 - `scripts/qa-video.mjs`: measures a rendered video: export specs, loudness, pops, flashes, dead stretches, loop seams, cuts against the beat.
+- `scripts/study-site.mjs`: measures the motion of a live website (engines, durations, fitted curves, stagger, travel, smooth-scroll inertia, intro length) to learn from references; never to copy them.
 - `scripts/lint-motion.mjs`: static checks for Remotion and UI motion code.
 - `scripts/audit-ui.mjs`: records and measures real UI motion in a browser, with and without reduced motion.
 - `assets/remotion-starter/`: Remotion project with the motion system, primitives (incl. `ScreenShot` for real screenshots, `Captions`, `VoiceBars`, `Grade` for grain/vignette) and two example films (launch film in 16:9/9:16/1:1, vertical social stat clip).
