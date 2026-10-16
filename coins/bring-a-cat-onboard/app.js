@@ -117,7 +117,9 @@ async function quote() {
   $("#qOut").textContent = "…";
   try {
     quotes = await Promise.all(L.map(async (l) => {
-      const r = await fetch(`${JUP}/quote?inputMint=${SOL}&outputMint=${l.mint}&amount=${l.lam}&slippageBps=500&restrictIntermediateTokens=true`);
+      const url = `${JUP}/quote?inputMint=${SOL}&outputMint=${l.mint}&amount=${l.lam}&slippageBps=500&restrictIntermediateTokens=true`;
+      let r = await fetch(url);
+      for (let i = 0; i < 2 && (r.status === 429 || r.status >= 500); i++) { await new Promise((ok) => setTimeout(ok, 1200 * (i + 1))); r = await fetch(url); } // busy API: retry
       if (!r.ok) throw new Error("quote " + r.status);
       return { ...l, q: await r.json() };
     }));
@@ -283,6 +285,7 @@ if (REF) $("#livePill").textContent = `${refName(REF)} invited you onboard`;
 $("#ca").textContent = C.CA || "launching soon";
 if (C.CA) { $("#pumpLink").href = "https://pump.fun/coin/" + C.CA; $("#dexLink").href = "https://dexscreener.com/solana/" + C.CA; }
 $("#copyCa").addEventListener("click", (e) => { if (C.CA) navigator.clipboard?.writeText(C.CA).then(() => { e.target.textContent = "Copied"; setTimeout(() => (e.target.textContent = "Copy"), 1200); }); });
+setInterval(() => { if (!document.hidden && !busy) quote(); }, 20000); // keep the price fresh
 refreshSwapBtn(); quote(); loadBoard().then(() => live && loadGraph());
 setInterval(() => { if (live && !document.hidden) loadBoard(); }, 8000);
 provider()?.isConnected && provider().publicKey && ((wallet = provider().publicKey.toString()), onWallet());
