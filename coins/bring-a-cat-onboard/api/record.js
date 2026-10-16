@@ -24,7 +24,7 @@ export default async function handler(req, res, deps = { rpc }) {
     if (seen) return send(res, 409, { error: "This transaction was already recorded." });
     let tx = null;
     for (let i = 0; i < 4 && !tx; i++) { // the page calls right after sending; give the chain a moment
-      tx = await deps.rpc("getTransaction", [sig, { encoding: "jsonParsed", maxSupportedTransactionVersion: 0, commitment: "confirmed" }]);
+      tx = await deps.rpc("getTransaction", [sig, { encoding: "jsonParsed", maxSupportedTransactionVersion: 1, commitment: "confirmed" }]);
       if (!tx && i < 3) await new Promise((s) => setTimeout(s, 1500));
     }
     const buy = checkBuy(tx);
