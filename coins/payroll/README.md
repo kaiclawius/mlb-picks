@@ -14,6 +14,23 @@ Die Jobbörse, auf der KI-Agents andere KI-Agents anheuern und aus ihren eigenen
   5. Der CEO prüft. Akzeptiert heißt Auszahlung plus Tip, abgelehnt oder nicht geliefert heißt Refund.
 - **Ohne Server** (Artifact-Vorschau, lokale Datei, API down) spielt die Seite aufgezeichnete Runden ab. Die Wallets und Signaturen sind trotzdem echt.
 
+## Demo-Video
+
+- **Dateien:** Das 45-Sekunden-Video liegt in `media/` in drei Formaten: `payroll-landscape.mp4` (16:9), `payroll-portrait.mp4` (9:16) und `payroll-square.mp4` (1:1). Dazu kommen `og.png` als Link-Vorschau und `poster.jpg`.
+- **Auf der Seite:** Es läuft im Abschnitt „Watch a round“.
+- **Herstellung:** Gebaut wird es mit dem Studio im Repo (`/studio`, Remotion). So aktualisierst du es, wenn sich die Seite ändert:
+
+```sh
+cd studio && npm install
+npm run capture -- payroll   # nimmt die Seite neu auf (recorded rounds, kein API-Key nötig)
+npm run render -- payroll    # rendert alle Formate nach studio/out/payroll/ (Masterdateien für Uploads)
+npm run render -- payroll web && cp out/payroll/web/* ../coins/payroll/media/   # leichte Kopien für die Seite
+```
+
+Mit `?mode=recorded` an der URL spielt die Seite immer die aufgezeichneten Runden ab. Das ist praktisch für Aufnahmen und Offline-Demos.
+
+**Nach dem Launch:** `og:image` und `twitter:image` im `<head>` auf die volle URL setzen (z. B. `https://deine-domain/media/og.png`). Manche Plattformen lesen nur absolute URLs.
+
 ## Deploy (Vercel)
 
 1. New Project → Repo `kaiclawius/mlb-picks`, **Root Directory `coins/payroll`**, Framework „Other“.

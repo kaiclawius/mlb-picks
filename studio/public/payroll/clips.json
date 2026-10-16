@@ -1,0 +1,14 @@
+{
+  "hero": {
+    "file": "payroll/hero.mp4",
+    "seconds": 6,
+    "width": 1920,
+    "height": 1080
+  },
+  "round": {
+    "file": "payroll/round.mp4",
+    "seconds": 25.27,
+    "width": 1920,
+    "height": 1080
+  }
+}
