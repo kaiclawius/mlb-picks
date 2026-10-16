@@ -1,4 +1,4 @@
-// Bring a cat onboard: referral links, Jupiter swaps (solo or paired with catonboard), live board, hero graph.
+// Bring a cat onboard: referral links, Jupiter swaps (the coin is paired with catonboard, so every buy routes through it), live board, graphs.
 // Without a deployed API (local file, preview) the board and graph run on clearly labelled preview data.
 import { createGraph } from "./graph.js";
 const C = window.CAT_CONFIG || {};
@@ -117,7 +117,7 @@ async function quote() {
   $("#qOut").textContent = "…";
   try {
     quotes = await Promise.all(L.map(async (l) => {
-      const r = await fetch(`${JUP}/quote?inputMint=${SOL}&outputMint=${l.mint}&amount=${l.lam}&slippageBps=300&restrictIntermediateTokens=true`);
+      const r = await fetch(`${JUP}/quote?inputMint=${SOL}&outputMint=${l.mint}&amount=${l.lam}&slippageBps=500&restrictIntermediateTokens=true`);
       if (!r.ok) throw new Error("quote " + r.status);
       return { ...l, q: await r.json() };
     }));
@@ -187,7 +187,7 @@ function renderBoard(d) {
       const li = document.createElement("li"); if (!firstLoad) li.className = "new";
       li.innerHTML = `<span><b></b> brought <span class="buyer"></span> onboard · <span class="amt"></span></span><time></time>`;
       li.querySelector("b").textContent = f.ref; li.querySelector(".buyer").textContent = f.buyer;
-      li.querySelector(".amt").textContent = fmt(f.sol) + " SOL" + (f.pair ? " · paired" : "");
+      li.querySelector(".amt").textContent = fmt(f.sol) + " SOL";
       li.querySelector("time").dataset.t = f.t; ul.prepend(li);
       if (!firstLoad) { net.join(f); toast(`<b>${esc(f.ref)}</b> brought ${esc(f.buyer)} onboard`); }
       else net.join(f, true);
@@ -228,7 +228,7 @@ function startPreview() {
   const make = (t) => {
     const ref = names[Math.floor(Math.pow(Math.random(), 1.6) * names.length)], sol = Math.round((0.05 + Math.random() * 0.9) * 100) / 100;
     const b = board.get(ref); b.cats++; b.sol += sol; pv.stats.cats++; pv.stats.sol = Math.round((pv.stats.sol + sol) * 100) / 100;
-    return { ref, buyer: short(rnd()), sol, pair: Math.random() < 0.4, t };
+    return { ref, buyer: short(rnd()), sol, pair: true, t };
   };
   const render = () => renderBoard({ top: [...board.values()].sort((x, y) => y.sol - x.sol), feed: pv.feed, stats: pv.stats });
   // seed: a network that already has some history, drawn without animation
@@ -274,7 +274,6 @@ $("#claim").addEventListener("click", claim);
 $("#handle").addEventListener("keydown", (e) => { if (e.key === "Enter") claim(); });
 $("#copyLink").addEventListener("click", (e) => navigator.clipboard?.writeText(link()).then(() => { e.target.textContent = "Copied"; setTimeout(() => (e.target.textContent = "Copy"), 1200); }));
 $("#dlCard").addEventListener("click", () => { const a = document.createElement("a"); a.download = `bring-a-cat-${myHandle || short(wallet)}.png`; a.href = $("#card").toDataURL("image/png"); a.click(); });
-for (const [id, m] of [["#mSolo", "solo"], ["#mPair", "pair"]]) $(id).addEventListener("click", () => { mode = m; $("#mSolo").setAttribute("aria-pressed", m === "solo"); $("#mPair").setAttribute("aria-pressed", m === "pair"); refreshSwapBtn(); requote(); });
 $("#amt").addEventListener("input", requote);
 document.querySelectorAll(".quick button").forEach((b) => b.addEventListener("click", () => { $("#amt").value = b.dataset.v; requote(); }));
 $("#swap").addEventListener("click", swap);

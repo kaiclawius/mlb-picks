@@ -36,7 +36,7 @@ export default async function handler(req, res, deps = { rpc }) {
     const [, owner] = await db(["SET", `b:${buy.buyer}`, r.wallet, "NX"], ["GET", `b:${buy.buyer}`]);
     const credit = owner || r.wallet, newBuyer = owner === r.wallet && !(await db(["GET", `n:${buy.buyer}`]))[0];
     const [creditHandle] = credit === r.wallet ? [r.handle] : await db(["GET", `w:${credit}`]);
-    const pair = buy.mint === CFG.pairMint;
+    const pair = buy.mint === CFG.pairMint || CFG.quotedInPair;
     const item = JSON.stringify({ ref: creditHandle ? "@" + creditHandle : short(credit), buyer: short(buy.buyer), sol: buy.sol, pair, t: Date.now() });
     await db(
       ["ZINCRBY", "board:sol", String(buy.sol), credit],

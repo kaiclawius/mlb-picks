@@ -8,7 +8,9 @@
 <meta property="og:title" content="Bring a cat onboard · $BRINGACAT">
 <meta property="og:description" content="Your link. Your cats. Your rank. Referrals checked on chain.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="img/og.png">
+<meta property="og:url" content="https://bring-a-cat-onboard.vercel.app/">
+<meta property="og:image" content="https://bring-a-cat-onboard.vercel.app/img/og.png">
+<meta name="twitter:image" content="https://bring-a-cat-onboard.vercel.app/img/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="img/cat.svg">
@@ -113,6 +115,8 @@ nav .links a:hover{color:var(--ink)}
 .msg{font:500 13px var(--mono);color:var(--muted);margin-top:12px;min-height:1.4em}
 .msg.err{color:#c2283a}.msg.ok{color:var(--gt)}
 .shareimg{margin-top:16px;border-radius:14px;border:1px solid var(--line);width:100%;height:auto;display:block}
+.fed{display:flex;gap:10px;align-items:baseline;margin-top:16px;padding:12px 14px;border-radius:12px;background:var(--gbg);font:500 13px/1.5 var(--mono);color:var(--gt)}
+.fed .dot{flex:none;translate:0 -1px}
 .seg{display:inline-grid;grid-template-columns:1fr 1fr;background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:4px;margin-top:16px;width:100%}
 .seg button{font:600 14px var(--sans);border:0;background:none;border-radius:999px;padding:9px 12px;cursor:pointer;color:var(--muted)}
 .seg button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
@@ -269,7 +273,7 @@ footer .top{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;c
       <span class="n">buy</span>
       <h3>Get onboard</h3>
       <p class="hint">Swap SOL right here (routed by Jupiter). Bought through a link, the cat counts for whoever sent it.</p>
-      <div class="seg" role="group" aria-label="what to buy"><button type="button" id="mSolo" aria-pressed="true">$BRINGACAT</button><button type="button" id="mPair" aria-pressed="false">Pair it · 50/50 catonboard</button></div>
+      <p class="fed"><span class="dot"></span>Paired with $ONBOARD: every buy routes SOL → $ONBOARD → $BRINGACAT, so every cat also feeds catonboard.</p>
       <label class="amount"><input id="amt" inputmode="decimal" value="0.25" aria-label="amount in SOL"><span>SOL</span></label>
       <div class="quick"><button type="button" data-v="0.1">0.1</button><button type="button" data-v="0.25">0.25</button><button type="button" data-v="0.5">0.5</button><button type="button" data-v="1">1</button></div>
       <div class="quote" id="quote"><div><span>you get</span><b id="qOut">—</b></div><div><span>route</span><b id="qRoute">Jupiter</b></div><div><span>max slippage</span><b>auto</b></div></div>
@@ -283,7 +287,7 @@ footer .top{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;c
 <section id="network"><div class="wrap">
   <p class="k" data-m="reveal"><b>02</b> · the network</p>
   <h2 data-m="lines">Every cat, every link. Live.</h2>
-  <p class="lede" data-m="reveal">Each dot is a wallet. Hover to light up who brought whom, drag to untangle, click a referrer to open it. Paired cats also hang off catonboard.</p>
+  <p class="lede" data-m="reveal">Each dot is a wallet. Hover to light up who brought whom, drag to untangle, click a referrer to open it. Every cat also feeds catonboard, the dashed lines.</p>
   <div class="gview card" data-m="reveal">
     <canvas id="gbig" aria-label="Interactive referral network. Use the search box to find a referrer."></canvas>
     <div class="gbar"><input id="gq" placeholder="find @name" autocomplete="off" aria-label="find a referrer"><button type="button" id="gzin" aria-label="zoom in">+</button><button type="button" id="gzout" aria-label="zoom out">−</button><button type="button" class="wide" id="gfit">fit</button><button type="button" class="wide" id="gme" hidden>me</button></div>
@@ -321,7 +325,7 @@ footer .top{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;c
   <h2 data-m="lines">Three steps. One cat at a time.</h2>
   <div class="steps" data-m="reveal-children">
     <div class="card"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="12" width="36" height="22" rx="6"/><path d="M14 23h16M24 17l6 6-6 6"/></svg><h3>Make a link</h3><p>Connect a wallet, pick a name, sign once. Your link and a share card are ready in ten seconds.</p></div>
-    <div class="card"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="22" r="6"/><circle cx="32" cy="12" r="5"/><circle cx="32" cy="32" r="5"/><path d="M17.5 19.5 27.5 14M17.5 24.5l10 5.5"/></svg><h3>Bring your cats</h3><p>Friends open your link and buy on this page, solo or paired with catonboard. One tap, one wallet approval each.</p></div>
+    <div class="card"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="22" r="6"/><circle cx="32" cy="12" r="5"/><circle cx="32" cy="32" r="5"/><path d="M17.5 19.5 27.5 14M17.5 24.5l10 5.5"/></svg><h3>Bring your cats</h3><p>Friends open your link and buy on this page. One tap, one wallet approval. Every buy also buys catonboard on the way in.</p></div>
     <div class="card"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 34V20M18 34V12M28 34V24M38 34V8"/></svg><h3>Climb the board</h3><p>Every buy is read from Solana and counted for you. Ranks update live; top cats get the weekly rewards.</p></div>
   </div>
   <div class="tiers" data-m="reveal-children">
@@ -348,7 +352,7 @@ footer .top{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;c
       <div class="row"><a class="btn sm ghost" id="pumpLink" href="https://pump.fun" target="_blank" rel="noopener">pump.fun ↗</a><a class="btn sm ghost" id="dexLink" href="https://dexscreener.com/solana" target="_blank" rel="noopener">DexScreener ↗</a></div>
     </div>
     <div class="card" data-m="reveal" data-m-delay="0.1">
-      <dl><dt>chain</dt><dd>Solana · pump.fun</dd><dt>supply</dt><dd>1,000,000,000</dd><dt>pairs with</dt><dd>catonboard</dd><dt>rewards</dt><dd>weekly, for the top cats, from the coin’s creator fees, paid on chain and public</dd></dl>
+      <dl><dt>chain</dt><dd>Solana · pump.fun</dd><dt>supply</dt><dd>1,000,000,000</dd><dt>paired with</dt><dd>catonboard ($ONBOARD): every buy goes through it</dd><dt>rewards</dt><dd>weekly, for the top cats, from the coin’s creator fees, paid on chain and public</dd></dl>
     </div>
   </div>
 </div></section>
@@ -360,7 +364,7 @@ footer .top{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;c
 
 <script>
   // launch config: our coin and the coin we pair with (both Solana mint addresses)
-  window.CAT_CONFIG = { CA: "", PAIR_CA: "5ubruMYpgKqw9ip5J1qrXbVGmMdn2VCsMg421B4bpump", X_HANDLE: "" };
+  window.CAT_CONFIG = { CA: "581iz2AzUYRmC8AzCU4N4MJAB8FxvTH9skfrzFKrpump", PAIR_CA: "5ubruMYpgKqw9ip5J1qrXbVGmMdn2VCsMg421B4bpump", X_HANDLE: "BringaCatonSol" };
 </script>
 <script type="module" src="app.js"></script>
 </body>

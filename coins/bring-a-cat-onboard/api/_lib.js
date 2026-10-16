@@ -6,6 +6,8 @@ export const CFG = {
   mint: process.env.MINT || "",            // our coin ($BRINGACAT) mint address
   pairMint: process.env.PAIR_MINT || "",   // catonboard mint address, for "Pair it"
   rpc: process.env.RPC_URL || "https://api.mainnet-beta.solana.com",
+  // our coin trades against catonboard, so every buy also buys it (shown as a link to catonboard in the graph)
+  quotedInPair: process.env.QUOTED_IN_PAIR !== "false",
   minSol: Number(process.env.MIN_SOL || 0.05),   // smaller buys are not counted (spam, wash trading)
   maxAgeSec: 3600,                               // only fresh transactions can be recorded
 };
