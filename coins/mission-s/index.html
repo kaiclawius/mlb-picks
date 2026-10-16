@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en" class="no-js" data-m-smooth>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MISSION S · $MISSION</title>
+<meta name="description" content="The Mission S vs. the flying Roadster. Both revealed Oct 15. Only one of them mogs. $MISSION on Solana. A parody memecoin.">
+<meta property="og:title" content="MISSION S · $MISSION">
+<meta property="og:description" content="One flies. One kickflips. One just stands there and mogs.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="img/crest.svg">
+<script>
+  // motion start states before first paint (only when JS runs and motion is welcome; undone if the kit never loads)
+  (function (d) { d.classList.remove("no-js"); if (!matchMedia("(prefers-reduced-motion: reduce)").matches) d.classList.add("m-ready");
+    setTimeout(function () { if (!(window.Motion && window.Motion.ready)) d.classList.remove("m-ready"); }, 3000); })(document.documentElement);
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit/motion.css">
+<script src="kit/vendor/gsap.min.js" defer></script>
+<script src="kit/vendor/ScrollTrigger.min.js" defer></script>
+<script src="kit/vendor/SplitText.min.js" defer></script>
+<script src="kit/vendor/lenis.min.js" defer></script>
+<script type="module" src="kit/motion.js"></script>
+<script type="module" src="kit/webgl/motion-webgl.js"></script>
+<style>
+/* MISSION S: a looksmaxxing face-off between two cars. Dark showroom, clinical analysis overlays:
+   cyan = measurement, lime = elite, red = flaw, gold = the crest. Wide Archivo for the cars, mono for the lab. */
+:root {
+  --bg: #0a0b0d; --bg2: #101216; --ink: #eceef1; --muted: #8b909a; --line: #22262d;
+  --cyan: #5fe1ff; --lime: #c6ff3d; --red: #ff4d4d; --gold: #d8b25a;
+  --wide: "Archivo", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--wide); font-stretch: 100%; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+a { color: inherit; }
+::selection { background: var(--lime); color: #000; }
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.wrap { max-width: 1280px; margin: 0 auto; padding: 0 22px; }
+.lab { font: 600 12px/1.3 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.lab b { color: var(--cyan); font-weight: 600; }
+.wide { font-stretch: 125%; font-weight: 900; letter-spacing: -0.02em; line-height: 0.92; text-transform: uppercase; }
+h2.wide { font-size: clamp(34px, 6.4vw, 96px); margin: 12px 0 26px; }
+@media (max-width: 760px) { h2.wide, footer .big { font-stretch: 112%; } }
+section { padding: 16vh 0; position: relative; }
+.btn { display: inline-flex; align-items: center; gap: 10px; height: 50px; padding: 0 24px; border-radius: 999px; border: 1.5px solid var(--ink); background: var(--ink); color: #000; font: 700 15px var(--wide); text-decoration: none; cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn.lime { background: var(--lime); border-color: var(--lime); }
+.btn.sm { height: 40px; padding: 0 16px; font-size: 13px; }
+
+/* loader */
+[data-m="loader"] { background: #000; color: var(--ink); }
+[data-m="loader"] .scan { text-align: center; }
+[data-m="loader"] .n { font: 900 clamp(70px, 14vw, 180px)/1 var(--wide); font-stretch: 125%; font-variant-numeric: tabular-nums; color: var(--lime); }
+[data-m="loader"] .t { font: 600 13px var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--cyan); margin-top: 12px; }
+
+/* top bar */
+.top { position: fixed; inset: 0 0 auto; z-index: 50; display: flex; align-items: center; gap: 14px; padding: 14px 22px; background: linear-gradient(#0a0b0dcc, transparent); }
+.top .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 900 15px var(--wide); font-stretch: 125%; letter-spacing: 0.04em; }
+.top .brand img { width: 26px; height: 32px; }
+.top nav { margin-left: auto; display: flex; gap: 18px; align-items: center; font: 600 12px var(--mono); letter-spacing: 0.1em; text-transform: uppercase; }
+.top nav a { text-decoration: none; color: var(--muted); }
+.top nav a:hover { color: var(--ink); }
+@media (max-width: 760px) { .top nav a:not(.btn) { display: none; } }
+
+/* hero */
+.hero { min-height: 100svh; padding: 110px 0 7vh; display: grid; align-items: end; overflow: hidden; background: radial-gradient(80% 60% at 50% 30%, #1b1f27, #0a0b0d 70%); }
+.hero [data-gl="gradient"] { position: absolute; inset: 0; opacity: 0.55; }
+.hero .wrap { position: relative; width: 100%; }
+.hero .cars { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 2vw; margin-bottom: 4vh; }
+.hero .car svg { width: 100%; height: auto; display: block; }
+.hero .car .who { display: flex; justify-content: space-between; font: 600 12px var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; margin-top: 6px; }
+.hero .car .who b { color: var(--lime); }
+.hero .car.r .who b { color: var(--red); }
+.vs { font: 900 clamp(34px, 5vw, 72px)/1 var(--wide); font-stretch: 125%; color: var(--gold); }
+.hero h1 { font-size: clamp(54px, 11.6vw, 190px); white-space: nowrap; }
+.hero .sub { display: flex; flex-wrap: wrap; gap: 18px 40px; align-items: end; justify-content: space-between; margin-top: 22px; }
+.hero .sub p { max-width: 44ch; color: #c9ccd2; font-size: clamp(16px, 1.5vw, 19px); }
+.hero .row { display: flex; gap: 12px; flex-wrap: wrap; }
+@media (max-width: 760px) { .hero .cars { grid-template-columns: 1fr; } .vs { text-align: center; } .hero .car.r { display: none; } }
+
+/* statement */
+.statement p { font: 800 clamp(30px, 4.6vw, 70px)/1.08 var(--wide); font-stretch: 112%; letter-spacing: -0.02em; max-width: 20ch; text-transform: none; }
+
+/* face-off */
+.faceoff .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.panel { background: var(--bg2); border: 1px solid var(--line); border-radius: 18px; padding: 22px; position: relative; overflow: hidden; }
+.panel .head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.panel .name { font: 900 clamp(20px, 2.4vw, 32px) var(--wide); font-stretch: 125%; text-transform: uppercase; }
+.panel .psl { font: 900 clamp(34px, 4vw, 56px)/1 var(--wide); font-stretch: 125%; font-variant-numeric: tabular-nums; }
+.panel.m .psl { color: var(--lime); } .panel.r .psl { color: var(--red); }
+.panel svg { width: 100%; height: auto; display: block; }
+.metrics { margin-top: 30px; border-top: 1px solid var(--line); }
+.metric { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 14px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.metric .k { font: 600 12px var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.metric .k small { display: block; text-transform: none; letter-spacing: 0; color: #5d626b; font-size: 12px; margin-top: 3px; }
+.metric .v { font: 800 clamp(16px, 1.6vw, 21px) var(--wide); }
+.metric .v.good { color: var(--lime); } .metric .v.bad { color: var(--red); }
+.metric .bar { height: 4px; background: var(--line); border-radius: 9px; margin-top: 8px; overflow: hidden; }
+.metric .bar i { display: block; height: 100%; width: var(--w); background: currentColor; transform-origin: 0 50%; }
+.verdict { position: absolute; right: 22px; bottom: 26%; border: 4px solid var(--red); color: var(--red); font: 900 30px/1 var(--wide); font-stretch: 125%; letter-spacing: 0.04em; padding: 8px 14px; border-radius: 8px; transform: rotate(-8deg); background: #0a0b0dcc; }
+@media (max-width: 760px) { .faceoff .grid { grid-template-columns: 1fr; } .metric { grid-template-columns: 1fr 1fr; } .metric .k { grid-column: 1 / -1; } }
+
+/* ascension (pinned story) */
+.asc { padding: 0; }
+.asc .stage { min-height: 100svh; display: grid; grid-template-columns: 1fr 1.1fr; gap: 5vw; align-items: center; }
+.asc ol { list-style: none; display: grid; gap: 18px; counter-reset: s; }
+.asc li { counter-increment: s; font: 800 clamp(20px, 2.2vw, 30px)/1.15 var(--wide); font-stretch: 112%; text-transform: uppercase; }
+.asc li::before { content: "0" counter(s) " "; font: 600 13px var(--mono); color: var(--cyan); letter-spacing: 0.1em; vertical-align: middle; margin-right: 6px; }
+.asc li small { display: block; font: 400 15px/1.5 var(--wide); text-transform: none; color: var(--muted); margin-top: 5px; }
+.asc li[data-active] small { color: #c9ccd2; }
+.asc .meter { height: 3px; background: var(--line); margin-top: 26px; overflow: hidden; border-radius: 9px; }
+.asc .meter i { display: block; height: 100%; background: var(--lime); transform-origin: 0 50%; transform: scaleX(var(--m-progress, 0)); }
+.asc .shot { position: relative; background: var(--bg2); border: 1px solid var(--line); border-radius: 18px; padding: 26px; }
+.asc .shot svg { width: 100%; height: auto; display: block; }
+.asc .ascended { position: absolute; left: 50%; bottom: 26px; translate: -50% 0; border: 4px solid var(--lime); color: var(--lime); font: 900 clamp(26px, 3vw, 40px)/1 var(--wide); font-stretch: 125%; padding: 10px 18px; border-radius: 10px; letter-spacing: 0.05em; background: #0a0b0dd9; }
+@media (max-width: 760px) {
+  .asc .stage { grid-template-columns: 1fr; gap: 18px; padding: 80px 22px 24px; align-content: center; }
+  .asc h2.wide { font-size: 34px; margin-bottom: 14px; } .asc ol { gap: 10px; } .asc li { font-size: 18px; }
+  .asc li small { display: none; } .asc li[data-active] small { display: block; }
+  .asc .shot { padding: 14px; } .asc .ascended { font-size: 22px; bottom: 14px; }
+}
+
+/* final score */
+.score { text-align: center; }
+.score .pair { display: grid; grid-template-columns: 1fr auto 1fr; gap: 3vw; align-items: end; margin-top: 30px; }
+.score .big { font: 900 clamp(90px, 17vw, 260px)/0.85 var(--wide); font-stretch: 125%; font-variant-numeric: tabular-nums; }
+.score .m .big { color: var(--lime); } .score .r .big { color: var(--red); }
+.score .lab { margin-top: 14px; }
+@media (max-width: 760px) { .score .pair { grid-template-columns: 1fr; gap: 8px; } .score .big { font-size: 26vw; } }
+.score .over { margin-top: 40px; font: 800 clamp(22px, 2.6vw, 34px) var(--wide); color: var(--muted); }
+
+/* marquee */
+.mq { border-block: 1px solid var(--line); padding: 4vh 0; }
+.mq .m-track span { font: 900 clamp(34px, 6vw, 90px)/1 var(--wide); font-stretch: 125%; text-transform: uppercase; white-space: nowrap; }
+.mq .m-track span:nth-child(even) { color: transparent; -webkit-text-stroke: 1.5px var(--muted); }
+
+/* mog card */
+.card-maker .grid { display: grid; grid-template-columns: 1fr 1.25fr; gap: 4vw; align-items: center; }
+.card-maker form { display: grid; gap: 14px; }
+.card-maker input { height: 54px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--bg2); color: var(--ink); padding: 0 16px; font: 600 17px var(--wide); }
+.card-maker input:focus { border-color: var(--cyan); outline: none; }
+.card-maker canvas { width: 100%; height: auto; border-radius: 16px; border: 1px solid var(--line); display: block; background: #000; }
+.card-maker .row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+.card-maker .tip { font: 600 12px var(--mono); color: var(--muted); margin-top: 10px; min-height: 1.4em; }
+@media (max-width: 860px) { .card-maker .grid { grid-template-columns: 1fr; } }
+
+/* buy */
+.buy .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 30px 0 22px; }
+.buy .step { border: 1px solid var(--line); border-radius: 16px; padding: 22px; background: var(--bg2); }
+.buy .step i { font: 600 12px var(--mono); color: var(--cyan); font-style: normal; }
+.buy .step b { display: block; font: 900 20px var(--wide); font-stretch: 125%; text-transform: uppercase; margin: 8px 0 6px; }
+.buy .step p { color: var(--muted); font-size: 15px; }
+.buy .ca { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border: 1.5px dashed var(--line); border-radius: 14px; padding: 14px; }
+.buy .ca code { flex: 1; min-width: 220px; font: 600 15px var(--mono); color: var(--lime); word-break: break-all; }
+.buy .facts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.buy .facts span { font: 600 12px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; color: #c9ccd2; }
+@media (max-width: 760px) { .buy .steps { grid-template-columns: 1fr; } }
+
+/* footer */
+footer { background: #000; min-height: 80vh; display: grid; align-items: end; padding: 10vh 0 6vh; }
+footer .big { font-size: clamp(38px, 11.5vw, 190px); }
+footer .crest { width: clamp(70px, 9vw, 120px); height: auto; margin-bottom: 26px; }
+footer .disc { margin-top: 40px; max-width: 80ch; color: var(--muted); font-size: 13px; line-height: 1.6; border-top: 1px solid var(--line); padding-top: 18px; }
+footer .disc b { color: var(--ink); }
+main { background: var(--bg); }
+</style>
+</head>
+<body>
+<div data-m="loader" aria-hidden="true"><div class="scan"><div class="n" data-m-count>000</div><div class="t" data-m="type">running facial analysis</div></div></div>
+
+<header class="top">
+  <a class="brand" href="#top"><img src="img/crest.svg" alt="" width="26" height="32">MISSION S</a>
+  <nav><a href="#faceoff">face-off</a><a href="#ascension">ascension</a><a href="#card">mog card</a><a class="btn lime sm" href="#buy">buy $MISSION</a></nav>
+</header>
+
+<main class="m-curtain-cover" id="top">
+  <section class="hero">
+    <div data-gl="gradient" data-gl-colors="#0a0b0d,#1d2430,#2b3a4d,#d8b25a" data-gl-speed="0.7" data-gl-grain="0.05"></div>
+    <div class="wrap">
+      <div class="cars">
+        <div class="car m" data-m="reveal"><div class="svgslot" data-car="mission" data-overlay="1"></div><div class="who"><span>Mission S</span><b>PSL 9.4 · mogger</b></div></div>
+        <div class="vs" data-m="stamp" data-m-delay="0.45" data-m-rotate="-10" data-m-rotate-to="0">VS</div>
+        <div class="car r" data-m="reveal" data-m-delay="0.15"><div class="svgslot" data-car="roadster" data-overlay="1"></div><div class="who"><span>The flying Roadster</span><b>PSL 6.1 · mogged</b></div></div>
+      </div>
+      <div class="lab" data-m="blur-in">Both revealed Oct 15, 2026 · <b>facial analysis</b> by $MISSION</div>
+      <h1 class="wide" data-m="wordmark">Mission&nbsp;S</h1>
+      <div class="sub">
+        <p data-m="blur-in" data-m-delay="0.4">One of them flies. One of them kickflips. The Mission S just stands there, lowers its roofline, and mogs the entire parking lot.</p>
+        <div class="row" data-m="reveal-children" data-m-delay="0.6"><a class="btn lime" href="#buy" data-m="magnetic">Buy $MISSION</a><a class="btn ghost" href="#card" data-m="magnetic">Rate your car</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="statement"><div class="wrap">
+    <div class="lab" data-m="reveal">the thesis</div>
+    <p data-m="highlight">You can bolt rocket thrusters to a car. You cannot bolt on bone structure. That is the whole difference, and it shows from fifty metres away.</p>
+  </div></section>
+
+  <section class="faceoff" id="faceoff"><div class="wrap">
+    <div class="lab" data-m="reveal">front fascia analysis · <b>same lab, same light</b></div>
+    <h2 class="wide" data-m="lines">The face-off.</h2>
+    <div class="grid">
+      <div class="panel m" data-m="reveal">
+        <div class="head"><div class="name">Mission S</div><div class="psl" data-m="counter" data-m-to="9.4" data-m-decimals="1">9.4</div></div>
+        <div class="svgslot" data-car="mission" data-overlay="1" data-draw="1"></div>
+      </div>
+      <div class="panel r" data-m="reveal" data-m-delay="0.12">
+        <div class="head"><div class="name">The Roadster</div><div class="psl" data-m="counter" data-m-to="6.1" data-m-decimals="1">6.1</div></div>
+        <div class="svgslot" data-car="roadster" data-overlay="1" data-draw="1"></div>
+        <div class="verdict" data-m="stamp" data-m-start="top 55%">MOGGED</div>
+      </div>
+    </div>
+    <div class="metrics" data-m="reveal-children" data-m-stagger="0.07">
+      <div class="metric"><div class="k">Canthal tilt<small>headlight angle, outer corner up</small></div><div class="v good">+8° hunter eyes<div class="bar"><i style="--w:92%"></i></div></div><div class="v bad">−4° prey eyes<div class="bar"><i style="--w:38%"></i></div></div></div>
+      <div class="metric"><div class="k">FWHR<small>width to height, wider is meaner</small></div><div class="v good">2.4 · wide frame<div class="bar"><i style="--w:88%"></i></div></div><div class="v bad">1.7 · bubble<div class="bar"><i style="--w:52%"></i></div></div></div>
+      <div class="metric"><div class="k">Jawline<small>the front splitter</small></div><div class="v good">razor<div class="bar"><i style="--w:95%"></i></div></div><div class="v bad">soft, smiling<div class="bar"><i style="--w:41%"></i></div></div></div>
+      <div class="metric"><div class="k">Mewing<small>roofline, lower is better</small></div><div class="v good">mid-engine low<div class="bar"><i style="--w:90%"></i></div></div><div class="v bad">needs thrusters to look tall<div class="bar"><i style="--w:47%"></i></div></div></div>
+      <div class="metric"><div class="k">Cope<small>gimmicks per square metre</small></div><div class="v good">zero · no screen in the cabin<div class="bar"><i style="--w:96%"></i></div></div><div class="v bad">flies, kickflips, still mogged<div class="bar"><i style="--w:30%"></i></div></div></div>
+      <div class="metric"><div class="k">Frame<small>where it sits in the hierarchy</small></div><div class="v good">a new tier above the 911<div class="bar"><i style="--w:94%"></i></div></div><div class="v bad">in the air, technically<div class="bar"><i style="--w:55%"></i></div></div></div>
+    </div>
+  </div></section>
+
+  <section class="asc" id="ascension" data-m="pin" data-m-step-length="70">
+    <div class="wrap stage" data-m-stage>
+      <div>
+        <div class="lab">the ascension protocol</div>
+        <h2 class="wide">How to look like that.</h2>
+        <ol>
+          <li data-m-step>Mewing<small>Drop the roofline until the windshield is a statement.</small></li>
+          <li data-m-step>Hunter eyes<small>Slim LED slits, positive canthal tilt, no round headlights ever again.</small></li>
+          <li data-m-step>Jawline<small>A splitter you could shave with.</small></li>
+          <li data-m-step>Bone structure<small>Engine in the middle, where the chin should be strongest.</small></li>
+          <li data-m-step>Frame-mog<small>Sit one tier above the 911 and say nothing.</small></li>
+        </ol>
+        <div class="meter"><i></i></div>
+      </div>
+      <div class="shot">
+        <div class="svgslot" data-car="mission" data-overlay="1" data-steps="1"></div>
+        <div class="ascended" data-m="stamp" data-m-on-step="4" data-m-rotate="-6" data-m-rotate-to="-3">ASCENDED</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="score"><div class="wrap">
+    <div class="lab" data-m="reveal">final PSL</div>
+    <div class="pair">
+      <div class="m"><div class="big" data-m="counter" data-m-to="9.4" data-m-decimals="1">9.4</div><div class="lab"><b>Mission S</b> · mogger</div></div>
+      <div class="vs">VS</div>
+      <div class="r"><div class="big" data-m="counter" data-m-to="6.1" data-m-decimals="1">6.1</div><div class="lab">the roadster · it's over</div></div>
+    </div>
+    <p class="over" data-m="lines">Fly all you want. You still have to land next to it.</p>
+  </div></section>
+
+  <div class="mq" data-m="marquee" style="--m-speed: 32s"><div class="m-track"><span>Hunter eyes</span><span>Mogged</span><span>Mewing</span><span>Ascended</span><span>Frame-mog</span><span>$MISSION</span></div></div>
+
+  <section class="card-maker" id="card"><div class="wrap grid">
+    <div>
+      <div class="lab" data-m="reveal">mog card</div>
+      <h2 class="wide" data-m="lines">Rate your car.</h2>
+      <p style="color:var(--muted);max-width:40ch" data-m="reveal">Type any car. The lab runs the analysis and prints a card you can post. Spoiler: you will be compared to the Mission S.</p>
+      <form id="rate" data-m="reveal" data-m-delay="0.1" style="margin-top:22px">
+        <input id="car" maxlength="32" placeholder="e.g. my 2009 Civic" aria-label="Your car" autocomplete="off">
+        <button class="btn lime" type="submit">Run the analysis</button>
+      </form>
+    </div>
+    <div>
+      <canvas id="cv" width="1200" height="675" aria-label="Your mog card"></canvas>
+      <div class="row"><button class="btn sm" id="save" type="button">Download</button><button class="btn ghost sm" id="copyImg" type="button">Copy image</button><a class="btn ghost sm" id="post" href="#" target="_blank" rel="noopener">Post on X</a></div>
+      <div class="tip" id="tip"></div>
+    </div>
+  </div></section>
+
+  <section class="buy" id="buy"><div class="wrap">
+    <div class="lab" data-m="reveal">the coin</div>
+    <h2 class="wide" data-m="lines">Get $MISSION.</h2>
+    <div class="steps" data-m="reveal-children">
+      <div class="step"><i>01</i><b>Get a wallet</b><p>Phantom, Solflare or Backpack. Write the seed phrase down. Never type it into a website.</p></div>
+      <div class="step"><i>02</i><b>Get SOL</b><p>Buy SOL on an exchange and send it to your wallet. Keep a little for fees.</p></div>
+      <div class="step"><i>03</i><b>Swap on pump.fun</b><p>Paste the address below, check every character, swap. Welcome to the lab.</p></div>
+    </div>
+    <div class="ca" data-m="reveal"><code id="ca">contract address coming soon</code><button class="btn sm" type="button" id="copyCa">Copy</button><a class="btn ghost sm" href="https://pump.fun" target="_blank" rel="noopener">pump.fun ↗</a></div>
+    <div class="facts" data-m="reveal-children"><span>1,000,000,000 supply</span><span>fair launch</span><span>0% tax</span><span>no team bags</span><span>parody · not affiliated</span></div>
+  </div></section>
+</main>
+
+<footer class="m-curtain-footer"><div class="wrap">
+  <img class="crest" src="img/crest.svg" alt="The MOG crest" width="120" height="148">
+  <div class="big wide">Stay mogging.</div>
+  <p class="disc"><b>Parody and commentary.</b> $MISSION is a memecoin about two concept cars that were both unveiled on October 15, 2026. It is not affiliated with, endorsed by, sponsored by or connected to Porsche AG, Dr. Ing. h.c. F. Porsche AG, Tesla, Inc. or anyone working there. "Porsche", "Mission S", "Tesla" and "Roadster" belong to their owners and are used here only to name what we are joking about. All drawings, the crest and the scores are our own and mean nothing. <b>Not financial advice.</b> Memecoins have no intrinsic value, are extremely volatile and you can lose all the money you put in. Only use money you can afford to lose. Read the reveal: <a href="https://newsroom.porsche.com/en/2026/products/porsche-mission-s-vision-model-43528.html" rel="noopener" target="_blank">Porsche newsroom</a> · <a href="https://electrek.co/2026/10/15/tesla-unveils-cyberfied-new-roadster-kickflip/" rel="noopener" target="_blank">Roadster reveal (Electrek)</a>.</p>
+</div></footer>
+
+<script>
+/* ===== the cars: front views drawn in code (our own line art), with a looksmaxxing analysis overlay ===== */
+const CAR = {
+  mission: {
+    body: "M58 242 C52 214 52 176 74 156 C88 144 112 140 136 142 L196 150 C240 156 360 156 404 150 L464 142 C488 140 512 144 526 156 C548 176 548 214 542 242 L522 254 L78 254 Z",
+    cabin: "M214 150 L252 98 C276 88 324 88 348 98 L386 150",
+    scoop: "M282 89 L318 89 L314 82 L286 82 Z",
+    vents: ["M246 162 L284 168", "M316 168 L354 162"],
+    eyes: ["M92 168 L190 182 L186 192 L96 180 Z", "M508 168 L410 182 L414 192 L504 180 Z"],
+    mouth: "M186 214 L414 214 L398 238 L202 238 Z",
+    jaw: "M64 254 L536 254 M64 254 L78 266 L522 266 L536 254",
+    wheels: [[72, 206, 62, 60], [466, 206, 62, 60]],
+    marks: [[92, 168], [190, 182], [508, 168], [410, 182], [64, 254], [536, 254], [300, 89]],
+    tilt: "+8°", tiltY: [168, 182], color: "#c6ff3d",
+  },
+  roadster: {
+    body: "M74 240 C60 200 66 164 104 152 C128 144 160 142 190 142 L410 142 C440 142 472 144 496 152 C534 164 540 200 526 240 L510 252 L90 252 Z",
+    cabin: "M206 144 C222 92 262 78 300 78 C338 78 378 92 394 144",
+    scoop: "",
+    vents: [],
+    eyes: ["M100 176 C108 160 176 158 192 176 C186 196 112 198 100 176 Z", "M500 176 C492 160 424 158 408 176 C414 196 488 198 500 176 Z"],
+    mouth: "M238 222 C262 238 338 238 362 222",
+    jaw: "M84 252 C150 262 450 262 516 252",
+    wheels: [[84, 204, 58, 58], [458, 204, 58, 58]],
+    marks: [[100, 182], [192, 172], [500, 182], [408, 172], [84, 252], [516, 252], [300, 78]],
+    tilt: "−4°", tiltY: [182, 172], color: "#ff4d4d",
+    puffs: true,
+  },
+};
+function carSVG(kind, { overlay = true, draw = false, steps = false } = {}) {
+  const c = CAR[kind], ink = "#eceef1", cy = "#5fe1ff";
+  const p = (d, extra = "") => `<path d="${d}" ${extra}/>`;
+  const body = `<g fill="none" stroke="${ink}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" ${draw ? 'data-m="draw"' : ""}>
+    ${p(c.body)}${p(c.cabin)}${c.scoop ? p(c.scoop) : ""}${c.vents.map((v) => p(v)).join("")}${p(c.mouth)}${p(c.jaw)}
+    ${c.wheels.map(([x, y, w, h]) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10"/>`).join("")}
+    ${c.puffs ? `<path d="M120 270 c-10 6 -10 14 0 18 M150 272 c-8 5 -8 12 0 15 M450 272 c8 5 8 12 0 15 M480 270 c10 6 10 14 0 18" stroke="#8b909a"/>` : ""}
+  </g>
+  <g fill="${c.color}">${c.eyes.map((e) => p(e)).join("")}</g>`;
+  const [y1, y2] = c.tiltY, m = c.marks;
+  const ov = overlay ? `<g stroke="${cy}" stroke-width="1.2" fill="none" stroke-dasharray="5 5" ${draw ? 'data-m="draw" data-m-scrub' : ""} class="ov">
+    ${p(`M300 60 L300 286`)}
+    ${p(`M${m[0][0] - 30} ${y1 - 30 * (y2 - y1) / 98} L${m[1][0] + 30} ${y2 + 30 * (y2 - y1) / 98}`)}
+    ${p(`M${m[2][0] + 30} ${y1 - 30 * (y2 - y1) / 98} L${m[3][0] - 30} ${y2 + 30 * (y2 - y1) / 98}`)}
+    ${p(`M${m[4][0]} 286 L${m[5][0]} 286 M${m[4][0]} 280 L${m[4][0]} 292 M${m[5][0]} 280 L${m[5][0]} 292`)}
+    ${p(`M${m[4][0]} ${m[4][1]} L300 300 L${m[5][0]} ${m[5][1]}`)}
+  </g>
+  <g fill="${cy}">${m.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.2"/>`).join("")}</g>
+  <g font-family="JetBrains Mono, monospace" font-size="13" fill="${cy}" font-weight="600">
+    <text x="${m[0][0] - 24}" y="${y1 - 16}">${c.tilt}</text><text x="${m[2][0] - 34}" y="${y1 - 16}">${c.tilt}</text>
+    <text x="300" y="302" text-anchor="middle">${kind === "mission" ? "jaw 118°" : "jaw: soft"}</text>
+  </g>` : "";
+  return `<svg viewBox="0 0 600 310" role="img" aria-label="${kind === "mission" ? "Line drawing of the Mission S front with hunter-eye headlights" : "Line drawing of a roadster front with round headlights"}">${body}${ov}</svg>`;
+}
+document.querySelectorAll(".svgslot").forEach((s) => (s.innerHTML = carSVG(s.dataset.car, { overlay: s.dataset.overlay === "1", draw: s.dataset.draw === "1" })));
+
+/* ===== mog card ===== */
+const $ = (q) => document.querySelector(q);
+const CA = ""; // $MISSION contract address (paste after launch)
+const SITE = location.origin + location.pathname;
+function hash(s) { let h = 2166136261; for (const ch of s) { h ^= ch.codePointAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+function rate(name) {
+  const n = name.trim().toLowerCase();
+  if (/mission\s*s|porsche/.test(n)) return { psl: 10.0, tier: "true adam", verdict: "MOGS EVERYTHING", tilt: 9, fwhr: 2.5, jaw: 99 };
+  if (/roadster|tesla/.test(n)) return { psl: 6.1, tier: "it's over", verdict: "MOGGED", tilt: -4, fwhr: 1.7, jaw: 41 };
+  if (/cybertruck/.test(n)) return { psl: 2.4, tier: "brick", verdict: "MOGGED", tilt: 0, fwhr: 1.0, jaw: 12 };
+  const h = hash(n || "anon"), psl = 2.5 + (h % 620) / 100;
+  const tier = psl < 4 ? "it's over" : psl < 5.5 ? "normie" : psl < 7 ? "high-tier normie" : psl < 8 ? "chadlite" : "chad";
+  return { psl: Math.round(psl * 10) / 10, tier, verdict: "MOGGED BY THE MISSION S", tilt: ((h >> 8) % 15) - 6, fwhr: 1.4 + ((h >> 12) % 90) / 100, jaw: 20 + ((h >> 16) % 70) };
+}
+const cv = $("#cv"), ctx = cv.getContext("2d");
+let carImg = null, last = null;
+function loadCar() { return new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(carSVG("mission", { overlay: true }).replace("<svg ", '<svg xmlns="http://www.w3.org/2000/svg" ')); }); }
+async function drawCard(name) {
+  await document.fonts.ready; carImg ||= await loadCar();
+  const r = rate(name), W = 1200, H = 675; last = { name: name.trim() || "anon", ...r };
+  const g = ctx.createRadialGradient(W * 0.7, H * 0.3, 50, W * 0.7, H * 0.3, 900); g.addColorStop(0, "#1b2130"); g.addColorStop(1, "#07080a");
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  ctx.strokeStyle = "#22262d"; ctx.lineWidth = 2; ctx.strokeRect(24, 24, W - 48, H - 48);
+  ctx.drawImage(carImg, 600, 120, 560, 289);
+  const mono = (s, x, y, c = "#8b909a", size = 20) => { ctx.font = `600 ${size}px "JetBrains Mono", monospace`; ctx.fillStyle = c; ctx.fillText(s, x, y); };
+  const wide = (s, x, y, c, size) => { ctx.font = `900 ${size}px "Archivo", sans-serif`; ctx.fontStretch = "expanded"; ctx.fillStyle = c; ctx.fillText(s, x, y); };
+  mono("MOG CARD · FRONT FASCIA ANALYSIS", 64, 84, "#5fe1ff");
+  wide((last.name).toUpperCase().slice(0, 22), 64, 158, "#eceef1", last.name.length > 14 ? 50 : 66);
+  mono("PSL", 64, 240); wide(r.psl.toFixed(1), 64, 360, r.psl >= 9.4 ? "#c6ff3d" : "#ff4d4d", 150);
+  mono(r.tier.toUpperCase(), 64, 400, "#eceef1", 24);
+  mono(`canthal tilt ${r.tilt > 0 ? "+" : ""}${r.tilt}°`, 64, 470); mono(`fwhr ${r.fwhr.toFixed(1)}`, 64, 505); mono(`jawline ${r.jaw}/100`, 64, 540);
+  mono("vs MISSION S · PSL 9.4", 640, 470, "#c6ff3d", 22);
+  ctx.save(); ctx.translate(900, 560); ctx.rotate(-0.08); ctx.strokeStyle = r.psl >= 9.4 ? "#c6ff3d" : "#ff4d4d"; ctx.lineWidth = 7;
+  ctx.font = `900 ${r.verdict.length > 12 ? 34 : 54}px "Archivo", sans-serif`; const tw = ctx.measureText(r.verdict).width; ctx.strokeRect(-tw / 2 - 18, -48, tw + 36, 70); ctx.fillStyle = ctx.strokeStyle; ctx.textAlign = "center"; ctx.fillText(r.verdict, 0, 6); ctx.restore(); ctx.textAlign = "left";
+  mono("$MISSION · parody, not affiliated with Porsche or Tesla", 64, 630, "#5d626b", 16);
+  const text = `My ${last.name} got a PSL of ${r.psl.toFixed(1)} (${r.tier}). ${r.verdict === "MOGS EVERYTHING" ? "It mogs everything." : "Mogged by the Mission S."} $MISSION`;
+  $("#post").href = "https://x.com/intent/post?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(SITE);
+}
+$("#rate").addEventListener("submit", (e) => { e.preventDefault(); drawCard($("#car").value || "my car").then(() => ($("#tip").textContent = "Card printed. Download it or copy it, then post it.")); });
+const blob = () => new Promise((res) => cv.toBlob(res, "image/png"));
+$("#save").addEventListener("click", async () => { const b = await blob(), a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = `mog-card-${(last?.name || "car").replace(/\W+/g, "-").toLowerCase()}.png`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); });
+$("#copyImg").addEventListener("click", async () => { try { if (!window.ClipboardItem || !navigator.clipboard) throw 0; await navigator.clipboard.write([new ClipboardItem({ "image/png": blob() })]); $("#tip").textContent = "Copied. Paste it into your post."; } catch { $("#tip").textContent = "Your browser can't copy images. Use download."; } });
+drawCard("The Roadster");
+
+/* ===== contract address ===== */
+$("#ca").textContent = CA || "contract address coming soon";
+$("#copyCa").addEventListener("click", (e) => { const b = e.currentTarget, o = b.textContent; if (CA && navigator.clipboard) navigator.clipboard.writeText(CA).then(() => { b.textContent = "Copied"; setTimeout(() => (b.textContent = o), 1200); }); else { b.textContent = "Soon"; setTimeout(() => (b.textContent = o), 1200); } });
+</script>
+</body>
+</html>
