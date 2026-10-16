@@ -14,11 +14,11 @@ Built with the motion skill's web kit (`kit/` is a copy of `.claude/skills/motio
 
 **Images:** the user's front views of both cars, upscaled ×4 with Real-ESRGAN x4plus. The small badge on the Mission S hood was retouched out. `img/*-1600.webp` / `*-900.webp` are used, and `*.jpg` are kept as fallbacks. The photos belong to their owners. The disclaimer says so and states that the site is parody, not affiliated, and not financial advice. The MOG crest is our own.
 
-## After the launch
+## Live
 
-1. Put the contract address in `index.html`: `const CA = "…";` (search for `$MISSION contract address`).
-2. Set `og:image` to the full URL, for example `https://your-domain/img/og.jpg`. Some platforms only read absolute URLs.
-3. Deploy with Vercel: New Project → this repo → Root Directory `coins/mission-s` → Framework "Other". It is a static site; no environment variables are needed.
+- **Site:** <https://mission-s.vercel.app/> (Vercel, Root Directory `coins/mission-s`, Framework "Other", no build step).
+- **Contract address:** `EZpAZJoyP4hpzuBiGgEzHm6GWspASuNpVZW1w7BBpump`. It is set in `index.html` in `const CA` and in the `#ca` box, together with the pump.fun and DexScreener links.
+- `og:url`, `og:image` and `twitter:image` use absolute URLs on that domain. Change them together if the domain changes.
 
 ## Local preview
 
