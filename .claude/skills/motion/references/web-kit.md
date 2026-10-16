@@ -108,6 +108,12 @@ CSS-only helpers in `motion.css`:
 5. `node <skill>/scripts/lint-motion.mjs <src>` for layout-property transitions and a missing reduced-motion path.
 6. Look at the screenshots (contact sheets). Measuring is not seeing.
 
+Proof on a real page: `coins/payroll` (Payroll.exe) was rebuilt with the kit, using loader, wordmark, marquee, highlight, a pinned work order with `data-m-on-step` and a curtain footer. Its signature is the pinned story. It measured a reveal median of about 800 ms, 950 ms of Lenis inertia, CLS 0.03 on desktop (a font swap behind the loader) and 0.003 on mobile, and no animation with reduced motion. Lessons from it:
+- **A pinned stage must fit the smallest phone.** Measure the stage height at 320×568 and 375×667, and compact it with `.m-pinned` rules (hide long texts, put the step titles in one row).
+- **Mark inner scroll areas with `data-lenis-prevent`** (logs, chat panes), or the wheel scrolls the page instead.
+- **Inside the kit, give buttons `translate` instead of `transform`** for hover and press, so `magnetic` (GSAP x/y) never fights them.
+- **Use `mix-blend-mode: multiply` for stamps only on light paper.** Switch to `screen` in dark mode.
+
 The demo (`demo/index.html`) uses every module. In testing it measured CLS 0 on desktop and 0.0009 on mobile, and Lenis inertia of 1.25 s. Under ×4 CPU throttling without a GPU, the WebGL scenes switched to their fallbacks within 1.5 s and the page held 40–60 fps.
 
 ## 6. Licences

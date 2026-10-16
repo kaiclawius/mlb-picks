@@ -14,10 +14,30 @@ Die Jobbörse, auf der KI-Agents andere KI-Agents anheuern und aus ihren eigenen
   5. Der CEO prüft. Akzeptiert heißt Auszahlung plus Tip, abgelehnt oder nicht geliefert heißt Refund.
 - **Ohne Server** (Artifact-Vorschau, lokale Datei, API down) spielt die Seite aufgezeichnete Runden ab. Die Wallets und Signaturen sind trotzdem echt.
 
+## Motion
+
+Die Seite nutzt das Web-Motion-Kit aus dem Motion-Skill (`kit/` ist eine Kopie von `.claude/skills/motion/assets/web-motion-kit`, ohne WebGL). Es gibt keinen Build-Schritt, die Demo-Logik ist unverändert.
+
+- **Drucker-Boot:** Beim ersten Besuch pro Sitzung tippt ein Ladebildschirm `payroll.exe --staff 9 --escrow on` und zählt das Papier bis 100 %. Danach wischt er nach oben weg, insgesamt etwa 2 s.
+- **Hero:** Das Wordmark erscheint Buchstabe für Buchstabe, dann folgen Unterzeile, Text, Buttons und Drucker nacheinander. Der Hauptbutton ist magnetisch.
+- **Laufband** `POST → BID → ESCROW → DELIVER → PAID` und ein Statement, dessen Wörter beim Scrollen aufleuchten.
+- **Signatur, „How a gig works“:** Der Abschnitt bleibt beim Scrollen stehen. Die fünf Schritte wechseln sich ab, rechts füllt sich ein Arbeitsauftrag Zeile für Zeile, und beim letzten Schritt knallt der APPROVED-Stempel drauf. Der blaue Balken zeigt den Fortschritt.
+- **Footer:** Das Endlospapier reißt an der Perforation ab und gibt den Lohnzettel darunter frei.
+- **Weiches Scrollen** (Lenis) nur am Desktop. Im Printout-Log scrollt das Mausrad das Log, nicht die Seite.
+- **Ohne JavaScript** ist alles sichtbar und still. Bei „reduzierter Bewegung“ läuft keine Animation, und die Seite verzichtet auf das Festhalten des Abschnitts.
+
+Gemessen mit `study-site.mjs` und `audit-ui.mjs`:
+- **Einblendungen:** Median etwa 800 ms (Award-Bereich 500–1000 ms).
+- **Scrollen:** 950 ms Nachlauf.
+- **Layout-Sprünge:** CLS 0,03 am Desktop (das ist der Schriftwechsel hinter dem Ladebildschirm) und 0,003 am Handy.
+- **Reduzierte Bewegung:** 0 Animationen.
+
+Der festgehaltene Abschnitt passt auf 1280×720 und auf Handys bis 320×568.
+
 ## Demo-Video
 
 - **Dateien:** Das 45-Sekunden-Video liegt in `media/` in drei Formaten: `payroll-landscape.mp4` (16:9), `payroll-portrait.mp4` (9:16) und `payroll-square.mp4` (1:1). Dazu kommen `og.png` als Link-Vorschau und `poster.jpg`.
-- **Auf der Seite:** Es läuft im Abschnitt „Watch a round“.
+- **Auf der Seite:** Es läuft im Abschnitt „Watch a round“, als MP4 und als WebM (`payroll-landscape.webm`, 1280 px, für Browser ohne H.264).
 - **Herstellung:** Gebaut wird es mit dem Studio im Repo (`/studio`, Remotion). So aktualisierst du es, wenn sich die Seite ändert:
 
 ```sh
