@@ -8,6 +8,7 @@ Die Werkzeuge der Agentur, getrennt von den Memecoin-Seiten (die liegen auf dem 
 | **Stimme** | `stimme/` | Text zu Sprache, lokal (Piper DE, Kokoro EN), Voice-Cloning über Chatterbox | `stimme/README.md` |
 | **Studio** | `studio/` | Produkt-Videos als Code (Remotion): Seite aufnehmen, dann 16:9, 9:16 und 1:1 rendern | `studio/README.md` |
 | **Motion-Skill** | `.claude/skills/motion/` | Motion-Design für Videos und Webseiten: Remotion-Starter, Web-Motion-Kit (GSAP, Lenis, WebGL), Prüf-Skripte (study-site, audit-ui, lint-motion, qa-video, captions, loudnorm, sfx, beats, frames) und Messdaten von Award-Seiten | `.claude/skills/motion/SKILL.md` |
+| **Art Direction** | `.claude/skills/art-direction/` | Gegen den generischen KI-Look: Inventar und Ideen-Satz mit Wettbewerber-Test, eine per Zufall gezogene Direction (14 Directions, 18 Paletten, 15 Schrift-Paare, 20 Motion-Moves), Bilder aus offenen Sammlungen mit Lizenzfilter und Credits, Browser-Check bei 3 Breiten mit Kontaktbögen, Kritik-Schema mit Obergrenzen | `.claude/skills/art-direction/SKILL.md` |
 | **Netzwerk-Graph** | `tools/network-graph/` | Live-Graph wie in Obsidian, für Referrals und andere Netze | `tools/network-graph/README.md` |
 | **Upscale + Retusche** | `tools/upscale/` | Fotos ×4 hochskalieren (Real-ESRGAN), kleine Logos entfernen | `tools/upscale/README.md` |
 

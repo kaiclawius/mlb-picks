@@ -1,0 +1,22 @@
+[
+  { "id": "wordmark", "kit": "data-m=\"wordmark\"", "what": "Giant word rises letter by letter from a mask.", "use": "hero name, final screen" },
+  { "id": "lines", "kit": "data-m=\"lines\"", "what": "Headline lines rise out of masks one after another.", "use": "section headlines" },
+  { "id": "highlight", "kit": "data-m=\"highlight\"", "what": "Words light up from dim to full while the paragraph crosses the screen.", "use": "one statement per page" },
+  { "id": "image", "kit": "data-m=\"image\"", "what": "Clip opens, picture zooms 1.18 → 1 and settles.", "use": "every major photo" },
+  { "id": "parallax", "kit": "data-m=\"parallax\"", "what": "Layer drifts against the scroll.", "use": "background photos inside masks" },
+  { "id": "pin", "kit": "data-m=\"pin\" + data-m-step", "what": "Section stays while steps take turns; elements appear per step.", "use": "how it works, product story" },
+  { "id": "stamp", "kit": "data-m=\"stamp\"", "what": "Pops in big and rotated, settles; the one bouncy element.", "use": "payoff: APPROVED, MOGGED, SOLD OUT" },
+  { "id": "counter", "kit": "data-m=\"counter\"", "what": "Numbers count up to their real value.", "use": "stats with real data" },
+  { "id": "marquee", "kit": "data-m=\"marquee\"", "what": "Endless row of words or logos.", "use": "between hero and content" },
+  { "id": "draw", "kit": "data-m=\"draw\"", "what": "SVG strokes draw themselves.", "use": "diagrams, annotations, signatures" },
+  { "id": "type", "kit": "data-m=\"type\"", "what": "Typed text with a caret.", "use": "terminals, boot screens" },
+  { "id": "blur-in", "kit": "data-m=\"blur-in\"", "what": "Fade from blur to sharp.", "use": "kickers and sublines in dark rooms" },
+  { "id": "reveal", "kit": "data-m=\"reveal\"", "what": "Fade and rise 24px.", "use": "blocks" },
+  { "id": "reveal-children", "kit": "data-m=\"reveal-children\"", "what": "Children appear one after another.", "use": "grids, lists, buttons" },
+  { "id": "magnetic", "kit": "data-m=\"magnetic\"", "what": "Button follows the pointer a little.", "use": "one primary button" },
+  { "id": "scrub-video", "kit": "data-m=\"scrub-video\"", "what": "Video scrubs with the scroll.", "use": "product reveal" },
+  { "id": "curtain-footer", "kit": ".m-curtain-cover + .m-curtain-footer", "what": "Last section lifts away and uncovers the footer.", "use": "ending" },
+  { "id": "gl-gradient", "kit": "data-gl=\"gradient\"", "what": "Moving mesh gradient (WebGL) with a poster fallback.", "use": "dark-room hero" },
+  { "id": "gl-gallery", "kit": "data-gl=\"gallery\"", "what": "Pictures bent on a cylinder, slide with the scroll.", "use": "catalogue" },
+  { "id": "graph", "kit": "tools/network-graph", "what": "Live force-directed network (Obsidian style).", "use": "community, referrals, data" }
+]

@@ -1,0 +1,268 @@
+[
+ {
+  "id": "ink-on-bone",
+  "tags": [
+   "paper-ink",
+   "mono"
+  ],
+  "bg": "#f3f1ec",
+  "surface": "#ffffff",
+  "ink": "#151413",
+  "muted": "#5e5a54",
+  "accent": "#151413",
+  "accentInk": "#f3f1ec",
+  "note": "Warm paper, near-black ink; the accent is the ink itself."
+ },
+ {
+  "id": "newsprint-red",
+  "tags": [
+   "paper-ink",
+   "single-accent"
+  ],
+  "bg": "#f4f2ee",
+  "surface": "#ffffff",
+  "ink": "#121212",
+  "muted": "#5b5b5b",
+  "accent": "#d22b1f",
+  "accentInk": "#ffffff",
+  "note": "Classic editorial red; use red for one thing per screen."
+ },
+ {
+  "id": "forms-green",
+  "tags": [
+   "paper-ink",
+   "single-accent"
+  ],
+  "bg": "#f6f9f5",
+  "surface": "#ffffff",
+  "ink": "#16202a",
+  "muted": "#4f5e58",
+  "accent": "#2447c4",
+  "accentInk": "#ffffff",
+  "note": "Computer paper with carbon blue (Payroll)."
+ },
+ {
+  "id": "bone-on-ink",
+  "tags": [
+   "ink-paper",
+   "mono",
+   "night"
+  ],
+  "bg": "#0c0c0b",
+  "surface": "#171716",
+  "ink": "#efede8",
+  "muted": "#a19d95",
+  "accent": "#efede8",
+  "accentInk": "#0c0c0b",
+  "note": "Inverted paper; keep muted text at 7:1 or more on black."
+ },
+ {
+  "id": "studio-white",
+  "tags": [
+   "studio-light",
+   "mono"
+  ],
+  "bg": "#ecebe8",
+  "surface": "#f7f7f5",
+  "ink": "#0b0b0c",
+  "muted": "#5a5a5c",
+  "accent": "#0b0b0c",
+  "accentInk": "#ffffff",
+  "note": "Seamless photo-studio grey-white."
+ },
+ {
+  "id": "studio-black",
+  "tags": [
+   "studio-dark",
+   "night",
+   "mono"
+  ],
+  "bg": "#050505",
+  "surface": "#121212",
+  "ink": "#f2f2f0",
+  "muted": "#9a9a98",
+  "accent": "#f2f2f0",
+  "accentInk": "#050505",
+  "note": "Black studio (Mission S)."
+ },
+ {
+  "id": "terminal-mint",
+  "tags": [
+   "product-light",
+   "signal",
+   "single-accent"
+  ],
+  "bg": "#ffffff",
+  "surface": "#f5f8f6",
+  "ink": "#0a0f0c",
+  "muted": "#5d6b63",
+  "accent": "#00b86c",
+  "accentInk": "#0a0f0c",
+  "note": "Clean white with one green (Bring a cat); green text needs the darker #007a47."
+ },
+ {
+  "id": "midnight-signal",
+  "tags": [
+   "product-dark",
+   "night",
+   "signal"
+  ],
+  "bg": "#07090d",
+  "surface": "#10141b",
+  "ink": "#e8ecf2",
+  "muted": "#8b95a5",
+  "accent": "#5cf2b0",
+  "accentInk": "#04120b",
+  "note": "Dark product UI with one bright signal colour."
+ },
+ {
+  "id": "graphite-amber",
+  "tags": [
+   "product-dark",
+   "studio-dark"
+  ],
+  "bg": "#121314",
+  "surface": "#1c1d1f",
+  "ink": "#f1efe9",
+  "muted": "#a3a19b",
+  "accent": "#ffb23f",
+  "accentInk": "#1a1205",
+  "note": "Instrument panel; amber for live values only."
+ },
+ {
+  "id": "cobalt-paper",
+  "tags": [
+   "product-light",
+   "single-accent"
+  ],
+  "bg": "#f7f7f4",
+  "surface": "#ffffff",
+  "ink": "#111317",
+  "muted": "#555b66",
+  "accent": "#1f3fff",
+  "accentInk": "#ffffff",
+  "note": "Swiss cobalt on paper."
+ },
+ {
+  "id": "olive-grove",
+  "tags": [
+   "earth"
+  ],
+  "bg": "#efeadf",
+  "surface": "#f8f5ee",
+  "ink": "#22251c",
+  "muted": "#5f6250",
+  "accent": "#5b6b2e",
+  "accentInk": "#ffffff",
+  "note": "Olive, linen, bark."
+ },
+ {
+  "id": "clay-and-stone",
+  "tags": [
+   "earth",
+   "warm"
+  ],
+  "bg": "#ece6dd",
+  "surface": "#f6f2ec",
+  "ink": "#2a211b",
+  "muted": "#6b5d52",
+  "accent": "#9c4a2a",
+  "accentInk": "#ffffff",
+  "note": "Warm clay used sparingly; avoid pairing with cream as a whole-page wash."
+ },
+ {
+  "id": "atlantic",
+  "tags": [
+   "sea"
+  ],
+  "bg": "#eef2f3",
+  "surface": "#ffffff",
+  "ink": "#0d1b24",
+  "muted": "#4e616c",
+  "accent": "#0f5c7a",
+  "accentInk": "#ffffff",
+  "note": "Cold coast light, deep sea blue."
+ },
+ {
+  "id": "harbour-night",
+  "tags": [
+   "sea",
+   "night"
+  ],
+  "bg": "#0a141b",
+  "surface": "#122029",
+  "ink": "#e4edf1",
+  "muted": "#8fa3ae",
+  "accent": "#7fd1e8",
+  "accentInk": "#062029",
+  "note": "Port at night; cyan for lights."
+ },
+ {
+  "id": "chapter-set-a",
+  "tags": [
+   "chapters"
+  ],
+  "bg": "#f2ede3",
+  "surface": "#ffffff",
+  "ink": "#141414",
+  "muted": "#555",
+  "accent": "#ff5a36",
+  "accentInk": "#141414",
+  "chapters": [
+   "#ff5a36",
+   "#ffd23f",
+   "#3a7d44",
+   "#2b59c3",
+   "#141414"
+  ],
+  "note": "Five chapter fields; ink stays black, text on the dark chapters flips to white."
+ },
+ {
+  "id": "chapter-set-b",
+  "tags": [
+   "chapters"
+  ],
+  "bg": "#fbf8f2",
+  "surface": "#ffffff",
+  "ink": "#1b1b1b",
+  "muted": "#5a5a5a",
+  "accent": "#e83f6f",
+  "accentInk": "#0a0f0c",
+  "chapters": [
+   "#e83f6f",
+   "#ffbf00",
+   "#2274a5",
+   "#32936f",
+   "#1b1b1b"
+  ],
+  "note": "Brighter set for consumer and kids."
+ },
+ {
+  "id": "acid-on-black",
+  "tags": [
+   "signal",
+   "night"
+  ],
+  "bg": "#0b0b0b",
+  "surface": "#161616",
+  "ink": "#f4f4f0",
+  "muted": "#a0a09a",
+  "accent": "#d7ff3a",
+  "accentInk": "#0b0b0b",
+  "note": "Acid accent for one live element; never for body text."
+ },
+ {
+  "id": "museum-white",
+  "tags": [
+   "studio-light",
+   "paper-ink"
+  ],
+  "bg": "#fafaf8",
+  "surface": "#ffffff",
+  "ink": "#1a1a1a",
+  "muted": "#626262",
+  "accent": "#8a1c1c",
+  "accentInk": "#ffffff",
+  "note": "Gallery wall; oxblood for labels and prices."
+ }
+]

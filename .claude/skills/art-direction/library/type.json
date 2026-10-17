@@ -1,0 +1,17 @@
+[
+  { "id": "archivo-wide", "class": "display-wide", "display": "Archivo", "displayAxes": "wdth,wght@62..125,400..900", "displayCss": "font-stretch:125%;font-weight:850", "text": "Archivo", "textCss": "font-stretch:100%;font-weight:400", "note": "One family with a width axis: wide for display, normal for text." },
+  { "id": "unbounded-inter-tight", "class": "display-wide", "display": "Unbounded", "displayAxes": "wght@600..900", "text": "Inter Tight", "note": "Round wide display; tight text." },
+  { "id": "space-grotesk-plex", "class": "grotesk-tight", "display": "Space Grotesk", "displayAxes": "wght@500..700", "displayCss": "letter-spacing:-.04em", "text": "IBM Plex Sans", "mono": "JetBrains Mono", "note": "Technical, clean (Bring a cat)." },
+  { "id": "schibsted-grotesk", "class": "grotesk-tight", "display": "Schibsted Grotesk", "displayAxes": "wght@600..900", "text": "Schibsted Grotesk", "note": "News grotesk; strong at large sizes." },
+  { "id": "bricolage", "class": "grotesk-tight", "display": "Bricolage Grotesque", "displayAxes": "opsz,wght@12..96,500..800", "text": "Bricolage Grotesque", "note": "Optical sizes; quirky at display size." },
+  { "id": "manrope-neutral", "class": "grotesk-neutral", "display": "Manrope", "displayAxes": "wght@600..800", "text": "Manrope", "note": "Neutral product sans." },
+  { "id": "geist", "class": "grotesk-neutral", "display": "Geist", "displayAxes": "wght@500..800", "text": "Geist", "mono": "Geist Mono", "note": "Product UI; pair with its mono for data." },
+  { "id": "plex-mono-sans", "class": "mono-utility", "display": "IBM Plex Mono", "displayAxes": "wght@500;700", "text": "IBM Plex Sans", "note": "Forms, receipts, terminals (Payroll)." },
+  { "id": "jetbrains-archivo", "class": "mono-utility", "display": "Archivo", "displayAxes": "wdth,wght@62..125,400..900", "text": "Archivo", "mono": "JetBrains Mono", "note": "Wide display with mono labels (Mission S)." },
+  { "id": "fraunces-source", "class": "serif-editorial", "display": "Fraunces", "displayAxes": "opsz,wght@9..144,300..800", "text": "Source Serif 4", "note": "Soft editorial serif; use the optical size axis." },
+  { "id": "newsreader-inter", "class": "serif-editorial", "display": "Newsreader", "displayAxes": "opsz,wght@6..72,400..700", "text": "Newsreader", "ui": "Inter Tight", "note": "Reading serif for long text, sans for UI." },
+  { "id": "playfair-libre", "class": "serif-display", "display": "Playfair Display", "displayAxes": "wght@500..900", "text": "Libre Franklin", "note": "High-contrast display serif; never for body text." },
+  { "id": "dm-serif-dm-sans", "class": "serif-display", "display": "DM Serif Display", "displayAxes": "", "text": "DM Sans", "note": "Elegant display, friendly sans." },
+  { "id": "instrument-serif-grotesk", "class": "serif-display", "display": "Instrument Serif", "displayAxes": "", "text": "Hanken Grotesk", "note": "Condensed serif headlines; very popular in 2025–26, so use it only with a reason." },
+  { "id": "caveat-accent", "class": "hand-accent", "display": "Caveat", "displayAxes": "wght@500..700", "text": "Source Serif 4", "note": "Hand-written notes as an accent only, never headlines." }
+]
