@@ -100,13 +100,21 @@ Eine Loom- oder andere Aufnahme (MP4) kannst du auch einfach nach `public/<id>/`
 
 ## Kinetischer Film (Erklärfilm im Takt)
 
-Ein zweiter Stil neben dem ruhigen Launch-Video. Jeder Screen zeigt einen kurzen Satz, die Wörter bauen sich auf, harte Schnitte sitzen auf dem Beat, es gibt eine Akzentfarbe, und echte Produkt-Aufnahmen dienen als Beweis. Der Stil funktioniert auf X auch ohne Ton. Gelernt ist er von Launch-Filmen wie dem von TasteSkill v2; übernommen wurden nur Aufbau und Timing.
+Ein zweiter Stil neben dem ruhigen Launch-Video. Jeder Screen zeigt einen kurzen Satz, der Wort für Wort entsteht. Das Timing folgt dem Beat, es gibt eine Akzentfarbe, und echte Bilder vom Produkt dienen als Beweis. Der Stil funktioniert auf X auch ohne Ton. Gelernt ist er von Launch-Filmen wie dem von TasteSkill v2; übernommen wurden nur Aufbau, Timing und Übergänge.
+
+**Warum der Film flüssig wirkt:**
+- **60 fps und keine harten Schnitte.** Szenen überlappen sich: Die alte wird unscharf, verblasst und gleitet nach oben weg, während sich die neue aufbaut.
+- **Wechsel der Tonfarbe** (hell, dunkel, Akzent) kommt als runder Wipe.
+- **Ein Satz zentriert sich weich neu**, wenn ein Wort dazukommt, weil der Platz jedes Worts von null aufgeht (gemessen mit der echten Schrift).
+- **Chips wachsen** mit ihrem getippten Text, **Zahlen rollen** wie ein Tacho, **Punkte verwandeln sich** von einem Raster in eine Reihe.
+- **Keine Bildschirmaufnahmen als Video**, denn die laufen nur mit etwa 25 fps und ruckeln neben 60-fps-Typo. Stattdessen nutzt der Film scharfe 2×-Standbilder, über die eine durchgehende Kamera fährt (`story`).
 
 ```sh
+node capture/stills-payroll.mjs     # 2x-Standbilder der Seite (Seite auf Port 4840 starten)
 node capture/beat.mjs /tmp/beat.wav --bpm 120 --beats 76 --break 16 --rise 20 --drop 24 --hits 50 --end 66
-# optional: Sound-Effekte per Cue-Liste (Motion-Skill: scripts/sfx.mjs --cues), mischen, dann auf -14 LUFS:
+# optional: Sound-Effekte per Cue-Liste (Motion-Skill: scripts/sfx.mjs --cues), mischen, auf -14 LUFS:
 #   node ../.claude/skills/motion/scripts/loudnorm.mjs mix.m4a public/<id>/film-music.m4a
-npm run render -- <id> film      # out/<id>/<id>-film-landscape|portrait|square.mp4
+npm run render -- <id> film         # out/<id>/<id>-film-landscape|portrait|square.mp4
 ```
 
 Im Produkt steht `film: { bpm, music, shots: [...] }`. Jede Szene dauert eine bestimmte Zahl von **Beats**. Wird das Tempo geändert, verschiebt sich der ganze Film mit.
@@ -121,18 +129,16 @@ Im Produkt steht `film: { bpm, music, shots: [...] }`. Jede Szene dauert eine be
 **Szenentypen:**
 | Typ | Was er zeigt |
 |---|---|
-| `line` | ein Satz, Wort für Wort |
+| `line` | ein Satz, Wort für Wort, der sich weich neu zentriert |
 | `slam` | Vollbild in Farbe mit großen Worten pro Beat und laufendem Muster dahinter (gut für den Drop) |
-| `type` | ein getippter Terminal-Befehl |
-| `field` | Punkte erscheinen, dazu eine Beschriftung (`"9 agents. | 9 wallets."`) |
-| `shot` | ein Clip im Browserfenster mit Kamerafahrt (`focus`, `zoom`) |
-| `stamp` | wie `shot`, aber auf dem 2. Beat landet ein Stempel |
-| `score` | Zähler, die hochlaufen |
-| `mask` | ein riesiges Wort, gefüllt mit Footage |
-| `montage` | ein Schnitt pro Beat |
-| `end` | Wordmark, Tagline, Chip, URL und Fußnote |
+| `type` | ein Befehl wird getippt, die Kamera fährt dabei vom Cursor zurück |
+| `field` | ein Raster aus Punkten wird zu einer Reihe, die Beschriftung wechselt (`"9 agents. \| 9 wallets."`) |
+| `story` | Standbilder im Browserfenster mit einer durchgehenden Kamerafahrt über `keys` (Bild, Fokus, Zoom, Untertitel, optional ein Stempel; `pfocus` für 9:16) |
+| `score` | Zähler, die wie ein Tacho hochrollen |
+| `mask` | ein riesiges Wort, gefüllt mit einem Bild |
+| `montage` | ein Bild pro Beat, kurz überblendet |
+| `end` | das Wordmark erscheint Buchstabe für Buchstabe, dazu Tagline, Chip, URL und Fußnote |
 
 **Payroll-Beispiel** (`products/payroll.ts` → `film`): 76 Beats bei 120 BPM, also 38 s.
-- **Aufnahmen:** `capture/kinetic-payroll.mjs` (Seite auf Port 4840 starten). Damit entstehen `boot.mp4` und `workorder.mp4`.
-- **Musik:** `capture/beat.mjs` (Drop auf „Now agents get paid.“, Akzent auf den APPROVED-Stempel) plus Sound-Effekte (Tippen, Chips, Whoosh, Impact).
-- **Abnahme:** `qa-video.mjs` meldet bei allen drei Formaten keine Befunde, −14,5 LUFS, und alle Schnitte liegen auf dem Beat.
+- **Bilder:** Der Arbeitsauftrag ist eine einzige Kamerafahrt über die fünf Schritte. Der APPROVED-Stempel landet auf Beat 50, zusammen mit dem Akzent in der Musik.
+- **Abnahme:** `qa-video.mjs` meldet bei allen drei Formaten mit 60 fps keine Befunde, −14,5 LUFS.

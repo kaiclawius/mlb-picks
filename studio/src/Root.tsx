@@ -2,7 +2,7 @@ import { Composition } from "remotion";
 import { PRODUCTS } from "../products";
 import { FORMATS, Format } from "./types";
 import { FPS, ProductVideo, sceneFrames, totalFrames } from "./ProductVideo";
-import { Film, filmFrames } from "./film/Film";
+import { Film, FILM_FPS, filmFrames } from "./film/Film";
 
 // Every product gets three video formats and a social preview image:
 //   <id>-landscape, <id>-portrait, <id>-square, <id>-og
@@ -20,7 +20,7 @@ export function Root() {
         // the kinetic film, if the product has one
         ...(p.film ? (Object.keys(FORMATS) as Format[]).map((fmt) => (
           <Composition key={`${p.id}-film-${fmt}`} id={`${p.id}-film-${fmt}`} component={Film} defaultProps={{ product: p }}
-            durationInFrames={filmFrames(p.film!)} fps={FPS} width={FORMATS[fmt][0]} height={FORMATS[fmt][1]} />
+            durationInFrames={filmFrames(p.film!)} fps={FILM_FPS} width={FORMATS[fmt][0]} height={FORMATS[fmt][1]} />
         )) : []),
       ])}
     </>

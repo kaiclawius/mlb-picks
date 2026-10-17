@@ -42,16 +42,19 @@ export type Scene =
 /* ---------- kinetic film: one short sentence per shot, cut on the beat ---------- */
 /** Text markup in a film: "*word*" = accent colour, "[label]" = a UI chip, "|" = the next beat starts here. */
 export type Tone = "light" | "dark" | "accent";
+/** One moment of a story shot: from beat `at` (into the shot) show `img`, move the camera to `focus`/`zoom`,
+ *  show `text` as the caption; `stamp` pops a rubber stamp on that beat. */
+export type StoryKey = { at: number; img: string; focus?: [number, number]; zoom?: number; text?: string; stamp?: string;
+  /** the 9:16 window crops the sides much more, so it can look somewhere else */ pfocus?: [number, number] };
 export type Shot = { beats: number; tone?: Tone } & (
   | { type: "line"; text: string }                                   // a sentence that builds word by word
-  | { type: "slam"; text: string; pattern?: string }                // full-bleed colour, big words, repeated text behind
-  | { type: "type"; text: string; prompt?: string; label?: string }  // a terminal command typed out
-  | { type: "field"; count: number; text: string; cols?: number }   // dots appear, then the caption ("|" splits two captions)
-  | { type: "shot"; clip: string; from?: number; text?: string; focus?: [number, number]; zoom?: [number, number]; url?: string } // a clip in a browser window
-  | { type: "stamp"; clip?: string; from?: number; stamp: string; text?: string; focus?: [number, number]; zoom?: [number, number] }
-  | { type: "score"; rows: { from: number; to: number; label: string; suffix?: string; decimals?: number }[]; text?: string }
-  | { type: "mask"; word: string; clip: string; from?: number; text?: string } // a giant word filled with moving footage
-  | { type: "montage"; cuts: { clip: string; from: number; focus?: [number, number]; zoom?: number }[]; text?: string } // one cut per beat
+  | { type: "slam"; text: string; pattern?: string }                // full-bleed colour, big words per beat, repeated text behind
+  | { type: "type"; text: string; prompt?: string; label?: string }  // a command typed out while the camera pulls back
+  | { type: "field"; count: number; text: string; cols?: number }   // a grid of dots that morphs into a row ("|" splits two captions)
+  | { type: "story"; keys: StoryKey[]; url?: string }               // stills in a browser window, one continuous camera move
+  | { type: "score"; rows: { from: number; to: number; label: string }[]; text?: string } // odometer counters
+  | { type: "mask"; word: string; img: string; text?: string }      // a giant word filled with a picture
+  | { type: "montage"; cuts: { img: string; focus?: [number, number]; zoom?: number }[]; text?: string } // one picture per beat
   | { type: "end"; tagline: string; chip?: string; url?: string; footnote?: string }
 );
 export type Film = {
