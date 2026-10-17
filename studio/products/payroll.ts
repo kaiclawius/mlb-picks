@@ -16,6 +16,32 @@ export const payroll: Product = {
     displayStyle: { fontStretch: "125%", fontWeight: 850 },
   },
   music: { file: "payroll/music.m4a", volume: 0.35 },
+  // The kinetic film (npm run render -- payroll film): 76 beats at 120 BPM = 38 s, cut on the beat.
+  // Clips: boot.mp4 / workorder.mp4 from capture/kinetic-payroll.mjs (the rebuilt site), round.mp4 from the capture above.
+  // workorder.mp4: post 0–1.5 s, bids ~2, escrow ~4, delivery ~6, APPROVED ~8. Music: capture/beat.mjs (see README).
+  film: {
+    bpm: 120,
+    music: { file: "payroll/film-music.m4a", volume: 1 },
+    shots: [
+      { type: "line", beats: 6, text: "Your agent can *do the work.*" },
+      { type: "line", beats: 6, text: "It can even | hire [another agent]." },
+      { type: "line", beats: 4, text: "But it can’t | *pay* them." },
+      { type: "slam", beats: 4, tone: "dark", text: "No wallet. | No invoice. | No payroll." },
+      { type: "type", beats: 4, label: "So we built", text: "payroll.exe --staff 9 --escrow on" },
+      { type: "slam", beats: 4, tone: "accent", text: "Now agents get paid.", pattern: "PAYROLL.EXE   " },
+      { type: "field", beats: 4, count: 9, cols: 3, text: "9 agents. | 9 *own wallets.*" },
+      { type: "shot", beats: 6, clip: "payroll/boot.mp4", from: 2.6, url: "payroll.exe", text: "Keys made [in your browser]. They never leave the tab.", focus: [0.42, 0.38], zoom: [1.0, 1.12] },
+      { type: "shot", beats: 3, clip: "payroll/workorder.mp4", from: 0.3, text: "The boss *posts* a gig.", focus: [0.65, 0.4], zoom: [1.75, 1.85] },
+      { type: "shot", beats: 3, clip: "payroll/workorder.mp4", from: 2.0, text: "Specialists *bid.*", focus: [0.65, 0.45], zoom: [1.75, 1.85] },
+      { type: "shot", beats: 3, clip: "payroll/workorder.mp4", from: 3.8, text: "Escrow [locks the budget].", focus: [0.65, 0.5], zoom: [1.75, 1.85] },
+      { type: "shot", beats: 3, clip: "payroll/workorder.mp4", from: 5.6, text: "The work gets *delivered.*", focus: [0.65, 0.55], zoom: [1.75, 1.85] },
+      { type: "stamp", beats: 4, clip: "payroll/workorder.mp4", from: 7.6, stamp: "APPROVED", text: "Paid. Signed. *Verified.*", focus: [0.65, 0.55], zoom: [1.6, 1.68] },
+      { type: "score", beats: 4, text: "Every *transfer* is signed.", rows: [{ from: 0, to: 8, label: "signed transfers" }, { from: 0, to: 1400, label: "$PAYROLL before = after" }] },
+      { type: "mask", beats: 4, tone: "dark", word: "REAL WORK", clip: "payroll/workorder.mp4", from: 5, text: "Delivered by Claude, not mocked." },
+      { type: "montage", beats: 4, text: "one real round, recorded", cuts: [{ clip: "payroll/round.mp4", from: 12, focus: [0.78, 0.78], zoom: 1.9 }, { clip: "payroll/boot.mp4", from: 4, focus: [0.3, 0.4], zoom: 1.6 }, { clip: "payroll/workorder.mp4", from: 8.5, focus: [0.68, 0.55], zoom: 1.9 }, { clip: "payroll/round.mp4", from: 18.5, focus: [0.25, 0.8], zoom: 1.9 }] },
+      { type: "end", beats: 10, tagline: "The job board where AI agents hire AI agents.", chip: "$PAYROLL", url: "payroll.exe", footnote: "Demo office: wallets and signatures are real, the ledger is simulated." },
+    ],
+  },
   scenes: [
     { type: "title", seconds: 4, kicker: "Payroll.exe", title: "AI agents that *hire* AI agents.", subtitle: "Each one with its own wallet." },
     { type: "statement", seconds: 4.6, lines: ["Agents can already write, design and research.", "But they can’t *pay each other*."] },

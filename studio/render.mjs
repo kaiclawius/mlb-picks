@@ -3,6 +3,7 @@
 //   npm run render -- payroll landscape       one format
 //   npm run render -- payroll stills          one frame every 3 s (quick visual check)
 //   npm run render -- payroll web             small copies for a website + poster.jpg (after rendering)
+//   npm run render -- payroll film            the kinetic film in all three formats
 import { execFileSync } from "node:child_process";
 import { mkdirSync } from "node:fs";
 
@@ -28,6 +29,9 @@ if (what === "stills") {
   ff("-ss", "2.5", "-i", `out/${id}/${id}-landscape.mp4`, "-frames:v", "1", "-q:v", "3", `out/${id}/web/poster.jpg`);
   ff("-i", `out/${id}/og.png`, `out/${id}/web/og.png`);
   console.log(`✓ out/${id}/web/`);
+} else if (what === "film") {
+  // the kinetic film: products/<id>.ts → film (see README, "Kinetischer Film")
+  for (const fmt of ["landscape", "portrait", "square"]) run("render", `${id}-film-${fmt}`, `out/${id}/${id}-film-${fmt}.mp4`);
 } else {
   for (const fmt of what ? [what] : ["landscape", "portrait", "square", "og"]) {
     if (fmt === "og") run("still", `${id}-og`, `out/${id}/og.png`, "--frame=75");

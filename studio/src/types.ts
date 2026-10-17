@@ -39,12 +39,36 @@ export type Scene =
   | { type: "features"; seconds: number; kicker?: string; title: string; items: { title: string; body: string }[] }
   | { type: "cta"; seconds: number; title: string; subtitle?: string; url?: string; footnote?: string };
 
+/* ---------- kinetic film: one short sentence per shot, cut on the beat ---------- */
+/** Text markup in a film: "*word*" = accent colour, "[label]" = a UI chip, "|" = the next beat starts here. */
+export type Tone = "light" | "dark" | "accent";
+export type Shot = { beats: number; tone?: Tone } & (
+  | { type: "line"; text: string }                                   // a sentence that builds word by word
+  | { type: "slam"; text: string; pattern?: string }                // full-bleed colour, big words, repeated text behind
+  | { type: "type"; text: string; prompt?: string; label?: string }  // a terminal command typed out
+  | { type: "field"; count: number; text: string; cols?: number }   // dots appear, then the caption ("|" splits two captions)
+  | { type: "shot"; clip: string; from?: number; text?: string; focus?: [number, number]; zoom?: [number, number]; url?: string } // a clip in a browser window
+  | { type: "stamp"; clip?: string; from?: number; stamp: string; text?: string; focus?: [number, number]; zoom?: [number, number] }
+  | { type: "score"; rows: { from: number; to: number; label: string; suffix?: string; decimals?: number }[]; text?: string }
+  | { type: "mask"; word: string; clip: string; from?: number; text?: string } // a giant word filled with moving footage
+  | { type: "montage"; cuts: { clip: string; from: number; focus?: [number, number]; zoom?: number }[]; text?: string } // one cut per beat
+  | { type: "end"; tagline: string; chip?: string; url?: string; footnote?: string }
+);
+export type Film = {
+  bpm: number;
+  /** Music in public/. Its beat 0 must be at second `offset` (default 0). */
+  music?: { file: string; volume?: number; offset?: number };
+  shots: Shot[];
+};
+
 export type Product = {
   id: string;           // letters, numbers and dashes: used in composition names and file names
   brand: Brand;
   scenes: Scene[];
   /** Optional music bed in public/, faded in and out. */
   music?: { file: string; volume?: number };
+  /** A kinetic film (compositions <id>-film-landscape|portrait|square). */
+  film?: Film;
   /** Frames of crossfade between scenes (at 30 fps). */
   transition?: number;
 };

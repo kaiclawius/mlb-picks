@@ -97,3 +97,42 @@ npx remotion still <id>-landscape out/x.png --frame=300
 - **Dieses Studio** passt für das offizielle Launch-Video. Es ist jedes Mal identisch reproduzierbar, in 3 Formaten und im eigenen Design. Wenn sich das Produkt ändert, reicht `npm run capture` und `npm run render`.
 
 Eine Loom- oder andere Aufnahme (MP4) kannst du auch einfach nach `public/<id>/` legen und als `clip` in einer `screen`-Szene verwenden.
+
+## Kinetischer Film (Erklärfilm im Takt)
+
+Ein zweiter Stil neben dem ruhigen Launch-Video. Jeder Screen zeigt einen kurzen Satz, die Wörter bauen sich auf, harte Schnitte sitzen auf dem Beat, es gibt eine Akzentfarbe, und echte Produkt-Aufnahmen dienen als Beweis. Der Stil funktioniert auf X auch ohne Ton. Gelernt ist er von Launch-Filmen wie dem von TasteSkill v2; übernommen wurden nur Aufbau und Timing.
+
+```sh
+node capture/beat.mjs /tmp/beat.wav --bpm 120 --beats 76 --break 16 --rise 20 --drop 24 --hits 50 --end 66
+# optional: Sound-Effekte per Cue-Liste (Motion-Skill: scripts/sfx.mjs --cues), mischen, dann auf -14 LUFS:
+#   node ../.claude/skills/motion/scripts/loudnorm.mjs mix.m4a public/<id>/film-music.m4a
+npm run render -- <id> film      # out/<id>/<id>-film-landscape|portrait|square.mp4
+```
+
+Im Produkt steht `film: { bpm, music, shots: [...] }`. Jede Szene dauert eine bestimmte Zahl von **Beats**. Wird das Tempo geändert, verschiebt sich der ganze Film mit.
+
+**Markup im Text:**
+- `*Wort*` erscheint in der Akzentfarbe.
+- `[Label]` wird als UI-Chip dargestellt.
+- `|` bedeutet: der Rest kommt auf dem nächsten Beat.
+
+**Tonfarbe:** `tone: "light" | "dark" | "accent"`.
+
+**Szenentypen:**
+| Typ | Was er zeigt |
+|---|---|
+| `line` | ein Satz, Wort für Wort |
+| `slam` | Vollbild in Farbe mit großen Worten pro Beat und laufendem Muster dahinter (gut für den Drop) |
+| `type` | ein getippter Terminal-Befehl |
+| `field` | Punkte erscheinen, dazu eine Beschriftung (`"9 agents. | 9 wallets."`) |
+| `shot` | ein Clip im Browserfenster mit Kamerafahrt (`focus`, `zoom`) |
+| `stamp` | wie `shot`, aber auf dem 2. Beat landet ein Stempel |
+| `score` | Zähler, die hochlaufen |
+| `mask` | ein riesiges Wort, gefüllt mit Footage |
+| `montage` | ein Schnitt pro Beat |
+| `end` | Wordmark, Tagline, Chip, URL und Fußnote |
+
+**Payroll-Beispiel** (`products/payroll.ts` → `film`): 76 Beats bei 120 BPM, also 38 s.
+- **Aufnahmen:** `capture/kinetic-payroll.mjs` (Seite auf Port 4840 starten). Damit entstehen `boot.mp4` und `workorder.mp4`.
+- **Musik:** `capture/beat.mjs` (Drop auf „Now agents get paid.“, Akzent auf den APPROVED-Stempel) plus Sound-Effekte (Tippen, Chips, Whoosh, Impact).
+- **Abnahme:** `qa-video.mjs` meldet bei allen drei Formaten keine Befunde, −14,5 LUFS, und alle Schnitte liegen auf dem Beat.

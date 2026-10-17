@@ -74,7 +74,11 @@ for (let f = 2; f < frames - 2; f++) {
   if (diff[f] > 0.08 && diff[f] > 4 * local + 0.01) {
     const back = d(f - 1, f + 1); // A, B, A: a single odd frame = flash/pop, not a cut
     if (back < diff[f] * 0.35) pops.push(f); else cuts.push(f);
-  } else if (diff[f] > 3 * local + 0.02 && diff[f] > 0.03 && local < 0.01) pops.push(f); // a jump inside smooth motion
+  } else if (diff[f] > 3 * local + 0.02 && diff[f] > 0.03 && local < 0.01) {
+    // a jump inside smooth motion: a pop only if the picture snaps back (A, B, A); if the new picture stays,
+    // it is a low-contrast hard cut (e.g. between two light shots with the same background)
+    if (d(f - 1, f + 1) < diff[f] * 0.35) pops.push(f); else cuts.push(f);
+  }
 }
 for (const f of pops.slice(0, 8)) say("Fehler", `Sprung/Blitz in einem einzelnen Frame (${(diff[f] * 100).toFixed(1)} % Änderung): fehlendes clamp, Asset lädt zu spät oder Szenengrenze mit Lücke.`, t(f));
 if (pops.length > 8) say("Fehler", `… und ${pops.length - 8} weitere Sprünge.`);

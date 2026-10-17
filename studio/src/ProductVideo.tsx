@@ -18,7 +18,7 @@ export function totalFrames(p: Product) {
 }
 
 /** Holds the first frame until every brand font file is loaded, so no frame renders in a fallback font. */
-function useFonts(css?: string) {
+export function useFonts(css?: string) {
   const [handle] = useState(() => (css ? delayRender("fonts") : null));
   useEffect(() => {
     if (!css || handle === null) return;
