@@ -5,13 +5,15 @@
 // tiny text, a page that never moves, motion that ignores reduced motion, filler copy. It writes contact
 // sheets so the agent can look at its own work, and a report with PASS / WARN / FAIL per rule.
 //   node check.mjs <folder|url> [--out .art-direction/check] [--profile default|strict] [--widths 1440,768,390]
-//                  [--allow rule1,rule2] [--wait 2500] [--screens 12]
+//                  [--allow rule1,rule2] [--wait 2500] [--screens 12]   (default --out: <folder>/.art-direction/check)
 // Exit code 1 when any FAIL remains. Needs Playwright with Chromium (CHROME_PATH overrides the browser).
 import http from "node:http"; import fs from "node:fs"; import path from "node:path"; import { createRequire } from "node:module";
 
+if (process.argv.includes("--help") || process.argv.includes("-h")) { console.log(fs.readFileSync(new URL(import.meta.url), "utf8").split("\n").slice(1, 10).join("\n")); process.exit(0); }
 const args = process.argv.slice(2), opt = (k, d) => { const i = args.indexOf("--" + k); return i >= 0 ? args[i + 1] : d; };
 const target = args.find((a) => !a.startsWith("--") && args[args.indexOf(a) - 1]?.startsWith("--") !== true) || ".";
-const OUT = path.resolve(opt("out", ".art-direction/check")), PROFILE = opt("profile", "default");
+// results go next to the checked folder (or ./.art-direction/check for a URL), never into whatever folder you happen to be in
+const OUT = path.resolve(opt("out", /^https?:\/\//.test(target) ? ".art-direction/check" : path.join(target, ".art-direction/check"))), PROFILE = opt("profile", "default");
 const WIDTHS = opt("widths", "1440,768,390").split(",").map(Number), WAIT = Number(opt("wait", 2500)), SCREENS = Number(opt("screens", 12));
 const ALLOW = new Set((opt("allow", "") || "").split(",").filter(Boolean));
 let playwright; for (const p of [process.cwd(), "/opt/node22/lib/node_modules/", path.dirname(new URL(import.meta.url).pathname)]) { try { playwright = createRequire(path.join(p, "x.js"))("playwright"); break; } catch {} }
