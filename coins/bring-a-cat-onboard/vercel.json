@@ -1,4 +1,0 @@
-{
-  "rewrites": [{ "source": "/@:handle", "destination": "/?r=:handle" }],
-  "functions": { "api/record.js": { "maxDuration": 20 } }
-}

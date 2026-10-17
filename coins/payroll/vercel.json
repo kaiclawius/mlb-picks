@@ -1,5 +1,0 @@
-{
-  "functions": {
-    "api/office.js": { "maxDuration": 120 }
-  }
-}

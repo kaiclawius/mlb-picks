@@ -1,9 +1,0 @@
-{
-  "name": "bring-a-cat-onboard",
-  "private": true,
-  "type": "module",
-  "engines": { "node": ">=20" },
-  "dependencies": {
-    "tweetnacl": "1.0.3"
-  }
-}
