@@ -142,3 +142,36 @@ Im Produkt steht `film: { bpm, music, shots: [...] }`. Jede Szene dauert eine be
 **Payroll-Beispiel** (`products/payroll.ts` → `film`): 76 Beats bei 120 BPM, also 38 s.
 - **Bilder:** Der Arbeitsauftrag ist eine einzige Kamerafahrt über die fünf Schritte. Der APPROVED-Stempel landet auf Beat 50, zusammen mit dem Akzent in der Musik.
 - **Abnahme:** `qa-video.mjs` meldet bei allen drei Formaten mit 60 fps keine Befunde, −14,5 LUFS.
+
+## Walkthrough (Produktfilm im Stil der Claude-Launches)
+
+Der dritte Stil, gelernt aus den Produktfilmen von Claude (Claude Design, Managed Agents, Claude Science). Übernommen ist nur die Machart, nicht die Marke. Echte UI-Panels schweben auf einer ruhigen, gemusterten Fläche, und eine einzige Kamera gleitet zwischen ihnen. Ein Cursor klickt, ein Prompt wird ins echte Eingabefeld getippt, eine Status-Pille schimmert, solange die Arbeit läuft, und eine Checkliste hakt sich ab. Kurze Serifentitel tragen das Argument zwischen den UI-Szenen. Länge 45–60 s, 60 fps, kaum Schnitte: Szenen blenden über, und innerhalb einer Szene ist alles eine durchgehende Bewegung.
+
+**Warum es scharf und flüssig ist:** Die UI wird nicht als Video aufgenommen. Jedes Panel wird einzeln und pro Zustand als 3×-Standbild aufgenommen, zusammen mit **Marks**, also der Position jedes wichtigen Elements (`panels.json`). Kamera, Cursor und getippter Text landen dadurch exakt auf den echten Elementen. Der Text wird in der echten Schrift des Eingabefelds getippt.
+
+```sh
+node capture/walk-payroll.mjs        # Panels + Marks (Seite auf Port 4840 starten): public/payroll/walk/
+node capture/beat.mjs /tmp/walk.wav --bpm 90 --beats 81 --drop 999 --end 74 --key 50   # ruhiges Bett ohne Drop
+node ../.claude/skills/motion/scripts/loudnorm.mjs /tmp/walk.wav public/payroll/walk-music.m4a --target -16
+npm run render -- <id> walk          # out/<id>/<id>-walk-landscape|portrait|square.mp4
+```
+
+Im Produkt steht `walk: { dir, panels, serif, serifCss, band, music, shots }` (Beispiel: `products/payroll.walk.ts`). Die Zeiten sind in **Sekunden innerhalb der Szene** angegeben. Die Fläche hat 1080p-Einheiten, wobei (0, 0) die Bildmitte ist.
+
+| Szene | Was sie zeigt |
+|---|---|
+| `title` | Serifenzeile, Wort für Wort aus der Unschärfe. `*Wort*` erscheint kursiv in der Akzentfarbe. `then` ersetzt die Zeile ab Sekunde `at` (Problem → Lösung). |
+| `ui` | `windows` (Panel, Position, Breite, `states` als [Sekunde, Zustand], `in` zum Einblenden, `p` als eigenes Layout für 9:16), `camera` (Keys auf Punkt, Fenster oder Mark; `zoom`, `pz` für 9:16/1:1, `px/py` als anderer Blickpunkt in 9:16), `cursor` (Ziel-Marks, `click`), `typing` (Text ins Mark, danach Zustand `then`), `pills` (Status mit Schimmer), `checklist` (Punkte haken sich zu ihrer Sekunde ab) |
+| `end` | Wordmark Buchstabe für Buchstabe, Tagline in der Serifenschrift, URL, Fußnote |
+
+**Ein neues Produkt:** Kopiere `capture/walk-payroll.mjs` und passe `PANELS` (CSS-Selektoren der Panels), `MARKS` (Elemente, auf die Kamera und Cursor zielen) und den Ablauf an. Wichtig ist ein Zustand `blank`, also ein leeres Eingabefeld ohne Placeholder, über das getippt wird.
+
+**Payroll-Beispiel:** 53,5 s. Ablauf:
+1. Problem in zwei Titeln.
+2. „Introducing Payroll.exe“.
+3. Das Büro: Mission tippen, Run klicken, die Runde läuft mit Pillen, die Kamera fährt über Printout und Wallets.
+4. Wallet- und Signatur-Titel.
+5. Arbeitsauftrag mit Checkliste und APPROVED-Stempel.
+6. Kamerafahrt über die gelieferten Arbeiten.
+7. „Less time … / More time …“.
+8. Ende.

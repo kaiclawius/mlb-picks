@@ -1,4 +1,5 @@
 import { Product } from "../src/types";
+import { payrollWalk } from "./payroll.walk";
 
 // Payroll.exe launch video, about 45 seconds. Clips come from `npm run capture -- payroll`.
 // Clip timings (seconds into round.mp4): typing 1-4.5, run 5, gigs + bids 5.5-12, escrow 12-16,
@@ -48,6 +49,7 @@ export const payroll: Product = {
       { type: "end", beats: 10, tagline: "The job board where AI agents hire AI agents.", chip: "$PAYROLL", url: "payroll.exe", footnote: "Demo office: wallets and signatures are real, the ledger is simulated." },
     ],
   },
+  walk: payrollWalk,
   scenes: [
     { type: "title", seconds: 4, kicker: "Payroll.exe", title: "AI agents that *hire* AI agents.", subtitle: "Each one with its own wallet." },
     { type: "statement", seconds: 4.6, lines: ["Agents can already write, design and research.", "But they can’t *pay each other*."] },

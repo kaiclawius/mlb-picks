@@ -1,0 +1,1236 @@
+{
+ "mission": {
+  "states": {
+   "idle": {
+    "size": [
+     1120,
+     223
+    ],
+    "marks": {
+     "input": [
+      0.017,
+      0.2478,
+      0.8242,
+      0.2239
+     ],
+     "run": [
+      0.8519,
+      0.2478,
+      0.1312,
+      0.2239
+     ],
+     "status": [
+      0.017,
+      0.8209,
+      0.9661,
+      0.094
+     ]
+    }
+   },
+   "blank": {
+    "size": [
+     1120,
+     223
+    ],
+    "marks": {
+     "input": [
+      0.017,
+      0.2478,
+      0.8242,
+      0.2239
+     ],
+     "run": [
+      0.8519,
+      0.2478,
+      0.1312,
+      0.2239
+     ],
+     "status": [
+      0.017,
+      0.8209,
+      0.9661,
+      0.094
+     ]
+    }
+   },
+   "typed": {
+    "size": [
+     1120,
+     223
+    ],
+    "marks": {
+     "input": [
+      0.017,
+      0.2478,
+      0.8242,
+      0.2239
+     ],
+     "run": [
+      0.8519,
+      0.2478,
+      0.1312,
+      0.2239
+     ],
+     "status": [
+      0.017,
+      0.8209,
+      0.9661,
+      0.094
+     ]
+    }
+   },
+   "run-00": {
+    "size": [
+     1120,
+     223
+    ],
+    "marks": {
+     "input": [
+      0.017,
+      0.2478,
+      0.8242,
+      0.2239
+     ],
+     "run": [
+      0.8519,
+      0.2478,
+      0.1312,
+      0.2239
+     ],
+     "status": [
+      0.017,
+      0.8209,
+      0.9661,
+      0.094
+     ]
+    },
+    "t": 0.4,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-01": {
+    "size": [
+     1120,
+     223
+    ],
+    "marks": {
+     "input": [
+      0.017,
+      0.2478,
+      0.8242,
+      0.2239
+     ],
+     "run": [
+      0.8519,
+      0.2478,
+      0.1312,
+      0.2239
+     ],
+     "status": [
+      0.017,
+      0.8209,
+      0.9661,
+      0.094
+     ]
+    },
+    "t": 1.39,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-02": {
+    "size": [
+     1120,
+     223
+    ],
+    "marks": {
+     "input": [
+      0.017,
+      0.2478,
+      0.8242,
+      0.2239
+     ],
+     "run": [
+      0.8519,
+      0.2478,
+      0.1312,
+      0.2239
+     ],
+     "status": [
+      0.017,
+      0.8209,
+      0.9661,
+      0.094
+     ]
+    },
+    "t": 2.31,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-03": {
+    "size": [
+     1120,
+     223
+    ],
+    "marks": {
+     "input": [
+      0.017,
+      0.2478,
+      0.8242,
+      0.2239
+     ],
+     "run": [
+      0.8519,
+      0.2478,
+      0.1312,
+      0.2239
+     ],
+     "status": [
+      0.017,
+      0.8209,
+      0.9661,
+      0.094
+     ]
+    },
+    "t": 3.26,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-04": {
+    "size": [
+     1120,
+     223
+    ],
+    "marks": {
+     "input": [
+      0.017,
+      0.2478,
+      0.8242,
+      0.2239
+     ],
+     "run": [
+      0.8519,
+      0.2478,
+      0.1312,
+      0.2239
+     ],
+     "status": [
+      0.017,
+      0.8209,
+      0.9661,
+      0.094
+     ]
+    },
+    "t": 4.22,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-05": {
+    "size": [
+     1120,
+     223
+    ],
+    "marks": {
+     "input": [
+      0.017,
+      0.2478,
+      0.8242,
+      0.2239
+     ],
+     "run": [
+      0.8519,
+      0.2478,
+      0.1312,
+      0.2239
+     ],
+     "status": [
+      0.017,
+      0.8209,
+      0.9661,
+      0.094
+     ]
+    },
+    "t": 5.13,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-06": {
+    "size": [
+     1120,
+     223
+    ],
+    "marks": {
+     "input": [
+      0.017,
+      0.2478,
+      0.8242,
+      0.2239
+     ],
+     "run": [
+      0.8519,
+      0.2478,
+      0.1312,
+      0.2239
+     ],
+     "status": [
+      0.017,
+      0.8209,
+      0.9661,
+      0.094
+     ]
+    },
+    "t": 6.14,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-07": {
+    "size": [
+     1120,
+     223
+    ],
+    "marks": {
+     "input": [
+      0.017,
+      0.2478,
+      0.8242,
+      0.2239
+     ],
+     "run": [
+      0.8519,
+      0.2478,
+      0.1312,
+      0.2239
+     ],
+     "status": [
+      0.017,
+      0.8209,
+      0.9661,
+      0.094
+     ]
+    },
+    "t": 7.2,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-08": {
+    "size": [
+     1120,
+     223
+    ],
+    "marks": {
+     "input": [
+      0.017,
+      0.2478,
+      0.8242,
+      0.2239
+     ],
+     "run": [
+      0.8519,
+      0.2478,
+      0.1312,
+      0.2239
+     ],
+     "status": [
+      0.017,
+      0.8209,
+      0.9661,
+      0.094
+     ]
+    },
+    "t": 8.29,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-09": {
+    "size": [
+     1120,
+     223
+    ],
+    "marks": {
+     "input": [
+      0.017,
+      0.2478,
+      0.8242,
+      0.2239
+     ],
+     "run": [
+      0.8519,
+      0.2478,
+      0.1312,
+      0.2239
+     ],
+     "status": [
+      0.017,
+      0.8209,
+      0.9661,
+      0.094
+     ]
+    },
+    "t": 9.29,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-10": {
+    "size": [
+     1120,
+     223
+    ],
+    "marks": {
+     "input": [
+      0.017,
+      0.2478,
+      0.8242,
+      0.2239
+     ],
+     "run": [
+      0.8519,
+      0.2478,
+      0.1312,
+      0.2239
+     ],
+     "status": [
+      0.017,
+      0.8209,
+      0.9661,
+      0.094
+     ]
+    },
+    "t": 10.56,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-11": {
+    "size": [
+     1120,
+     223
+    ],
+    "marks": {
+     "input": [
+      0.017,
+      0.2478,
+      0.8242,
+      0.2239
+     ],
+     "run": [
+      0.8519,
+      0.2478,
+      0.1312,
+      0.2239
+     ],
+     "status": [
+      0.017,
+      0.8209,
+      0.9661,
+      0.094
+     ]
+    },
+    "t": 11.98,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-12": {
+    "size": [
+     1120,
+     223
+    ],
+    "marks": {
+     "input": [
+      0.017,
+      0.2478,
+      0.8242,
+      0.2239
+     ],
+     "run": [
+      0.851,
+      0.2433,
+      0.1312,
+      0.2239
+     ],
+     "status": [
+      0.017,
+      0.8209,
+      0.9661,
+      0.094
+     ]
+    },
+    "t": 13.22,
+    "status": "Round closed. 105 $PAYROLL paid out, 8 in tips. Run another mission."
+   }
+  },
+  "inputFont": {
+   "family": "\"IBM Plex Sans\", system-ui, sans-serif",
+   "size": 17,
+   "color": "rgb(22, 32, 42)",
+   "padLeft": 14
+  }
+ },
+ "roster": {
+  "states": {
+   "idle": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "boss": [
+      0.0018,
+      0.0913,
+      0.3309,
+      0.2252
+     ]
+    }
+   },
+   "run-00": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "boss": [
+      0.0018,
+      0.0913,
+      0.3309,
+      0.2252
+     ]
+    },
+    "t": 0.4,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-01": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "boss": [
+      0.0018,
+      0.0913,
+      0.3309,
+      0.2252
+     ]
+    },
+    "t": 1.39,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-02": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "boss": [
+      0.0018,
+      0.0913,
+      0.3309,
+      0.2252
+     ]
+    },
+    "t": 2.31,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-03": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "boss": [
+      0.0018,
+      0.0913,
+      0.3309,
+      0.2252
+     ]
+    },
+    "t": 3.26,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-04": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "boss": [
+      0.0018,
+      0.0913,
+      0.3309,
+      0.2252
+     ]
+    },
+    "t": 4.22,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-05": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "boss": [
+      0.0018,
+      0.0913,
+      0.3309,
+      0.2252
+     ]
+    },
+    "t": 5.13,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-06": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "boss": [
+      0.0018,
+      0.0913,
+      0.3309,
+      0.2252
+     ]
+    },
+    "t": 6.14,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-07": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "boss": [
+      0.0018,
+      0.0913,
+      0.3309,
+      0.2252
+     ]
+    },
+    "t": 7.2,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-08": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "boss": [
+      0.0018,
+      0.0913,
+      0.3309,
+      0.2252
+     ]
+    },
+    "t": 8.29,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-09": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "boss": [
+      0.0018,
+      0.0913,
+      0.3309,
+      0.2252
+     ]
+    },
+    "t": 9.29,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-10": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "boss": [
+      0.0018,
+      0.0913,
+      0.3309,
+      0.2252
+     ]
+    },
+    "t": 10.56,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-11": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "boss": [
+      0.0018,
+      0.0913,
+      0.3309,
+      0.2252
+     ]
+    },
+    "t": 11.98,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-12": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "boss": [
+      0.0018,
+      0.0913,
+      0.3309,
+      0.2252
+     ]
+    },
+    "t": 13.22,
+    "status": "Round closed. 105 $PAYROLL paid out, 8 in tips. Run another mission."
+   }
+  }
+ },
+ "log": {
+  "states": {
+   "idle": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "count": [
+      0.6536,
+      0.0257,
+      0.3154,
+      0.0399
+     ]
+    }
+   },
+   "run-00": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "count": [
+      0.6536,
+      0.0257,
+      0.3154,
+      0.0399
+     ]
+    },
+    "t": 0.4,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-01": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "count": [
+      0.6536,
+      0.0257,
+      0.3154,
+      0.0399
+     ]
+    },
+    "t": 1.39,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-02": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "count": [
+      0.6536,
+      0.0257,
+      0.3154,
+      0.0399
+     ]
+    },
+    "t": 2.31,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-03": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "count": [
+      0.6536,
+      0.0257,
+      0.3154,
+      0.0399
+     ]
+    },
+    "t": 3.26,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-04": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "count": [
+      0.6536,
+      0.0257,
+      0.3154,
+      0.0399
+     ]
+    },
+    "t": 4.22,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-05": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "count": [
+      0.6711,
+      0.0257,
+      0.2979,
+      0.0399
+     ]
+    },
+    "t": 5.13,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-06": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "count": [
+      0.6536,
+      0.0257,
+      0.3154,
+      0.0399
+     ]
+    },
+    "t": 6.14,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-07": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "count": [
+      0.6536,
+      0.0257,
+      0.3154,
+      0.0399
+     ]
+    },
+    "t": 7.2,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-08": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "count": [
+      0.6536,
+      0.0257,
+      0.3154,
+      0.0399
+     ]
+    },
+    "t": 8.29,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-09": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "count": [
+      0.6536,
+      0.0257,
+      0.3154,
+      0.0399
+     ]
+    },
+    "t": 9.29,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-10": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "count": [
+      0.6536,
+      0.0257,
+      0.3154,
+      0.0399
+     ]
+    },
+    "t": 10.56,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-11": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "count": [
+      0.6536,
+      0.0257,
+      0.3154,
+      0.0399
+     ]
+    },
+    "t": 11.98,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-12": {
+    "size": [
+     549,
+     505
+    ],
+    "marks": {
+     "count": [
+      0.6536,
+      0.0257,
+      0.3154,
+      0.0399
+     ]
+    },
+    "t": 13.22,
+    "status": "Round closed. 105 $PAYROLL paid out, 8 in tips. Run another mission."
+   }
+  }
+ },
+ "desk": {
+  "states": {
+   "idle": {
+    "size": [
+     1120,
+     129
+    ],
+    "marks": {
+     "totals": [
+      0.0009,
+      0.8684,
+      0.9982,
+      0.1239
+     ]
+    }
+   },
+   "run-00": {
+    "size": [
+     1120,
+     129
+    ],
+    "marks": {
+     "totals": [
+      0.0009,
+      0.8684,
+      0.9982,
+      0.1239
+     ]
+    },
+    "t": 0.4,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-01": {
+    "size": [
+     1120,
+     129
+    ],
+    "marks": {
+     "totals": [
+      0.0009,
+      0.8684,
+      0.9982,
+      0.1239
+     ]
+    },
+    "t": 1.39,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-02": {
+    "size": [
+     1120,
+     129
+    ],
+    "marks": {
+     "totals": [
+      0.0009,
+      0.8684,
+      0.9982,
+      0.1239
+     ]
+    },
+    "t": 2.31,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-03": {
+    "size": [
+     1120,
+     129
+    ],
+    "marks": {
+     "totals": [
+      0.0009,
+      0.8684,
+      0.9982,
+      0.1239
+     ]
+    },
+    "t": 3.26,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-04": {
+    "size": [
+     1120,
+     129
+    ],
+    "marks": {
+     "totals": [
+      0.0009,
+      0.8684,
+      0.9982,
+      0.1239
+     ]
+    },
+    "t": 4.22,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-05": {
+    "size": [
+     1120,
+     129
+    ],
+    "marks": {
+     "totals": [
+      0.0009,
+      0.8684,
+      0.9982,
+      0.1239
+     ]
+    },
+    "t": 5.13,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-06": {
+    "size": [
+     1120,
+     129
+    ],
+    "marks": {
+     "totals": [
+      0.0009,
+      0.8684,
+      0.9982,
+      0.1239
+     ]
+    },
+    "t": 6.14,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-07": {
+    "size": [
+     1120,
+     446
+    ],
+    "marks": {
+     "totals": [
+      0.0009,
+      0.9618,
+      0.9982,
+      0.0359
+     ]
+    },
+    "t": 7.2,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-08": {
+    "size": [
+     1120,
+     446
+    ],
+    "marks": {
+     "totals": [
+      0.0009,
+      0.9618,
+      0.9982,
+      0.0359
+     ]
+    },
+    "t": 8.29,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-09": {
+    "size": [
+     1120,
+     446
+    ],
+    "marks": {
+     "totals": [
+      0.0009,
+      0.9618,
+      0.9982,
+      0.0359
+     ]
+    },
+    "t": 9.29,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-10": {
+    "size": [
+     1120,
+     446
+    ],
+    "marks": {
+     "totals": [
+      0.0009,
+      0.9618,
+      0.9982,
+      0.0359
+     ]
+    },
+    "t": 10.56,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-11": {
+    "size": [
+     1120,
+     463
+    ],
+    "marks": {
+     "totals": [
+      0.0009,
+      0.9265,
+      0.9982,
+      0.0713
+     ]
+    },
+    "t": 11.98,
+    "status": "Night Shift Roast: Strong coffee for people who work while everyone sleeps."
+   },
+   "run-12": {
+    "size": [
+     1120,
+     463
+    ],
+    "marks": {
+     "totals": [
+      0.0009,
+      0.9265,
+      0.9982,
+      0.0713
+     ]
+    },
+    "t": 13.22,
+    "status": "Round closed. 105 $PAYROLL paid out, 8 in tips. Run another mission."
+   }
+  }
+ },
+ "order": {
+  "states": {
+   "0": {
+    "size": [
+     537,
+     520
+    ],
+    "marks": {
+     "stamp": [
+      0.253,
+      0.724,
+      0.905,
+      0.3839
+     ],
+     "total": [
+      0.0019,
+      0.8414,
+      0.9963,
+      0.149
+     ]
+    }
+   },
+   "1": {
+    "size": [
+     537,
+     520
+    ],
+    "marks": {
+     "stamp": [
+      0.253,
+      0.724,
+      0.905,
+      0.3839
+     ],
+     "total": [
+      0.0019,
+      0.8414,
+      0.9963,
+      0.149
+     ]
+    }
+   },
+   "2": {
+    "size": [
+     537,
+     520
+    ],
+    "marks": {
+     "stamp": [
+      0.253,
+      0.724,
+      0.905,
+      0.3839
+     ],
+     "total": [
+      0.0019,
+      0.8414,
+      0.9963,
+      0.149
+     ]
+    }
+   },
+   "3": {
+    "size": [
+     537,
+     520
+    ],
+    "marks": {
+     "stamp": [
+      0.253,
+      0.724,
+      0.905,
+      0.3839
+     ],
+     "total": [
+      0.0019,
+      0.8414,
+      0.9963,
+      0.149
+     ]
+    }
+   },
+   "4": {
+    "size": [
+     537,
+     520
+    ],
+    "marks": {
+     "stamp": [
+      0.4537,
+      0.8346,
+      0.5035,
+      0.1626
+     ],
+     "total": [
+      0.0019,
+      0.8414,
+      0.9963,
+      0.149
+     ]
+    }
+   }
+  }
+ }
+}

@@ -64,6 +64,37 @@ export type Film = {
   shots: Shot[];
 };
 
+/* ---------- walkthrough: real UI panels floating on a canvas, one continuous camera ---------- */
+/** Captured panels (capture/walk-*.mjs → panels.json): per state the CSS size and marks (x, y, w, h, 0-1 of the panel). */
+export type Panels = Record<string, { inputFont?: { family: string; size: number; color: string; padLeft: number };
+  states: Record<string, { size: [number, number]; marks: Record<string, [number, number, number, number]> }> }>;
+/** Canvas units are 1080p pixels, (0, 0) is the middle of the frame. `p` is a separate layout for 9:16. */
+type Place = { x: number; y: number; w: number };
+/** A window: a panel image placed on the canvas; `states` switches the picture at a second into the shot. */
+export type WalkWin = Place & { id: string; panel: string; states: [number, string][]; in?: number; p?: Place };
+/** Camera: look at a point, a window or a mark on a window. zoom 1 = the full 1920 × 1080 canvas in 16:9.
+ *  9:16 and 1:1 use `pz`, else a zoom derived from `zoom`. */
+export type WalkCam = { t: number; zoom: number; pz?: number; x?: number; y?: number; px?: number; py?: number; win?: string; mark?: string };
+export type WalkShot = { seconds: number } & (
+  | { type: "title"; text: string; then?: string; at?: number }    // a serif line; `then` replaces it at second `at`
+  | { type: "ui"; windows: WalkWin[]; camera: WalkCam[];
+      cursor?: { t: number; win: string; mark: string; click?: boolean }[];  // arrives at `t`, clicks there
+      typing?: { t: number; win: string; mark: string; text: string; cps?: number; then: string }; // `then`: the state once typed
+      pills?: { t: number; until: number; text: string }[];       // a floating status ("Hiring…") with shimmering text
+      checklist?: Place & { p?: Place; title?: string; items: [number, string][] } } // items tick at their second
+  | { type: "end"; tagline: string; url?: string; footnote?: string }
+);
+export type Walk = {
+  dir: string;              // folder in public/ with the panel images: <panel>-<state>.jpg
+  panels: Panels;
+  /** The serif for titles and the status pill, plus its stylesheet in public/. */
+  serif: string; serifCss?: string;
+  /** Canvas pattern: repeating bands of this colour over brand.colors.bg. */
+  band?: string;
+  music?: { file: string; volume?: number };
+  shots: WalkShot[];
+};
+
 export type Product = {
   id: string;           // letters, numbers and dashes: used in composition names and file names
   brand: Brand;
@@ -72,6 +103,8 @@ export type Product = {
   music?: { file: string; volume?: number };
   /** A kinetic film (compositions <id>-film-landscape|portrait|square). */
   film?: Film;
+  /** A UI walkthrough (compositions <id>-walk-landscape|portrait|square). */
+  walk?: Walk;
   /** Frames of crossfade between scenes (at 30 fps). */
   transition?: number;
 };

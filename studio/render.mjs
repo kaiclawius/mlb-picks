@@ -4,6 +4,7 @@
 //   npm run render -- payroll stills          one frame every 3 s (quick visual check)
 //   npm run render -- payroll web             small copies for a website + poster.jpg (after rendering)
 //   npm run render -- payroll film            the kinetic film in all three formats
+//   npm run render -- payroll walk            the UI walkthrough in all three formats
 import { execFileSync } from "node:child_process";
 import { mkdirSync } from "node:fs";
 
@@ -32,6 +33,14 @@ if (what === "stills") {
 } else if (what === "film") {
   // the kinetic film: products/<id>.ts → film (see README, "Kinetischer Film")
   for (const fmt of ["landscape", "portrait", "square"]) run("render", `${id}-film-${fmt}`, `out/${id}/${id}-film-${fmt}.mp4`);
+} else if (what === "walk") {
+  // the UI walkthrough: products/<id>.walk.ts (see README, "Walkthrough")
+  // rendered raw, then brought to -14 LUFS with true peak under -1 dB (social upload standard)
+  const norm = new URL("../.claude/skills/motion/scripts/loudnorm.mjs", import.meta.url).pathname;
+  for (const fmt of process.argv[4] ? [process.argv[4]] : ["landscape", "portrait", "square"]) {
+    run("render", `${id}-walk-${fmt}`, `out/${id}/raw-${id}-walk-${fmt}.mp4`);
+    execFileSync("node", [norm, `out/${id}/raw-${id}-walk-${fmt}.mp4`, `out/${id}/${id}-walk-${fmt}.mp4`, "--target", "-14"], { stdio: "inherit" });
+  }
 } else {
   for (const fmt of what ? [what] : ["landscape", "portrait", "square", "og"]) {
     if (fmt === "og") run("still", `${id}-og`, `out/${id}/og.png`, "--frame=75");
