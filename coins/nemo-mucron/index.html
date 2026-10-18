@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nemo Mucron · $NEMO</title>
+<meta name="description" content="The first dog of France, drawn like Mucron. Same face. En même temps, a coin. $NEMO on Solana.">
+<meta property="og:title" content="Nemo Mucron · $NEMO">
+<meta property="og:description" content="The first dog of France. Same face as Mucron. En même temps, a coin.">
+<meta property="og:image" content="img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="img/og.jpg">
+<link rel="icon" href="img/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Patrick+Hand&display=swap" rel="stylesheet">
+<script>
+  // ---- set these after launch ----
+  window.NEMO = {
+    CA: "",                 // contract address from pump.fun
+    X: "",                  // X handle without @
+    TICKER: "$NEMO",
+  };
+</script>
+<style>
+/* The whole page is drawn like the Mucron art: white paper, tricolore brush strokes,
+   one dark outline colour, flat fills, hard cartoon shadows, slightly wonky shapes. */
+:root{
+  --ink:#0e1f29; --blue:#173286; --red:#e7171e; --skin:#ffcbba; --paper:#ffffff; --sky:#2aa0d0; --gold:#e8c35a;
+  --toon:'Luckiest Guy',system-ui,sans-serif; --hand:'Patrick Hand',system-ui,sans-serif;
+  --line:5px solid var(--ink); --shadow:8px 8px 0 var(--ink);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{background:var(--paper);color:var(--ink);scroll-behavior:smooth}
+body{font-family:var(--hand);font-size:22px;line-height:1.35;overflow-x:hidden;background:var(--paper)}
+a,button{font:inherit;color:inherit;cursor:pointer}
+img{display:block;max-width:100%}
+.wrap{width:min(1180px,100% - 32px);margin-inline:auto}
+
+/* brush strokes: drawn once in an SVG sprite, placed behind sections */
+.brush{position:absolute;z-index:0;pointer-events:none}
+section,header{position:relative;overflow-x:clip}
+html,body{overflow-x:clip}
+section > .wrap, header > .wrap{position:relative;z-index:1}
+
+/* cartoon pieces */
+.panel{background:var(--paper);border:var(--line);border-radius:26px 18px 30px 16px/18px 28px 16px 26px;box-shadow:var(--shadow);padding:24px 26px}
+.btn{display:inline-flex;align-items:center;gap:.4em;border:4px solid var(--ink);border-radius:999px 860px 999px 900px;box-shadow:5px 5px 0 var(--ink);
+  font-family:var(--toon);font-size:24px;letter-spacing:.02em;padding:.5em 1.1em .35em;text-decoration:none;background:var(--paper);
+  transition:transform .12s cubic-bezier(.34,1.6,.64,1),box-shadow .12s}
+.btn:hover{transform:translate(-2px,-2px) rotate(-1.5deg);box-shadow:7px 7px 0 var(--ink)}
+.btn:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+.btn.blue{background:var(--blue);color:#fff}.btn.red{background:var(--red);color:#fff}.btn.small{font-size:18px;padding:.4em .9em .28em}
+.toon{font-family:var(--toon);letter-spacing:.01em;line-height:.95;color:#fff;-webkit-text-stroke:4px var(--ink);paint-order:stroke fill;text-shadow:6px 6px 0 var(--ink)}
+
+/* nav */
+nav{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 0}
+.logo{font-family:var(--toon);font-size:30px;text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo img{width:46px;height:auto}
+.logo b{color:var(--blue)} .logo i{font-style:normal;color:var(--red)}
+nav .links{display:flex;gap:18px;align-items:center;font-size:21px}
+nav .links a{text-decoration:none} nav .links a:hover{text-decoration:underline wavy var(--red)}
+@media (max-width:760px){nav .links a.opt{display:none}}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:46px;align-items:center;padding:44px 0 80px}
+@media (max-width:900px){.hero{grid-template-columns:1fr;gap:34px;padding-top:24px}.hero .art{order:-1;width:min(440px,100%)}}
+.hero h1{font-size:clamp(70px,10.5vw,138px)}
+.hero h1 .n{color:var(--blue);display:block} .hero h1 .m{color:var(--red);display:block;margin-left:.25em}
+.hero .say{font-size:clamp(24px,2.6vw,31px);margin:26px 0 28px;max-width:26ch}
+.hero .say u{text-decoration:underline wavy var(--red) 3px;text-underline-offset:5px}
+.cta{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.ca{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:19px}
+.ca code{font-family:ui-monospace,monospace;font-size:15px;background:#fff;border:3px solid var(--ink);border-radius:10px 14px 9px 12px;padding:7px 11px;word-break:break-all}
+
+/* the art: Mucron is the card, Nemo is his own layer so he can move */
+.art{position:relative;justify-self:center;width:min(540px,100%);aspect-ratio:1;border:var(--line);border-radius:30px 20px 34px 18px/22px 32px 20px 30px;box-shadow:12px 12px 0 var(--ink);overflow:hidden;background:#fff;transform:rotate(1.5deg)}
+.art img{position:absolute;inset:0;width:100%;height:100%}
+.art .nemo{inset:auto;left:50.8%;top:56%;width:46.2%;height:auto;transform-origin:30% 100%;cursor:pointer;animation:bob 3.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:rotate(0)}50%{transform:rotate(-2.2deg) translateY(-1.5%)}}
+.art .nemo.boing{animation:boing .5s cubic-bezier(.34,1.6,.64,1)}
+@keyframes boing{30%{transform:translateY(-9%) rotate(-5deg) scale(1.03,.97)}60%{transform:translateY(1%) scale(.98,1.03)}}
+.bubble{position:absolute;z-index:3;background:#fff;border:4px solid var(--ink);border-radius:26px 22px 28px 20px;padding:8px 18px 4px;font-family:var(--toon);font-size:28px;box-shadow:4px 4px 0 var(--ink);
+  right:6%;top:40%;transform-origin:20% 100%;transition:transform .25s cubic-bezier(.34,1.6,.64,1),opacity .2s}
+.bubble::after{content:"";position:absolute;left:24px;bottom:-22px;border:12px solid transparent;border-top:16px solid var(--ink)}
+.bubble.off{transform:scale(.3) rotate(-10deg);opacity:0}
+.stamp{position:absolute;z-index:3;left:-6px;bottom:22px;font-family:var(--toon);font-size:20px;color:#fff;background:var(--blue);border:4px solid var(--ink);border-radius:12px;padding:6px 12px 2px;transform:rotate(-8deg);box-shadow:4px 4px 0 var(--ink)}
+
+/* ticker */
+.ticker{border-block:var(--line);background:var(--blue);color:#fff;overflow:hidden;white-space:nowrap;font-family:var(--toon);font-size:30px;padding:12px 0 6px;transform:rotate(-1.2deg);margin:0 -20px}
+.ticker div{display:inline-block;animation:belt 28s linear infinite}
+.ticker span{color:var(--red);-webkit-text-stroke:2px #fff;paint-order:stroke fill;margin:0 .4em}
+@keyframes belt{to{transform:translateX(-50%)}}
+
+section{padding:80px 0}
+h2{font-size:clamp(48px,7vw,86px);margin-bottom:36px}
+h2.blue{color:var(--blue)} h2.red{color:var(--red)}
+
+/* lore: comic panels */
+.lore{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+@media (max-width:860px){.lore{grid-template-columns:1fr}}
+.lore .panel{font-size:24px}
+.lore .panel:nth-child(1){transform:rotate(-1.6deg)} .lore .panel:nth-child(2){transform:rotate(1.2deg) translateY(14px)} .lore .panel:nth-child(3){transform:rotate(-.8deg)}
+.lore b{display:block;font-family:var(--toon);font-weight:400;font-size:38px;margin-bottom:8px}
+.lore .panel:nth-child(1) b{color:var(--blue)} .lore .panel:nth-child(2) b{color:var(--red)} .lore .panel:nth-child(3) b{color:var(--sky)}
+
+/* ask */
+.ask{display:grid;grid-template-columns:280px 1fr;gap:34px;align-items:center}
+@media (max-width:820px){.ask{grid-template-columns:1fr}.ask .who-img{width:220px;margin:auto}}
+.who-img{transform:rotate(-5deg);transition:transform .2s}
+.who-img.talk{animation:talk .3s ease-in-out 3}
+@keyframes talk{50%{transform:rotate(-1deg) translateY(-12px)}}
+.speech{position:relative;font-size:30px;min-height:130px}
+.speech::before{content:"";position:absolute;left:-30px;top:44px;border:16px solid transparent;border-right:26px solid var(--ink)}
+.speech::after{content:"";position:absolute;left:-19px;top:48px;border:12px solid transparent;border-right:20px solid #fff}
+@media (max-width:820px){.speech::before{left:50%;top:-38px;border:16px solid transparent;border-bottom:26px solid var(--ink);margin-left:-16px}.speech::after{left:50%;top:-26px;border:12px solid transparent;border-bottom:20px solid #fff;margin-left:-12px}}
+.speech small{display:block;font-size:16px;color:#5b6670;margin-bottom:6px}
+form.q{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+form.q input{flex:1;min-width:200px;font:inherit;font-size:22px;padding:12px 16px;border:4px solid var(--ink);border-radius:16px 12px 18px 10px;background:#fff;color:var(--ink);box-shadow:4px 4px 0 var(--ink)}
+form.q input:focus{outline:none;border-color:var(--blue)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.chips button{background:#fff;border:3px dashed var(--ink);border-radius:999px;padding:3px 13px;font-size:18px}
+.chips button:hover{background:var(--skin)}
+
+/* rain */
+.rain{text-align:center}
+.rain p{font-size:25px;margin:-18px 0 22px}
+.count{font-family:var(--toon);font-size:clamp(80px,13vw,160px);color:var(--red);-webkit-text-stroke:5px var(--ink);paint-order:stroke fill;text-shadow:7px 7px 0 var(--ink);line-height:1}
+.rain .cta{justify-content:center;margin-top:26px}
+
+/* buy */
+.steps{display:grid;gap:18px;counter-reset:s;max-width:820px}
+.steps li{list-style:none;display:flex;gap:18px;align-items:center;font-size:25px}
+.steps li::before{counter-increment:s;content:counter(s);font-family:var(--toon);font-size:40px;min-width:62px;height:62px;display:grid;place-items:center;padding-top:6px;border:4px solid var(--ink);border-radius:50% 46% 52% 48%;box-shadow:4px 4px 0 var(--ink);background:var(--blue);color:#fff}
+.steps li:nth-child(2)::before{background:#fff;color:var(--ink)} .steps li:nth-child(3)::before{background:var(--red)} .steps li:nth-child(4)::before{background:var(--skin);color:var(--ink)}
+
+footer{border-top:var(--line);padding:56px 0 110px;position:relative;overflow:hidden}
+footer .big{font-size:clamp(70px,13vw,170px);color:var(--blue);margin-bottom:24px}
+footer p{max-width:64ch;font-size:18px;margin-bottom:10px;color:#3b4852}
+
+#pile{position:fixed;inset:0;z-index:30;pointer-events:none}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) rotate(-2deg);z-index:40;font-family:var(--toon);font-size:22px;background:#fff;border:4px solid var(--ink);border-radius:16px;box-shadow:5px 5px 0 var(--ink);padding:10px 18px 4px}
+
+@media (prefers-reduced-motion:reduce){.ticker div,.art .nemo{animation:none}.btn{transition:none}}
+</style>
+</head>
+<body>
+<!-- the tricolore brush strokes, drawn once -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="rough" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.03 0.11" numOctaves="3" seed="5" /><feDisplacementMap in="SourceGraphic" scale="30" /></filter>
+    <g id="stroke"><path d="M10 40 Q 150 10 300 30 T 590 30 L 590 110 Q 450 130 300 115 T 10 120 Z" filter="url(#rough)" /></g>
+  </defs>
+</svg>
+
+<nav><div class="wrap">
+  <a class="logo" href="#top"><img src="img/nemo-sticker.png" alt="" width="46" height="40"><span><b>NEMO</b> <i>MUCRON</i></span></a>
+  <div class="links"><a class="opt" href="#lore">lore</a><a class="opt" href="#ask">ask nemo</a><a class="opt" href="#buy">how to buy</a>
+    <a class="btn red small" id="buyNav" href="https://pump.fun" target="_blank" rel="noopener">buy</a></div>
+</div></nav>
+
+<header id="top">
+  <svg class="brush" viewBox="0 0 600 140" style="left:-4%;top:40px;width:46%;height:200px;fill:var(--red);transform:rotate(-8deg)"><use href="#stroke" /></svg>
+  <svg class="brush" viewBox="0 0 600 140" style="right:-6%;top:120px;width:60%;height:300px;fill:var(--blue);transform:rotate(-24deg)"><use href="#stroke" /></svg>
+  <div class="wrap hero">
+    <div>
+      <h1 class="toon" aria-label="Nemo Mucron"><span class="n">NEMO</span><span class="m">MUCRON</span></h1>
+      <p class="say">the first dog of france. same face as his human. <u>en même temps</u>, a coin.</p>
+      <div class="cta">
+        <a class="btn blue" id="buyBtn" href="https://pump.fun" target="_blank" rel="noopener">buy $NEMO</a>
+        <button class="btn red" id="rainTop" type="button">make it rain nemos</button>
+      </div>
+      <div class="ca"><span>CA:</span> <code id="ca">soon. nemo is still sniffing the carpet.</code> <button class="btn small" id="copyCa" type="button">copy</button></div>
+    </div>
+    <div class="art" id="art">
+      <img src="img/mucron-1000.png" alt="Mucron, the cartoon president, with his dog Nemo sitting next to him" width="1000" height="1000">
+      <img class="nemo" id="nemo" src="img/nemo-pose.png" alt="" width="1005" height="975">
+      <div class="bubble off" id="wouf">wouf.</div>
+      <div class="stamp">click nemo</div>
+    </div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true"><div id="belt"></div></div>
+
+<section id="lore">
+  <svg class="brush" viewBox="0 0 600 140" style="right:-10%;top:30px;width:50%;height:180px;fill:var(--skin);transform:rotate(6deg)"><use href="#stroke" /></svg>
+  <div class="wrap">
+    <h2 class="toon blue">the lore</h2>
+    <div class="lore">
+      <div class="panel"><b>chapter 1</b>a black lab from a shelter. one day he moves into a palace. normal dog things.</div>
+      <div class="panel"><b>chapter 2</b>important meeting. very serious people. nemo walks in and pees on the fireplace. legend.</div>
+      <div class="panel"><b>chapter 3</b>now he sits next to mucron. same neck. same face. same look. en même temps, a dog.</div>
+    </div>
+  </div>
+</section>
+
+<section id="ask">
+  <svg class="brush" viewBox="0 0 600 140" style="left:-8%;top:60px;width:44%;height:180px;fill:var(--blue);opacity:.12;transform:rotate(-4deg)"><use href="#stroke" /></svg>
+  <div class="wrap">
+    <h2 class="toon red">ask nemo</h2>
+    <div class="ask">
+      <img class="who-img" id="askDog" src="img/nemo-sticker.png" alt="" width="320" height="282">
+      <div>
+        <div class="panel speech" aria-live="polite"><small>nemo · first dog of france</small><span id="answer">pose ta question. i will answer. probably with wouf.</span></div>
+        <form class="q" id="askForm" autocomplete="off">
+          <input id="askInput" maxlength="120" placeholder="wen moon? are you the president? treat?" aria-label="Your question for Nemo">
+          <button class="btn blue" type="submit">ask him</button>
+        </form>
+        <div class="chips" id="chips"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="rain" id="rain">
+  <div class="wrap">
+    <h2 class="toon blue">pluie de nemo</h2>
+    <p>every click is one more first dog. they pile up on your screen. en même temps, it is fine.</p>
+    <div class="count" id="count">0</div>
+    <div style="font-size:24px">nemos on your screen</div>
+    <div class="cta">
+      <button class="btn red" id="oneBtn" type="button">+1 nemo</button>
+      <button class="btn blue" id="rainBtn" type="button">make it rain</button>
+      <button class="btn" id="shake" type="button">shake</button>
+      <button class="btn" id="clear" type="button">back to the palace</button>
+    </div>
+  </div>
+</section>
+
+<section id="buy">
+  <svg class="brush" viewBox="0 0 600 140" style="right:-6%;top:40px;width:48%;height:190px;fill:var(--red);opacity:.9;transform:rotate(-10deg)"><use href="#stroke" /></svg>
+  <div class="wrap">
+    <h2 class="toon red">how to get $NEMO</h2>
+    <ol class="steps">
+      <li>get a solana wallet (phantom works) and put some SOL in it.</li>
+      <li>open pump.fun and paste the CA from the top of this page. check it twice.</li>
+      <li>swap SOL for $NEMO. only what you can lose. nemo insists.</li>
+      <li>post your own dog with the mucron face. tag us. wouf.</li>
+    </ol>
+    <div class="cta" style="margin-top:34px">
+      <a class="btn blue" id="buyBtn2" href="https://pump.fun" target="_blank" rel="noopener">buy on pump.fun</a>
+      <a class="btn" id="dexBtn" href="https://dexscreener.com/solana" target="_blank" rel="noopener">chart</a>
+      <a class="btn red" id="xBtn" href="https://x.com" target="_blank" rel="noopener">follow on X</a>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">
+  <div class="big toon">wouf.</div>
+  <p>$NEMO is a meme coin with no intrinsic value and no expectation of profit. For entertainment only. Never buy more than you can lose.</p>
+  <p>Parody. Not affiliated with, endorsed by or connected to Emmanuel Macron, the Élysée or the French Republic. Mucron art from the Mucron community; Nemo drawn in the same style.</p>
+</div></footer>
+
+<canvas id="pile" aria-hidden="true"></canvas>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const N = window.NEMO, reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- config ---------- */
+if (N.CA) {
+  $("#ca").textContent = N.CA;
+  for (const id of ["#buyBtn", "#buyBtn2", "#buyNav"]) $(id).href = "https://pump.fun/coin/" + N.CA;
+  $("#dexBtn").href = "https://dexscreener.com/solana/" + N.CA;
+}
+if (N.X) $("#xBtn").href = "https://x.com/" + N.X;
+function toast(t) { const el = $("#toast"); el.textContent = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => (el.hidden = true), 1800); }
+$("#copyCa").onclick = async () => {
+  if (!N.CA) return toast("no CA yet. nemo is still sniffing the carpet.");
+  try { await navigator.clipboard.writeText(N.CA); toast("copié. good boy."); } catch { toast("copy failed. select it by hand."); }
+};
+
+/* ---------- ticker ---------- */
+const words = ["NEMO MUCRON", "FIRST DOG OF FRANCE", "EN MÊME TEMPS", "WOUF", "SAME FACE", "$NEMO", "VIVE LA RÉPUBLIQUE", "GOOD BOY"];
+const line = words.map((w) => `${w}<span>★</span>`).join("");
+$("#belt").innerHTML = line + line + line + line;
+
+/* ---------- nemo in the art: click him ---------- */
+const nemo = $("#nemo"), wouf = $("#wouf");
+const woufs = ["wouf.", "en même temps.", "non.", "wouf wouf.", "c'est moi.", "vive le $NEMO."];
+let wi = 0;
+nemo.addEventListener("click", (e) => {
+  nemo.classList.remove("boing"); void nemo.offsetWidth; nemo.classList.add("boing");
+  wouf.textContent = woufs[wi++ % woufs.length]; wouf.classList.remove("off");
+  clearTimeout(wouf.t); wouf.t = setTimeout(() => wouf.classList.add("off"), 1300);
+  spawn(e.clientX, e.clientY);
+});
+nemo.addEventListener("animationend", () => nemo.classList.remove("boing"));
+
+/* ---------- ask nemo ---------- */
+const A = {
+  wen: ["wen? en même temps: soon.", "patience. this is a republic, not a casino.", "after my nap. maybe during."],
+  moon: ["the moon is round. i respect it.", "to the moon. mais en même temps, a nap first.", "i can see the moon from the palace window."],
+  price: ["number go up when you scratch behind the ears.", "i cannot count. i am a dog.", "price is one (1) croissant."],
+  pres: ["he is my human. i am his dog. en même temps, who is in charge?", "we have the same face. coincidence.", "i do not do politics. i do naps."],
+  france: ["vive la république. wouf.", "baguette? oui.", "c'est la france."],
+  rug: ["the only rug here is in the palace. it is very soft.", "no rug. only a red carpet.", "rug? i only sniff carpets."],
+  food: ["oui.", "always oui.", "is it a croissant. please say croissant."],
+  ok: ["i am fine. i live in a palace.", "c'est la vie.", "ça va. et toi?"],
+  good: ["moi.", "it is me. évidemment.", "wouf. (that means me.)"],
+  any: ["wouf.", "en même temps.", "non.", "c'est compliqué.", "ask the minister.", "i thought about it. wouf.", "pas aujourd'hui.", "oui. non. en même temps."],
+};
+const keyOf = (q) => /wen|when|quand/.test(q) ? "wen" : /moon|lune|pump|100x|ath/.test(q) ? "moon" : /price|prix|worth|mcap/.test(q) ? "price"
+  : /macron|mucron|president|président|human/.test(q) ? "pres" : /france|french|paris|baguette/.test(q) ? "france" : /rug|scam|safe/.test(q) ? "rug"
+  : /food|treat|eat|croissant|snack|hungry/.test(q) ? "food" : /\bok\b|okay|ça va|ca va|fine|happy/.test(q) ? "ok" : /good boy|who.*good/.test(q) ? "good" : "any";
+let typing = 0;
+function answer(q) {
+  const list = A[keyOf(q.toLowerCase())], text = list[Math.floor(Math.random() * list.length)], el = $("#answer"), id = ++typing;
+  const dog = $("#askDog"); dog.classList.remove("talk"); void dog.offsetWidth; dog.classList.add("talk");
+  el.textContent = ""; if (reduce) { el.textContent = text; return; }
+  let i = 0; (function step() { if (id !== typing) return; el.textContent = text.slice(0, ++i); if (i < text.length) setTimeout(step, 30 + Math.random() * 40); })();
+}
+$("#askForm").onsubmit = (e) => { e.preventDefault(); const q = $("#askInput").value.trim(); answer(q || "wouf"); };
+for (const q of ["wen moon?", "are you the president?", "is this a rug?", "ça va?", "who is a good boy?", "croissant?"]) {
+  const b = document.createElement("button"); b.type = "button"; b.textContent = q; b.onclick = () => { $("#askInput").value = q; answer(q); }; $("#chips").append(b);
+}
+
+/* ---------- pluie de nemo: stickers fall, roll and pile up ---------- */
+const cv = $("#pile"), cx = cv.getContext("2d"), sprite = new Image(); sprite.src = "img/nemo-sticker.png";
+let W = 0, H = 0; const dogs = [];
+function size() { const dpr = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+size(); addEventListener("resize", size);
+function spawn(x, y) {
+  const r = (W < 700 ? 32 : 46) * (0.75 + Math.random() * 0.5);
+  dogs.push({ x: x ?? r + Math.random() * (W - 2 * r), y: y ?? -r, vx: (Math.random() - 0.5) * 6, vy: Math.random() * 2, r, a: (Math.random() - 0.5) * 0.6, va: 0 });
+  if (dogs.length > 120) dogs.shift();
+  $("#count").textContent = dogs.length; kick();
+}
+let running = false;
+function kick() { if (!running) { running = true; requestAnimationFrame(tick); } }
+function tick() {
+  cx.clearRect(0, 0, W, H); let moving = false;
+  for (const d of dogs) {
+    d.vy += 0.45; d.x += d.vx; d.y += d.vy;
+    if (d.y > H - d.r) { d.y = H - d.r; d.vy *= -0.35; d.vx *= 0.985; if (Math.abs(d.vy) < 0.6) d.vy = 0; }
+    if (d.x < d.r) { d.x = d.r; d.vx = Math.abs(d.vx) * 0.6; } if (d.x > W - d.r) { d.x = W - d.r; d.vx = -Math.abs(d.vx) * 0.6; }
+    d.a += d.vx / d.r * 0.5;
+  }
+  for (let i = 0; i < dogs.length; i++) for (let j = i + 1; j < dogs.length; j++) {
+    const a = dogs[i], b = dogs[j], dx = b.x - a.x, dy = b.y - a.y, dist = Math.hypot(dx, dy), min = (a.r + b.r) * 0.9;
+    if (dist > 0 && dist < min) { const p = (min - dist) / 2, nx = dx / dist, ny = dy / dist; a.x -= nx * p; a.y -= ny * p; b.x += nx * p; b.y += ny * p;
+      const rv = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny; if (rv < 0) { const im = rv * 0.7; a.vx += im * nx; a.vy += im * ny; b.vx -= im * nx; b.vy -= im * ny; } }
+  }
+  for (const d of dogs) {
+    if (Math.abs(d.vx) + Math.abs(d.vy) > 0.15) moving = true;
+    cx.save(); cx.translate(d.x, d.y); cx.rotate(d.a); const w = d.r * 2.5, h = w * 0.88; cx.drawImage(sprite, -w / 2, -h / 2, w, h); cx.restore();
+  }
+  if (moving || dogs.some((d) => d.y < H - d.r - 1)) requestAnimationFrame(tick); else running = false;
+}
+$("#oneBtn").onclick = () => spawn();
+const rain = () => { for (let i = 0; i < 24; i++) setTimeout(spawn, i * 70); };
+$("#rainBtn").onclick = rain; $("#rainTop").onclick = rain;
+$("#shake").onclick = () => { for (const d of dogs) { d.vy = -10 - Math.random() * 12; d.vx = (Math.random() - 0.5) * 22; } kick(); };
+$("#clear").onclick = () => { dogs.length = 0; $("#count").textContent = 0; cx.clearRect(0, 0, W, H); toast("back to the palace. they will return."); };
+</script>
+</body>
+</html>
