@@ -5,6 +5,8 @@ export const PACKS = {
   "de-thorsten-emotional": { repo: "csukuangfj/vits-piper-de_DE-thorsten_emotional-medium", type: "vits", model: "de_DE-thorsten_emotional-medium.onnx", license: "CC0 (Thorsten-Voice)", size: 78 },
   "de-kerstin": { repo: "csukuangfj/vits-piper-de_DE-kerstin-low", type: "vits", model: "de_DE-kerstin-low.onnx", license: "CC0", size: 64 },
   "de-mls": { repo: "csukuangfj/vits-piper-de_DE-mls-medium", type: "vits", model: "de_DE-mls-medium.onnx", license: "CC-BY 4.0 (Multilingual LibriSpeech): Namensnennung", size: 78 },
+  "fr-tom": { repo: "csukuangfj/vits-piper-fr_FR-tom-medium", type: "vits", model: "fr_FR-tom-medium.onnx", license: "Piper fr_FR tom (see MODEL_CARD)", size: 64 },
+  "fr-siwis": { repo: "csukuangfj/vits-piper-fr_FR-siwis-medium", type: "vits", model: "fr_FR-siwis-medium.onnx", license: "CC-BY 4.0 (SIWIS)", size: 64 },
   "en-kokoro": { repo: "csukuangfj/kokoro-multi-lang-v1_0", type: "kokoro", model: "model.onnx", license: "Apache 2.0 (Kokoro-82M)", size: 340,
     skip: [/^dict\//, /\.fst$/, /lexicon-zh/, /^date-zh/] },
 };
@@ -18,6 +20,8 @@ export const VOICES = [
   { id: "kerstin", name: "Kerstin", lang: "de", gender: "f", pack: "de-kerstin", sid: 0, note: "Weiblich, etwas einfachere Qualität." },
   { id: "mls-anna", name: "Anna (MLS)", lang: "de", gender: "f", pack: "de-mls", sid: 3, note: "Aus 236 Sprechern des MLS-Datensatzes." },
   { id: "mls-jonas", name: "Jonas (MLS)", lang: "de", gender: "m", pack: "de-mls", sid: 0 },
+  { id: "tom", name: "Tom", lang: "fr", gender: "m", pack: "fr-tom", sid: 0, note: "Français. Speaks English with a strong French accent, too." },
+  { id: "siwis", name: "Siwis", lang: "fr", gender: "f", pack: "fr-siwis", sid: 0, note: "Français." },
   { id: "heart", name: "Heart", lang: "en", accent: "US", gender: "f", pack: "en-kokoro", sid: 3, note: "Warm and natural. The best English default." },
   { id: "bella", name: "Bella", lang: "en", accent: "US", gender: "f", pack: "en-kokoro", sid: 2 },
   { id: "nicole", name: "Nicole", lang: "en", accent: "US", gender: "f", pack: "en-kokoro", sid: 6, note: "Soft, close to the mic." },
@@ -29,4 +33,4 @@ export const VOICES = [
   { id: "george", name: "George", lang: "en", accent: "UK", gender: "m", pack: "en-kokoro", sid: 26 },
   { id: "daniel", name: "Daniel", lang: "en", accent: "UK", gender: "m", pack: "en-kokoro", sid: 24 },
 ];
-export const DEFAULT_VOICE = { de: "thorsten", en: "heart" };
+export const DEFAULT_VOICE = { de: "thorsten", en: "heart", fr: "tom" };

@@ -41,7 +41,7 @@ async function route(req, res) {
 
   if (p === "/api/speak" && req.method === "POST") {
     const b = JSON.parse((await body(req, 1e6)).toString("utf8") || "{}");
-    const voice = b.voice || DEFAULT_VOICE[b.lang === "en" ? "en" : "de"];
+    const voice = b.voice || DEFAULT_VOICE[b.lang in DEFAULT_VOICE ? b.lang : "de"];
     const r = await speak({ ...b, voice });
     if (url.searchParams.has("raw")) return sendFile(req, res, audioPath(r.file), { "X-Duration": String(r.duration) });
     return json(res, 200, { ...r, url: `/audio/${r.file}` });
