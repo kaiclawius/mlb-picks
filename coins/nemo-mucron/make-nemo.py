@@ -87,11 +87,12 @@ if TONGUE:
     t = smooth([(1890, 938), (1935, 925), (1950, 965), (1925, 1000), (1895, 990)])
     d.polygon(t, fill=(244, 120, 140, 255)); d.line(t + [t[0]], fill=(*OUT, 255), width=8); d.line([(1920, 945), (1922, 985)], fill=(200, 80, 100, 255), width=5)
 
+img.save(S + 'nemo-full-2048.png')   # uncropped: lies exactly on Mucron (for the slider)
 img = img.crop(img.getbbox()); img.save(S + 'nemo-pose-2048.png')
 img.resize((img.width // 2, img.height // 2), Image.LANCZOS).save(OUTDIR + 'nemo-pose.png')
 bg = Image.new('RGBA', img.size, (255, 255, 255, 255)); bg.alpha_composite(img)
 bg.convert('RGB').crop((1150, 420, 2011, 1200)).save(S + 'nemo-head-prev.png')
 m = Image.open(OUTDIR + 'mucron-1000.png').convert('RGBA'); dsm = Image.open(OUTDIR + 'nemo-pose.png').convert('RGBA')
 dd = dsm.resize((int(dsm.width * 0.46), int(dsm.height * 0.46)), Image.LANCZOS)
-sq = m.copy(); sq.alpha_composite(dd, (1000 - dd.width - 4, 1000 - dd.height + 8)); sq.convert('RGB').save(OUTDIR + 'nemo-mucron-square.png')
+sq = m.copy(); sq.alpha_composite(dd, (1000 - dd.width - 30, 1000 - dd.height + 8)); sq.convert('RGB').save(OUTDIR + 'nemo-mucron-square.png')
 print('ok', img.size, dd.size)
