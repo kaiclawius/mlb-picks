@@ -1,0 +1,109 @@
+/* Web motion kit: tokens, start states and CSS-only modules.
+   Start states only apply under html.m-ready, which motion.js sets once GSAP has loaded and motion is welcome:
+   without JavaScript, with a blocked script or with reduced motion, every element is simply visible. */
+
+:root {
+  /* durations */
+  --m-dur-1: 120ms;  /* hover, press, colour */
+  --m-dur-2: 200ms;  /* small state */
+  --m-dur-3: 300ms;  /* panels, toasts */
+  --m-dur-4: 500ms;  /* UI entrances */
+  --m-dur-reveal: 900ms;  /* editorial reveals (award sites: 500–1000 ms) */
+  --m-dur-move: 1200ms;   /* big moves: curtains, menus, page transitions */
+  /* curves (measured on award sites, see references/award-sites.md) */
+  --m-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --m-ease-exit: cubic-bezier(0.7, 0, 0.84, 0);
+  --m-ease-move: cubic-bezier(0.65, 0, 0.35, 1);
+  --m-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --m-ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --m-ease-inout-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --m-ease-lux: cubic-bezier(0, 0, 0, 1);
+  /* distances */
+  --m-rise: 24px;
+  --m-rise-ui: 12px;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --m-rise: 0px; --m-rise-ui: 0px; --m-dur-reveal: 200ms; --m-dur-move: 200ms; }
+}
+
+/* ---------- start states (JS animates from these) ---------- */
+.m-ready [data-m="reveal"],
+.m-ready [data-m="reveal-children"] > *,
+.m-ready [data-m="blur-in"] { opacity: 0; }
+.m-ready [data-m="lines"], .m-ready [data-m="words"], .m-ready [data-m="chars"], .m-ready [data-m="wordmark"], .m-ready [data-m="type"] { visibility: hidden; }
+.m-ready [data-m="image"] { clip-path: inset(100% 0 0 0); }
+.m-ready [data-m="stamp"] { opacity: 0; }
+/* split pieces: masks for line/char reveals; keep descenders inside the mask */
+.m-line-mask, .m-char-mask { display: inline-block; overflow: clip; overflow-clip-margin: 0.12em; vertical-align: top; }
+.m-line-mask { display: block; }
+[data-m="image"] { overflow: hidden; }
+[data-m="image"] > img, [data-m="image"] > video, [data-m="image"] > picture { display: block; width: 100%; height: 100%; object-fit: cover; will-change: transform; }
+
+/* ---------- pinned story ---------- */
+[data-m="pin"] { position: relative; }
+[data-m="pin"] [data-m-step] { transition: opacity var(--m-dur-3) var(--m-ease-standard); }
+.m-ready [data-m="pin"].m-pinned [data-m-step]:not([data-active]) { opacity: 0.18; }
+
+/* ---------- CSS-only modules ---------- */
+
+/* marquee: <div data-m="marquee" style="--m-speed: 30s"><div class="m-track">…items…</div></div> (motion.js duplicates the track) */
+[data-m="marquee"] { overflow: hidden; display: flex; --m-speed: 30s; --m-gap: 3rem; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+[data-m="marquee"] .m-track { display: flex; gap: var(--m-gap); padding-right: var(--m-gap); flex-shrink: 0; animation: m-marquee var(--m-speed) linear infinite; }
+[data-m="marquee"][data-m-reverse] .m-track { animation-direction: reverse; }
+[data-m="marquee"]:hover .m-track { animation-play-state: paused; }
+@keyframes m-marquee { to { transform: translateX(-100%); } }
+
+/* footer curtain: the last section scrolls away and uncovers the footer below it */
+.m-curtain-footer { position: sticky; bottom: 0; z-index: 0; }
+.m-curtain-cover { position: relative; z-index: 1; }
+
+/* underline that grows from the left */
+.m-link { text-decoration: none; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size var(--m-dur-3) var(--m-ease-out-quart); }
+.m-link:hover, .m-link:focus-visible { background-size: 100% 1px; }
+
+/* press feedback */
+.m-press { transition: transform var(--m-dur-1) var(--m-ease-standard); }
+.m-press:active { transform: scale(0.97); transition-duration: 60ms; }
+
+/* typing caret for data-m="type" */
+.m-caret { display: inline-block; width: 0.55em; height: 1.05em; margin-left: 0.06em; vertical-align: -0.15em; background: currentColor; animation: m-blink 1s steps(1) infinite; }
+@keyframes m-blink { 50% { opacity: 0; } }
+
+/* cursor follower (motion.js adds it on fine pointers only) */
+/* positioned by GSAP (x/y), sized by CSS (scale on the inner dot), so the two never fight over transform */
+.m-cursor { position: fixed; left: 0; top: 0; width: 0; height: 0; pointer-events: none; z-index: 9999; mix-blend-mode: difference; color: #fff; }
+.m-cursor i { position: absolute; left: -28px; top: -28px; width: 56px; height: 56px; border-radius: 50%; background: currentColor; transform: scale(0.22); transition: transform var(--m-dur-3) var(--m-ease-out-quart); }
+.m-cursor.m-cursor-big i { transform: scale(1); }
+
+/* loader / intro */
+[data-m="loader"] { position: fixed; inset: 0; z-index: 10000; display: grid; place-items: center; }
+html:not(.m-ready) [data-m="loader"], .m-intro-done [data-m="loader"] { display: none; }
+
+/* page transitions between documents (Chromium, Safari 18+); others simply navigate */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: m-vt-out 420ms var(--m-ease-inout-quart) both; }
+::view-transition-new(root) { animation: m-vt-in 620ms var(--m-ease-out-quart) both; }
+@keyframes m-vt-out { to { opacity: 0; transform: translateY(-16px); } }
+@keyframes m-vt-in { from { opacity: 0; transform: translateY(24px); } }
+
+/* smooth scroll (Lenis) base styles */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: clip; }
+
+/* ---------- reduced motion: content in its resting state, only fades ---------- */
+@media (prefers-reduced-motion: reduce) {
+  [data-m="marquee"] .m-track { animation: none; }
+  .m-caret { animation: none; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+
+/* ---------- WebGL layer (webgl/dist/motion-webgl.js) ---------- */
+[data-gl] { position: relative; }
+[data-gl] [data-gl-fallback] { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 600ms var(--m-ease-out-quart); }
+/* curved gallery without WebGL (or before it is ready): a plain scrollable row of the same images */
+[data-gl="gallery"] { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; }
+[data-gl="gallery"] > img { flex: 0 0 auto; height: 100%; width: auto; aspect-ratio: 3 / 2; object-fit: cover; scroll-snap-align: center; border-radius: 4px; }
+[data-gl="gallery"].gl-live { overflow: hidden; }
+[data-gl="gallery"].gl-live > img { visibility: hidden; }
