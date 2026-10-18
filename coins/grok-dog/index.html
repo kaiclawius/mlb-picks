@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Grok Dog · $GROKDOG</title>
+<meta name="description" content="He did not ask to be Grok. He is Grok now. $GROKDOG on Solana.">
+<meta property="og:title" content="Grok Dog · $GROKDOG">
+<meta property="og:description" content="He did not ask to be Grok. He is Grok now.">
+<meta property="og:image" content="img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="img/og.jpg">
+<link rel="icon" href="img/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Courier+Prime:wght@400;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+<script>
+  // ---- set these after launch ----
+  window.GROK = {
+    CA: "",                 // contract address from pump.fun
+    X: "",                  // X handle without @
+    TICKER: "$GROKDOG",
+  };
+</script>
+<style>
+:root{
+  --ball:#0e0e0d;      /* the costume: black tape on a ball */
+  --ball2:#1b1b19;
+  --tape:#f4f0e6;      /* the white tape eyes */
+  --gold:#e0a45e;      /* the good boy */
+  --rug:#b9482f;       /* the carpet */
+  --ink:#0e0e0d;
+  --muted:#b7b1a3;
+  --marker:'Permanent Marker',cursive;
+  --fat:'Bagel Fat One',system-ui,sans-serif;
+  --mono:'Courier Prime',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{background:var(--ball);color:var(--tape);scroll-behavior:smooth}
+body{font-family:var(--marker);font-size:20px;line-height:1.35;overflow-x:hidden;
+  cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34'%3E%3Ccircle cx='17' cy='17' r='15' fill='%230e0e0d' stroke='%23f4f0e6' stroke-width='2'/%3E%3Crect x='17' y='9' width='4' height='12' rx='2' fill='%23f4f0e6' transform='rotate(-10 19 15)'/%3E%3Crect x='23' y='8' width='4' height='11' rx='2' fill='%23f4f0e6' transform='rotate(-10 25 13)'/%3E%3C/svg%3E") 17 17,auto;
+  /* crumpled trash-bag shine behind everything */
+  background:
+    radial-gradient(1200px 600px at 80% -10%,#2a2a27 0,transparent 60%),
+    radial-gradient(900px 500px at -10% 60%,#232320 0,transparent 55%),
+    var(--ball)}
+a,button{cursor:inherit;font:inherit;color:inherit}
+img{display:block;max-width:100%}
+.wrap{width:min(1240px,100% - 32px);margin-inline:auto}
+
+/* ---------- tape: the one material of this site ---------- */
+.tape{display:inline-block;background:var(--tape);color:var(--ink);padding:.18em .7em .12em;
+  clip-path:polygon(1% 8%,6% 0,14% 6%,22% 1%,31% 5%,40% 0,52% 4%,63% 0,74% 5%,85% 1%,94% 6%,100% 2%,99% 92%,93% 100%,83% 95%,71% 100%,60% 96%,48% 100%,37% 95%,26% 100%,15% 96%,5% 100%,0 94%);
+  box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.tape.dark{background:#2b2b28;color:var(--tape)}
+.tape.gold{background:var(--gold)}
+.tilt-l{transform:rotate(-3deg)} .tilt-r{transform:rotate(2.5deg)}
+
+/* ---------- nav ---------- */
+nav{position:sticky;top:0;z-index:20;padding:12px 0;background:linear-gradient(var(--ball) 60%,transparent)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--fat);font-size:26px;letter-spacing:.01em}
+.eyes-mini{display:inline-flex;gap:5px;transform:rotate(-10deg)}
+.eyes-mini i{width:8px;height:22px;border-radius:6px;background:var(--tape);animation:blink 4.2s infinite}
+.eyes-mini i+i{animation-delay:.04s}
+nav .links{display:flex;gap:18px;align-items:center;font-size:18px}
+nav .links a{text-decoration:none;opacity:.85}
+nav .links a:hover{opacity:1;text-decoration:underline wavy var(--gold)}
+@media (max-width:700px){nav .links a.opt{display:none}}
+
+/* ---------- buttons are strips of tape ---------- */
+.btn{border:0;display:inline-flex;align-items:center;gap:.4em;font-family:var(--fat);font-size:26px;padding:.35em .9em .28em;text-decoration:none;
+  transition:transform .15s cubic-bezier(.34,1.5,.64,1)}
+.btn:hover{transform:rotate(-2deg) scale(1.05)}
+.btn:active{transform:rotate(1deg) scale(.96)}
+.btn.small{font-size:19px}
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center;padding:30px 0 70px}
+@media (max-width:900px){.hero{grid-template-columns:1fr;gap:26px;padding-top:10px}}
+.title{font-family:var(--fat);font-size:clamp(84px,15vw,210px);line-height:.82;letter-spacing:-.01em;color:var(--tape);user-select:none}
+.title span{display:inline-block;transition:transform .2s cubic-bezier(.34,1.6,.64,1)}
+.title span:hover{transform:translateY(-.08em) rotate(-8deg);color:var(--gold)}
+.title .row2{display:block;margin-left:.35em;color:var(--gold)}
+.title .row2:hover{transform:none;color:var(--gold)}
+.title .row2 span:hover{color:var(--tape)}
+.say{font-size:clamp(22px,2.6vw,30px);margin:26px 0 30px;max-width:30ch}
+.say em{font-style:normal;color:var(--gold)}
+.cta{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.ca{margin-top:26px;font-family:var(--mono);font-size:15px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;color:var(--muted)}
+.ca code{background:#22221f;color:var(--tape);padding:6px 10px;border-radius:3px;word-break:break-all}
+
+.photo{position:relative;justify-self:center;width:min(520px,100%);transform:rotate(2deg)}
+.photo .frame{position:relative;background:var(--tape);padding:14px 14px 64px;box-shadow:0 30px 60px rgba(0,0,0,.55)}
+.photo .frame img{width:100%;height:auto;aspect-ratio:1320/1643;object-fit:cover}
+.photo .cap{position:absolute;left:0;right:0;bottom:16px;text-align:center;color:var(--ink);font-size:24px}
+.photo .strip{position:absolute;width:150px;height:38px;background:rgba(244,240,230,.82);top:-16px}
+.photo .strip.a{left:-30px;transform:rotate(-28deg)} .photo .strip.b{right:-34px;transform:rotate(24deg)}
+/* the costume's eyes, alive: they sit exactly on the tape in the photo */
+.eye{position:absolute;background:var(--tape);border-radius:999px;box-shadow:inset -3px -4px 0 rgba(0,0,0,.08);transform-origin:50% 50%}
+.eye.l{left:calc(14px + (100% - 28px) * .568);top:calc(14px + (100% - 78px) * .561);width:calc((100% - 28px) * .073);height:calc((100% - 28px) * .17)}
+.eye.r{left:calc(14px + (100% - 28px) * .684);top:calc(14px + (100% - 78px) * .542);width:calc((100% - 28px) * .068);height:calc((100% - 28px) * .15)}
+.stamp{position:absolute;right:-22px;bottom:90px;font-family:var(--fat);font-size:22px;color:var(--rug);border:4px solid var(--rug);padding:6px 12px;border-radius:8px;transform:rotate(-14deg);background:rgba(244,240,230,.92);line-height:1}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}
+
+/* ---------- tape marquees across the page ---------- */
+.tapes{position:relative;height:190px;margin:10px 0 40px;overflow:hidden}
+.belt{position:absolute;left:-10%;width:120%;white-space:nowrap;font-family:var(--fat);font-size:30px;padding:.28em 0 .18em}
+.belt.a{top:40px;transform:rotate(-4deg);background:var(--tape);color:var(--ink)}
+.belt.b{top:100px;transform:rotate(3deg);background:var(--gold);color:var(--ink)}
+.belt div{display:inline-block;animation:belt 26s linear infinite}
+.belt.b div{animation-direction:reverse;animation-duration:31s}
+@keyframes belt{to{transform:translateX(-50%)}}
+
+/* ---------- sections ---------- */
+section{padding:60px 0}
+h2{font-family:var(--fat);font-size:clamp(46px,7vw,92px);line-height:.9;margin-bottom:34px}
+h2 .tape{font-size:.42em;vertical-align:middle;margin-left:.3em;font-family:var(--marker)}
+.lore{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+@media (max-width:800px){.lore{grid-template-columns:1fr}}
+.note{background:var(--tape);color:var(--ink);padding:26px 24px 30px;font-size:24px;box-shadow:0 18px 40px rgba(0,0,0,.4);position:relative}
+.note:nth-child(1){transform:rotate(-2deg)} .note:nth-child(2){transform:rotate(1.5deg) translateY(16px)} .note:nth-child(3){transform:rotate(-1deg)}
+.note b{display:block;font-family:var(--fat);font-weight:400;font-size:40px;color:var(--rug);margin-bottom:6px}
+.note::before{content:"";position:absolute;top:-14px;left:50%;width:110px;height:30px;margin-left:-55px;background:rgba(224,164,94,.85);transform:rotate(-4deg)}
+
+/* ask grok dog */
+.ask{display:grid;grid-template-columns:300px 1fr;gap:34px;align-items:center}
+@media (max-width:800px){.ask{grid-template-columns:1fr}.ask .sticker{width:200px;margin:auto}}
+.ask .sticker{transform:rotate(-6deg);filter:drop-shadow(0 20px 30px rgba(0,0,0,.5));transition:transform .2s}
+.ask .sticker.talk{animation:bob .35s ease-in-out 3}
+@keyframes bob{50%{transform:rotate(-2deg) translateY(-12px) scale(1.03)}}
+.bubble{background:var(--tape);color:var(--ink);border-radius:28px;padding:26px 28px;position:relative;min-height:140px;font-size:30px}
+.bubble::before{content:"";position:absolute;left:-26px;top:54px;border:16px solid transparent;border-right:24px solid var(--tape)}
+@media (max-width:800px){.bubble::before{left:50%;top:-38px;border:16px solid transparent;border-bottom:24px solid var(--tape);margin-left:-16px}}
+.bubble .who{font-family:var(--mono);font-size:14px;color:#7c766a;margin-bottom:8px}
+form.q{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+form.q input{flex:1;min-width:200px;font:inherit;font-size:22px;padding:14px 16px;border:3px solid var(--tape);background:transparent;color:var(--tape);border-radius:0}
+form.q input::placeholder{color:#8d877b}
+form.q input:focus{outline:none;border-color:var(--gold)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.chips button{background:transparent;border:2px dashed #6a665d;padding:4px 12px;font-size:17px;color:var(--muted)}
+.chips button:hover{border-color:var(--gold);color:var(--tape)}
+
+/* roll more */
+.roll{text-align:center}
+.roll p{font-size:24px;color:var(--muted);margin:-14px 0 28px}
+.roll .count{font-family:var(--fat);font-size:clamp(70px,12vw,150px);line-height:1;color:var(--gold)}
+.roll .cta{justify-content:center;margin-top:24px}
+
+/* how to */
+.steps{display:grid;gap:18px;counter-reset:s}
+.steps li{list-style:none;max-width:44ch;display:flex;gap:18px;align-items:baseline;font-size:26px}
+.steps li::before{counter-increment:s;content:counter(s);font-family:var(--fat);font-size:44px;color:var(--ink);background:var(--gold);min-width:64px;text-align:center;transform:rotate(-4deg);line-height:1.2}
+.steps li:nth-child(even)::before{transform:rotate(3deg);background:var(--tape)}
+
+footer{padding:70px 0 120px;color:var(--muted);font-size:17px}
+footer .big{font-family:var(--fat);font-size:clamp(60px,14vw,180px);line-height:.85;color:var(--tape);margin-bottom:26px}
+footer p{max-width:62ch;margin-bottom:10px;font-family:var(--mono);font-size:14px}
+
+/* falling grok dogs */
+#pile{position:fixed;inset:0;z-index:30;pointer-events:none}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) rotate(-2deg);z-index:40;font-size:22px}
+
+@media (prefers-reduced-motion:reduce){
+  .belt div,.eyes-mini i{animation:none}
+  .title span,.btn{transition:none}
+}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="#top">GROK DOG <span class="eyes-mini" aria-hidden="true"><i></i><i></i></span></a>
+  <div class="links"><a class="opt" href="#lore">lore</a><a class="opt" href="#ask">ask him</a><a class="opt" href="#buy">how to buy</a>
+    <button class="btn small tape" id="soundBtn" type="button" aria-pressed="false">sound: off</button></div>
+</div></nav>
+
+<main id="top">
+  <div class="wrap hero">
+    <div>
+      <h1 class="title" aria-label="Grok Dog"><span>G</span><span>R</span><span>O</span><span>K</span><span class="row2"><span>D</span><span>O</span><span>G</span></span></h1>
+      <p class="say">he did not ask to be grok.<br><em>he is grok now.</em></p>
+      <div class="cta">
+        <a class="btn tape tilt-l" id="buyBtn" href="https://pump.fun" target="_blank" rel="noopener">buy $GROKDOG</a>
+        <button class="btn tape gold tilt-r" id="rollTop" type="button">roll more grok dogs</button>
+      </div>
+      <div class="ca"><span>CA:</span> <code id="ca">soon™ (he is still in the ball)</code> <button class="btn small tape dark" id="copyCa" type="button">copy</button></div>
+    </div>
+    <div class="photo" id="photo">
+      <span class="strip a" aria-hidden="true"></span><span class="strip b" aria-hidden="true"></span>
+      <div class="frame">
+        <img src="img/grok-dog.jpg" alt="A golden retriever sitting inside a black ball costume with two white tape stripes for eyes" width="1320" height="1643">
+        <i class="eye l" aria-hidden="true"></i><i class="eye r" aria-hidden="true"></i>
+        <div class="cap">day 3. no thoughts. only ball.</div>
+      </div>
+      <div class="stamp">100% GOOD BOY</div>
+    </div>
+  </div>
+
+  <div class="tapes" aria-hidden="true">
+    <div class="belt a"><div id="beltA"></div></div>
+    <div class="belt b"><div id="beltB"></div></div>
+  </div>
+
+  <section id="lore"><div class="wrap">
+    <h2>the lore <span class="tape tilt-r">100% real</span></h2>
+    <div class="lore">
+      <div class="note"><b>day 1</b>human buys a very big black ball. good boy is excited. good boy thinks it is a toy.</div>
+      <div class="note"><b>day 2</b>human adds black tape. a lot of black tape. then two white stripes. good boy is still excited.</div>
+      <div class="note"><b>day 3</b>good boy is inside the ball. good boy is grok now. he answers questions. mostly with “bork”.</div>
+    </div>
+  </div></section>
+
+  <section id="ask"><div class="wrap">
+    <h2>ask grok dog</h2>
+    <div class="ask">
+      <img class="sticker" id="askDog" src="img/sticker-sm.png" alt="" width="273" height="360">
+      <div>
+        <div class="bubble" aria-live="polite"><div class="who">grok dog · thinking with his whole ball</div><div id="answer">ask me anything. i know nothing. i am very confident.</div></div>
+        <form class="q" id="askForm" autocomplete="off">
+          <input id="askInput" maxlength="120" placeholder="wen moon? is he ok? who is a good boy?" aria-label="Your question for Grok Dog">
+          <button class="btn tape" type="submit">ask him</button>
+        </form>
+        <div class="chips" id="chips"></div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="roll" id="roll"><div class="wrap">
+    <h2>roll more grok dogs</h2>
+    <p>every click is one more good boy in a ball. they pile up. we cannot stop them.</p>
+    <div class="count"><span id="count">0</span></div>
+    <div style="font-size:22px">grok dogs on your screen</div>
+    <div class="cta">
+      <button class="btn tape gold" id="rollBtn" type="button">+1 grok dog</button>
+      <button class="btn tape" id="rain" type="button">make it rain</button>
+      <button class="btn tape dark" id="shake" type="button">shake</button>
+      <button class="btn tape dark" id="clear" type="button">send them home</button>
+    </div>
+  </div></section>
+
+  <section id="buy"><div class="wrap">
+    <h2>how to become grok</h2>
+    <ol class="steps">
+      <li>get a solana wallet (phantom works). put some SOL in it.</li>
+      <li>go to pump.fun and paste the CA from the top of this page. check it twice.</li>
+      <li>swap SOL for $GROKDOG. do not ape your rent. he would not want that.</li>
+      <li>post your dog in a ball. tag us. become grok.</li>
+    </ol>
+    <div class="cta" style="margin-top:34px">
+      <a class="btn tape gold tilt-l" id="buyBtn2" href="https://pump.fun" target="_blank" rel="noopener">buy on pump.fun</a>
+      <a class="btn tape tilt-r" id="dexBtn" href="https://dexscreener.com/solana" target="_blank" rel="noopener">chart</a>
+      <a class="btn tape dark" id="xBtn" href="https://x.com" target="_blank" rel="noopener">follow on X</a>
+    </div>
+  </div></section>
+</main>
+
+<footer><div class="wrap">
+  <div class="big">bork.</div>
+  <p>$GROKDOG is a meme coin with no intrinsic value and no expectation of profit. It is for entertainment only. Never buy more than you can lose.</p>
+  <p>Not affiliated with, endorsed by or connected to xAI, X Corp or Grok. Grok Dog is a golden retriever in a homemade costume.</p>
+  <p>Photo: found on the internet. If this is your dog, message us. He is a legend and we want to credit him.</p>
+</div></footer>
+
+<canvas id="pile" aria-hidden="true"></canvas>
+<div class="toast tape" id="toast" hidden></div>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const G = window.GROK, reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- config: CA, links ---------- */
+if (G.CA) {
+  $("#ca").textContent = G.CA;
+  for (const id of ["#buyBtn", "#buyBtn2"]) $(id).href = "https://pump.fun/coin/" + G.CA;
+  $("#dexBtn").href = "https://dexscreener.com/solana/" + G.CA;
+}
+if (G.X) $("#xBtn").href = "https://x.com/" + G.X;
+function toast(t) { const el = $("#toast"); el.textContent = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => (el.hidden = true), 1800); }
+$("#copyCa").onclick = async () => {
+  if (!G.CA) return toast("no CA yet. he is still in the ball.");
+  try { await navigator.clipboard.writeText(G.CA); toast("copied. good boy."); } catch { toast("copy failed. select it by hand."); }
+  boop(520);
+};
+
+/* ---------- tape belts ---------- */
+const words = ["GROK DOG", "NO THOUGHTS", "ONLY BALL", "HE IS FINE", "100% GOOD BOY", "BORK", "0% AFFILIATED WITH XAI", "$GROKDOG", "HE DID NOT ASK FOR THIS"];
+const belt = (list) => { const s = list.map((w) => `${w}  ●  `).join(""); return s + s + s + s; };
+$("#beltA").textContent = belt(words); $("#beltB").textContent = belt([...words].reverse());
+
+/* ---------- sound: a tiny synth, off until someone asks for it ---------- */
+let ac = null, sound = false;
+$("#soundBtn").onclick = () => {
+  sound = !sound; $("#soundBtn").textContent = "sound: " + (sound ? "on" : "off"); $("#soundBtn").setAttribute("aria-pressed", sound);
+  if (sound) { ac ??= new (window.AudioContext || window.webkitAudioContext)(); bork(); }
+};
+function boop(f = 300, d = 0.12) {
+  if (!sound || !ac) return; const t = ac.currentTime, o = ac.createOscillator(), g = ac.createGain();
+  o.type = "sine"; o.frequency.setValueAtTime(f * 1.6, t); o.frequency.exponentialRampToValueAtTime(f, t + d);
+  g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.25, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+  o.connect(g).connect(ac.destination); o.start(t); o.stop(t + d + 0.02);
+}
+function bork() { // two rough barks
+  if (!sound || !ac) return;
+  for (const [dt, f] of [[0, 210], [0.17, 180]]) {
+    const t = ac.currentTime + dt, o = ac.createOscillator(), g = ac.createGain(), fl = ac.createBiquadFilter();
+    o.type = "sawtooth"; o.frequency.setValueAtTime(f * 1.7, t); o.frequency.exponentialRampToValueAtTime(f, t + 0.1);
+    fl.type = "bandpass"; fl.frequency.value = 900; fl.Q.value = 1.4;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.5, t + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.14);
+    o.connect(fl).connect(g).connect(ac.destination); o.start(t); o.stop(t + 0.16);
+  }
+}
+
+/* ---------- the eyes: they look at you and blink ---------- */
+const eyes = [...document.querySelectorAll(".eye")], photo = $("#photo");
+let look = [0, 0];
+addEventListener("pointermove", (e) => {
+  const r = photo.getBoundingClientRect(), cx = r.left + r.width * 0.64, cy = r.top + r.height * 0.6;
+  const dx = e.clientX - cx, dy = e.clientY - cy, d = Math.hypot(dx, dy) || 1;
+  look = [dx / d * Math.min(1, d / 400), dy / d * Math.min(1, d / 400)];
+}, { passive: true });
+let blinkAt = performance.now() + 2500, squish = 0;
+function eyeLoop(now) {
+  let s = 1;
+  if (now > blinkAt) { const p = (now - blinkAt) / 160; s = p < 1 ? Math.max(0.08, Math.abs(1 - 2 * p)) : 1; if (p >= 1) blinkAt = now + 1800 + Math.random() * 3200; }
+  if (squish > 0) { s = Math.min(s, 0.15); squish -= 16; }
+  for (const el of eyes) el.style.transform = `translate(${look[0] * 6}px, ${look[1] * 8}px) rotate(-12deg) scaleY(${s})`;
+  requestAnimationFrame(eyeLoop);
+}
+if (!reduce) requestAnimationFrame(eyeLoop); else eyes.forEach((el) => (el.style.transform = "rotate(-12deg)"));
+photo.addEventListener("click", (e) => { squish = 260; bork(); spawn(e.clientX, e.clientY); });
+
+/* ---------- ask grok dog ---------- */
+const A = {
+  wen: ["wen? when the ball rolls.", "soon™. the ball is warming up.", "after my nap. maybe during."],
+  moon: ["the moon is also a ball. i respect it.", "moon? i can see it from the couch.", "to the moon, but slowly. i am very round."],
+  price: ["number go up if you pet me.", "price is one (1) belly rub.", "i cannot count. i can only bork."],
+  ok: ["yes. i am grok now. it is fine.", "i am warm and round. i have never been better.", "please stop asking. i am thinking. (i am not.)"],
+  good: ["me. i am the good boy.", "it is me. it was always me.", "bork. (that means me.)"],
+  xai: ["i am not from xai. i am from the living room.", "no affiliation. only ball.", "elon has not called. i wait by the door anyway."],
+  rug: ["the only rug here is the one i sit on.", "rug? it is a persian carpet. very soft.", "no rug. only ball."],
+  food: ["yes.", "always yes.", "is it chicken. please say it is chicken."],
+  any: ["bork.", "the ball knows. the ball is not telling.", "i have thought about this for 0 seconds. the answer is yes.", "ask your mom. then give me a treat.",
+    "i would answer but i am in a ball.", "no thoughts. only ball.", "interesting question. bork.", "i asked the ball. the ball said bork.", "that is above my pay grade. i am paid in treats."],
+};
+const keyOf = (q) => /wen|when/.test(q) ? "wen" : /moon|pump|100x|ath/.test(q) ? "moon" : /price|worth|mcap|market/.test(q) ? "price"
+  : /\bok\b|okay|alright|fine|happy|sad/.test(q) ? "ok" : /good boy|who.*good/.test(q) ? "good" : /xai|elon|musk|grok/.test(q) ? "xai"
+  : /rug|scam|safe/.test(q) ? "rug" : /food|treat|eat|hungry|snack/.test(q) ? "food" : "any";
+let typing = 0;
+function answer(q) {
+  const list = A[keyOf(q.toLowerCase())], text = list[Math.floor(Math.random() * list.length)], el = $("#answer"), id = ++typing;
+  $("#askDog").classList.remove("talk"); void $("#askDog").offsetWidth; $("#askDog").classList.add("talk");
+  bork(); el.textContent = "";
+  if (reduce) { el.textContent = text; return; }
+  let i = 0; (function step() { if (id !== typing) return; el.textContent = text.slice(0, ++i); if (i < text.length) setTimeout(step, 28 + Math.random() * 40); })();
+}
+$("#askForm").onsubmit = (e) => { e.preventDefault(); const q = $("#askInput").value.trim(); if (!q) return answer("bork"); answer(q); };
+for (const q of ["wen moon?", "is he ok?", "who is a good boy?", "are you from xai?", "is this a rug?", "treat?"]) {
+  const b = document.createElement("button"); b.type = "button"; b.textContent = q; b.onclick = () => { $("#askInput").value = q; answer(q); }; $("#chips").append(b);
+}
+
+/* ---------- the pile: grok dogs fall, roll and stack on the bottom of the screen ---------- */
+const cv = $("#pile"), cx = cv.getContext("2d"), sprite = new Image(); sprite.src = "img/sticker-sm.png";
+let W = 0, H = 0, dpr = 1; const dogs = [];
+function size() { dpr = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+size(); addEventListener("resize", size);
+const MAX = 120;
+function spawn(x, y) {
+  const r = (W < 700 ? 30 : 42) * (0.75 + Math.random() * 0.5);
+  dogs.push({ x: x ?? (r + Math.random() * (W - 2 * r)), y: y ?? -r, vx: (Math.random() - 0.5) * 6, vy: Math.random() * 2, r, a: Math.random() * 6.28, va: 0 });
+  if (dogs.length > MAX) dogs.shift();
+  $("#count").textContent = dogs.length; boop(260 + Math.random() * 200); kick();
+}
+let running = false;
+function kick() { if (!running) { running = true; requestAnimationFrame(tick); } }
+function tick() {
+  cx.clearRect(0, 0, W, H); let moving = false;
+  for (const d of dogs) {
+    d.vy += 0.45; d.x += d.vx; d.y += d.vy; d.a += d.va;
+    if (d.y > H - d.r) { d.y = H - d.r; d.vy *= -0.38; d.vx *= 0.985; if (Math.abs(d.vy) < 0.6) d.vy = 0; }
+    if (d.x < d.r) { d.x = d.r; d.vx = Math.abs(d.vx) * 0.6; } if (d.x > W - d.r) { d.x = W - d.r; d.vx = -Math.abs(d.vx) * 0.6; }
+    d.va = d.vx / d.r; // they roll, they are balls
+  }
+  // balls push each other apart so they stack instead of overlapping
+  for (let i = 0; i < dogs.length; i++) for (let j = i + 1; j < dogs.length; j++) {
+    const a = dogs[i], b = dogs[j], dx = b.x - a.x, dy = b.y - a.y, dist = Math.hypot(dx, dy), min = (a.r + b.r) * 0.92;
+    if (dist > 0 && dist < min) {
+      const p = (min - dist) / 2, nx = dx / dist, ny = dy / dist;
+      a.x -= nx * p; a.y -= ny * p; b.x += nx * p; b.y += ny * p;
+      const rv = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny; if (rv < 0) { const imp = rv * 0.7; a.vx += imp * nx; a.vy += imp * ny; b.vx -= imp * nx; b.vy -= imp * ny; }
+    }
+  }
+  for (const d of dogs) {
+    if (Math.abs(d.vx) + Math.abs(d.vy) > 0.15) moving = true;
+    cx.save(); cx.translate(d.x, d.y); cx.rotate(d.a); const h = d.r * 2.25, w = h * 0.76; cx.drawImage(sprite, -w / 2, -h * 0.56, w, h); cx.restore();
+  }
+  if (moving || dogs.some((d) => d.y < H - d.r - 1)) requestAnimationFrame(tick); else running = false;
+}
+$("#rollBtn").onclick = () => spawn(); $("#rollTop").onclick = () => { for (let i = 0; i < 3; i++) setTimeout(spawn, i * 120); };
+$("#rain").onclick = () => { for (let i = 0; i < 24; i++) setTimeout(spawn, i * 70); bork(); };
+$("#shake").onclick = () => { for (const d of dogs) { d.vy = -10 - Math.random() * 12; d.vx = (Math.random() - 0.5) * 22; } bork(); kick(); };
+$("#clear").onclick = () => { dogs.length = 0; $("#count").textContent = 0; cx.clearRect(0, 0, W, H); toast("they went home. they will be back."); };
+</script>
+</body>
+</html>
