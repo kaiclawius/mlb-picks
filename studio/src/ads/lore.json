@@ -1,0 +1,25 @@
+{
+  "beat": 25,
+  "scenes": { "talk": 0, "day1": 250, "day2": 500, "day3": 750, "now": 1000, "total": 1300 },
+  "cps": 2.4,
+  "lines": [
+    { "at": 12, "text": "hi. it's me. grok dog." },
+    { "at": 125, "text": "let me tell you my lore." },
+    { "at": 345, "text": "day 1. human buys a very big ball." },
+    { "at": 440, "text": "i think: toy?" },
+    { "at": 530, "text": "day 2. tape. so much tape." },
+    { "at": 690, "text": "then two white stripes." },
+    { "at": 880, "text": "day 3. i am in the ball." },
+    { "at": 1010, "text": "now i am grok." },
+    { "at": 1058, "text": "no thoughts." },
+    { "at": 1098, "text": "only ball." }
+  ],
+  "barks": [ { "at": 338, "kind": "one" }, { "at": 852, "kind": "one" }, { "at": 1140, "kind": "two" } ],
+  "stamps": [ { "at": 258, "text": "DAY 1" }, { "at": 508, "text": "DAY 2" }, { "at": 758, "text": "DAY 3" } ],
+  "tapes": [525, 550, 575, 600],
+  "stripes": [650, 675],
+  "headDrop": 850,
+  "paws": [875, 887],
+  "title": [950, 975],
+  "end": { "coin": 1175, "be": 1200 }
+}
