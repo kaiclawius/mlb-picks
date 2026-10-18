@@ -55,6 +55,15 @@ col = Image.new('L', (W, H), 0); ImageDraw.Draw(col).line([(x0, yb - 70), ((x0 +
 colm = np.array(col) > 0; a = np.array(img); a[colm & fig2] = (231, 23, 30, 255)
 a[colm & ~cv2.erode(colm.astype(np.uint8), np.ones((9, 9), np.uint8)).astype(bool) & fig2] = (*OUT, 255)
 img = Image.fromarray(a); d = ImageDraw.Draw(img)
+# the name on the collar, along its left (front-facing) segment
+from PIL import ImageFont
+import math
+font = ImageFont.truetype('/usr/share/fonts/opentype/inter/Inter-ExtraBold.otf', 74)
+p0, p1 = (x0, yb - 70), ((x0 + x1) // 2, yb + 20); ang = math.degrees(math.atan2(p1[1] - p0[1], p1[0] - p0[0]))
+txt = Image.new('RGBA', (420, 140), (0, 0, 0, 0)); ImageDraw.Draw(txt).text((210, 70), 'NEMO', font=font, fill=(255, 255, 255, 255), anchor='mm', stroke_width=5, stroke_fill=OUT)
+txt = txt.rotate(-ang, resample=Image.BICUBIC, expand=True)
+cxn, cyn = int(p0[0] + 0.55 * (p1[0] - p0[0])), int(p0[1] + 0.55 * (p1[1] - p0[1])) + 4
+img.alpha_composite(txt, (cxn - txt.width // 2, cyn - txt.height // 2))
 tx, ty = (x0 + x1) // 2, yb + 95; d.ellipse((tx - 40, ty - 40, tx + 40, ty + 40), fill=(232, 195, 90, 255), outline=OUT, width=9); d.ellipse((tx - 12, ty - 12, tx + 12, ty + 12), fill=(176, 138, 42, 255))
 
 # --- floppy ear where Mucron's hair flips ---
