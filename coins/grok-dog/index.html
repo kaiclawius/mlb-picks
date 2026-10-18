@@ -94,8 +94,9 @@ nav .links a:hover{opacity:1;text-decoration:underline wavy var(--gold)}
 .photo .frame{position:relative;background:var(--tape);padding:14px 14px 64px;box-shadow:0 30px 60px rgba(0,0,0,.55)}
 .photo .frame img{width:100%;height:auto;aspect-ratio:1320/1643;object-fit:cover}
 .photo .cap{position:absolute;left:0;right:0;bottom:16px;text-align:center;color:var(--ink);font-size:24px}
-.photo .strip{position:absolute;width:150px;height:38px;background:rgba(244,240,230,.82);top:-16px}
-.photo .strip.a{left:-30px;transform:rotate(-28deg)} .photo .strip.b{right:-34px;transform:rotate(24deg)}
+/* the tape sits on top of the polaroid corners, slightly see-through like real tape */
+.photo .strip{position:absolute;z-index:3;width:150px;height:38px;background:rgba(236,232,220,.78);top:-12px;box-shadow:0 1px 2px rgba(0,0,0,.25);pointer-events:none}
+.photo .strip.a{left:-40px;top:2px;transform:rotate(-34deg)} .photo .strip.b{right:-42px;top:2px;transform:rotate(32deg)}
 /* the costume's eyes, alive: they sit exactly on the tape in the photo */
 .eye{position:absolute;background:var(--tape);border-radius:999px;box-shadow:inset -3px -4px 0 rgba(0,0,0,.08);transform-origin:50% 50%}
 .eye.l{left:calc(14px + (100% - 28px) * .568);top:calc(14px + (100% - 78px) * .561);width:calc((100% - 28px) * .073);height:calc((100% - 28px) * .17)}
