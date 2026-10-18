@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <!-- Nemo next to Mucron: flat colours, dark outline, long faces, the same bored side-eye.
+       Palette taken from the Mucron art: skin #ffcbba, hair #6a584c, suit #0e1f29, tie #173286, red #e7171e. -->
+  <defs>
+    <filter id="brush" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035 0.12" numOctaves="3" seed="4" />
+      <feDisplacementMap in="SourceGraphic" scale="34" />
+    </filter>
+    <filter id="grit"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="2" result="n" /><feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -2.2 1.1" result="m" /><feComposite in="SourceGraphic" in2="m" operator="in" /></filter>
+  </defs>
+  <rect width="1000" height="1000" fill="#ffffff" />
+  <!-- tricolore brush strokes -->
+  <g filter="url(#brush)">
+    <path d="M -40 330 L 250 250 L 330 560 L 40 640 Z" fill="#e7171e" transform="rotate(-6 150 450)" />
+    <path d="M 470 -40 L 1060 -40 L 1060 520 L 860 600 L 640 470 Z" fill="#173286" />
+  </g>
+  <g filter="url(#grit)" opacity="0.9">
+    <path d="M 470 -40 L 1060 -40 L 1060 520 L 860 600 L 640 470 Z" fill="#173286" opacity=".0" />
+  </g>
+
+  <g stroke="#0e1f29" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
+    <!-- ===== MUCRON ===== -->
+    <!-- suit -->
+    <path d="M -20 1020 L -10 860 Q 20 790 150 765 L 300 745 L 420 760 Q 560 790 600 880 L 620 1020 Z" fill="#0e1f29" />
+    <!-- shirt and tie -->
+    <path d="M 245 752 L 300 900 L 380 758 Z" fill="#ffffff" />
+    <path d="M 292 772 L 318 772 L 330 812 L 312 1000 L 282 1000 L 290 812 Z" fill="#173286" />
+    <path d="M 284 760 L 326 760 L 318 792 L 292 792 Z" fill="#173286" />
+    <!-- lapels -->
+    <path d="M 245 752 L 300 900 L 200 860 L 170 780 Z" fill="#0e1f29" stroke="#26404f" stroke-width="4" />
+    <path d="M 380 758 L 300 900 L 420 870 L 440 790 Z" fill="#0e1f29" stroke="#26404f" stroke-width="4" />
+    <!-- legion d'honneur pin -->
+    <circle cx="120" cy="880" r="11" fill="#e7171e" stroke-width="3" />
+    <path d="M 104 900 L 136 900" stroke="#c9c9c9" stroke-width="5" />
+    <!-- neck -->
+    <path d="M 262 610 L 250 770 Q 310 790 372 765 L 360 600 Z" fill="#ffcbba" />
+    <!-- head: long and tilted, leaning into the frame -->
+    <path d="M 240 690 Q 160 560 150 430 Q 145 300 210 220 Q 300 140 450 150 Q 560 160 610 225 Q 640 270 615 330 Q 600 380 575 420 Q 545 470 480 530 Q 400 610 330 690 Q 290 720 240 690 Z" fill="#ffcbba" />
+    <!-- ear -->
+    <path d="M 168 430 Q 130 420 135 470 Q 142 520 182 510" fill="#ffcbba" />
+    <!-- hair -->
+    <path d="M 150 400 Q 140 290 200 210 Q 290 120 450 125 Q 560 132 610 200 Q 585 205 560 196 Q 520 180 470 196 Q 400 215 330 205 Q 260 200 225 260 Q 200 310 205 400 Z" fill="#6a584c" />
+    <path d="M 470 196 Q 520 210 560 196" fill="none" stroke-width="5" />
+    <!-- forehead lines and brow -->
+    <path d="M 410 240 Q 460 228 520 240" fill="none" stroke-width="5" />
+    <path d="M 430 262 Q 470 255 515 262" fill="none" stroke-width="4" />
+    <!-- eyes: big whites, irises pushed to the side, heavy lids -->
+    <ellipse cx="420" cy="320" rx="56" ry="34" fill="#ffffff" />
+    <circle cx="450" cy="326" r="20" fill="#2a9fd0" stroke-width="4" />
+    <circle cx="455" cy="326" r="8" fill="#0e1f29" stroke="none" />
+    <path d="M 362 300 Q 420 288 478 302 L 478 296 Q 420 268 362 294 Z" fill="#ffcbba" />
+    <path d="M 362 304 Q 420 290 478 306" fill="none" stroke-width="6" />
+    <ellipse cx="592" cy="296" rx="26" ry="28" fill="#ffffff" />
+    <circle cx="603" cy="302" r="13" fill="#2a9fd0" stroke-width="4" />
+    <circle cx="607" cy="302" r="5" fill="#0e1f29" stroke="none" />
+    <path d="M 568 284 Q 594 276 616 286" fill="none" stroke-width="6" />
+    <!-- nose line and the little frown -->
+    <path d="M 560 340 Q 590 380 560 405" fill="none" stroke-width="5" />
+    <path d="M 470 470 Q 500 455 530 468" fill="none" stroke-width="6" />
+    <path d="M 472 472 L 466 480" fill="none" stroke-width="5" />
+
+    <!-- ===== NEMO ===== -->
+    <!-- body, sitting -->
+    <path d="M 610 1020 Q 600 880 660 790 Q 720 720 840 720 Q 950 730 980 830 Q 1000 920 990 1020 Z" fill="#1d1d21" />
+    <!-- front legs -->
+    <path d="M 690 1020 Q 690 930 710 870 L 770 872 Q 760 940 765 1020 Z" fill="#17171a" stroke-width="6" />
+    <path d="M 800 1020 Q 802 940 812 880 L 870 884 Q 862 950 866 1020 Z" fill="#17171a" stroke-width="6" />
+    <!-- head: the long face, leaning toward Mucron -->
+    <path d="M 930 720 Q 965 640 950 570 Q 935 470 860 440 Q 790 415 720 450 Q 670 480 650 540 Q 600 580 575 615 Q 555 650 580 670 Q 620 690 680 690 Q 720 712 790 732 Q 870 750 930 720 Z" fill="#1d1d21" />
+    <!-- fur shine -->
+    <path d="M 760 462 Q 820 448 870 470" fill="none" stroke="#45454e" stroke-width="7" />
+    <path d="M 640 590 Q 660 572 690 566" fill="none" stroke="#45454e" stroke-width="6" />
+    <path d="M 690 800 Q 720 770 760 760" fill="none" stroke="#3a3a42" stroke-width="7" />
+    <path d="M 940 760 Q 990 860 985 1000" fill="none" stroke="#4a4a54" stroke-width="6" />
+    <path d="M 735 452 Q 800 425 875 448" fill="none" stroke="#55555f" stroke-width="5" />
+    <!-- floppy ear -->
+    <path d="M 880 455 Q 945 450 965 520 Q 985 610 950 660 Q 925 640 915 600 Q 900 540 880 500 Z" fill="#101012" />
+    <!-- nose -->
+    <ellipse cx="585" cy="628" rx="30" ry="24" fill="#050506" />
+    <ellipse cx="575" cy="618" rx="9" ry="6" fill="#6b6b74" stroke="none" />
+    <!-- mouth: flat, unimpressed -->
+    <path d="M 600 668 Q 650 678 700 668" fill="none" stroke="#000" stroke-width="5" />
+    <!-- eyes: same side-eye, irises pushed toward Mucron, heavy black lids -->
+    <ellipse cx="712" cy="540" rx="34" ry="24" fill="#ffffff" />
+    <circle cx="694" cy="545" r="13" fill="#a8692a" stroke-width="4" />
+    <circle cx="691" cy="545" r="6" fill="#0e1f29" stroke="none" />
+    <path d="M 678 527 Q 712 518 746 530 L 746 520 Q 712 506 678 518 Z" fill="#1d1d21" />
+    <path d="M 678 530 Q 712 520 746 532" fill="none" stroke-width="6" />
+    <ellipse cx="808" cy="530" rx="38" ry="27" fill="#ffffff" />
+    <circle cx="788" cy="536" r="15" fill="#a8692a" stroke-width="4" />
+    <circle cx="784" cy="536" r="7" fill="#0e1f29" stroke="none" />
+    <path d="M 770 515 Q 808 504 846 518 L 846 506 Q 808 490 770 504 Z" fill="#1d1d21" />
+    <path d="M 770 518 Q 808 506 846 520" fill="none" stroke-width="6" />
+    <!-- red collar with a tag -->
+    <path d="M 700 702 Q 800 740 925 718 L 932 750 Q 800 776 694 734 Z" fill="#e7171e" />
+    <circle cx="790" cy="770" r="16" fill="#e8c35a" stroke-width="4" />
+    <circle cx="790" cy="770" r="5" fill="#b08a2a" stroke="none" />
+  </g>
+</svg>
