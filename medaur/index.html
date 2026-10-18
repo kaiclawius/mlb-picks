@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="de" class="no-js" data-m-smooth>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Medaur · Websites, Automationen, Lead Engines</title>
+<meta name="description" content="Medaur ist eine AI-native Agentur. Wir bauen Websites, Automationen und Lead Engines als ein System: Menschen finden dich, fragen an und bekommen sofort eine Antwort.">
+<meta property="og:title" content="Medaur · Kunden kommen nicht zufällig">
+<meta property="og:description" content="Websites, Automationen und Lead Engines als ein System.">
+<meta property="og:image" content="img/og.jpg">
+<meta name="theme-color" content="#f0e8d6">
+<link rel="icon" href="img/icon.png">
+<script>(function(d){d.classList.remove("no-js");if(!matchMedia("(prefers-reduced-motion: reduce)").matches)d.classList.add("m-ready");
+  setTimeout(function(){if(!(window.Motion&&window.Motion.ready))d.classList.remove("m-ready")},3000)})(document.documentElement);</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&display=swap&text=%E7%B8%81%E3%82%92%E7%B5%90%E3%81%B6%E9%A1%94%E6%B5%81%E6%8B%9B%E9%81%93%E8%A9%B1%E4%B8%80%E4%BA%8C%E4%B8%89%E5%9B%9B%E4%BA%94%E5%85%AD%E6%B8%88%E4%BA%88%E7%B4%84%E3%83%A1%E3%83%80%E3%82%A6%E3%83%AB%E8%A9%A6%E4%BD%9C%E6%8A%80%E6%AD%AF%E5%B7%A5%E5%AE%B6%E9%A3%9F%E4%BD%93%E7%A8%8E" rel="stylesheet">
+<link rel="stylesheet" href="kit/vendor/lenis.css">
+<link rel="stylesheet" href="kit/motion.css">
+<script src="kit/vendor/gsap.min.js" defer></script>
+<script src="kit/vendor/ScrollTrigger.min.js" defer></script>
+<script src="kit/vendor/SplitText.min.js" defer></script>
+<script src="kit/vendor/lenis.min.js" defer></script>
+<script type="module" src="kit/motion.js"></script>
+<script>
+  // ---- Medaur config: fill these in before going live ----
+  window.MEDAUR = {
+    EMAIL: "hallo@medaur.de",        // PLACEHOLDER: real contact address
+    CALENDAR: "",                    // optional booking link (Cal.com / Calendly); empty = mail only
+    IMPRESSUM: "#impressum",         // PLACEHOLDER: required in Germany
+    PRIVACY: "#datenschutz"          // PLACEHOLDER
+  };
+</script>
+<style>
+@property --sweep { syntax: "<angle>"; inherits: false; initial-value: 360deg; }
+:root{
+  --paper:#f0e8d6; --paper-2:#e8dec8; --card:#f6f0e2; --ink:#1c1a17; --ink-2:#3b3731; --muted:#5d564b;
+  --line:rgba(28,26,23,.16); --shu:#b22e26; --shu-ink:#9c241d; --night:#171614; --night-ink:#efe7d5; --night-muted:#b6ad9c;
+  --serif:'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',Georgia,serif;
+  --brush:'Yuji Syuku','Shippori Mincho B1',serif;
+  --ease:cubic-bezier(.22,.61,.24,1); --slow:1.6s;
+  --wrap:min(1240px,calc(100vw - 32px));
+}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.7;font-weight:500;
+  background:var(--paper) url(img/washi.jpg) repeat;background-size:768px;overflow-x:clip;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:"palt" 1}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse at 50% 40%,transparent 55%,rgba(120,92,48,.13) 100%)}
+main,header,footer{position:relative;z-index:1}
+a{color:inherit}
+img{max-width:100%;display:block}
+.wrap{width:var(--wrap);margin-inline:auto}
+.vis{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- type ---------- */
+h1,h2,h3{font-weight:800;line-height:1.18;margin:0;letter-spacing:-.01em;text-wrap:balance}
+h1{font-size:clamp(38px,4.9vw,74px);line-height:1.12}
+h2{font-size:clamp(34px,4.2vw,60px)}
+h3{font-size:clamp(22px,2vw,28px);line-height:1.3}
+p{margin:0}
+.lead{font-size:clamp(18px,1.5vw,21px);color:var(--ink-2);max-width:36em}
+.kicker{display:flex;align-items:center;gap:14px;font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.kicker .num{font-family:var(--brush);font-size:30px;letter-spacing:0;color:var(--shu-ink);text-transform:none;line-height:1}
+.jp{font-family:var(--brush);font-weight:400;line-height:1}
+.gloss{font-size:15px;color:var(--muted);letter-spacing:.04em}
+.gloss b{color:var(--ink);font-weight:700}
+
+/* brush-shaped button: solid ink, edges cut by the painted stroke */
+.btn{white-space:nowrap;--c:var(--ink);--t:var(--paper);position:relative;display:inline-flex;align-items:center;gap:.6em;padding:18px 48px 19px 36px;font:700 17px/1 var(--serif);
+  color:var(--t);background:var(--c);text-decoration:none;border:0;cursor:pointer;letter-spacing:.02em;
+  -webkit-mask:url(img/stroke.png) center/100% 100% no-repeat;mask:url(img/stroke.png) center/100% 100% no-repeat;
+  transition:translate .5s var(--ease),filter .5s var(--ease)}
+.btn:hover{translate:0 -2px;filter:brightness(1.18)}
+.btn:active{translate:0 1px}
+.btn.red{--c:var(--shu)}
+.btn.paper{--c:var(--night-ink);--t:var(--night)}
+.link{font-weight:700;text-decoration:none;background:linear-gradient(currentColor,currentColor) 0 100%/0 1.5px no-repeat;padding-bottom:3px;transition:background-size .7s var(--ease)}
+.link:hover{background-size:100% 1.5px}
+:focus-visible{outline:2px solid var(--shu);outline-offset:4px}
+
+/* hanko seal */
+.seal{display:inline-grid;place-items:center;width:var(--s,46px);height:var(--s,46px);background:var(--shu);color:#f6ead8;border-radius:5px;
+  font-family:var(--brush);font-size:calc(var(--s,46px)*.34);line-height:.95;writing-mode:vertical-rl;letter-spacing:-.02em;
+  box-shadow:inset 0 0 0 calc(var(--s,46px)*.05) #f6ead8,inset 0 0 0 calc(var(--s,46px)*.085) var(--shu);filter:url(#rough);flex:none}
+
+/* ---------- ink motion (custom, soft) ---------- */
+.m-ready [data-ink]{clip-path:inset(0 100% 0 0);filter:blur(5px);opacity:.2;
+  transition:clip-path var(--slow) var(--ease),filter 1.2s var(--ease),opacity 1.2s var(--ease)}
+.m-ready [data-ink="down"]{clip-path:inset(0 0 100% 0)}
+.m-ready [data-ink].inked{clip-path:inset(0 0 0 0);filter:blur(0);opacity:1}
+.enso{position:relative;aspect-ratio:1}
+.enso img{width:100%;height:100%;
+  -webkit-mask:conic-gradient(from -28deg,#000 var(--sweep),transparent calc(var(--sweep) + 8deg));
+          mask:conic-gradient(from -28deg,#000 var(--sweep),transparent calc(var(--sweep) + 8deg))}
+.m-ready .enso img{--sweep:0deg;transition:--sweep 2.8s cubic-bezier(.55,.1,.3,1) .3s}
+.m-ready .enso.inked img{--sweep:368deg}
+
+/* ---------- nav ---------- */
+.nav{position:sticky;top:0;z-index:20;background:linear-gradient(var(--paper) 62%,rgba(240,232,214,0));}
+.nav .wrap{display:flex;align-items:center;gap:28px;padding:18px 0 22px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-size:24px;font-weight:800;letter-spacing:.08em}
+.nav nav{display:flex;gap:26px;margin-left:auto;font-size:16px}
+.nav nav a{text-decoration:none;color:var(--ink-2)}
+.nav nav a:hover{color:var(--ink)}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;font:700 14px/1 var(--serif)}
+.lang button{border:0;background:none;padding:9px 12px;cursor:pointer;color:var(--muted);font:inherit}
+.lang button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.nav .btn{padding:14px 38px 15px 26px;font-size:15px}
+
+/* ---------- hero ---------- */
+.hero{padding:clamp(40px,7vh,90px) 0 clamp(70px,10vh,120px)}
+.hero .wrap{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(300px,440px);gap:clamp(24px,4vw,64px);align-items:center}
+.tate{writing-mode:vertical-rl;font-family:var(--brush);font-size:clamp(64px,7.4vw,118px);line-height:1;letter-spacing:.06em;color:var(--ink);
+  display:flex;flex-direction:column;align-items:center;gap:22px;align-self:start;filter:url(#bleed)}
+.tate small{font-family:var(--serif);font-size:14px;letter-spacing:.24em;color:var(--muted);writing-mode:vertical-rl;font-weight:700}
+.hero h1{margin:22px 0 26px}
+.hero h1 em{font-style:normal;color:var(--shu-ink)}
+.hero .acts{display:flex;flex-wrap:wrap;gap:18px 26px;align-items:center;margin-top:36px}
+.hero-art{position:relative}
+.hero-art .enso{width:min(100%,520px);margin-inline:auto}
+.hero-art .seal{position:absolute;right:4%;top:58%;--s:58px;transform:rotate(4deg)}
+.hero-art figcaption{text-align:center;margin-top:18px;max-width:22em;margin-inline:auto}
+
+/* ---------- sections ---------- */
+section{padding:clamp(80px,12vh,150px) 0;position:relative}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:30px;align-items:end;margin-bottom:clamp(36px,5vw,64px)}
+.sec-head h2{margin-top:16px;max-width:15em}
+.sec-head .lead{margin-top:18px}
+.big,.side-kanji,.tate{pointer-events:none}
+.side-kanji{font-family:var(--brush);font-size:clamp(90px,11vw,170px);line-height:.9;color:var(--ink);opacity:.9;writing-mode:vertical-rl;filter:url(#bleed);text-align:center}
+.side-kanji + .gloss{writing-mode:vertical-rl;margin-left:6px}
+.kanji-col{display:flex;align-items:flex-end;gap:6px}
+.rule{height:26px;width:min(420px,70%);background:url(img/stroke.png) left center/100% 100% no-repeat;opacity:.9;margin:0 0 0 -6px}
+.rule.red{background-image:url(img/stroke-red.png)}
+
+/* ---------- engine (試) ---------- */
+.engine{background:var(--card);border:1px solid var(--line);border-radius:6px;box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 30px 60px -40px rgba(70,50,20,.45);
+  display:grid;grid-template-columns:300px minmax(0,1fr);overflow:hidden;position:relative}
+.ctrl{padding:30px 28px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:22px;background:rgba(232,222,200,.45)}
+.ctrl label,.ctrl .lab{font-size:14px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.inds{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.inds button{all:unset;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:4px;font-size:17px;font-weight:700;color:var(--ink-2);transition:background .5s var(--ease),color .5s var(--ease)}
+.inds button:hover{background:rgba(28,26,23,.06)}
+.inds button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.inds button span{font-family:var(--brush);font-weight:400;font-size:20px;opacity:.75}
+.ctrl input{width:100%;margin-top:10px;padding:12px 14px;font:600 17px var(--serif);color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:4px}
+.ctrl .btn{align-self:flex-start;margin-top:4px}
+.out{padding:30px;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);grid-template-rows:auto auto;gap:22px;min-width:0}
+.pane{min-width:0}
+.pane h3{font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.pane h3 .jp{font-size:24px;color:var(--shu-ink);letter-spacing:0}
+.p-site{grid-row:1 / span 2}
+.browser{border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#fff;box-shadow:0 18px 40px -30px rgba(40,30,10,.5)}
+.bbar{display:flex;align-items:center;gap:6px;padding:9px 12px;background:#ece5d4;border-bottom:1px solid var(--line);font:600 13px var(--serif);color:var(--muted)}
+.bbar i{width:9px;height:9px;border-radius:50%;background:#cfc5ae}
+.bbar span{margin-left:10px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.site{--sb:#f5f1ea;--si:#1c2430;--sa:#b08d57;background:var(--sb);color:var(--si);padding:18px 22px 24px;min-height:330px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;transition:background .9s var(--ease),color .9s var(--ease)}
+.site .snav{display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:700;opacity:.92}
+.site .snav i{display:inline-block;width:28px;height:6px;border-radius:3px;background:currentColor;opacity:.3;margin-left:8px}
+.site .sh{font-size:clamp(24px,2.3vw,32px);line-height:1.12;font-weight:800;margin:30px 0 12px;letter-spacing:-.02em;max-width:13em;min-height:2.24em}
+.site .ss{font-size:16px;opacity:.85;max-width:28em}
+.site .scta{display:inline-block;margin-top:18px;padding:11px 18px;border-radius:6px;background:var(--sa);color:var(--sac,#fff);font-weight:700;font-size:15px}
+.site .widget{margin-top:22px;display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:8px;background:rgba(127,127,127,.12);font-size:15px}
+.site .widget b{font-size:17px}
+.site .widget u{margin-left:auto;text-decoration:none;font-weight:700;color:var(--sa)}
+.log{list-style:none;margin:0;padding:0;font-size:16px;line-height:1.5}
+.log li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;padding:9px 0;border-top:1px solid var(--line)}
+.log time{font-variant-numeric:tabular-nums;color:var(--muted);font-size:14px;padding-top:2px}
+.log .ok{color:#2f6b3a;font-weight:700}
+.leads{list-style:none;margin:0;padding:0}
+.leads li{display:grid;grid-template-columns:minmax(0,1fr) 44px;gap:2px 12px;padding:9px 0;border-top:1px solid var(--line);font-size:16px;line-height:1.4}
+.leads b{font-weight:700}
+.leads small{grid-column:1;color:var(--muted);font-size:15px}
+.leads .sc{grid-column:2;grid-row:1 / span 2;align-self:center;text-align:right;font-weight:800;font-variant-numeric:tabular-nums;font-size:18px}
+.leads .bar{grid-column:1 / -1;height:5px;background:url(img/stroke.png) left center/100% 100% no-repeat;transform-origin:left;transform:scaleX(var(--v,0));transition:transform 1.4s var(--ease);opacity:.85}
+.note{grid-column:1 / -1;font-size:15px;color:var(--muted);border-top:1px dashed var(--line);padding-top:14px;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.done{position:absolute;right:-12px;top:-26px;--s:64px;font-size:30px;opacity:0;transform:scale(1.7) rotate(-16deg);transition:opacity .35s ease,transform .55s cubic-bezier(.34,1.7,.5,1)}
+.done.on{opacity:1;transform:scale(1) rotate(-7deg)}
+.reveal-line{opacity:0;transform:translateY(8px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.reveal-line.on{opacity:1;transform:none}
+
+/* ---------- pinned path (二) ---------- */
+.path-stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,5vw,80px);align-items:center;width:var(--wrap);margin-inline:auto;min-height:100vh;padding:110px 0 50px}
+.steps{list-style:none;margin:30px 0 0;padding:0}
+.step{display:grid;grid-template-columns:56px minmax(0,1fr);gap:4px 16px;padding:18px 0;border-top:1px solid var(--line)}
+.step .jp{font-size:36px;color:var(--shu-ink);grid-row:span 2}
+.step p{color:var(--ink-2)}
+.scroll{position:relative;background:var(--card);padding:34px 34px 40px;border-radius:3px;box-shadow:0 30px 60px -40px rgba(70,50,20,.5)}
+.scroll::before,.scroll::after{content:"";position:absolute;left:-14px;right:-14px;height:14px;border-radius:7px;background:linear-gradient(#4a3b2a,#2a2118 60%,#4a3b2a)}
+.scroll::before{top:-10px}.scroll::after{bottom:-10px}
+.scroll h4{margin:0 0 14px;font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between}
+.srow{display:grid;grid-template-columns:110px minmax(0,1fr);gap:14px;padding:14px 0;border-top:1px solid var(--line);font-size:17px;line-height:1.5}
+.srow > span:first-child{font-weight:800;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--shu-ink);padding-top:3px}
+.yoyaku{position:absolute;right:22px;bottom:26px;--s:86px;font-size:34px}
+.m-pinned .step p{transition:opacity .6s}
+
+/* ---------- services (三) ---------- */
+.scrolls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,3vw,44px)}
+.kake{position:relative;background:var(--card);padding:56px 30px 46px;border-radius:2px;box-shadow:0 30px 50px -36px rgba(70,50,20,.55);transform-origin:50% -20px;transition:transform 1.4s var(--ease)}
+.kake:hover{transform:rotate(-.6deg)}
+.kake::before,.kake::after{content:"";position:absolute;left:-10px;right:-10px;height:12px;border-radius:6px;background:linear-gradient(#4a3b2a,#241c14 60%,#4a3b2a)}
+.kake::before{top:-6px}.kake::after{bottom:-6px}
+.kake .big{font-family:var(--brush);font-size:clamp(96px,9vw,140px);line-height:1;text-align:center;filter:url(#bleed)}
+.kake .gloss{text-align:center;margin:6px 0 26px}
+.kake h3{margin-bottom:10px}
+.kake > p{color:var(--ink-2)}
+.kake ul{list-style:none;margin:24px 0 0;padding:0;font-size:16px}
+.kake li{padding:8px 0 8px 22px;border-top:1px solid var(--line);position:relative}
+.kake li::before{content:"";position:absolute;left:0;top:19px;width:10px;height:3px;background:var(--shu);border-radius:2px}
+
+/* ---------- craft (技) ---------- */
+.statement{font-size:clamp(28px,3.4vw,50px);line-height:1.38;font-weight:700;max-width:24em}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 56px;margin-top:64px}
+.facts > div{padding:26px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px}
+.facts .jp{font-size:30px;color:var(--shu-ink)}
+.facts h3{font-size:21px;margin-bottom:6px}
+.facts p{color:var(--ink-2);font-size:17px}
+
+/* ---------- work (作) ---------- */
+.works{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(30px,4vw,64px) clamp(20px,3vw,48px)}
+.work{margin:0}
+.mount{background:#ece4d1;padding:clamp(10px,1.4vw,18px);border:1px solid var(--line);box-shadow:0 26px 50px -36px rgba(60,40,15,.55);overflow:hidden}
+.mount img{width:100%;aspect-ratio:16/10;object-fit:cover;transition:transform 2.2s var(--ease)}
+.work:hover .mount img{transform:scale(1.025)}
+.work figcaption{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 18px;margin-top:16px}
+.work h3{font-size:24px}
+.work .tags{font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;align-self:center}
+.work p{grid-column:1 / -1;color:var(--ink-2);font-size:17px}
+
+/* ---------- way (道) ---------- */
+.way{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;position:relative;padding-top:40px}
+.way::before{content:"";position:absolute;left:0;right:0;top:0;height:22px;background:url(img/stroke.png) left center/100% 100% no-repeat;opacity:.85}
+.way > div{position:relative}
+.way .jp{font-size:44px;color:var(--shu-ink);display:block;margin-bottom:12px}
+.way h3{font-size:22px;margin-bottom:8px}
+.way p{color:var(--ink-2);font-size:17px}
+
+/* ---------- talk (話) ---------- */
+.talk{background:var(--night) url(img/sumi.jpg) repeat;background-size:768px;color:var(--night-ink);overflow:hidden}
+.talk .kicker,.talk .gloss{color:var(--night-muted)}
+.talk .kicker .num{color:#e0574b}
+.talk .lead{color:#d9d0be}
+.talk .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,6vw,90px);align-items:center}
+.talk .enso{width:min(100%,460px);margin:0 auto}
+.talk .side-kanji{color:var(--night-ink);position:absolute;inset:0;display:grid;place-items:center;writing-mode:horizontal-tb;font-size:clamp(110px,12vw,180px);opacity:.95}
+form{display:grid;gap:16px;margin-top:34px}
+form label{display:grid;gap:6px;font-size:14px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--night-muted)}
+form input,form select,form textarea{font:500 18px/1.5 var(--serif);color:var(--night-ink);background:rgba(239,231,213,.06);border:1px solid rgba(239,231,213,.22);border-radius:4px;padding:12px 14px;letter-spacing:0;text-transform:none}
+form select option{color:#111}
+form textarea{min-height:120px;resize:vertical}
+form .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+form .btn{justify-self:start;margin-top:6px}
+.direct{margin-top:18px;color:var(--night-muted);font-size:16px}
+.direct a{color:var(--night-ink)}
+
+footer{padding:56px 0 46px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:20px 40px;align-items:center;justify-content:space-between;font-size:15px;color:var(--muted)}
+footer .brand{font-size:20px;color:var(--ink)}
+footer nav{display:flex;gap:24px;flex-wrap:wrap}
+footer a{text-decoration:none}
+footer .credit{flex-basis:100%;font-size:14px;max-width:68ch}
+
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  .nav nav{display:none}
+  .lang{margin-left:auto}
+  .engine{grid-template-columns:1fr}
+  .ctrl{border-right:0;border-bottom:1px solid var(--line)}
+  .inds{flex-direction:row;flex-wrap:wrap}
+  .inds button span{display:none}
+}
+@media (max-width:900px){
+  .hero .wrap{grid-template-columns:auto minmax(0,1fr)}
+  .hero-art{grid-column:1 / -1;max-width:440px;margin-inline:auto;width:100%}
+  .out{grid-template-columns:1fr}
+  .p-site{grid-row:auto}
+  .path-stage{grid-template-columns:1fr;min-height:0;padding:90px 0 30px;gap:24px}
+  .scrolls{grid-template-columns:1fr;max-width:560px;margin-inline:auto}
+  .facts{grid-template-columns:1fr}
+  .way{grid-template-columns:1fr 1fr;row-gap:40px}
+  .talk .wrap{grid-template-columns:1fr}
+  .talk .enso{width:min(70%,340px)}
+  .sec-head{grid-template-columns:1fr}
+  .sec-head .kanji-col{display:none}
+}
+@media (max-width:600px){
+  body{font-size:17px}
+  .nav .btn{display:none}
+  .btn{padding:16px 38px 17px 26px;font-size:16px}
+  .tate{font-size:40px;gap:12px}
+  .hero .wrap{gap:16px}
+  .hero h1{font-size:34px}
+  .tate small{font-size:12px}
+  .works{grid-template-columns:1fr}
+  .way{grid-template-columns:1fr}
+  form .row2{grid-template-columns:1fr}
+  .out{padding:22px 18px}
+  .ctrl{padding:22px 18px}
+  .inds button{padding:8px 12px;font-size:16px}
+  .done{right:14px;top:14px;--s:52px;font-size:24px}
+  .srow{grid-template-columns:1fr;gap:2px}
+  .scroll{padding:26px 20px 34px}
+  .site{padding:14px 16px 20px;min-height:0}
+}
+/* pinned stage must fit small phones */
+@media (max-width:900px){
+  .m-pinned .path-stage{padding:76px 0 20px;gap:12px;align-content:center;min-height:100vh}
+  .m-pinned .path-copy .lead{display:none}
+  .m-pinned .steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:10px}
+  .m-pinned .step{display:block;padding:6px 4px 4px 0;border-top:0}
+  .m-pinned .step p,.m-pinned .step h3{display:none}
+  .m-pinned .step .jp{font-size:28px}
+  .m-pinned .path-copy h2{font-size:30px}
+  .m-pinned .srow{padding:8px 0;font-size:15px}
+  .m-pinned .scroll{padding:20px 18px 26px}
+  .m-pinned .yoyaku{--s:58px;font-size:23px;bottom:auto;top:-22px;right:10px}
+  .m-pinned .path-copy .kicker,.m-pinned .scroll h4{display:none}
+  .m-pinned .srow{grid-template-columns:84px minmax(0,1fr);gap:8px;font-size:14.5px;line-height:1.4}
+  .m-pinned .srow > span:first-child{font-size:12px}
+  .m-pinned .path-copy h2{font-size:27px}
+}
+@media (prefers-reduced-motion:reduce){
+  .kake,.mount img,.btn{transition:none}
+  .done,.site{transition:none}
+  .reveal-line{transition:none}
+  .leads .bar{transition:none}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="bleed" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="2.4"/></filter>
+  <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="2" seed="2"/><feDisplacementMap in="SourceGraphic" scale="3"/></filter>
+</svg>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Medaur"><span class="seal" aria-hidden="true">メダ<br>ウル</span>MEDAUR</a>
+    <nav aria-label="Seiten">
+      <a href="#demo" data-i="nav1">Demo</a>
+      <a href="#leistungen" data-i="nav2">Leistungen</a>
+      <a href="#arbeiten" data-i="nav3">Arbeiten</a>
+      <a href="#ablauf" data-i="nav4">Ablauf</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Sprache"><button type="button" data-lang="de" aria-pressed="true">DE</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+    <a class="btn" href="#kontakt" data-i="navcta">Gespräch anfragen</a>
+  </div>
+</header>
+
+<main id="top">
+  <!-- hero -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="tate" lang="ja" data-ink="down" aria-label="縁を結ぶ, en o musubu: Verbindungen knüpfen">縁を結ぶ<small data-i="tate">EN O MUSUBU</small></div>
+      <div>
+        <p class="kicker" data-m="reveal" data-m-dur="1.4" data-i="kick">AI-native Agentur · Websites · Automationen · Lead Engines</p>
+        <h1 data-m="lines" data-m-dur="1.4" data-m-stagger="0.16" data-i="h1">Kunden kommen nicht <em>zufällig.</em></h1>
+        <p class="lead" data-m="reveal" data-m-dur="1.4" data-m-delay="0.35" data-i="sub">Medaur baut Websites, Automationen und Lead Engines als ein System. Menschen finden dich, fragen an und bekommen sofort eine Antwort. Du siehst nur noch die Termine.</p>
+        <div class="acts" data-m="reveal" data-m-dur="1.4" data-m-delay="0.55">
+          <a class="btn" href="#demo" data-i="cta1">An meinem Betrieb testen</a>
+          <a class="link" href="#arbeiten" data-i="cta2">Unsere Arbeiten ansehen</a>
+        </div>
+      </div>
+      <figure class="hero-art">
+        <div class="enso" data-ink-enso><img src="img/enso.png" alt="" width="1000" height="1000"></div>
+        <span class="seal" aria-hidden="true">メダ<br>ウル</span>
+        <figcaption class="gloss" data-i="ensocap"><b>縁 · en</b>: die Verbindung zwischen Menschen. Darum geht es bei jedem Kunden.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 一 demo -->
+  <section id="demo">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="kicker"><span class="num jp" lang="ja">一</span><span data-i="k1">Probier es aus</span></p>
+          <h2 data-m="lines" data-m-dur="1.3" data-i="h2a">Wähle deine Branche. Die Engine läuft für dich.</h2>
+          <p class="lead" data-m="reveal" data-m-dur="1.3" data-i="l2a">Das ist ein Beispiel dessen, was wir für dich bauen: eine Startseite, die zu deiner Branche passt, eine Automation, die Anfragen beantwortet, und eine Liste neuer Kontakte.</p>
+        </div>
+        <div class="kanji-col"><div class="side-kanji" lang="ja" data-ink="down">試</div><p class="gloss" data-i="g1">tameshi · Versuch</p></div>
+      </div>
+
+      <div class="engine" data-m="reveal" data-m-dur="1.4">
+        <div class="ctrl">
+          <div>
+            <span class="lab" id="ind-lab" data-i="lab1">Dein Betrieb</span>
+            <div class="inds" role="group" aria-labelledby="ind-lab" id="inds"></div>
+          </div>
+          <label><span data-i="lab2">Deine Stadt</span><input id="city" value="Köln" maxlength="28" autocomplete="address-level2"></label>
+          <button class="btn red" type="button" id="run" data-i="run">Engine starten</button>
+        </div>
+        <div class="out" aria-live="polite">
+          <div class="pane p-site">
+            <h3><span class="jp" lang="ja">一</span><span data-i="p1">Website</span></h3>
+            <div class="browser">
+              <div class="bbar"><i></i><i></i><i></i><span id="url">praxis-lindenhof.de</span></div>
+              <div class="site" id="site">
+                <div class="snav"><span id="s-brand">Brand</span><span><i></i><i></i><i></i></span></div>
+                <p class="sh" id="s-h">&nbsp;</p>
+                <p class="ss" id="s-s">&nbsp;</p>
+                <span class="scta" id="s-cta">&nbsp;</span>
+                <div class="widget"><span id="s-w1"></span><b id="s-w2"></b><u id="s-w3"></u></div>
+              </div>
+            </div>
+          </div>
+          <div class="pane">
+            <h3><span class="jp" lang="ja">二</span><span data-i="p2">Automation</span></h3>
+            <ol class="log" id="log"></ol>
+          </div>
+          <div class="pane">
+            <h3><span class="jp" lang="ja">三</span><span data-i="p3">Lead Engine</span></h3>
+            <ul class="leads" id="leads"></ul>
+          </div>
+          <p class="note"><span data-i="note">Beispieldaten. Für deinen Betrieb bauen wir es mit echten Daten, deinen Tools und deiner Freigabe.</span><a class="link" href="#kontakt" data-i="notecta">So etwas für mich bauen</a></p>
+        </div>
+        <span class="seal done" id="done" lang="ja" aria-hidden="true">済</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 二 path (pinned) -->
+  <section class="path" data-m="pin" data-m-step-length="75" aria-labelledby="path-h">
+    <div class="path-stage" data-m-stage>
+      <div class="path-copy">
+        <p class="kicker"><span class="num jp" lang="ja">二</span><span data-i="k2">Ein System statt drei Dienstleister</span></p>
+        <h2 id="path-h" data-i="h2b">So kommt ein Kunde zu dir.</h2>
+        <p class="lead" style="margin-top:16px" data-i="l2b">Eine Website allein wartet. Ein System sucht, überzeugt, antwortet und trägt den Termin ein.</p>
+        <ol class="steps">
+          <li class="step" data-m-step><span class="jp" lang="ja">一</span><h3 data-i="s1">Gefunden werden</h3><p data-ind="pinLead"></p></li>
+          <li class="step" data-m-step><span class="jp" lang="ja">二</span><h3 data-i="s2">Überzeugen</h3><p data-ind="pinSite"></p></li>
+          <li class="step" data-m-step><span class="jp" lang="ja">三</span><h3 data-i="s3">Sofort antworten</h3><p data-ind="pinAuto"></p></li>
+          <li class="step" data-m-step><span class="jp" lang="ja">四</span><h3 data-i="s4">Nur noch zusagen</h3><p data-ind="pinDone"></p></li>
+        </ol>
+      </div>
+      <div class="scroll" role="img" id="scroll-card" aria-label="Beispiel: der Weg eines Kunden">
+        <h4><span data-i="file">Kundenakte · Beispiel</span><span data-ind="label"></span></h4>
+        <div class="srow" data-m-on-step="0"><span data-i="r1">Quelle</span><span data-ind="src"></span></div>
+        <div class="srow" data-m-on-step="1"><span data-i="r2">Website</span><span data-ind="visit"></span></div>
+        <div class="srow" data-m-on-step="2"><span data-i="r3">Erkannt</span><span data-ind="kind"></span></div>
+        <div class="srow" data-m-on-step="2"><span data-i="r4">Antwort</span><span data-ind="action"></span></div>
+        <div class="srow" data-m-on-step="3"><span data-i="r5">Kalender</span><span data-ind="booked"></span></div>
+        <span class="seal yoyaku" lang="ja" data-m="stamp" data-m-on-step="3" data-m-rotate-to="-8" aria-hidden="true">予約</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 三 services -->
+  <section id="leistungen">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="kicker"><span class="num jp" lang="ja">三</span><span data-i="k3">Was wir bauen</span></p>
+          <h2 data-m="lines" data-m-dur="1.3" data-i="h2c">Drei Teile, die zusammen arbeiten.</h2>
+        </div>
+      </div>
+      <div class="scrolls" data-m="reveal-children" data-m-stagger="0.18" data-m-dur="1.4">
+        <article class="kake">
+          <div class="big" lang="ja" aria-hidden="true">顔</div>
+          <p class="gloss" data-i="g-kao"><b>kao</b> · das Gesicht</p>
+          <h3 data-i="t-web">Websites</h3>
+          <p data-i="c-web">Eine Seite mit einer Idee, nicht aus dem Baukasten. Sie sagt in Sekunden, was du tust, und führt zu genau einer Handlung.</p>
+          <ul>
+            <li data-i="w1">Inventar und Idee: was nur du hast</li>
+            <li data-i="w2">Texte in der Sprache deiner Kunden</li>
+            <li data-i="w3">Design und ruhige Motion</li>
+            <li data-i="w4">Schnell, gemessen auf drei Bildschirmbreiten</li>
+            <li data-i="w5">Suchmaschinen-Grundlagen und strukturierte Daten</li>
+          </ul>
+        </article>
+        <article class="kake">
+          <div class="big" lang="ja" aria-hidden="true">流</div>
+          <p class="gloss" data-i="g-nagare"><b>nagare</b> · der Fluss</p>
+          <h3 data-i="t-auto">Automationen</h3>
+          <p data-i="c-auto">Die Arbeit zwischen deinen Tools macht keiner mehr von Hand. Wo es zählt, gibst du frei.</p>
+          <ul>
+            <li data-i="a1">Anfragen sortieren und beantworten</li>
+            <li data-i="a2">Angebote und Rechnungen vorbereiten</li>
+            <li data-i="a3">Termine, Erinnerungen, Nachfassen</li>
+            <li data-i="a4">Berichte, die von allein kommen</li>
+            <li data-i="a5">Deine Freigabe an den wichtigen Stellen</li>
+          </ul>
+        </article>
+        <article class="kake">
+          <div class="big" lang="ja" aria-hidden="true">招</div>
+          <p class="gloss" data-i="g-maneku"><b>maneku</b> · einladen</p>
+          <h3 data-i="t-lead">Lead Engines</h3>
+          <p data-i="c-lead">Neue Kunden, die nicht vom Zufall abhängen. Wir finden die Menschen, die dich gerade brauchen, und laden sie ein.</p>
+          <ul>
+            <li data-i="l1">Zielgruppe und Kaufsignale</li>
+            <li data-i="l2">Quellen: Suche, Karten, Verzeichnisse, Empfehlungen</li>
+            <li data-i="l3">Anreichern und bewerten</li>
+            <li data-i="l4">Erstkontakt, der nach dir klingt</li>
+            <li data-i="l5">Übergabe in dein CRM</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 四 craft -->
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="kicker"><span class="num jp" lang="ja">四</span><span data-i="k4">Was AI-native bei uns heißt</span></p>
+        </div>
+        <div class="kanji-col"><div class="side-kanji" lang="ja" data-ink="down">技</div><p class="gloss" data-i="g4">waza · Handwerk</p></div>
+      </div>
+      <p class="statement" data-m="highlight" data-i="stmt">Agenten machen bei uns die Fleißarbeit: recherchieren, entwerfen, prüfen, nachfassen. Geschmack, Entscheidungen und Verantwortung bleiben bei Menschen.</p>
+      <div class="facts" data-m="reveal-children" data-m-stagger="0.14" data-m-dur="1.3">
+        <div><span class="jp" lang="ja">一</span><div><h3 data-i="f1h">Jede Seite wird gemessen</h3><p data-i="f1">Vor dem Launch läuft sie in einem echten Browser auf 1440, 768 und 390 Pixeln Breite: Kontrast, Überlauf, verdeckter Text, Schriften, Bilder.</p></div></div>
+        <div><span class="jp" lang="ja">二</span><div><h3 data-i="f2h">Filme aus Code</h3><p data-i="f2">Produktfilme und Clips rendern wir aus Code. Ändert sich dein Produkt, ändert sich der Film mit.</p></div></div>
+        <div><span class="jp" lang="ja">三</span><div><h3 data-i="f3h">Eigene Stimmen</h3><p data-i="f3">Sprecherstimmen für Trailer und Erklärvideos erzeugen wir auf eigener Hardware. Deine Texte gehen an keinen Sprachdienst.</p></div></div>
+        <div><span class="jp" lang="ja">四</span><div><h3 data-i="f4h">Geprüfter Code</h3><p data-i="f4">Fremde Werkzeuge und Bibliotheken analysieren wir mit eigenem Prüfwerkzeug, bevor sie in dein Projekt kommen.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 五 work -->
+  <section id="arbeiten">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="kicker"><span class="num jp" lang="ja">五</span><span data-i="k5">Aus unserem Studio</span></p>
+          <h2 data-m="lines" data-m-dur="1.3" data-i="h2e">Seiten mit einer Idee. Und einem Film dazu.</h2>
+        </div>
+        <div class="kanji-col"><div class="side-kanji" lang="ja" data-ink="down">作</div><p class="gloss" data-i="g5">saku · Werk</p></div>
+      </div>
+      <div class="works">
+        <figure class="work" data-m="reveal" data-m-dur="1.4">
+          <div class="mount"><img src="img/work/payroll.jpg" alt="Payroll.exe: Startseite mit einem Drucker, der Gehaltszettel druckt" width="1200" height="750" loading="lazy" data-m="image"></div>
+          <figcaption><h3>Payroll.exe</h3><span class="tags" data-i="tg1">Web · Film</span><p data-i="wk1">Produktseite mit laufender Demo: Agenten stellen sich gegenseitig ein und bezahlen sich. Dazu ein Produktfilm in drei Formaten.</p></figcaption>
+        </figure>
+        <figure class="work" data-m="reveal" data-m-dur="1.4" data-m-delay="0.15">
+          <div class="mount"><img src="img/work/mission-s.jpg" alt="Mission S: geteilte Startseite, weißes gegen schwarzes Auto" width="1200" height="750" loading="lazy" data-m="image"></div>
+          <figcaption><h3>Mission S</h3><span class="tags" data-i="tg2">Web · Generator</span><p data-i="wk2">Kampagnenseite als Duell in zwei Hälften, mit einem Bild-Generator, den Besucher teilen.</p></figcaption>
+        </figure>
+        <figure class="work" data-m="reveal" data-m-dur="1.4">
+          <div class="mount"><img src="img/work/nemo-mucron.jpg" alt="Nemo Mucron: gezeichnete Startseite mit Figur und Hund" width="1200" height="750" loading="lazy" data-m="image"></div>
+          <figcaption><h3>Nemo Mucron</h3><span class="tags" data-i="tg3">Web · Figur · Stimme</span><p data-i="wk3">Zweisprachige Seite in Englisch und Französisch, eine gezeichnete Figur und ein Trailer, in dem sie mit eigener Stimme spricht.</p></figcaption>
+        </figure>
+        <figure class="work" data-m="reveal" data-m-dur="1.4" data-m-delay="0.15">
+          <div class="mount"><img src="img/work/grok-dog.jpg" alt="Grok Dog: Startseite mit Polaroid und Klebeband" width="1200" height="750" loading="lazy" data-m="image"></div>
+          <figcaption><h3>Grok Dog</h3><span class="tags" data-i="tg4">Web · Clip · Film</span><p data-i="wk4">Kampagnenseite aus Klebeband und Polaroids, ein Werbeclip und ein Puppenfilm, in dem der Hund seine Geschichte erzählt.</p></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 六 way -->
+  <section id="ablauf">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="kicker"><span class="num jp" lang="ja">六</span><span data-i="k6">Der Weg</span></p>
+          <h2 data-m="lines" data-m-dur="1.3" data-i="h2f">Vom ersten Gespräch zum laufenden System.</h2>
+        </div>
+        <div class="kanji-col"><div class="side-kanji" lang="ja" data-ink="down">道</div><p class="gloss" data-i="g6">michi · der Weg</p></div>
+      </div>
+      <div class="way" data-ink data-m="reveal-children" data-m-stagger="0.18" data-m-dur="1.4">
+        <div><span class="jp" lang="ja">一</span><h3 data-i="d1h">Gespräch</h3><p data-i="d1">Wir fragen nach deinem Betrieb, deinen Kunden und dem, was heute liegen bleibt. Nicht nach Features.</p></div>
+        <div><span class="jp" lang="ja">二</span><h3 data-i="d2h">Idee</h3><p data-i="d2">Wir sammeln, was nur du hast, und schreiben die Idee in einem Satz auf. Du sagst ja oder nein, bevor wir bauen.</p></div>
+        <div><span class="jp" lang="ja">三</span><h3 data-i="d3h">Bau</h3><p data-i="d3">Website, Automationen und Lead Engine entstehen zusammen. Jeden Stand siehst du als Link.</p></div>
+        <div><span class="jp" lang="ja">四</span><h3 data-i="d4h">Betrieb</h3><p data-i="d4">Nach dem Start messen wir, was Anfragen bringt, und bauen dort weiter, wo es sich lohnt.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 話 talk -->
+  <section class="talk" id="kontakt">
+    <div class="wrap">
+      <div>
+        <p class="kicker"><span class="num jp" lang="ja">話</span><span data-i="k7">hanashi · Gespräch</span></p>
+        <h2 data-m="lines" data-m-dur="1.3" style="margin-top:16px" data-i="h2g">Erzähl uns von deinem Betrieb.</h2>
+        <p class="lead" style="margin-top:18px" data-i="l2g">Ein paar Sätze reichen. Wir melden uns persönlich, mit einer ersten Idee für dein System.</p>
+        <form id="form">
+          <div class="row2">
+            <label><span data-i="fn">Name</span><input name="name" required autocomplete="name"></label>
+            <label><span data-i="fe">E-Mail</span><input name="email" type="email" required autocomplete="email"></label>
+          </div>
+          <label><span data-i="fb">Branche</span><select name="ind" id="f-ind"></select></label>
+          <label><span data-i="fm">Was soll besser werden?</span><textarea name="msg" id="f-msg"></textarea></label>
+          <button class="btn paper" type="submit" data-i="send">Anfrage senden</button>
+        </form>
+        <p class="direct"><span data-i="direct">Oder direkt:</span> <a class="link" id="mail" href="mailto:hallo@medaur.de">hallo@medaur.de</a></p>
+      </div>
+      <div class="enso" data-ink-enso aria-hidden="true"><img src="img/enso-paper.png" alt="" width="1000" height="1000"><div class="side-kanji" lang="ja">話</div></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="seal" style="--s:38px" aria-hidden="true">メダ<br>ウル</span>MEDAUR</a>
+    <nav aria-label="Rechtliches"><a class="link" id="imp" href="#impressum">Impressum</a><a class="link" id="dsg" href="#datenschutz" data-i="priv">Datenschutz</a></nav>
+    <span>© 2026 Medaur</span>
+    <p class="credit" data-i="credit">Schriften: Shippori Mincho B1 und Yuji Syuku (SIL Open Font License). Pinselstriche und Papier: von Medaur in Code gemalt.</p>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const C = window.MEDAUR;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const $ = (s, r = document) => r.querySelector(s);
+
+  // ---------- industries: sample data for the demo (clearly labelled as examples on the page) ----------
+  const IND = [
+    { id: "dental", jp: "歯", url: "praxis-lindenhof.de", look: { sb: "#f2f6f5", si: "#0f2a2e", sa: "#1f7a70" },
+      de: { label: "Zahnarztpraxis", brand: "Praxis am Lindenhof", h: "Keine Angst vorm Zahnarzt. Versprochen.", s: "Für Familien und Angstpatienten in {city}. Termine auch abends.", cta: "Termin online buchen", w: ["Nächster freier Termin", "Di, 10:30", "Buchen"],
+        enquiry: "„Ich war seit Jahren nicht beim Zahnarzt und habe Angst. Ich brauche eine Kontrolle.“", kind: "Neupatient · Angstpatient · Kontrolle", action: "Ruhige Antwort entworfen, Ersttermin Di 10:30 vorgeschlagen", human: "Praxisteam gibt frei", booked: "Di 10:30 im Kalender, Erinnerung 24 h vorher",
+        src: "Google Maps · „Zahnarzt Angstpatient {city}“", visit: "Liest „Keine Angst“, klickt „Termin online buchen“",
+        leads: [["Google Maps", "„Zahnarzt Angstpatient {city}“", 92], ["Kostenrechner", "Implantat, Unterkiefer", 81], ["Recall", "letzte Prophylaxe vor 7 Monaten", 74]],
+        pinLead: "Wer in {city} „Zahnarzt Angstpatient“ sucht, findet dich: auf der Karte, in der Suche, in den Bewertungen.", pinSite: "Die Seite nimmt zuerst die Angst und zeigt dann den nächsten freien Termin.", pinAuto: "Die Anfrage wird erkannt, eine ruhige Antwort entworfen und vom Team freigegeben.", pinDone: "Der Termin steht. Die Erinnerung läuft von allein." },
+      en: { label: "Dental practice", brand: "Lindenhof Dental", h: "Scared of the dentist? We get it.", s: "For families and anxious patients in {city}. Evening slots too.", cta: "Book online", w: ["Next free slot", "Tue, 10:30", "Book"],
+        enquiry: "“I haven’t seen a dentist in years and I’m nervous. I need a check-up.”", kind: "new patient · anxious · check-up", action: "Calm reply drafted, first visit Tue 10:30 offered", human: "Front desk approves", booked: "Tue 10:30 in the calendar, reminder 24 h before",
+        src: "Google Maps · “anxious dentist {city}”", visit: "Reads “we get it”, clicks “Book online”",
+        leads: [["Google Maps", "“anxious dentist {city}”", 92], ["Cost calculator", "implant, lower jaw", 81], ["Recall", "last cleaning 7 months ago", 74]],
+        pinLead: "Someone in {city} searches “anxious dentist” and finds you: on the map, in search, in the reviews.", pinSite: "The page takes away the fear first, then shows the next free slot.", pinAuto: "The enquiry is recognised, a calm reply drafted and approved by the team.", pinDone: "The appointment is set. The reminder runs by itself." } },
+    { id: "trades", jp: "工", url: "nordlicht-haustechnik.de", look: { sb: "#f4f1ea", si: "#1d1d1b", sa: "#c94a24" },
+      de: { label: "Handwerk", brand: "Nordlicht Haustechnik", h: "Heizung aus? Wir kommen heute noch.", s: "Sanitär und Heizung in {city}. Notdienst bis 22 Uhr.", cta: "Foto schicken, Preis bekommen", w: ["Angebot per Foto", "Foto hochladen", "Senden"],
+        enquiry: "„Unsere Therme zeigt F28, kein Warmwasser. Foto anbei.“", kind: "Notfall · Therme · Fehler F28 · Foto", action: "Antwort entworfen: wahrscheinlich Zündung, Einsatz heute 16–18 Uhr", human: "Meister prüft das Foto und gibt frei", booked: "Einsatz in der Tour, Kunde per SMS informiert",
+        src: "Google Maps · „Heizung Notdienst {city}“", visit: "Lädt ein Foto der Therme hoch",
+        leads: [["Google Maps", "„Heizung Notdienst {city}“", 95], ["Foto-Anfrage", "Badsanierung, 8 m²", 83], ["Wartung fällig", "Therme, letzte Wartung 2024", 71]],
+        pinLead: "Wenn in {city} abends die Heizung ausfällt, wird dein Betrieb zuerst gefunden.", pinSite: "Ein Foto reicht: Die Seite fragt nur, was du für ein Angebot wirklich brauchst.", pinAuto: "Der Fehlercode wird erkannt, die Anfrage sortiert und ein Einsatz vorgeschlagen.", pinDone: "Der Einsatz steht in der Tour. Telefoniert hat niemand." },
+      en: { label: "Trades", brand: "Northlight Heating", h: "Heating down? We come today.", s: "Plumbing and heating in {city}. Emergency service until 10 pm.", cta: "Send a photo, get a price", w: ["Quote by photo", "Upload a photo", "Send"],
+        enquiry: "“Our boiler shows F28, no hot water. Photo attached.”", kind: "emergency · boiler · error F28 · photo", action: "Reply drafted: likely ignition, visit today 4–6 pm", human: "Master technician checks the photo and approves", booked: "Visit on today’s route, customer told by text",
+        src: "Google Maps · “emergency heating {city}”", visit: "Uploads a photo of the boiler",
+        leads: [["Google Maps", "“emergency heating {city}”", 95], ["Photo request", "bathroom refit, 8 m²", 83], ["Service due", "boiler, last service 2024", 71]],
+        pinLead: "When the heating fails in {city} at night, your business is found first.", pinSite: "One photo is enough: the page asks only what you need for a quote.", pinAuto: "The error code is recognised, the enquiry sorted and a visit proposed.", pinDone: "The visit is on the route. Nobody had to call." } },
+    { id: "realty", jp: "家", url: "hansen-rau.de", look: { sb: "#f5f3ef", si: "#1c2430", sa: "#8a6a35" },
+      de: { label: "Immobilien", brand: "Hansen & Rau Immobilien", h: "Was ist deine Wohnung heute wert?", s: "Eine erste Spanne in zwei Minuten. Verkauf mit Maklern aus {city}.", cta: "Wert berechnen", w: ["Wohnungswert", "Adresse eingeben", "Berechnen"],
+        enquiry: "„Wir überlegen, unsere 3-Zimmer-Wohnung zu verkaufen. Was ist sie wert?“", kind: "Eigentümer · Verkaufsabsicht · 3 Zimmer, 82 m²", action: "Persönliche Wertspanne und Einladung zur Besichtigung entworfen", human: "Makler prüft die Spanne und gibt frei", booked: "Besichtigung Do 17:00 im Kalender",
+        src: "Suche · „Wohnung verkaufen {city}“", visit: "Nutzt den Bewertungsrechner, hinterlässt die Adresse",
+        leads: [["Bewertungsrechner", "3 Zimmer, 82 m², Altbau", 94], ["Portal-Anfrage", "sucht Haus mit Garten", 77], ["Newsletter", "Kaufinteresse, Budget geklärt", 69]],
+        pinLead: "Eigentümer in {city}, die über einen Verkauf nachdenken, finden zuerst deinen Rechner.", pinSite: "Der Rechner gibt sofort eine Spanne und macht aus Neugier einen Kontakt.", pinAuto: "Die Anfrage bekommt eine persönliche Spanne und einen Besichtigungstermin.", pinDone: "Du sitzt beim Eigentümer im Wohnzimmer, nicht am Telefon." },
+      en: { label: "Real estate", brand: "Hansen & Rau Estates", h: "What is your flat worth today?", s: "A first range in two minutes. Sell with agents from {city}.", cta: "Get my valuation", w: ["Home value", "Enter address", "Calculate"],
+        enquiry: "“We’re thinking of selling our 3-room flat. What is it worth?”", kind: "owner · intends to sell · 3 rooms, 82 m²", action: "Personal value range and viewing invitation drafted", human: "Agent checks the range and approves", booked: "Viewing Thu 5 pm in the calendar",
+        src: "Search · “sell flat {city}”", visit: "Uses the valuation tool, leaves the address",
+        leads: [["Valuation tool", "3 rooms, 82 m², period building", 94], ["Portal enquiry", "looking for a house with garden", 77], ["Newsletter", "buying, budget confirmed", 69]],
+        pinLead: "Owners in {city} who are thinking of selling find your calculator first.", pinSite: "The calculator gives a range at once and turns curiosity into a contact.", pinAuto: "The enquiry gets a personal range and a viewing slot.", pinDone: "You sit in the owner’s living room, not on the phone." } },
+    { id: "food", jp: "食", url: "trattoria-fiume.de", look: { sb: "#fbf4ea", si: "#2b1a12", sa: "#b23b26" },
+      de: { label: "Restaurant", brand: "Trattoria Fiume", h: "Heute Abend ist noch ein Tisch frei.", s: "Frische Pasta in {city}. Die Karte wechselt jeden Tag.", cta: "Tisch reservieren", w: ["Heute frei", "19:00 · 4 Plätze", "Reservieren"],
+        enquiry: "„Habt ihr Samstag einen Tisch für 12 Personen? Geburtstag.“", kind: "Gruppe · 12 Personen · Samstag · Anlass", action: "Angebot entworfen: Nebenraum 19:30, Menüvorschlag, Anzahlung", human: "Inhaber gibt frei", booked: "Reservierung bestätigt, Menü an die Küche",
+        src: "Google Maps · „Pasta {city}“, jetzt geöffnet", visit: "Sieht den freien Tisch von heute Abend",
+        leads: [["Google Maps", "„Pasta {city}“, jetzt geöffnet", 90], ["Firmenfeier", "Weihnachtsessen, 30 Personen", 86], ["Stammgast", "seit 6 Wochen nicht da", 68]],
+        pinLead: "Wer in {city} gerade Hunger hat, sieht dich: geöffnet, nah, gut bewertet.", pinSite: "Die Seite zeigt den freien Tisch von heute Abend, nicht ein PDF der Karte.", pinAuto: "Gruppenanfragen bekommen sofort ein Angebot mit Menü und Anzahlung.", pinDone: "Der Tisch ist bestätigt. Die Küche weiß Bescheid." },
+      en: { label: "Restaurant", brand: "Trattoria Fiume", h: "There’s still a table for tonight.", s: "Fresh pasta in {city}. The menu changes every day.", cta: "Book a table", w: ["Free tonight", "7 pm · 4 seats", "Book"],
+        enquiry: "“Do you have a table for 12 on Saturday? It’s a birthday.”", kind: "group · 12 people · Saturday · occasion", action: "Offer drafted: private room 7:30 pm, set menu, deposit", human: "Owner approves", booked: "Booking confirmed, menu sent to the kitchen",
+        src: "Google Maps · “pasta {city}”, open now", visit: "Sees tonight’s free table",
+        leads: [["Google Maps", "“pasta {city}”, open now", 90], ["Company party", "Christmas dinner, 30 people", 86], ["Regular", "not seen for 6 weeks", 68]],
+        pinLead: "Anyone hungry in {city} right now sees you: open, close, well reviewed.", pinSite: "The page shows tonight’s free table, not a PDF of the menu.", pinAuto: "Group enquiries get an offer with menu and deposit at once.", pinDone: "The table is confirmed. The kitchen knows." } },
+    { id: "tax", jp: "税", url: "kanzlei-weber.de", look: { sb: "#f3f4f6", si: "#111827", sa: "#2f4fc6" },
+      de: { label: "Steuerkanzlei", brand: "Kanzlei Weber", h: "Belege rein, Kopf frei.", s: "Steuerberatung für Selbstständige und kleine Firmen in {city}.", cta: "Erstgespräch buchen", w: ["Mandat anfragen", "Belege hochladen", "Starten"],
+        enquiry: "„Ich bin seit März selbstständig und habe noch keinen Steuerberater.“", kind: "Gründerin · Einzelunternehmen · Buchhaltung und Abschluss", action: "Antwort mit Gründer-Checkliste entworfen, Erstgespräch Mi 09:00", human: "Steuerberaterin gibt frei", booked: "Erstgespräch Mi 09:00, Upload für Unterlagen offen",
+        src: "Suche · „Steuerberater Gründer {city}“", visit: "Liest „für Selbstständige“, bucht ein Erstgespräch",
+        leads: [["Suche", "„Steuerberater Gründer {city}“", 91], ["Empfehlung", "von der Gründungsberatung der Hausbank", 84], ["Website-Formular", "GmbH, 12 Mitarbeitende", 73]],
+        pinLead: "Gründer in {city}, die einen Steuerberater suchen, finden eine Kanzlei, die zu ihnen passt.", pinSite: "Die Seite sagt klar, für wen ihr arbeitet und was der erste Schritt ist.", pinAuto: "Die Anfrage wird eingeordnet, die passende Checkliste geht raus, der Termin steht.", pinDone: "Das neue Mandat kommt mit Unterlagen ins Erstgespräch." },
+      en: { label: "Tax advisor", brand: "Weber Tax Advisors", h: "Hand us the receipts. Keep your head clear.", s: "Tax advice for freelancers and small companies in {city}.", cta: "Book a first call", w: ["Become a client", "Upload receipts", "Start"],
+        enquiry: "“I went freelance in March and still have no tax advisor.”", kind: "founder · sole trader · bookkeeping and annual accounts", action: "Reply with founder checklist drafted, first call Wed 9 am", human: "Tax advisor approves", booked: "First call Wed 9 am, document upload open",
+        src: "Search · “tax advisor freelancer {city}”", visit: "Reads “for freelancers”, books a first call",
+        leads: [["Search", "“tax advisor freelancer {city}”", 91], ["Referral", "from the bank’s start-up advice", 84], ["Website form", "limited company, 12 staff", 73]],
+        pinLead: "Founders in {city} looking for a tax advisor find a firm that fits them.", pinSite: "The page says clearly who you work for and what the first step is.", pinAuto: "The enquiry is sorted, the right checklist goes out, the call is booked.", pinDone: "The new client arrives at the first call with documents." } },
+    { id: "fit", jp: "体", url: "studio-kraftwerk.de", look: { sb: "#151614", si: "#f1f1ec", sa: "#c6ff3d", sac: "#151614" },
+      de: { label: "Fitnessstudio", brand: "Studio Kraftwerk", h: "Dein erstes Training zahlst du nicht.", s: "Kleine Gruppen und echte Trainer, mitten in {city}.", cta: "Probetraining sichern", w: ["Probetraining", "Mo, 18:00", "Sichern"],
+        enquiry: "„Ich will nach der Schwangerschaft wieder anfangen. Gibt es Kurse?“", kind: "Neukundin · Wiedereinstieg · Kurse", action: "Antwort entworfen: Rückbildungskurs, Probetraining Mo 18:00", human: "Trainerin gibt frei", booked: "Probetraining gebucht, Erinnerung und Anfahrt verschickt",
+        src: "Instagram · Antwort auf eine Story", visit: "Sieht den nächsten freien Termin und die Trainerin",
+        leads: [["Instagram", "Antwort auf eine Story: „Preise?“", 88], ["Probetraining", "nicht gekommen, neuer Termin offen", 76], ["Mitglied", "seit 14 Monaten, kommt selten", 64]],
+        pinLead: "Wer in {city} wieder anfangen will, findet dein Probetraining, nicht nur deine Preise.", pinSite: "Die Seite zeigt den nächsten freien Termin und wer dich trainiert.", pinAuto: "Jede Nachricht bekommt eine Antwort mit passendem Kurs und Termin.", pinDone: "Montag um 18 Uhr steht sie in der Tür." },
+      en: { label: "Fitness studio", brand: "Studio Kraftwerk", h: "Your first session is on us.", s: "Small groups and real coaches in the middle of {city}.", cta: "Claim a trial session", w: ["Trial session", "Mon, 6 pm", "Claim"],
+        enquiry: "“I want to start again after my pregnancy. Do you have classes?”", kind: "new member · returning · classes", action: "Reply drafted: postnatal class, trial Mon 6 pm", human: "Coach approves", booked: "Trial booked, reminder and directions sent",
+        src: "Instagram · reply to a story", visit: "Sees the next free slot and the coach",
+        leads: [["Instagram", "story reply: “prices?”", 88], ["Trial session", "no-show, new slot open", 76], ["Member", "14 months, rarely comes", 64]],
+        pinLead: "People in {city} who want to start again find your trial session, not just your prices.", pinSite: "The page shows the next free slot and who will coach you.", pinAuto: "Every message gets a reply with the right class and a slot.", pinDone: "On Monday at 6 pm she walks in." } }
+  ];
+
+  // ---------- language ----------
+  const EN = {
+    nav1: "Demo", nav2: "Services", nav3: "Work", nav4: "Process", navcta: "Ask for a call", tate: "EN O MUSUBU",
+    kick: "AI-native agency · Websites · Automations · Lead engines",
+    h1: "Customers don’t arrive by <em>accident.</em>",
+    sub: "Medaur builds websites, automations and lead engines as one system. People find you, ask, and get an answer at once. You only see the appointments.",
+    cta1: "Try it on my business", cta2: "See our work",
+    ensocap: "<b>縁 · en</b>: the bond between people. Every customer starts with one.",
+    k1: "Try it", h2a: "Pick your trade. The engine runs for you.", l2a: "This is an example of what we build for you: a homepage that fits your trade, an automation that answers enquiries, and a list of new contacts.", g1: "tameshi · a try",
+    lab1: "Your business", lab2: "Your city", run: "Start the engine", p1: "Website", p2: "Automation", p3: "Lead engine",
+    note: "Sample data. For your business we build it with real data, your tools and your approval.", notecta: "Build this for me",
+    k2: "One system instead of three vendors", h2b: "How a customer finds their way to you.", l2b: "A website alone waits. A system searches, convinces, answers and books the appointment.",
+    s1: "Be found", s2: "Convince", s3: "Answer at once", s4: "Just say yes", file: "Customer file · example", r1: "Source", r2: "Website", r3: "Recognised", r4: "Reply", r5: "Calendar",
+    k3: "What we build", h2c: "Three parts that work together.",
+    "g-kao": "<b>kao</b> · the face", "t-web": "Websites", "c-web": "A page with an idea, not from a template. It says in seconds what you do and leads to exactly one action.",
+    w1: "Inventory and idea: what only you have", w2: "Copy in your customers’ words", w3: "Design and calm motion", w4: "Fast, measured at three screen widths", w5: "Search basics and structured data",
+    "g-nagare": "<b>nagare</b> · the flow", "t-auto": "Automations", "c-auto": "Nobody does the work between your tools by hand any more. Where it matters, you approve.",
+    a1: "Sort and answer enquiries", a2: "Prepare quotes and invoices", a3: "Appointments, reminders, follow-ups", a4: "Reports that arrive by themselves", a5: "Your approval at the steps that matter",
+    "g-maneku": "<b>maneku</b> · to invite", "t-lead": "Lead engines", "c-lead": "New customers that don’t depend on luck. We find the people who need you right now and invite them.",
+    l1: "Audience and buying signals", l2: "Sources: search, maps, directories, referrals", l3: "Enrich and score", l4: "A first message that sounds like you", l5: "Handover to your CRM",
+    k4: "What AI-native means here", g4: "waza · craft",
+    stmt: "Agents do the legwork here: research, drafts, checks, follow-ups. Taste, decisions and responsibility stay with people.",
+    f1h: "Every page is measured", f1: "Before launch it runs in a real browser at 1440, 768 and 390 pixels wide: contrast, overflow, covered text, fonts, pictures.",
+    f2h: "Films from code", f2: "We render product films and clips from code. When your product changes, the film changes with it.",
+    f3h: "Our own voices", f3: "We generate narration for trailers and explainers on our own hardware. Your scripts never go to a voice service.",
+    f4h: "Checked code", f4: "We analyse third-party tools and libraries with our own review tool before they go into your project.",
+    k5: "From our studio", h2e: "Pages with an idea. And a film to go with them.", g5: "saku · a work",
+    tg1: "Web · Film", wk1: "A product page with a running demo: agents hire and pay each other. Plus a product film in three formats.",
+    tg2: "Web · Generator", wk2: "A campaign page as a duel in two halves, with an image generator visitors share.",
+    tg3: "Web · Character · Voice", wk3: "A bilingual page in English and French, a drawn character and a trailer where he speaks in his own voice.",
+    tg4: "Web · Clip · Film", wk4: "A campaign page of tape and polaroids, an ad clip and a puppet film in which the dog tells his story.",
+    k6: "The way", h2f: "From the first call to a running system.", g6: "michi · the way",
+    d1h: "Talk", d1: "We ask about your business, your customers and what is left undone today. Not about features.",
+    d2h: "Idea", d2: "We collect what only you have and write the idea down in one sentence. You say yes or no before we build.",
+    d3h: "Build", d3: "Website, automations and lead engine are built together. You see every version as a link.",
+    d4h: "Run", d4: "After launch we measure what brings enquiries and keep building where it pays off.",
+    k7: "hanashi · a talk", h2g: "Tell us about your business.", l2g: "A few sentences are enough. We reply in person, with a first idea for your system.",
+    fn: "Name", fe: "Email", fb: "Trade", fm: "What should get better?", send: "Send my enquiry", direct: "Or directly:",
+    priv: "Privacy", credit: "Fonts: Shippori Mincho B1 and Yuji Syuku (SIL Open Font License). Brush strokes and paper: painted in code by Medaur."
+  };
+  const DE = {}; document.querySelectorAll("[data-i]").forEach((el) => (DE[el.dataset.i] = el.innerHTML));
+  let lang = "de";
+  try { const s = localStorage.getItem("medaur-lang"); if (s === "en" || s === "de") lang = s; } catch (e) {}
+
+  // ---------- engine ----------
+  let cur = IND[0];
+  const inds = $("#inds"), sel = $("#f-ind");
+  const city = () => ($("#city").value.trim() || (lang === "de" ? "deiner Stadt" : "your city")).slice(0, 28);
+  const fill = (t) => t.replaceAll("{city}", city());
+  const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  const T = (ind) => ind[lang];
+
+  function renderButtons() {
+    inds.innerHTML = IND.map((x) => `<button type="button" data-id="${x.id}" aria-pressed="${x === cur}">${T(x).label}<span lang="ja" aria-hidden="true">${x.jp}</span></button>`).join("");
+    sel.innerHTML = IND.map((x) => `<option value="${x.id}" ${x === cur ? "selected" : ""}>${T(x).label}</option>`).join("") + `<option value="other">${lang === "de" ? "Etwas anderes" : "Something else"}</option>`;
+  }
+  // the pinned customer file follows the chosen trade
+  function renderPath() {
+    const t = T(cur);
+    document.querySelectorAll("[data-ind]").forEach((el) => {
+      const k = el.dataset.ind;
+      el.textContent = fill(k === "label" ? t.label : t[k] || "");
+    });
+  }
+  let timers = [];
+  const later = (ms, fn) => timers.push(setTimeout(fn, reduce ? 0 : ms));
+  const clock = (add) => { const d = new Date(Date.now() + add * 1000); return d.toTimeString().slice(0, 8); };
+
+  function run() {
+    timers.forEach(clearTimeout); timers = [];
+    const t = T(cur), L = cur.look, site = $("#site");
+    $("#done").classList.remove("on");
+    site.style.setProperty("--sb", L.sb); site.style.setProperty("--si", L.si); site.style.setProperty("--sa", L.sa); site.style.setProperty("--sac", L.sac || "#fff");
+    $("#url").textContent = cur.url;
+    $("#s-brand").textContent = t.brand;
+    const h = $("#s-h"), full = fill(t.h);
+    if (!reduce) ["#s-s", "#s-cta", ".site .widget"].forEach((s) => ($(s).style.opacity = 0));
+    $("#s-s").textContent = fill(t.s); $("#s-cta").textContent = t.cta;
+    $("#s-w1").textContent = t.w[0]; $("#s-w2").textContent = t.w[1]; $("#s-w3").textContent = t.w[2];
+    // the headline is written, letter by letter, like a brush that does not stop
+    if (reduce) h.textContent = full;
+    else { h.textContent = ""; [...full].forEach((ch, i) => later(200 + i * 34, () => (h.textContent = full.slice(0, i + 1)))); }
+    const base = reduce ? 0 : 260 + full.length * 34;
+    const show = (s) => { if (reduce) return; const el = $(s); el.style.transition = "opacity 1s cubic-bezier(.22,.61,.24,1)"; el.style.opacity = 1; };
+    later(base, () => show("#s-s")); later(base + 300, () => show("#s-cta")); later(base + 600, () => show(".site .widget"));
+
+    const log = $("#log"); log.innerHTML = "";
+    const lines = [[t.enquiry, 0], [t.kind, 1], [t.action, 3], [`<span class="ok">✓</span> ${esc(t.human)}`, 41], [esc(t.booked), 42]];
+    lines.forEach(([txt, sec], i) => later(base + 500 + i * 650, () => {
+      const li = document.createElement("li"); li.className = "reveal-line";
+      li.innerHTML = `<time>${clock(sec)}</time><span>${i < 3 ? esc(fill(txt)) : txt}</span>`;
+      log.appendChild(li); requestAnimationFrame(() => requestAnimationFrame(() => li.classList.add("on")));
+    }));
+    const leads = $("#leads"); leads.innerHTML = "";
+    t.leads.forEach(([src, sig, sc], i) => later(base + 900 + i * 520, () => {
+      const li = document.createElement("li"); li.className = "reveal-line";
+      li.innerHTML = `<b>${esc(src)}</b><span class="sc">${sc}</span><small>${esc(fill(sig))}</small><i class="bar"></i>`;
+      leads.appendChild(li);
+      requestAnimationFrame(() => requestAnimationFrame(() => { li.classList.add("on"); li.querySelector(".bar").style.setProperty("--v", sc / 100); }));
+    }));
+    later(base + 500 + 5 * 650 + 300, () => $("#done").classList.add("on"));
+  }
+
+  inds.addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-id]"); if (!b) return;
+    cur = IND.find((x) => x.id === b.dataset.id);
+    inds.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", x === b));
+    sel.value = cur.id; renderPath(); run();
+  });
+  $("#run").addEventListener("click", () => { renderPath(); run(); });
+  $("#city").addEventListener("change", () => { renderPath(); run(); });
+  sel.addEventListener("change", () => { const n = IND.find((x) => x.id === sel.value); if (n) { cur = n; renderButtons(); renderPath(); } });
+
+  function setLang(l) {
+    lang = l; document.documentElement.lang = l;
+    try { localStorage.setItem("medaur-lang", l); } catch (e) {}
+    document.querySelectorAll("[data-lang]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.lang === l));
+    const dict = l === "en" ? EN : DE;
+    document.querySelectorAll("[data-i]").forEach((el) => { const v = dict[el.dataset.i]; if (v != null && el.innerHTML !== v) el.innerHTML = v; });
+    if ($("#city").value === "Köln" && l === "en") $("#city").value = "Cologne";
+    else if ($("#city").value === "Cologne" && l === "de") $("#city").value = "Köln";
+    renderButtons(); renderPath(); run();
+    if (window.Motion && Motion.refresh) Motion.refresh();
+  }
+  document.querySelectorAll("[data-lang]").forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+
+  // ---------- contact: builds a mail, nothing is sent to a server ----------
+  $("#mail").href = "mailto:" + C.EMAIL; $("#mail").textContent = C.EMAIL;
+  $("#imp").href = C.IMPRESSUM; $("#dsg").href = C.PRIVACY;
+  $("#form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const f = new FormData(e.target), ind = sel.options[sel.selectedIndex].text;
+    const subj = `${lang === "de" ? "Anfrage" : "Enquiry"}: ${ind} · ${f.get("name")}`;
+    const body = `${f.get("msg") || ""}\n\n${f.get("name")} · ${f.get("email")}\n${ind}`;
+    location.href = `mailto:${C.EMAIL}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`;
+  });
+
+  // ---------- soft ink reveals ----------
+  const io = "IntersectionObserver" in window && !reduce ? new IntersectionObserver((es) => es.forEach((en) => {
+    if (en.isIntersecting) { en.target.classList.add("inked"); io.unobserve(en.target); }
+  }), { rootMargin: "0px 0px -12% 0px" }) : null;
+  document.querySelectorAll("[data-ink],[data-ink-enso]").forEach((el) => {
+    if (el.hasAttribute("data-ink-enso")) el.classList.add("enso");
+    io ? io.observe(el) : el.classList.add("inked");
+  });
+
+  if (lang !== "de") setLang(lang); else { renderButtons(); renderPath(); }
+  // start the engine once it comes into view, so the first visitor sees it work
+  const eng = $(".engine");
+  if (io) { const o = new IntersectionObserver((es) => { if (es[0].isIntersecting) { run(); o.disconnect(); } }, { threshold: 0.35 }); o.observe(eng); }
+  else run();
+})();
+</script>
+</body>
+</html>
