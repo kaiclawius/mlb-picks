@@ -4,6 +4,7 @@ import { FORMATS, Format } from "./types";
 import { FPS, ProductVideo, sceneFrames, totalFrames } from "./ProductVideo";
 import { Film, FILM_FPS, filmFrames } from "./film/Film";
 import { Walk, WALK_FPS, walkFrames } from "./film/Walk";
+import { AD_FPS, GrokDogAd, T as GROK_T } from "./ads/GrokDogAd";
 
 // Every product gets three video formats and a social preview image:
 //   <id>-landscape, <id>-portrait, <id>-square, <id>-og
@@ -29,6 +30,9 @@ export function Root() {
             durationInFrames={walkFrames(p.walk!)} fps={WALK_FPS} width={FORMATS[fmt][0]} height={FORMATS[fmt][1]} />
         )) : []),
       ])}
+      {/* one-off ads */}
+      <Composition id="grokdog-ad-4x5" component={GrokDogAd} durationInFrames={GROK_T.total} fps={AD_FPS} width={1080} height={1350} />
+      <Composition id="grokdog-ad-9x16" component={GrokDogAd} durationInFrames={GROK_T.total} fps={AD_FPS} width={1080} height={1920} />
     </>
   );
 }
