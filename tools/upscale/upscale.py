@@ -23,7 +23,10 @@ class RRDBNet(nn.Module):
         feat = s.conv_first(x); feat = feat + s.conv_body(s.body(feat))
         feat = s.l(s.conv_up1(F.interpolate(feat, scale_factor=2, mode="nearest"))); feat = s.l(s.conv_up2(F.interpolate(feat, scale_factor=2, mode="nearest")))
         return s.conv_last(s.l(s.conv_hr(feat)))
-m = RRDBNet(); sd = torch.load(sys.argv[1], map_location="cpu", weights_only=True); m.load_state_dict(sd.get("params_ema", sd), strict=True); m.eval()
+sd = torch.load(sys.argv[1], map_location="cpu", weights_only=True); sd = sd.get("params_ema", sd)
+# the block count comes from the weights: 23 for x4plus (photos), 6 for x4plus_anime_6B (flat art, logos, cartoons)
+nb = 1 + max(int(k.split(".")[1]) for k in sd if k.startswith("body."))
+m = RRDBNet(nb=nb); m.load_state_dict(sd, strict=True); m.eval()
 torch.set_num_threads(max(1, torch.get_num_threads()))
 img = np.asarray(Image.open(sys.argv[2]).convert("RGB"), dtype=np.float32) / 255.0
 x = torch.from_numpy(img).permute(2, 0, 1).unsqueeze(0)
